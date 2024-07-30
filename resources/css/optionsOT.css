@@ -1,0 +1,28 @@
+.hidden {
+    display: none;
+}
+
+.menu-content {
+    position: absolute; /* Hace que el menú sea flotante */
+    background-color: white; /* Fondo blanco para el menú */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Sombra para dar efecto de flotante */
+    padding: 1rem; /* Espaciado interno */
+    border-radius: 8px; /* Bordes redondeados */
+    z-index: 1000; /* Asegura que el menú se muestre por encima de otros elementos */
+}
+
+.menuOT_icon.open + .menu-content {
+    display: block;
+}
+
+/* Animación para el menú */
+.menu-content.hidden {
+    opacity: 0;
+    transform: scale(0.95);
+    transition: opacity 0.3s ease, transform 0.3s ease;
+}
+
+.menu-content:not(.hidden) {
+    opacity: 1;
+    transform: scale(1);
+}
