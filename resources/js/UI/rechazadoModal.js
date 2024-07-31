@@ -9,10 +9,12 @@ import validator from "validator";
     var urlObj = new URL(url);
     const orden_trabajo_id = urlObj.pathname.split("/").pop();
 
-    rechazarBtn.addEventListener("click", function (e) {
-        mostrarModal();
-        validarDatosTiempoReal();
-    });
+    if(rechazarBtn){
+        rechazarBtn.addEventListener("click", function (e) {
+            mostrarModal();
+            validarDatosTiempoReal();
+        });
+    }
 
     function mostrarModal() {
         const modal = document.createElement("div");
