@@ -56,7 +56,7 @@ import Swal from "sweetalert2";
 
         async function guardarDocumento(file){
             const data =  new FormData();
-            const url = '/administracion/documentocp/upload';
+            const url = '/mantenimiento/documentocp/upload';
             const token  =  document.querySelector('meta[name="csrf-token"]').getAttribute('content');
             const documentocp_id = urlObj.pathname.split('/').pop();
     
@@ -81,7 +81,7 @@ import Swal from "sweetalert2";
                         text: 'El archivo se ha subido correctamente',
                         confirmButtonText: 'OK'
                     }).then(()=>{
-                        window.location.href = "/administracion/documentocp"
+                        window.location.href = "/mantenimiento/documentocp"
                     }); 
                 }
             } catch (error) {
@@ -91,7 +91,7 @@ import Swal from "sweetalert2";
                     text: 'Hubo un error al generar el archivo, intentelo de nuevo más tarde',
                     confirmButtonText: 'OK'
                 }).then(()=>{
-                    window.location.href = "/administracion/documentocp"
+                    window.location.href = "/mantenimiento/documentocp"
                 });
             }
         }

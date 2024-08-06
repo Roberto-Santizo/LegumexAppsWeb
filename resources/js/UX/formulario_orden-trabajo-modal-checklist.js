@@ -30,7 +30,7 @@ import validator from 'validator';
                             <h3 class="text-xl leading-6 font-bold text-gray-900 uppercase" id="modal-title">Formulario para Orden De Trabajo</h3>
                             <div class="w-full mt-10">
                                 <p class="text-sm text-gray-500">
-                                    <form method="POST" action="/administracion/orden-trabajo/store" id="formulario4">
+                                    <form method="POST" action="/mantenimiento/orden-trabajo/store" id="formulario4">
                                         <fieldset class="p-5 mb-10 shadow-2xl">
                                             <legend class="text-xl font-bold uppercase">Datos generales de la Orden</legend>
                                             <div class="mb-5">
@@ -208,7 +208,7 @@ import validator from 'validator';
             _token: document.querySelector('meta[name="csrf-token"]').getAttribute('content')
         };
     
-        const url = "/administracion/ordenes-trabajos/store";
+        const url = "/mantenimiento/ordenes-trabajos/store";
         const response = await fetch(url, {
             method: 'POST',
             headers: {
@@ -235,7 +235,7 @@ import validator from 'validator';
     
 
     async function consultarOT(planta_id, area_id, elemento_id, estado_id) {
-        const url = `/administracion/orden-trabajo/${planta_id}/${area_id}/${elemento_id}/${estado_id}`;
+        const url = `/mantenimiento/orden-trabajo/${planta_id}/${area_id}/${elemento_id}/${estado_id}`;
         const response = await fetch(url);
         const data = await response.json();
         if (data.exists) {

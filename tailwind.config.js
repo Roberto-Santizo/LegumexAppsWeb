@@ -12,6 +12,9 @@ export default {
       },
       fontSize:{
         'xxs': '8.5px', 
+      },
+      gridTemplateColumns: {
+        '16': 'repeat(16, minmax(0, 1fr))',
       }
     },
   },

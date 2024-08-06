@@ -32,7 +32,7 @@ class MicrosoftAuthController extends Controller
 
         if($usuario->getRoleNames()->first() == 'admin' || $usuario->getRoleNames()->first() == 'adminmanto'){
             auth()->login($usuario);
-            return redirect()->route('dashboard');
+            return redirect()->route('dashboard.mantenimiento');
         }else{
             return redirect()->route('login');
         }

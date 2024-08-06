@@ -1,51 +1,11 @@
 <div>
     <nav class="gap-5 p-4 flex flex-col items-center justify-center w-full">
-        <div class="w-full">
-            <div class="flex items-center justify-between w-full gap-2 md:hidden p-3" id="menuMobile_account">
-                <div class="flex flex-row gap-5 justify-center items-center">
-                    <i class="fa-solid fa-user"></i>
-                    <span class="text-md md:text-xs uppercase font-bold">Cuenta</span>
-                </div>
-                <i class="fa-solid fa-greater-than transition-transform duration-300" id="menuIcon"></i>
-            </div>
 
-            <div class="ml-10 hidden " id="accountContent">
-                <div class="text-md">
-                    <div>
-                        <p><span class="font-bold">Nombre:</span> {{ auth()->user()->name }}</p>
-                    </div>
+        @hasanyrole('adminmanto|auxmanto')
+        <x-usuario-menu-mobile />
+        @endhasanyrole
 
-                    <div>
-                        <p><span class="font-bold">Nombre de usuario:</span> {{ auth()->user()->username }}</p>
-                    </div>
-
-                    <div>
-                        <p><span class="font-bold">Correo:</span> {{ auth()->user()->email }}</p>
-                    </div>
-                    <div>
-                        <p><span class="font-bold">Rol:</span> {{ auth()->user()->getRoleNames()->first() }}</p>
-                    </div>
-
-                </div>
-                <div class="flex gap-2 w-full md:hidden">
-                    <form action="{{ route('logout.microsoft') }}" method="POST" class="text-md">
-                        @csrf
-                        <input type="submit" value="Cerrar Sesión"
-                            class="mt-5 bg-orange-500 cursor-pointer hover:bg-orange-700 text-white font-bold py-2 px-4 rounded inline-block ">
-                    </form>
-
-                    @role('auxmanto')
-                    <form action="{{ route('logout') }}" method="POST" class="text-md">
-                        @csrf
-                        <input type="submit" value="Utilizar otro Usuario"
-                            class="mt-5 bg-orange-500 cursor-pointer hover:bg-orange-700 text-white font-bold py-2 px-4 rounded inline-block ">
-                    </form>
-                    @endrole
-                </div>
-            </div>
-        </div>
-
-        <a href="{{ route('dashboard') }}"
+        <a href="{{ route('dashboard.mantenimiento') }}"
             class=" {{  Route::is('dashboard*') ? 'bg-orange-500' : '' }} rounded-lg text-center flex flex-row  gap-5 md:gap-0  md:flex-col items-center md:justify-center p-3 w-full md:w-2/3 hover:bg-blue-400">
             <i class="fa-solid fa-house"></i>
             <span class="text-md md:text-xs uppercase font-bold">Dashboard</span>
@@ -67,6 +27,12 @@
             <span class="text-md md:text-xs uppercase font-bold">Ordenes de trabajo</span>
         </a>
 
+        <a href="{{ route('registrostemp') }}"
+            class="{{  Route::is('registrostemp*') ? 'bg-orange-500' : '' }} rounded-lg text-center flex flex-row  gap-5 md:gap-0  md:flex-col items-center md:justify-center p-3 w-full md:w-2/3 hover:bg-blue-400">
+            <i class="fa-solid fa-temperature-high"></i>
+            <span class="text-md md:text-xs uppercase font-bold">Registro de Temperatura</span>
+        </a>
+
         @role('auxmanto')
         <a href="{{ route('misOrdenes') }}"
             class="{{  Route::is('misOrdenes*') ? 'bg-orange-500' : '' }} relative rounded-lg text-center flex flex-row  gap-5 md:gap-0  md:flex-col items-center md:justify-center p-3 w-full md:w-2/3 hover:bg-blue-400">
@@ -79,7 +45,7 @@
         </a>
         @endrole
 
-        @role('adminmanto')
+        @hasanyrole('adminmanto|admin')
         <a href="{{ route('administrar') }}"
             class="{{  Route::is('administrar*') ? 'bg-orange-500' : '' }} rounded-lg text-center flex flex-row  gap-5 md:gap-0  md:flex-col items-center md:justify-center p-3 w-full md:w-2/3 hover:bg-blue-400">
             <i class="fa-solid fa-universal-access"></i>
@@ -91,13 +57,9 @@
             <i class="fa-solid fa-screwdriver-wrench"></i>
             <span class="text-md md:text-xs uppercase font-bold">Herramientas</span>
         </a>
-        @endrole
+        @endhasanyrole
 
-        {{-- <a href="{{ route('administrar') }}"
-            class="{{  Route::is('administrar*') ? 'bg-orange-500' : '' }} rounded-lg text-center flex flex-row  gap-5 md:gap-0  md:flex-col items-center md:justify-center p-3 w-full md:w-2/3 hover:bg-blue-400">
-            <i class="fa-solid fa-store"></i>
-            <span class="text-md md:text-xs uppercase font-bold">Inventario</span>
-        </a> --}}
+
     </nav>
 
 </div>

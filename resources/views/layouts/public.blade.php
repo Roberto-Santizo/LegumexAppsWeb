@@ -35,7 +35,9 @@
                 @else
                     <div class="flex gap-2 flex-col sm:flex-row">
                         @auth
-                            <a class="text-xs font-bold uppercase bg-sky-500 p-3 text-white hover:bg-sky-600" href="{{ route('dashboard') }}">Administración</a>
+                            @hasanyrole('adminmanto|auxmanto')
+                                <a class="text-xs font-bold uppercase bg-sky-500 p-3 text-white hover:bg-sky-600" href="{{ route('dashboard.mantenimiento') }}">Administración</a>
+                            @endhasanyrole
                         @endauth
 
                         <form action="{{ route('logout.microsoft') }}" method="POST" class="flex justify-center items-center">

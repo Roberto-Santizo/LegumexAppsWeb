@@ -74,26 +74,27 @@ Orden de trabajo
         @endif
 
     </div>
+    
+    <div class="flex flex-row gap-2 justify-end">
+        @if($ot->estado_id == 1)
+        <a href="{{ route('documentoOT.edit',$ot) }}"
+            class="bg-green-500 text-white p-2 cursor-pointer rounded-lg hover:bg-green-600 font-bold uppercase">
+            Ya realicé el trabajo!
+        </a>
+        @elseif ($ot->estado_id == 2)
+            @hasanyrole('admin|adminmanto')
+                <a href="{{ route('documentoOT.edit',$ot) }}"
+                    class="bg-green-500 text-white p-2 cursor-pointer rounded-lg hover:bg-green-600 font-bold uppercase text-center">
+                    Firmar Revisión
+                </a>
+
+                @csrf
+                
+                <button id="rechazarBtn" class="bg-red-500 text-white p-2 cursor-pointer rounded-lg hover:bg-red-600 font-bold uppercase">Rechazar</button>
+            @endhasanyrole
+        @endif
+    </div>
 </div>
 
 
-<div class="flex flex-row gap-2 justify-end">
-    @if($ot->estado_id == 1)
-    <a href="{{ route('documentoOT.edit',$ot) }}"
-        class="bg-green-500 text-white p-2 cursor-pointer rounded-lg hover:bg-green-600 font-bold uppercase">
-        Ya realicé el trabajo!
-    </a>
-    @elseif ($ot->estado_id == 2)
-        @hasanyrole('admin|adminmanto')
-            <a href="{{ route('documentoOT.edit',$ot) }}"
-                class="bg-green-500 text-white p-2 cursor-pointer rounded-lg hover:bg-green-600 font-bold uppercase text-center">
-                Firmar Revisión
-            </a>
-
-            @csrf
-            
-            <button id="rechazarBtn" class="bg-red-500 text-white p-2 cursor-pointer rounded-lg hover:bg-red-600 font-bold uppercase">Rechazar</button>
-        @endhasanyrole
-    @endif
-</div>
 @endsection

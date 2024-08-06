@@ -47,5 +47,21 @@
     transform: translateX(-100%);
   }
 
+
+@layer components {
+    .slide-in2 {
+        @apply transition-transform duration-300 ease-out;
+        transform: translateY(-100%);
+    }
+    .slide-in-active2 {
+        transform: translateY(0);
+    }
+
+    .slide-out-active2 {
+        @apply transition-transform duration-300 ease-in;
+        transform: translateY(-100%);
+    }
+}
+
   
 }

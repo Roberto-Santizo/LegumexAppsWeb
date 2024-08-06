@@ -44,9 +44,11 @@
                 <div>
                     @if (($ot->fecha_propuesta < \Carbon\Carbon::now()->format('Y-m-d') && $ot->estado_id != 3))
                         <p class=" bg-red-500 inline-block p-2 font-bold text-white rounded">ATRASADA</p>
-                    @elseif (($ot->fecha_propuesta == \Carbon\Carbon::now()->format('Y-m-d') && $ot->estado_id != 3))
-                        <p class=" bg-blue-500 inline-block p-2 font-bold text-white rounded">SE ENTREGA EL DÍA DE HOY</p>
-                    @endif
+                        @elseif (($ot->fecha_propuesta == \Carbon\Carbon::now()->format('Y-m-d') && $ot->estado_id !=
+                        3))
+                        <p class=" bg-blue-500 inline-block p-2 font-bold text-white rounded">SE ENTREGA EL DÍA DE HOY
+                        </p>
+                        @endif
                 </div>
             </div>
         </div>
@@ -54,12 +56,13 @@
         @if($ot->estado_id != 5)
         <div>
             <div
-                class="bg-gray-200 p-1 md:p-5 rounded-lg shadow md:ml-5 flex md:flex-col flex-row gap-5 items-center justify-around w-full  md:w-min">
-                
+                class="bg-gray-200 p-1 md:p-5 rounded-lg shadow md:ml-5 flex md:flex-col flex-row gap-5 items-center justify-between w-full md:w-min">
+
                 @if (!($ot->weburl))
                 <i title="{{ ($ot->urgencia == 1) ? 'ALTA' : (($ot->urgencia==2) ? 'MODERADA' : 'BAJA') }}"
                     class="text-2xl fa-sharp fa-solid fa-circle-exclamation {{ ($ot->urgencia == 1) ? 'text-red-500' : (($ot->urgencia==2) ? 'text-yellow-500' : 'text-green-500') }}"></i>
                 @endif
+
                 @if(!$ot->mecanico_id)
                 @role('auxmanto')
                 <livewire:asignar-mecanico :ot="$ot" />
@@ -82,29 +85,20 @@
                 </td>
                 @else
                 @if ($ot->estado_id == 3)
-                    @hasanyrole('admin|adminmanto')
-                        <td class="px-4 py-4 whitespace-nowrap ">
-                            <a title="Generar Archivo" href="{{ route('documentoOT.documento',$ot) }}">
-                                <i class="fa-solid fa-folder-plus text-xl hover:text-red-500"></i>
-                            </a>
-                        </td>
-                    @endhasanyrole
+                @hasanyrole('admin|adminmanto')
+                <td class="px-4 py-4 whitespace-nowrap ">
+                    <a title="Generar Archivo" href="{{ route('documentoOT.documento',$ot) }}">
+                        <i class="fa-solid fa-folder-plus text-xl hover:text-red-500"></i>
+                    </a>
+                </td>
+                @endhasanyrole
                 @endif
                 @endif
 
                 @hasanyrole('admin|adminmanto')
-                <div class="flex md:flex-col flex-row items-center justify-center text-xl gap-3">
+                <div class="flex md:flex-col flex-row items-center justify-center text-xl gap-5">
                     @if($ot->estado_id != 5)
-                    @if(!($ot->weburl))
-                    <form class="delete-ot" id="deleteForm" action="{{ route('documentoOT.destroy', $ot) }}"
-                        method="POST">
-                        @method('DELETE')
-                        @csrf
-                        <button type="submit" class="icon-button" title="Eliminar Orden de Trabajo">
-                            <i class="fa-solid fa-trash hover:text-red-600 cursor-pointer"></i>
-                        </button>
-                    </form>
-                    @endif
+
                     @endif
 
                     @if ($ot->estado_id == 1)
@@ -116,6 +110,18 @@
                         <i class="fa-solid fa-pen-to-square text-2xl hover:text-gray-500"></i>
                     </a>
                     @endif
+
+                    @if(!($ot->weburl))
+                    <form class="delete-ot" id="deleteForm" action="{{ route('documentoOT.destroy', $ot) }}"
+                        method="POST">
+                        @method('DELETE')
+                        @csrf
+                        <button type="submit" class="icon-button" title="Eliminar Orden de Trabajo">
+                            <i class="fa-solid fa-trash hover:text-red-600 cursor-pointer"></i>
+                        </button>
+                    </form>
+                    @endif
+
                 </div>
                 @endhasanyrole
             </div>

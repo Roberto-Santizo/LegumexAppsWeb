@@ -26,7 +26,8 @@ class LoginController extends Controller
         if(!auth()->attempt($request->only('username','password'),$request->remember)){
             return back()->with('error', 'Credenciales incorrectas');
         }
-
-        return redirect()->route('dashboard');
+        if(auth()->user()->getRoleNames()->contains('adminmanto') || auth()->user()->getRoleNames()->contains('auxmanto')){
+            return redirect()->route('dashboard.mantenimiento');
+        }
     }
 }
