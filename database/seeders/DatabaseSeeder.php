@@ -23,5 +23,6 @@ class DatabaseSeeder extends Seeder
         $this->call(AreasSeeder::class);
         $this->call(ElementosSeeder::class);
         $this->call(HerramientasSeeder::class);
+        $this->call(SupervisoresSeeder::class);
     }
 }
