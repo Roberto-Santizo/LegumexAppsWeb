@@ -20,8 +20,8 @@ class OrdenTrabajo extends Model
         'fecha_propuesta',
         'problema_detectado',
         'estado_id',
-        'nombre_jefearea',
-        'firma_jefearea',
+        'supervisor_id',
+        'firma_supervisor',
         'fecha_entrega',
         'fecha_inspeccion',
         'hora_inicio',
@@ -35,7 +35,7 @@ class OrdenTrabajo extends Model
         'limpieza_equipo',
         'orden_area',
         'liberacion_trabajo',
-        'nombre_calidad',
+        'c_calidad_id',
         'fecha_inspeccion_calidad',
         'firma_calidad',
         'especifique',
@@ -69,4 +69,16 @@ class OrdenTrabajo extends Model
     {
         return $this->belongsTo(User::class,'mecanico_id','id');
     }
+
+    public function supervisor()
+    {
+        return $this->belongsTo(Supervisor::class,'supervisor_id','id');
+    }
+
+    public function inspectorCalidad()
+    {
+        return $this->belongsTo(Supervisor::class,'c_calidad_id','id');
+    }
+
+    
 }

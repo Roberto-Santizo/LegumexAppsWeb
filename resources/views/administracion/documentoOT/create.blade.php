@@ -98,15 +98,21 @@ Crear orden de trabajo
 
 
         </fieldset>
-        
+
         <fieldset class="p-5 mb-10 shadow-2xl">
-            <legend class="text-xl font-bold uppercase">Datos del jefe de área</legend>
+            <legend class="text-xl font-bold uppercase">Datos del Supervisor de área</legend>
             <div class="mt-5">
-                <label for="nombre_jefearea" class="mb-2 block uppercase text-gray-500 font-bold">Nombre del jefe de
+                <label for="supervisor_id" class="mb-2 block uppercase text-gray-500 font-bold">Nombre del Supervisor
+                    de
                     Área:</label>
-                <input autocomplete="off" type="text" id="nombre_jefearea" name="nombre_jefearea"
-                    placeholder="Nombre del jefe de área" class="border p-3 w-full rounded-lg">
+                <select name="supervisor_id" id="supervisor_id" class="w-full p-4 rounded select">
+                    <option value="" class="opcion-defaul" selected disabled>---SELECCIONE UNA OPCIÓN---</option>
+                    @foreach ($supervisores as $supervisor)
+                        <option value="{{ $supervisor->id }}">{{ $supervisor->name . ' - ' . $supervisor->role->name }}</option>
+                    @endforeach
+                </select>
             </div>
+
             <div class="flex justify-center items-center flex-col">
                 <canvas id="signature-pad-2" width="375" height="200"
                     class="bg-gray-50 mt-10 rounded-xl border border-black"></canvas>
@@ -114,7 +120,8 @@ Crear orden de trabajo
                     <h4 class="font-bold uppercase">Firma del jefe de área</h4>
                     <div id="clear-button-2"
                         class="inline-block mt-2 bg-orange-600 hover:bg-orange-700 p-3 transition-colors cursor-pointer uppercase font-bold text-white rounded-lg formulario__firma--clear">
-                        <span>Limpiar</span></div>
+                        <span>Limpiar</span>
+                    </div>
                 </div>
             </div>
         </fieldset>
@@ -127,12 +134,13 @@ Crear orden de trabajo
                     <h4 class="font-bold uppercase">Firma del solicitante</h4>
                     <div id="clear-button"
                         class="inline-block mt-5 bg-orange-600 hover:bg-orange-700 p-3 transition-colors cursor-pointer uppercase font-bold text-white rounded-lg formulario__firma--clear">
-                        <span>Limpiar</span></div>
+                        <span>Limpiar</span>
+                    </div>
                 </div>
             </div>
         </fieldset>
         <input type="hidden" value="" id="firma" name="firma_solicitante">
-        <input type="hidden" value="" id="firma2" name="firma_jefearea">
+        <input type="hidden" value="" id="firma2" name="firma_supervisor">
         <input id="btnSaveOT" type="submit" value="Guardar"
             class="inline-block mt-5 bg-blue-600 hover:bg-blue-700 p-3 transition-colors cursor-pointer uppercase font-bold text-white rounded-lg">
     </form>

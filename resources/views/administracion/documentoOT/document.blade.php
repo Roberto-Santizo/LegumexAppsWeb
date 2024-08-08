@@ -133,11 +133,11 @@
                 </div>
             </div>
             <div>
-                <p class="font-bold">JEFÉ DE ÁREA:</p>
-                <p>NOMBRE: {{ $ot->nombre_jefearea }}</p>
+                <p class="font-bold">SUPERVISOR DE ÁREA:</p>
+                <p>NOMBRE: {{ $ot->supervisor->name }}</p>
                 <div class="flex">
                     <p>FIRMA: </p>
-                    <img class="w-48 h-36" src="{{ asset('uploads') . '/' . $ot->firma_jefearea }}" alt="Imagen Firma">
+                    <img class="w-48 h-36" src="{{ asset('uploads') . '/' . $ot->firma_supervisor }}" alt="Imagen Firma">
                 </div>
             </div>
         </div>
@@ -221,7 +221,7 @@
 
                 <div class="border-l border-black col-start-7 col-span-2">
                     <h3 class="font-bold text-center" style="height:40px;">CONTROL DE CALIDAD</h3>
-                    <p class="border-y border-black p-1 flex items-center gap-2" style="height: 60px;"><span class="font-bold">NOMBRE:</span> {{ $ot->nombre_calidad }}</p>
+                    <p class="border-y border-black p-1 flex items-center gap-2" style="height: 60px;"><span class="font-bold">NOMBRE:</span> {{ $ot->inspectorCalidad->name }}</p>
 
                     <div class="flex  border-black p-1 flex-row gap-2" style="height: 170px;">
                         <p class="">FIRMA: </p>

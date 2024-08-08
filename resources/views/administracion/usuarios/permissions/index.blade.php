@@ -15,7 +15,7 @@ Permisos
         Volver
     </a>
 
-    <a href="{{ route('permissions.create') }}"
+    <a href="{{ route('usuarios.permissions-create') }}"
         class="mt-5 bg-orange-500 cursor-pointer hover:bg-orange-700 text-white font-bold py-2 px-4 rounded inline-block ">
         <i class="fa-solid fa-plus"></i>
         Crear Permiso
@@ -41,7 +41,7 @@ Permisos
                 <td class="px-4 py-4 text-md font-medium whitespace-nowrap">{{ $permission->created_at }}</td>
                 <td class="px-4 py-4 text-md font-medium whitespace-nowrap">{{ $permission->updated_at }}</td>
                 <td class="px-4 py-4 text-md font-medium whitespace-nowrap flex gap-5 justify-center items-center">
-                    <a href="{{ route('permissions.edit', $permission) }}">
+                    <a href="{{ route('usuarios.permissions-edit', $permission) }}">
                         <i class="fa-solid fa-pen text-xl"></i>
                     </a>
                 </td>

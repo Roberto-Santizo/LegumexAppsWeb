@@ -37,7 +37,7 @@ class RoleController extends Controller implements HasMiddleware
             'guard_name' =>'web'
         ]);
 
-        return redirect()->route('roles')->with(['success' => 'El rol fue creado exitosamente']);
+        return redirect()->route('usuarios.roles')->with(['success' => 'El rol fue creado exitosamente']);
     }
 
     public function edit(Role $role)
@@ -55,7 +55,7 @@ class RoleController extends Controller implements HasMiddleware
             $role->name = $request->name;
             $role->save();
     
-            return redirect()->route('roles')->with('success','El rol ha sido modificado correctamente');
+            return redirect()->route('usuarios.roles')->with('success','El rol ha sido modificado correctamente');
         } catch (\Throwable $th) {
             return back()->with('error','Hubo un error al crear el rol, intentelo de nuevo más tarde');
         }

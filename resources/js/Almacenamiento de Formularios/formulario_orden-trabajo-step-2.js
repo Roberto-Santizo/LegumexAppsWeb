@@ -32,7 +32,6 @@ import validator from "validator";
     function validarDatosTiempoReal(){
         const trabajo_realizado = document.getElementById('trabajo_realizado');
         const repuestos_utilizados = document.getElementById('repuestos_utilizados');
-        const nombre_calidad = document.getElementById('nombre_calidad');
 
         if(trabajo_realizado){
             trabajo_realizado.addEventListener('input',function(e){
@@ -48,15 +47,6 @@ import validator from "validator";
                 const contenedor =  repuestos_utilizados.parentElement;
                 if(!(validator.isLength(repuestos_utilizados.value,{max:750}))){
                    mostrarAlertas(['El texto de repuestos utilizados no puede exceder los 750 caracteres'],contenedor,['text-sm'])
-                }else{
-                    quitarAlertas(contenedor);
-                }
-            })
-    
-            nombre_calidad.addEventListener('input',function(e){
-                const contenedor =  nombre_calidad.parentElement;
-                if(!(validator.isLength(nombre_calidad.value,{max:35}))){
-                   mostrarAlertas(['El nombre no puede exceder los 35 caracteres'],contenedor,['text-xs'])
                 }else{
                     quitarAlertas(contenedor);
                 }

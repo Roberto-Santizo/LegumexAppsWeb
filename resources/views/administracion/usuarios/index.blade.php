@@ -34,14 +34,19 @@ Usuarios
     </div>
     <div class="flex gap-5 justify-center md:justify-end items-center">
 
-        <a href="{{ route('roles') }}"
+        <a href="{{ route('usuarios.roles') }}"
             class="mt-5 bg-orange-500 cursor-pointer hover:bg-orange-700 text-white font-bold py-2 px-4 rounded inline-block ">
             Roles
         </a>
 
-        <a href="{{ route('permissions') }}"
+        <a href="{{ route('usuarios.permissions') }}"
             class="mt-5 bg-orange-500 cursor-pointer hover:bg-orange-700 text-white font-bold py-2 px-4 rounded inline-block ">
             Permisos
+        </a>
+
+        <a href="{{ route('usuarios.supervisores') }}"
+            class="mt-5 bg-orange-500 cursor-pointer hover:bg-orange-700 text-white font-bold py-2 px-4 rounded inline-block ">
+            Supervisores - Calidad
         </a>
     </div>
 </div>
@@ -79,12 +84,6 @@ Usuarios
                     <a href="{{ route('usuarios.edit',$usuario) }}">
                         <i class="fa-solid fa-pen text-xl"></i>
                     </a>
-                    <form action="{{ route('usuarios.destroy',$usuario) }}" method="POST" class="delete-user">
-                        @csrf
-                        @method('DELETE')
-                        <input type="submit" value="Eliminar"
-                            class="bg-red-500 p-2 text-white uppercase hover:bg-red-600 rounded cursor-pointer">
-                    </form>
                 </td>
             </tr>
             @endforeach

@@ -100,12 +100,16 @@
         </div>
 
         <div class=" p-3 shadow-lg rounded">
-            <div class="mb-5 flex flex-col">
-                <label for="nombre_calidad" class="font-bold text-start">Nombre: </label>
-                <input autocomplete="off" type="text" name="nombre_calidad" id="nombre_calidad" class="border border-black p-2 rounded" placeholder="Nombre de control de calidad">
-                @error('nombre_calidad')
-                    <p class="bg-red-500 text-white my-2 rounded-lg text-sm p-2 text-center">{{ $message }}</p>
-                @enderror
+            <div class="mt-5">
+                <label for="c_calidad_id" class="mb-2 block uppercase text-gray-500 font-bold">Nombre del Supervisor
+                    de
+                    Área:</label>
+                <select name="c_calidad_id" id="c_calidad_id" class="w-full p-4 rounded select">
+                    <option value="" class="opcion-defaul" selected disabled>---SELECCIONE UNA OPCIÓN---</option>
+                    @foreach ($supervisores as $supervisor)
+                        <option value="{{ $supervisor->id }}">{{ $supervisor->name . ' - ' . $supervisor->role->name }}</option>
+                    @endforeach
+                </select>
             </div>
 
             <div class="mb-5 flex flex-col">

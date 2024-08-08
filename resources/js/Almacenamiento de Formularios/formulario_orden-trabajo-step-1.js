@@ -41,7 +41,6 @@ import validator from "validator";
         const problema_detectado = document.getElementById('problema_detectado');
         const especifique = document.getElementById('especifique');
         const equipo_problema = document.getElementById('equipo_problema');
-        const nombre_jefearea = document.getElementById('nombre_jefearea');
 
 
         problema_detectado.addEventListener('input',function(e){
@@ -66,15 +65,6 @@ import validator from "validator";
             const contenedor =  equipo_problema.parentElement;
             if(!(validator.isLength(equipo_problema.value,{max:60}))){
                mostrarAlertas(['El campo no debe exceder los 60 caracteres'],contenedor,['text-sm'])
-            }else{
-                quitarAlertas(contenedor);
-            }
-        })
-
-        nombre_jefearea.addEventListener('input',function(e){
-            const contenedor =  nombre_jefearea.parentElement;
-            if(!(validator.isLength(nombre_jefearea.value,{max:35}))){
-               mostrarAlertas(['El nombre del jefe de área no debe de exceder los 35 carcateres'],contenedor,['text-sm']);
             }else{
                 quitarAlertas(contenedor);
             }

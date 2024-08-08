@@ -18,7 +18,7 @@
             @csrf
 
             @if($ot->estado_id == 1)
-                <x-formulario-o-t1 :ot="$ot" />
+                <x-formulario-o-t1 :ot="$ot" :supervisores="$supervisores"/>
             @elseif ($ot->estado_id == 2)
                 <x-formulario-o-t2 :ot="$ot" />
             @endif

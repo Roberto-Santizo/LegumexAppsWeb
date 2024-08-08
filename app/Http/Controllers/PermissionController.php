@@ -29,7 +29,7 @@ class PermissionController extends Controller
             'guard_name' =>'web'
         ]);
 
-        return redirect()->route('permissions')->with(['success' => 'El permiso fue creado exitosamente']);
+        return redirect()->route('usuarios.permissions')->with(['success' => 'El permiso fue creado exitosamente']);
     }
 
     public function edit(Permission $permission)
@@ -47,7 +47,7 @@ class PermissionController extends Controller
             $permission->name = $request->name;
             $permission->save();
     
-            return redirect()->route('permissions')->with('success','El permiso ha sido modificado correctamente');
+            return redirect()->route('usuarios.permissions')->with('success','El permiso ha sido modificado correctamente');
         } catch (\Throwable $th) {
             return back()->with('error','Hubo un error al crear el permiso, intentelo de nuevo más tarde');
         }

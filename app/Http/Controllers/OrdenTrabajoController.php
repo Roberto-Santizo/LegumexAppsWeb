@@ -7,8 +7,8 @@ use App\Models\User;
 use App\Models\Estado;
 use App\Models\Planta;
 use Microsoft\Graph\Graph;
-use App\Models\Documentocp;
 use App\Models\OrdenTrabajo;
+use App\Models\Supervisor;
 use Illuminate\Http\Request;
 use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\DB;
@@ -28,7 +28,8 @@ class OrdenTrabajoController extends Controller
 
     public function create(){
         $plantas = Planta::all();
-        return view('administracion.documentoOT.create',['plantas' => $plantas]);
+        $supervisores = Supervisor::all()->where('role_id',4);
+        return view('administracion.documentoOT.create',['plantas' => $plantas, 'supervisores' => $supervisores]);
         
     }
 
@@ -50,6 +51,7 @@ class OrdenTrabajoController extends Controller
 
     public function edit(OrdenTrabajo $ordentrabajo){
         $user = auth()->user();
+        $supervisores = Supervisor::all()->where('role_id',5);
     
         // Verificar si el estado del documento es 1
             if ($ordentrabajo->estado_id == 1) {
@@ -63,7 +65,7 @@ class OrdenTrabajoController extends Controller
                     return redirect()->route('documentoOT')->with('error', 'No tienes permiso para editar esta orden de trabajo.');
                 }
             }
-        return view('administracion.documentoOT.edit',['ot' => $ordentrabajo]);
+        return view('administracion.documentoOT.edit',['ot' => $ordentrabajo, 'supervisores' => $supervisores]);
     }
 
     public function update(OrdenTrabajo $ordentrabajo, Request $request)
@@ -224,15 +226,15 @@ class OrdenTrabajoController extends Controller
                 'elemento_id' => $request->elemento_id,
                 'nombre_solicitante' => auth()->user()->name,
                 'firma_solicitante' => $request->firma_solicitante,
-                'nombre_jefearea' => $request->nombre_jefearea,
-                'firma_jefearea' => $request->firma_jefearea,
+                'firma_supervisor' => $request->firma_supervisor,
                 'equipo_problema' => $request->equipo_problema,
                 'retiro_equipo' => $request->retiro_equipo,
                 'fecha_propuesta' => $request->fecha_propuesta,
                 'problema_detectado' => $request->problema_detectado,
                 'urgencia' => $request->urgencia,
                 'especifique' => $request->especifique,
-                'estado_id' => 1
+                'estado_id' => 1,
+                'supervisor_id' => $request->supervisor_id
             ]);
 
             $response = [

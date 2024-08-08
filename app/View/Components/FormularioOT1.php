@@ -9,9 +9,11 @@ use Illuminate\View\Component;
 class FormularioOT1 extends Component
 {
     public $ot;
-    public function __construct($ot)
+    public $supervisores;
+    public function __construct($ot,$supervisores)
     {
         $this->ot = $ot;
+        $this->supervisores = $supervisores;
     }
 
     /**

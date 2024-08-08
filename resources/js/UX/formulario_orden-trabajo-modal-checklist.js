@@ -1,26 +1,48 @@
-import SignaturePad from 'signature_pad';
-import { mostrarAlertas, quitarAlertas, scrollTop } from '../helpers';
-import { validarDatosOTVM } from '../Validación de Formularios/formulario_orden-trabajo';
+import SignaturePad from "signature_pad";
+import { mostrarAlertas, quitarAlertas, scrollTop } from "../helpers";
+import { validarDatosOTVM } from "../Validación de Formularios/formulario_orden-trabajo";
 import Swal from "sweetalert2";
-import validator from 'validator';
+import validator from "validator";
+import "choices.js/public/assets/styles/choices.min.css";
+import Choices from "choices.js";
+
 (function () {
-    const formulario = document.getElementById('formularioP1');
-    const formulario2 = document.getElementById('formularioP2');
-    const formulario3 = document.getElementById('formularioP3');
-    const buttons = document.querySelectorAll('.create-ot');
-    let btnTarget = '', planta_id = '', area_id = '', elemento_id = '', equipo_id = '';
+    const formulario = document.getElementById("formularioP1");
+    const formulario2 = document.getElementById("formularioP2");
+    const formulario3 = document.getElementById("formularioP3");
+    const buttons = document.querySelectorAll(".create-ot");
+    let btnTarget = "",
+        planta_id = "",
+        area_id = "",
+        elemento_id = "",
+        equipo_id = "";
 
     if (formulario || formulario2 || formulario3) {
-        buttons.forEach(button => button.addEventListener('click', async function (e) {
-            if (await consultarOT(e.target.dataset.planta, e.target.dataset.area, e.target.dataset.elemento, 1)) {
-                [planta_id, area_id, elemento_id, equipo_id, btnTarget] = [e.target.dataset.planta, e.target.dataset.area, e.target.dataset.elemento, e.target.dataset.elemento, e.target];
-                ModalOT();
-            }
-        }));
+        buttons.forEach((button) =>
+            button.addEventListener("click", async function (e) {
+                if (
+                    await consultarOT(
+                        e.target.dataset.planta,
+                        e.target.dataset.area,
+                        e.target.dataset.elemento,
+                        1
+                    )
+                ) {
+                    [planta_id, area_id, elemento_id, equipo_id, btnTarget] = [
+                        e.target.dataset.planta,
+                        e.target.dataset.area,
+                        e.target.dataset.elemento,
+                        e.target.dataset.elemento,
+                        e.target,
+                    ];
+                    ModalOT();
+                }
+            })
+        );
     }
 
     function ModalOT() {
-        const modal = document.createElement('div');
+        const modal = document.createElement("div");
         modal.innerHTML = `
         <div id="myModal" class="fixed inset-0 bg-gray-800 bg-opacity-75 flex items-center justify-center z-50">
             <div class="bg-white rounded-lg shadow-xl transform transition-all w-1/2 h-4/5 overflow-y-auto">
@@ -56,14 +78,23 @@ import validator from 'validator';
                                             </div>
                                             <div class="mb-5 flex gap-2 items-center">
                                                 <label for="fecha_propuesta" class="inline-block uppercase text-gray-500 font-bold">Fecha propuesta de entrega:</label>
-                                                <input type="date" name="fecha_propuesta" id="fecha_propuesta" min="${new Date().toISOString().split('T')[0]}">                              
+                                                <input type="date" name="fecha_propuesta" id="fecha_propuesta" min="${
+                                                    new Date()
+                                                        .toISOString()
+                                                        .split("T")[0]
+                                                }">                              
                                             </div>
                                         </fieldset>
                                         <fieldset class="p-5 mb-10 shadow-2xl">
                                             <legend class="text-xl font-bold uppercase">Datos del jefe de área</legend>
                                             <div class="mt-5">
-                                                <label for="nombre_jefearea" class="mb-2 block uppercase text-gray-500 font-bold">Nombre del jefe de Área:</label>
-                                                <input autocomplete="off" type="text" id="nombre_jefearea" name="nombre_jefearea" placeholder="Nombre del jefe de área" class="border p-3 w-full rounded-lg">
+                                                <label for="supervisor_id" class="mb-2 block uppercase text-gray-500 font-bold">Nombre del Supervisor
+                                                    de
+                                                    Área:</label>
+                                                <select name="supervisor_id" id="supervisor_id" class="w-full p-4 rounded select">
+                                                    <option value="" class="opcion-defaul" selected disabled>---SELECCIONE UNA OPCIÓN---</option>
+                                                    
+                                                </select>
                                             </div>
                                             <div class="flex justify-center items-center flex-col">
                                                 <canvas id="signature-pad-2" width="400" height="200" class="bg-gray-50 mt-10 rounded-xl border border-black"></canvas>
@@ -102,137 +133,210 @@ import validator from 'validator';
         inicializarFirma();
         modalActions(modal);
         guardarDatos(modal);
+        fetchSupervisoresArea();
     }
 
     function guardarDatos(modal) {
-        const formulario = document.getElementById('formulario4'); 
-        formulario.addEventListener('submit', async function (e) {
+        const formulario = document.getElementById("formulario4");
+        formulario.addEventListener("submit", async function (e) {
             e.preventDefault();
 
             const alertas = validarDatosOTVM();
             if (alertas.length > 0) {
-                mostrarAlertas(alertas, formulario,['text-md']);
-                    modal.querySelector('.bg-white').scrollTo({
-                        top: 0,
-                        behavior: 'smooth'
-                    });
+                mostrarAlertas(alertas, formulario, ["text-md"]);
+                modal.querySelector(".bg-white").scrollTo({
+                    top: 0,
+                    behavior: "smooth",
+                });
                 return;
             }
             if (await guardarFirma()) {
                 try {
-                    await save(); 
+                    await save();
                     document.body.removeChild(modal);
                 } catch (error) {
-                    console.error('Error al guardar la Orden de Trabajo:', error);
-                    Swal.fire('Error', 'Hubo un problema al guardar la Orden de Trabajo', 'error');
+                    console.error(
+                        "Error al guardar la Orden de Trabajo:",
+                        error
+                    );
+                    Swal.fire(
+                        "Error",
+                        "Hubo un problema al guardar la Orden de Trabajo",
+                        "error"
+                    );
                 }
             }
         });
     }
 
     function inicializarFirma() {
-        const firma1 = new SignaturePad(document.getElementById('signature-pad'));
-        const firma2 = new SignaturePad(document.getElementById('signature-pad-2'));
-        document.getElementById('clear-button').addEventListener('click', () => firma1.clear());
-        document.getElementById('clear-button-2').addEventListener('click', () => firma2.clear());
+        const firma1 = new SignaturePad(
+            document.getElementById("signature-pad")
+        );
+        const firma2 = new SignaturePad(
+            document.getElementById("signature-pad-2")
+        );
+        document
+            .getElementById("clear-button")
+            .addEventListener("click", () => firma1.clear());
+        document
+            .getElementById("clear-button-2")
+            .addEventListener("click", () => firma2.clear());
     }
 
     function modalActions(modal) {
-        document.getElementById('closeModalBtn').addEventListener('click', () => document.body.removeChild(modal));
-        const problema_detectado = document.getElementById('problema_detectado');
-        const nombre_jefearea = document.getElementById('nombre_jefearea');
+        document
+            .getElementById("closeModalBtn")
+            .addEventListener("click", () => document.body.removeChild(modal));
+        const problema_detectado =
+            document.getElementById("problema_detectado");
 
-        problema_detectado.addEventListener('input',function(e){
-            const contenedor =  problema_detectado.parentElement;
-            if(!(validator.isLength(problema_detectado.value,{max:750}))){
-               mostrarAlertas(['El problema detectado no pueden exceder los 750 caracteres'],contenedor,['text-sm'])
-            }else{
+        problema_detectado.addEventListener("input", function (e) {
+            const contenedor = problema_detectado.parentElement;
+            if (!validator.isLength(problema_detectado.value, { max: 750 })) {
+                mostrarAlertas(
+                    [
+                        "El problema detectado no pueden exceder los 750 caracteres",
+                    ],
+                    contenedor,
+                    ["text-sm"]
+                );
+            } else {
                 quitarAlertas(contenedor);
             }
-        })
-
-        nombre_jefearea.addEventListener('input',function(e){
-            const contenedor =  nombre_jefearea.parentElement;
-            if(!(validator.isLength(nombre_jefearea.value,{max:35}))){
-               mostrarAlertas(['El nombre del jefe de área no puede exceder los 35 caracteres'],contenedor,['text-sm'])
-            }else{
-                quitarAlertas(contenedor);
-            }
-        })
+        });
     }
 
     async function guardarFirma() {
-        const formulario = document.getElementById('formulario4'); 
-        const firma1Canvas = document.getElementById('signature-pad');
-        const firma2Canvas = document.getElementById('signature-pad-2');
+        const formulario = document.getElementById("formulario4");
+        const firma1Canvas = document.getElementById("signature-pad");
+        const firma2Canvas = document.getElementById("signature-pad-2");
         const [firma1File, firma2File] = await Promise.all([
-            new Promise(resolve => firma1Canvas.toBlob(resolve, 'image/png')),
-            new Promise(resolve => firma2Canvas.toBlob(resolve, 'image/png'))
+            new Promise((resolve) => firma1Canvas.toBlob(resolve, "image/png")),
+            new Promise((resolve) => firma2Canvas.toBlob(resolve, "image/png")),
         ]);
         const datos = new FormData();
-        datos.append('firma1', firma1File, 'firma1.png');
-        datos.append('firma2', firma2File, 'firma2.png');
+        datos.append("firma1", firma1File, "firma1.png");
+        datos.append("firma2", firma2File, "firma2.png");
 
-        const token = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
+        const token = document
+            .querySelector('meta[name="csrf-token"]')
+            .getAttribute("content");
         const url = "/firmas";
         try {
-            const respuesta = await fetch(url, { method: 'POST', headers: { 'X-CSRF-TOKEN': token }, body: datos });
+            const respuesta = await fetch(url, {
+                method: "POST",
+                headers: { "X-CSRF-TOKEN": token },
+                body: datos,
+            });
             const resultado = await respuesta.json();
             if (resultado.imagenes.firma1 || resultado.imagenes.firma2) {
-                document.getElementById('firma1').value = resultado.imagenes.firma1;
-                document.getElementById('firma2').value = resultado.imagenes.firma2;
+                document.getElementById("firma1").value =
+                    resultado.imagenes.firma1;
+                document.getElementById("firma2").value =
+                    resultado.imagenes.firma2;
                 return true;
             } else {
-                mostrarAlertas(['Hubo un error al guardar las firmas'],formulario);
+                mostrarAlertas(
+                    ["Hubo un error al guardar las firmas"],
+                    formulario
+                );
                 return false;
             }
         } catch (error) {
-            mostrarAlertas(['Error de conexión'],formulario);
+            mostrarAlertas(["Error de conexión"], formulario);
             return false;
         }
     }
 
     async function save() {
         const datos = {
-            retiro_equipo: document.getElementById('retiro_equipo').value,
-            problema_detectado: document.getElementById('problema_detectado').value,
-            urgencia: document.getElementById('urgencia').value,
-            fecha_propuesta: document.getElementById('fecha_propuesta').value,
-            nombre_jefearea: document.getElementById('nombre_jefearea').value,
-            firma_solicitante: document.getElementById('firma1').value,
-            firma_jefearea: document.getElementById('firma2').value,
-            planta_id, // Asegúrate de que estos valores estén definidos en tu código
-            area_id,   // Asegúrate de que estos valores estén definidos en tu código
-            elemento_id, // Asegúrate de que estos valores estén definidos en tu código
-            equipo_id,   // Asegúrate de que estos valores estén definidos en tu código
-            _token: document.querySelector('meta[name="csrf-token"]').getAttribute('content')
+            retiro_equipo: document.getElementById("retiro_equipo").value,
+            problema_detectado:
+                document.getElementById("problema_detectado").value,
+            urgencia: document.getElementById("urgencia").value,
+            fecha_propuesta: document.getElementById("fecha_propuesta").value,
+            supervisor_id: document.getElementById("supervisor_id").value,
+            firma_solicitante: document.getElementById("firma1").value,
+            firma_supervisor: document.getElementById("firma2").value,
+            planta_id,
+            area_id,
+            elemento_id,
+            equipo_id,
+            _token: document
+                .querySelector('meta[name="csrf-token"]')
+                .getAttribute("content"),
         };
-    
+
         const url = "/administracion/ordenes-trabajos/store";
         const response = await fetch(url, {
-            method: 'POST',
+            method: "POST",
             headers: {
-                'Content-Type': 'application/json',
-                'X-Requested-With': 'XMLHttpRequest',
-                'X-CSRF-TOKEN': datos._token
+                "Content-Type": "application/json",
+                "X-Requested-With": "XMLHttpRequest",
+                "X-CSRF-TOKEN": datos._token,
             },
-            credentials: 'same-origin', // Esto asegurará que las cookies de sesión se envíen con la solicitud
-            body: JSON.stringify(datos)
+            credentials: "same-origin", // Esto asegurará que las cookies de sesión se envíen con la solicitud
+            body: JSON.stringify(datos),
         });
-    
+
         if (response.ok) {
             const respuesta = await response.json();
-            Swal.fire('Guardado', 'La Orden de Trabajo se creó correctamente', 'success').then(() => {
-                btnTarget.querySelector('input[type="hidden"]').value = respuesta.id;
-                btnTarget.classList.add('hidden');
+            Swal.fire(
+                "Guardado",
+                "La Orden de Trabajo se creó correctamente",
+                "success"
+            ).then(() => {
+                btnTarget.querySelector('input[type="hidden"]').value =
+                    respuesta.id;
+                btnTarget.classList.add("hidden");
             });
         } else {
             btnTarget.querySelector('input[type="hidden"]').value = 0;
-            btnTarget.classList.add('hidden');
-            Swal.fire('Error', 'Hubo un problema al guardar la Orden de Trabajo', 'error');
+            btnTarget.classList.add("hidden");
+            Swal.fire(
+                "Error",
+                "Hubo un problema al guardar la Orden de Trabajo",
+                "error"
+            );
         }
     }
-    
+
+    async function fetchSupervisoresArea() {
+        const url = "/api/supervisores/areas";
+        const response = await fetch(url);
+        const data = await response.json();
+        const supervisorSelect = document.getElementById("supervisor_id");
+
+        for (const key in data) {
+            if (data.hasOwnProperty(key)) {
+                const supervisor = data[key];
+                const option = document.createElement("option");
+                option.value = supervisor.id;
+                option.text = supervisor.name + " - " + supervisor.role.name;
+                supervisorSelect.appendChild(option);
+            }
+        }
+
+        filtrosSelect();
+    }
+
+    function filtrosSelect() {
+        const selects = document.querySelectorAll(".select");
+
+        if (selects) {
+            selects.forEach((select) => {
+                const choices = new Choices(select, {
+                    searchEnabled: true,
+                    placeholder: true,
+                    placeholderValue: "---SELECCIONE UNA OPCIÓN---",
+                    removeItemButton: true,
+                    itemSelectText: "",
+                    allowHTML: true,
+                });
+            });
+        }
+    }
 
     async function consultarOT(planta_id, area_id, elemento_id, estado_id) {
         const url = `/administracion/orden-trabajo/${planta_id}/${area_id}/${elemento_id}/${estado_id}`;
@@ -266,7 +370,7 @@ import validator from 'validator';
                 confirmButtonColor: "#3085d6",
                 cancelButtonColor: "#d33",
                 confirmButtonText: "Si, deseo crear otra",
-                cancelButtonText: "No, no deseo crear otra"
+                cancelButtonText: "No, no deseo crear otra",
             });
             return result.isConfirmed;
         } else {

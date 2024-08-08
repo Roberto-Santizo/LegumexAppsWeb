@@ -19,6 +19,7 @@ use App\Http\Controllers\OrdenTrabajoController;
 use App\Http\Controllers\PermissionController;
 use App\Http\Controllers\RendimientoRController;
 use App\Http\Controllers\RoleController;
+use App\Http\Controllers\SupervisoresController;
 
 //Página Principal
 Route::get('/', HomeController::class)->name('home');
@@ -114,20 +115,25 @@ Route::group(['middleware' => ['role:admin']],function(){
     Route::post('/administracion/usuarios/create', [UsuariosController::class, 'store'])->name('usuarios.store');
     Route::get('/administracion/usuarios/edit/{usuario:name}', [UsuariosController::class, 'edit'])->name('usuarios.edit');
     Route::patch('/administracion/usuarios/update/{usuario}', [UsuariosController::class, 'update'])->name('usuarios.update');
-    Route::delete('/administracion/usuarios/destroy/{usuario}', [UsuariosController::class, 'destroy'])->name('usuarios.destroy');
 
     //Roles
-    Route::get('/administracion/roles', [RoleController::class, 'index'])->name('roles');
-    Route::get('/administracion/roles/create', [RoleController::class, 'create'])->name('roles.create');
-    Route::post('/administracion/roles/create', [RoleController::class, 'store'])->name('roles.store');
-    Route::get('/administracion/roles/edit/{role}', [RoleController::class, 'edit'])->name('roles.edit');
-    Route::patch('/administracion/roles/update/{role}', [RoleController::class, 'update'])->name('roles.update');
+    Route::get('/administracion/usuarios/roles', [RoleController::class, 'index'])->name('usuarios.roles');
+    Route::get('/administracion/usuarios/roles/create', [RoleController::class, 'create'])->name('usuarios.roles-create');
+    Route::post('/administracion/usuarios/roles/create', [RoleController::class, 'store'])->name('usuarios.roles-store');
+    Route::get('/administracion/usuarios/roles/edit/{role}', [RoleController::class, 'edit'])->name('usuarios.roles-edit');
+    Route::patch('/administracion/usuarios/roles/update/{role}', [RoleController::class, 'update'])->name('usuarios.roles-update');
 
-    Route::get('/administracion/permisos', [PermissionController::class, 'index'])->name('permissions');
-    Route::get('/administracion/permisos/create', [PermissionController::class, 'create'])->name('permissions.create');
-    Route::post('/administracion/permisos/create', [PermissionController::class, 'store'])->name('permissions.store');
-    Route::get('/administracion/permisos/edit/{permission}', [PermissionController::class, 'edit'])->name('permissions.edit');
-    Route::patch('/administracion/permisos/update/{permission}', [PermissionController::class, 'update'])->name('permissions.update');
+    Route::get('/administracion/usuarios/permisos', [PermissionController::class, 'index'])->name('usuarios.permissions');
+    Route::get('/administracion/usuarios/permisos/create', [PermissionController::class, 'create'])->name('usuarios.permissions-create');
+    Route::post('/administracion/usuarios/permisos/create', [PermissionController::class, 'store'])->name('usuarios.permissions-store');
+    Route::get('/administracion/usuarios/permisos/edit/{permission}', [PermissionController::class, 'edit'])->name('usuarios.permissions-edit');
+    Route::patch('/administracion/usuarios/permisos/update/{permission}', [PermissionController::class, 'update'])->name('usuarios.permissions-update');
+
+    Route::get('/administracion/usuarios/supervisores', [SupervisoresController::class, 'index'])->name('usuarios.supervisores');
+    Route::get('/administracion/usuarios/supervisores/create', [SupervisoresController::class, 'create'])->name('usuarios.supervisores-create');
+    Route::post('/administracion/usuarios/supervisores/create', [SupervisoresController::class, 'store'])->name('usuarios.supervisores-store');
+    Route::get('/administracion/usuarios/supervisores/edit/{supervisor:name}', [SupervisoresController::class, 'edit'])->name('usuarios.supervisores-edit');
+    Route::patch('/administracion/usuarios/supervisores/edit/{supervisor:name}', [SupervisoresController::class, 'update'])->name('usuarios.supervisores-update');
 
 });
 

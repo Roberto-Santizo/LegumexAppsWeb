@@ -18,7 +18,7 @@ Roles
         Volver
     </a>
 
-    <a href="{{ route('roles.create') }}"
+    <a href="{{ route('usuarios.roles-create') }}"
         class="mt-5 bg-orange-500 cursor-pointer hover:bg-orange-700 text-white font-bold py-2 px-4 rounded inline-block ">
         <i class="fa-solid fa-plus"></i>
         Crear Rol
@@ -44,7 +44,7 @@ Roles
                 <td class="px-4 py-2 text-md font-medium whitespace-nowrap">{{ $rol->created_at }}</td>
                 <td class="px-4 py-2 text-md font-medium whitespace-nowrap">{{ $rol->updated_at }}</td>
                 <td class="px-4 py-2 text-md font-medium whitespace-nowrap flex gap-5 justify-center items-center">
-                    <a href="{{ route('roles.edit', $rol) }}">
+                    <a href="{{ route('usuarios.roles-edit', $rol) }}">
                         <i class="fa-solid fa-pen text-xl"></i>
                     </a>
                 </td>

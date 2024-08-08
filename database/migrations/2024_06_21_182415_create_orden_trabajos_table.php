@@ -24,7 +24,7 @@ return new class extends Migration
             $table->string('problema_detectado',750)->nullable();
             $table->foreignId('estado_id')->nullable()->constrained();
             $table->string('nombre_jefearea',35)->nullable();
-            $table->string('firma_jefearea')->nullable();
+            $table->string('firma_supervisor')->nullable();
             $table->string('trabajo_realizado',750)->nullable();
             $table->string('repuestos_utilizados',750)->nullable();
             $table->foreignId('mecanico_id')->nullable()->constrained('users');

@@ -7,12 +7,12 @@
 @section('contenido')
    <x-alertas />
 
-    <a href="{{ route('permissions') }}" class=" bg-orange-500 cursor-pointer hover:bg-orange-700 text-white font-bold py-2 px-4 rounded inline-block mt-5 mb-5 ">
+    <a href="{{ route('usuarios.permissions') }}" class=" bg-orange-500 cursor-pointer hover:bg-orange-700 text-white font-bold py-2 px-4 rounded inline-block mt-5 mb-5 ">
         <i class="fa-solid fa-arrow-left"></i>
         Volver
     </a>
 
-    <form action="{{ route('permissions.store') }}" method="POST">
+    <form action="{{ route('usuarios.permissions-store') }}" method="POST">
         @csrf
         <div class="mb-5">
             <label for="name" class="mb-2 block uppercase text-gray-500 font-bold">Nombre del permiso: </label>

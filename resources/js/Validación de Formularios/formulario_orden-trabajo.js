@@ -4,10 +4,10 @@ import validator from 'validator';
 function validarDatosOTVM(){
     const retiro_equipo = document.getElementById('retiro_equipo').value;
     const problema_detectado = document.getElementById('problema_detectado').value;
-    const nombre_jefearea = document.getElementById('nombre_jefearea').value;
     const firma = document.getElementById('signature-pad');
     const firma2 = document.getElementById('signature-pad-2');
     const fecha_propuesta = document.getElementById('fecha_propuesta').value;
+    const supervisor = document.getElementById('supervisor_id').value;
 
     let alertas = [];
     
@@ -15,12 +15,8 @@ function validarDatosOTVM(){
         alertas.push('Especifique si es necesario retirar el equipo');
     }
 
-    if(nombre_jefearea == ''){
-        alertas.push('El nombre del jefe de área es obligatorio');
-    }
-
-    if(!(validator.isLength(nombre_jefearea,{max:35}))){
-        alertas.push('El nombre del jefe de área no puede exceder los 35 caracteres');
+    if(supervisor == ''){
+        alertas.push('Seleccione un supervisor');
     }
 
     if(problema_detectado == ''){
@@ -46,12 +42,12 @@ function validarDatosOTVM(){
 function validarDatosOT(){
     const retiro_equipo = document.getElementById('retiro_equipo').value;
     const problema_detectado = document.getElementById('problema_detectado').value;
-    const nombre_jefearea = document.getElementById('nombre_jefearea').value;
     const firma = document.getElementById('signature-pad');
     const firma2 = document.getElementById('signature-pad-2');
     const fecha_propuesta = document.getElementById('fecha_propuesta').value;
     const planta_id = document.getElementById('planta_id').value;
     const area_id = document.getElementById('area_id').value;
+    const supervisor = document.getElementById('supervisor_id').value;
 
     let alertas = [];
     
@@ -101,12 +97,8 @@ function validarDatosOT(){
         alertas.push('Especifique si es necesario retirar el equipo');
     }
 
-    if(nombre_jefearea == ''){
-        alertas.push('El nombre del jefe de área es obligatorio');
-    }
-
-    if(!(validator.isLength(nombre_jefearea,{max:35}))){
-        alertas.push('El nombre del jefe de área no puede exceder los 35 caracteres');
+     if(supervisor == ''){
+        alertas.push('Seleccione un supervisor');
     }
 
     if(problema_detectado == ''){
@@ -136,7 +128,7 @@ function validarDatosOT(){
         const hora_inicio = document.getElementById('hora_inicio').value;
         const hora_final = document.getElementById('hora_final').value;
         const fecha_entrega = document.getElementById('fecha_entrega').value;
-        const nombreCalidad = document.getElementById('nombre_calidad').value;
+        const calidad = document.getElementById('c_calidad_id').value;
         const firma = document.getElementById('signature-pad-2');
         const firma2 = document.getElementById('signature-pad-3');
 
@@ -173,12 +165,10 @@ function validarDatosOT(){
             alertasaux.push('Ingrese la fecha en la que se entregó');
         }
 
-        if(nombreCalidad == ''){
-            alertasaux.push('Ingrese el nombre de la persona de control de calidad');
+        if(calidad == ''){
+            alertasaux.push('Seleccione un supervisor de calidad');
         }
-        if(!(validator.isLength(nombreCalidad,{max:35}))){
-            alertasaux.push('El nombre del inspector de calidad no debe exceder los 35 caracteres');
-        }
+        
         return alertasaux;
       
     }
