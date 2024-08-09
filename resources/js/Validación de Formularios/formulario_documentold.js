@@ -71,7 +71,7 @@ function validarDatosStore(){
     } 
 
     if (firmaVacia(firma1) || firmaVacia(firma2) || firmaVacia(firma3)) {
-        alertas.push('Aseguere de haber firmado');
+        alertas.push('Asegurese de haber firmado');
     }
         
 

@@ -32,7 +32,7 @@
                 </div>
 
                 <div>
-                    <canvas id="signature-pad-3" class="border border-black w-full lg:w-96"></canvas>    
+                    <canvas id="signature-pad-3" class="border border-black w-80"></canvas>    
                     <div class="flex flex-col items-center">
                         <h4 class="text-xl font-bold">Jefe de mantenimiento</h4>
                         <div id="clear-button-3" class="inline-block mt-5 bg-orange-600 hover:bg-orange-700 p-3 transition-colors cursor-pointer uppercase font-bold text-white rounded-lg"><span>Limpiar</span></div>

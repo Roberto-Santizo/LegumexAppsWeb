@@ -12,7 +12,7 @@ class APISupervisoresController extends Controller
      */
     public function supervisoresAreas()
     {
-        $supervisores = Supervisor::all()->where('role_id',4);
+        $supervisores = Supervisor::all()->where('role_id',4)->where('status',1);
         foreach ($supervisores as $supervisor) {
             $supervisor->rol = $supervisor->role->name;
         }

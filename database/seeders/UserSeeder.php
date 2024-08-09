@@ -18,7 +18,8 @@ class UserSeeder extends Seeder
             'name' => 'Roberto Santizo',
             'email' => 'soportetecnico.tejar@legumex.net',
             'password' => 'admin',
-            'username' => 'admin'
+            'username' => 'admin',
+            'status' => 1
         ])->assignRole('admin');
         
         $permissions = Permission::all();

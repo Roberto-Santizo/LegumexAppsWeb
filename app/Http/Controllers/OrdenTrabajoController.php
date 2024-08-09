@@ -28,7 +28,7 @@ class OrdenTrabajoController extends Controller
 
     public function create(){
         $plantas = Planta::all();
-        $supervisores = Supervisor::all()->where('role_id',4);
+        $supervisores = Supervisor::all()->where('role_id',4)->where('status',1);
         return view('administracion.documentoOT.create',['plantas' => $plantas, 'supervisores' => $supervisores]);
         
     }

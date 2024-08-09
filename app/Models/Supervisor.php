@@ -12,6 +12,7 @@ class Supervisor extends Model
     protected $fillable = [
         'name',
         'role_id',
+        'status',
     ];
 
     public function role()

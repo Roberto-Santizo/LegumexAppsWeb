@@ -43,7 +43,7 @@ class UsuariosController extends Controller
             'username' => 'required|unique:users|min:3|max:20',
             'email' => 'required|email|max:60',
             'password' => 'required|min:6',
-            'role_id' => 'required'
+            'role_id' => 'required',
         ]);
 
         try {
@@ -52,7 +52,8 @@ class UsuariosController extends Controller
                 'name' => $request->name,
                 'username' => Str::slug($request->username),
                 'email' => $request->email,
-                'password' => $request->password
+                'password' => $request->password,
+                'status' => 1
             ])->assignRole($role->name);
 
             if($request->permisos){
@@ -112,15 +113,17 @@ class UsuariosController extends Controller
     public function destroy(User $usuario)
     {
         try {
+            if($usuario->status == 0){
+                $usuario->status = 1;
+            }else{
+                $usuario->status = 0;
+            }
 
-            $usuario->delete();
-            $usuario->syncRoles([]);
-            $usuario->syncPermissions([]);
-            $usuario->delete();
+            $usuario->save();
 
-            return redirect()->route('usuarios')->with('mensaje','Usuario eliminado correctamente');
+            return redirect()->route('usuarios')->with('success','Usuario modificado correctamente');
         } catch (\Throwable $th) {
-            return back()->with('mensaje','Hubo un error al eliminar la herramienta, intentelo de nuevo más tarde');
+            return back()->with('error','Hubo un error al modificar el usuario, intentelo de nuevo más tarde');
         }
     }
 }

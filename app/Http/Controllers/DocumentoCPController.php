@@ -24,6 +24,8 @@ class DocumentoCPController extends Controller
         if ($request->filled('planta_id')) {
             $query->where('planta_id', $request->input('planta_id'));
         }
+        
+        $query->orderBy('created_at', 'desc');
 
         $documentos = $query->paginate(5)->appends($request->all());
         $plantas = Planta::whereIn('id', [1, 2, 5])->get();

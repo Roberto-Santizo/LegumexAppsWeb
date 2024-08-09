@@ -115,6 +115,7 @@ Route::group(['middleware' => ['role:admin']],function(){
     Route::post('/administracion/usuarios/create', [UsuariosController::class, 'store'])->name('usuarios.store');
     Route::get('/administracion/usuarios/edit/{usuario:name}', [UsuariosController::class, 'edit'])->name('usuarios.edit');
     Route::patch('/administracion/usuarios/update/{usuario}', [UsuariosController::class, 'update'])->name('usuarios.update');
+    Route::delete('/administracion/usuarios/{usuario}', [UsuariosController::class, 'destroy'])->name('usuarios.destroy');
 
     //Roles
     Route::get('/administracion/usuarios/roles', [RoleController::class, 'index'])->name('usuarios.roles');
@@ -134,6 +135,7 @@ Route::group(['middleware' => ['role:admin']],function(){
     Route::post('/administracion/usuarios/supervisores/create', [SupervisoresController::class, 'store'])->name('usuarios.supervisores-store');
     Route::get('/administracion/usuarios/supervisores/edit/{supervisor:name}', [SupervisoresController::class, 'edit'])->name('usuarios.supervisores-edit');
     Route::patch('/administracion/usuarios/supervisores/edit/{supervisor:name}', [SupervisoresController::class, 'update'])->name('usuarios.supervisores-update');
+    Route::delete('/administracion/usuarios/supervisores/{supervisor}', [SupervisoresController::class, 'destroy'])->name('usuarios.supervisores-destroy');
 
 });
 

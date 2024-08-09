@@ -17,7 +17,7 @@ class MecanicoSelector extends Component
     public function mount()
     {
         $this->usuarios = User::whereHas('roles', function($query) {
-            $query->where('name', 'auxmanto'); 
+            $query->where('name', 'auxmanto')->where('status',1); 
         })->get();
         $this->hasMecanic = $this->ot->mecanico_id ? 1 : 0;
     }

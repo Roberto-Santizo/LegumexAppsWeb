@@ -28,13 +28,21 @@ class MicrosoftAuthController extends Controller
             return redirect()->route('logout.microsoft');
         }
 
-        session(['access_token' => $user->token]);
-
+        
         if($usuario->getRoleNames()->first() == 'admin' || $usuario->getRoleNames()->first() == 'adminmanto'){
-            auth()->login($usuario);
-            return redirect()->route('dashboard');
+            if($usuario->status == 1){
+                session(['access_token' => $user->token]);
+                auth()->login($usuario);
+                return redirect()->route('dashboard');
+            }else{
+                return redirect()->route('home')->with('error','El usuario no existe, por favor comuniques con el desarrollador');
+            }
+            
         }else{
-            return redirect()->route('login');
+            if($usuario->status==1){
+                session(['access_token' => $user->token]);
+                return redirect()->route('login');
+            }
         }
         
     }

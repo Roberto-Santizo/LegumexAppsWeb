@@ -42,5 +42,6 @@ import './Alertas/rechazar_orden-trabajo.js'
 import './Alertas/formulario_documentold.js'
 import './Alertas/formulario_checklist-preoperacional.js'
 import './Alertas/formulario_ot.js'
+import './Alertas/estadoSupervisor.js'
 
 

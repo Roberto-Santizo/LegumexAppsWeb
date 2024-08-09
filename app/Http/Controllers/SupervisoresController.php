@@ -17,15 +17,25 @@ class SupervisoresController extends Controller implements HasMiddleware
         }
     
     
-    public function index()
+    public function index(Request $request)
     {
-        $supervisores = Supervisor::all();
+
+        $query = $request->get('query');
+        if($query){
+            $supervisores = Supervisor::query()
+                ->where('name','like', "%$query%")
+                ->paginate(10)
+                ->appends($request->all());
+        }else{
+            $supervisores = Supervisor::paginate(10)->appends($request->all());
+        }
+
         return view('administracion.usuarios.supervisores.index',['supervisores'=>$supervisores]);
     }
 
     public function create()
     {
-        $roles = Role::whereIn('id',[4,5])->get();
+        $roles = Role::all();
         return view('administracion.usuarios.supervisores.create',['roles' => $roles]);
     }
 
@@ -66,6 +76,21 @@ class SupervisoresController extends Controller implements HasMiddleware
             return redirect()->route('usuarios.supervisores')->with('success','El supervisor ha sido modificado correctamente');
         } catch (\Throwable $th) {
             return back()->with('error','Hubo un error al editar el supervisor, intentelo de nuevo más tarde');
+        }
+    }
+
+    public function destroy(Supervisor $supervisor, Request $request){
+        try {
+            if($supervisor->status == 0){
+                $supervisor->status = 1;
+            }else{
+                $supervisor->status = 0;
+            }
+            
+            $supervisor->save();
+            return redirect()->route('usuarios.supervisores')->with('success','El supervisor fue modificado correctamente!');
+        } catch (\Throwable $th) {
+            return back()->with('error','Hubo un error al modificar el supervisor');
         }
     }
     
