@@ -2,47 +2,63 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Finca;
 use App\Models\Lote;
+use App\Models\Finca;
 use App\Models\PlanSemanal;
 use Illuminate\Http\Request;
 use Illuminate\Support\Carbon;
 use App\Models\PlanSemanalFinca;
+use App\Imports\TareasLotesImport;
+use Illuminate\Support\Facades\DB;
+use Maatwebsite\Excel\Facades\Excel;
 
 class PlanSemanalFincasController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
+
     public function index()
     {
-        $planes = PlanSemanalFinca::all();
+        $planes = PlanSemanalFinca::paginate(10);
+        foreach ($planes as $plan) {
+            $plan->tareas_totales = 0;
+            foreach ($plan->tareasTotales as $tarea) {
+                $plan->presupuesto += $tarea->presupuesto;
+                $plan->total_personas += $tarea->personas;
+                $plan->tareas_totales++;
+            }
+        }
+
         return view('agricola.planSemanal.index',['planes' => $planes]);
     }
 
-    /**
-     * Show the form for creating a new resource.
-     */
+
     public function create()
     {
         $fincas = Finca::all();
         return view('agricola.planSemanal.create',['fincas' => $fincas]);
     }
 
-    /**
-     * Store a newly created resource in storage.
-     */
+
     public function store(Request $request)
     {
-        $request->validate([
-            'finca_id' => 'required',
-        ]);
-
-        PlanSemanalFinca::create([
-            'finca_id' => $request->finca_id,
-            'semana' => Carbon::now()->weekOfYear
-        ]);
-
+        try {
+            DB::transaction(function () use ($request) {
+                $request->validate([
+                    'finca_id' => 'required',
+                    'file' => 'required'
+                ]);
+        
+                $planSemanal = PlanSemanalFinca::create([
+                    'finca_id' => $request->finca_id,
+                    'semana' => Carbon::now()->weekOfYear
+                ]);
+        
+                Excel::import(new TareasLotesImport($planSemanal), $request->file('file'));
+        
+            });
+        } catch (\Throwable $th) {
+            return redirect()->back()->with('error','Existe un error al crear el plan semanal');
+        }
+       
         return redirect()->route('planSemanal')->with('success','Plan Semanal Creado Correctamente');
     }
 
@@ -52,24 +68,11 @@ class PlanSemanalFincasController extends Controller
         return view('agricola.planSemanal.show',['lotes' => $lotes,'planSemanal' => $plansemanalfinca]);
     }
 
-    public function tareasLote(Lote $lote)
+    public function tareasLote(Lote $lote, PlanSemanalFinca $plansemanalfinca)
     {
-        return view('agricola.planSemanal.tareasLote',['lote' => $lote]);
+        $tareas = $plansemanalfinca->tareasPorLote($lote->id)->get();
+        return view('agricola.planSemanal.tareasLote',['lote' => $lote, 'plansemanalfinca' => $plansemanalfinca, 'tareas' => $tareas]);
     }
 
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(Request $request, string $id)
-    {
-        //
-    }
 
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy(string $id)
-    {
-        //
-    }
 }

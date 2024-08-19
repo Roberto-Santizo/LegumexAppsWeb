@@ -37,7 +37,9 @@ $clasesCampo = 'px-4 py-2 text-md font-medium whitespace-nowrap';
                 <th scope="col" class="{{ $clasesEncabezados }}">
                     Total de Personas</th>
                 <th scope="col" class="{{ $clasesEncabezados }}">
-                    Tareas Semanales</th>
+                    Total Tareas Semanales</th>
+                <th scope="col" class="{{ $clasesEncabezados }}">
+                    Tareas</th>
             </tr>
         </thead>
         <tbody class="bg-white divide-y divide-gray-200 dark:divide-gray-700 dark:bg-gray-900">
@@ -46,11 +48,12 @@ $clasesCampo = 'px-4 py-2 text-md font-medium whitespace-nowrap';
                 <td class="{{ $clasesCampo }}">{{ $plan->finca->finca }}</td>
                 <td class="{{ $clasesCampo }}">{{ $plan->semana }}</td>
                 <td class="{{ $clasesCampo }}">{{ $plan->created_at->format('d-m-Y') }}</td>
-                <td class="{{ $clasesCampo }}"></td>
-                <td class="{{ $clasesCampo }}"></td>
+                <td class="{{ $clasesCampo }}">Q {{ $plan->presupuesto }}</td>
+                <td class="{{ $clasesCampo }}">{{ $plan->total_personas }}</td>
+                <td class="{{ $clasesCampo }}">{{ $plan->tareas_totales }}</td>
                 <td class="{{ $clasesCampo }}">
                     <a class="{{ $clasesEnlaces }}" href="{{ route('planSemanal.show',$plan) }}">
-                        Tareas Semanales
+                        Ver Tareas Semanales
                     </a>
                 </td>
 

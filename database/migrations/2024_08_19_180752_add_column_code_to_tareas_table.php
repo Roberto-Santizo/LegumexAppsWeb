@@ -11,11 +11,8 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('plan_semanal_lotes', function (Blueprint $table) {
-            $table->id();
-            $table->foreignId('plan_semanal_finca_id')->references('id')->on('plan_semanal_fincas');
-            $table->foreignId('lote_id')->references('id')->on('lotes');
-            $table->timestamps();
+        Schema::table('tareas', function (Blueprint $table) {
+            $table->string('code');
         });
     }
 
@@ -24,6 +21,8 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('plan_semanal_lotes');
+        Schema::table('tareas', function (Blueprint $table) {
+            $table->dropColumn('code');
+        });
     }
 };

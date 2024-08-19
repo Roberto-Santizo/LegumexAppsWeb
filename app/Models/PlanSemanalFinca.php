@@ -11,12 +11,23 @@ class PlanSemanalFinca extends Model
 
     protected $fillable = [
         'finca_id',
-        'semana'
+        'semana',
+        'code',
     ];
 
     public function finca()
     {
         return $this->hasOne(Finca::class, 'id','finca_id');
+    }
+
+    public function tareasPorLote($lote_id)
+    {
+        return $this->hasMany(TareasLote::class, 'plan_semanal_finca_id','id')->where('lote_id',$lote_id);
+    }
+
+    public function tareasTotales()
+    {
+        return $this->hasMany(TareasLote::class, 'plan_semanal_finca_id','id');
     }
 
 }
