@@ -65,7 +65,7 @@ Supervisores
                 <td class="px-4 py-2 text-md font-medium whitespace-nowrap">{{ $supervisor->name }}</td>
                 <td class="px-4 py-2 text-md font-medium whitespace-nowrap">{{ $supervisor->role->name }}</td>
                 <td class="px-4 py-2 text-md font-medium whitespace-nowrap">
-                    <form action="{{ route('usuarios.supervisores-destroy',$supervisor) }}" class="status_usuario"
+                    <form action="{{ route('usuarios.supervisores-destroy',$supervisor) }}" class="estado"
                         method="POST">
                         @csrf
                         @method('DELETE')

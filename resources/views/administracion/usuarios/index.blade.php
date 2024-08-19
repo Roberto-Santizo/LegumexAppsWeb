@@ -84,11 +84,11 @@ Usuarios
                 <td class="px-4 py-2 text-md font-medium whitespace-nowrap">{{ $usuario->getRoleNames()->first(); }}
                 </td>
                 <td class="px-4 py-2 text-md font-medium whitespace-nowrap">
-                    <form action="{{ route('usuarios.destroy',$usuario) }}" class="status_usuario"
+                    <form action="{{ route('usuarios.destroy',$usuario) }}" class="estado"
                         method="POST">
                         @csrf
                         @method('DELETE')
-                        <input data-status="{{ $usuario->status }}" id="usuario_destroy-button" type="submit"
+                        <input data-status="{{ $usuario->status }}" id="destroy-button" type="submit"
                             value="{{ ($usuario->status == 1) ? 'ACTIVO' : 'INACTIVO' }}"
                             class="cursor-pointer text-white font-bold rounded p-2 {{ ($usuario->status == 1) ? 'bg-green-500 hover:bg-green-600' : 'bg-red-500 hover:bg-red-600' }}">
                     </form>

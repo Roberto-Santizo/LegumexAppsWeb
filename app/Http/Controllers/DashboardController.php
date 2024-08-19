@@ -8,6 +8,16 @@ class DashboardController extends Controller
 {
     public function index(){
         
-        return view('administracion.dashboard.index');
+        return view('dashboards.index');
+    }
+
+    public function mantenimiento(){
+        
+        return view('dashboards.mantenimiento');
+    }
+
+    public function agricola(){
+        
+        return view('dashboards.agricola');
     }
 }

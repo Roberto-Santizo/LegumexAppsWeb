@@ -92,12 +92,5 @@
             <span class="text-md md:text-xs uppercase font-bold">Herramientas</span>
         </a>
         @endrole
-
-        {{-- <a href="{{ route('administrar') }}"
-            class="{{  Route::is('administrar*') ? 'bg-orange-500' : '' }} rounded-lg text-center flex flex-row  gap-5 md:gap-0  md:flex-col items-center md:justify-center p-3 w-full md:w-2/3 hover:bg-blue-400">
-            <i class="fa-solid fa-store"></i>
-            <span class="text-md md:text-xs uppercase font-bold">Inventario</span>
-        </a> --}}
     </nav>
-
 </div>

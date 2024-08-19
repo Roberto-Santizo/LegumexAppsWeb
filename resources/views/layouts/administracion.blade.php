@@ -73,6 +73,10 @@
             @hasanyrole('auxmanto|adminmanto')
                 <x-mantenimiento-navegacion/>
             @endhasanyrole
+
+            @hasanyrole('adminagricola|auxalameda')
+                <x-agricola-navegacion/>
+            @endhasanyrole
             
         </aside>
 

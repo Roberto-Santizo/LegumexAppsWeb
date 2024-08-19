@@ -39,19 +39,19 @@ class DocumentoLDController extends Controller
         $documentosld = $query->paginate(10)->appends($request->all());
         $plantas = Planta::all();
         $areas = Area::all();
-        return view('administracion.documentoLD.index',['documentos' => $documentosld, 'plantas' => $plantas, 'areas' => $areas]);
+        return view('mantenimiento.documentoLD.index',['documentos' => $documentosld, 'plantas' => $plantas, 'areas' => $areas]);
     }
 
     
     public function edit(Documentold $documentold){
         $documentold->fecha = Carbon::parse($documentold->fecha)->format('d/m/Y');
-        return view('administracion.documentoLD.edit',['documento' => $documentold]);
+        return view('mantenimiento.documentoLD.edit',['documento' => $documentold]);
     }
 
     public function create(){ 
         $plantas = Planta::all();
         $herramientas = Herramienta::all();
-        return view('administracion.documentoLD.create',['plantas' => $plantas, 'herramientas' => $herramientas]);
+        return view('mantenimiento.documentoLD.create',['plantas' => $plantas, 'herramientas' => $herramientas]);
     }
 
     public function document(Documentold $documentold){
@@ -60,7 +60,7 @@ class DocumentoLDController extends Controller
         }
 
 
-        return view('administracion.documentoLD.document',['documentold' => $documentold, 'titulo' => 'Documento Lavado y Desinfección']);
+        return view('mantenimiento.documentoLD.document',['documentold' => $documentold, 'titulo' => 'Documento Lavado y Desinfección']);
     }
 
     public function store(Request $request) {
