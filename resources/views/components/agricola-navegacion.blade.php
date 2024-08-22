@@ -89,6 +89,12 @@
                 <span class="{{ $clasesTextoEnlace }}">Control de Plantación</span>
             </a>
 
+            <a href="{{ route('usuariosFincas') }}"
+                class="{{  Route::is('usuariosFincas*') ? 'bg-orange-500' : '' }} {{ $clasesEnlaceSidebar }}">
+                <i class="fa-solid fa-users"></i>
+                <span class="{{ $clasesTextoEnlace }}">Ingresos Personal</span>
+            </a>
+
         </nav>
     </div>
 </div>

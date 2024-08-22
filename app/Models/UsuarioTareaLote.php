@@ -5,13 +5,12 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class Tarea extends Model
+class UsuarioTareaLote extends Model
 {
     use HasFactory;
 
     protected $fillable = [
-        'tarea',
-        'descripcion',
-        'code',
+        'usuario_id',
+        'tarealote_id',
     ];
 }

@@ -5,10 +5,8 @@ Editar Lote - {{ $lote->nombre }}
 @endsection
 
 @section('contenido')
-@if(session('success'))
-<p class="bg-green-500 uppercase text-xl text-white my-2 rounded-lg p-2 text-center font-bold">{{ session('success') }}
-</p>
-@endif
+
+<x-alertas />
 
 @php
     $clasesAlertas = 'bg-red-500 text-white my-2 rounded-lg text-sm p-2 text-center';

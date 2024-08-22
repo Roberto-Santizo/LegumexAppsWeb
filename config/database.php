@@ -94,19 +94,21 @@ return [
             'sslmode' => 'prefer',
         ],
 
-        'sqlsrv' => [
+        'sqlsrv_public' => [
             'driver' => 'sqlsrv',
-            'url' => env('DB_URL'),
-            'host' => env('DB_HOST', 'localhost'),
-            'port' => env('DB_PORT', '1433'),
-            'database' => env('DB_DATABASE', 'laravel'),
-            'username' => env('DB_USERNAME', 'root'),
-            'password' => env('DB_PASSWORD', ''),
-            'charset' => env('DB_CHARSET', 'utf8'),
+            'url' => env('DB_URL_FINCA'),
+            'host' => env('DB_HOST_FINCA', '190.111.13.6'),
+            'port' => env('DB_PORT_FINCA', '1433'),
+            'database' => env('DB_DATABASE_FINCA', 'zkbiotime'),
+            'username' => env('DB_USERNAME_FINCA', 'sa'),
+            'password' => env('DB_PASSWORD_FINCA', 'TIC.2021$$'),
+            'charset' =>  'utf8',
             'prefix' => '',
             'prefix_indexes' => true,
-            // 'encrypt' => env('DB_ENCRYPT', 'yes'),
-            // 'trust_server_certificate' => env('DB_TRUST_SERVER_CERTIFICATE', 'false'),
+            'trust_server_certificate' => true, 
+            'options'   => [
+                'TrustServerCertificate' => true,
+    ],
         ],
 
     ],

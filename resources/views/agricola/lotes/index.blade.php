@@ -5,10 +5,8 @@ Lotes por Finca
 @endsection
 
 @section('contenido')
-@if(session('success'))
-<p class="bg-green-500 uppercase text-xl text-white my-2 rounded-lg p-2 text-center font-bold">{{ session('success') }}
-</p>
-@endif
+
+<x-alertas />
 
 @php
     $clasesCampo = 'px-4 py-2 text-md font-medium whitespace-nowrap';    

@@ -17,6 +17,8 @@ class TareasLote extends Model
         'presupuesto',
         'horas',
         'tarifa',
+        'estado',
+        'fecha_ejecucion'
     ];
 
     public function lote()

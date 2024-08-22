@@ -9,6 +9,11 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Carbon;
 use App\Models\PlanSemanalFinca;
 use App\Imports\TareasLotesImport;
+use App\Models\EmpleadoFinca;
+use App\Models\EmpleadoIngresado;
+use App\Models\Tarea;
+use App\Models\TareasLote;
+use App\Models\User;
 use Illuminate\Support\Facades\DB;
 use Maatwebsite\Excel\Facades\Excel;
 
@@ -74,5 +79,10 @@ class PlanSemanalFincasController extends Controller
         return view('agricola.planSemanal.tareasLote',['lote' => $lote, 'plansemanalfinca' => $plansemanalfinca, 'tareas' => $tareas]);
     }
 
+    public function AsignarEmpleados(Lote $lote, PlanSemanalFinca $plansemanalfinca,Tarea $tarea, TareasLote $tarealote)
+    {
+        $ingresos = EmpleadoIngresado::whereDate('punch_time',Carbon::today())->where('terminal_id',7)->get();
+        return view('agricola.planSemanal.asignar',['lote' => $lote, 'plansemanalfinca' => $plansemanalfinca, 'tarea' => $tarea, 'ingresos' => $ingresos, 'tarealote' => $tarealote]);
+    }
 
 }

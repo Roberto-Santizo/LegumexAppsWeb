@@ -5,16 +5,15 @@ Control de Plantación
 @endsection
 
 @section('contenido')
-@if(session('success'))
-<p class="bg-green-500 uppercase text-xl text-white my-2 rounded-lg p-2 text-center font-bold">{{ session('success') }}
-</p>
-@endif
+
+<x-alertas/>
+
 @php
-$clasesEnlaces = 'mt-5 bg-orange-500 cursor-pointer hover:bg-orange-700 text-white font-bold py-2 px-4 rounded
-inline-block';
-$clasesEncabezados = 'p-3 text-sm font-bold uppercase rtl:text-right text-gray-500 dark:text-gray-400';
-$clasesRegistros = 'px-4 py-2 text-md font-medium whitespace-nowrap';
-$clasesIconos = 'text-xl hover:text-gray-400';
+    $clasesEnlaces = 'mt-5 bg-orange-500 cursor-pointer hover:bg-orange-700 text-white font-bold py-2 px-4 rounded
+    inline-block';
+    $clasesEncabezados = 'p-3 text-sm font-bold uppercase rtl:text-right text-gray-500 dark:text-gray-400';
+    $clasesRegistros = 'px-4 py-2 text-md font-medium whitespace-nowrap';
+    $clasesIconos = 'text-xl hover:text-gray-400';
 @endphp
 
 <a href="{{ route('cdps.create') }}"

@@ -22,6 +22,7 @@ use App\Http\Controllers\OrdenTrabajoController;
 use App\Http\Controllers\RendimientoRController;
 use App\Http\Controllers\SupervisoresController;
 use App\Http\Controllers\MicrosoftAuthController;
+use App\Http\Controllers\UsuariosFincaController;
 use App\Http\Controllers\ControlPlantacionController;
 use App\Http\Controllers\PlanSemanalFincasController;
 
@@ -157,7 +158,7 @@ Route::group(['middleware' => ['auth', 'role:admin|adminalameda|auxalameda'], 'p
     Route::get('/cultivos/edit/{cultivo:cultivo}', [CultivoController::class, 'edit'])->name('cultivos.edit');
     Route::post('/cultivos/create', [CultivoController::class, 'store'])->name('cultivos.store');
     Route::patch('/cultivos/update/{cultivo}', [CultivoController::class, 'update'])->name('cultivos.update');
-
+    
     //Tareas
     Route::get('/tareas', [TareasController::class, 'index'])->name('tareas');
     Route::get('/tareas/create', [TareasController::class, 'create'])->name('tareas.create');
@@ -166,12 +167,12 @@ Route::group(['middleware' => ['auth', 'role:admin|adminalameda|auxalameda'], 'p
     Route::get('/tareas/historial', [TareasController::class, 'historial'])->name('tareas.historial');
     Route::post('/tareas/create', [TareasController::class, 'store'])->name('tareas.store');
     Route::patch('/tareas/update/{tarea}', [TareasController::class, 'update'])->name('tareas.update');
-
+    
     //CDP's
     Route::get('/cdps', [ControlPlantacionController::class, 'index'])->name('cdps');
     Route::get('/cdps/create', [ControlPlantacionController::class, 'create'])->name('cdps.create');
     Route::post('/cdps/create', [ControlPlantacionController::class, 'store'])->name('cdps.store');
-
+    
     //Lotes
     Route::get('/lotes', [LoteController::class, 'index'])->name('lotes');
     Route::get('/lotes/create', [LoteController::class, 'create'])->name('lotes.create');
@@ -180,13 +181,20 @@ Route::group(['middleware' => ['auth', 'role:admin|adminalameda|auxalameda'], 'p
     Route::post('/lotes/create', [LoteController::class, 'store'])->name('lotes.store');
     Route::patch('/lotes/update/{lote}', [LoteController::class, 'update'])->name('lotes.update');
     Route::delete('/{lote}', [LoteController::class, 'destroy'])->name('lotes.destroy');
-
+    
     //Tareas Fincas
     Route::get('/finca/plan-semanal', [PlanSemanalFincasController::class, 'index'])->name('planSemanal');
     Route::get('/finca/plan-semanal/create', [PlanSemanalFincasController::class, 'create'])->name('planSemanal.create');
     Route::get('/finca/plan-semanal/plan-{plansemanalfinca}/lotes', [PlanSemanalFincasController::class, 'show'])->name('planSemanal.show');
     Route::get('/finca/plan-semanal/lotes/{lote}/{plansemanalfinca}/tareas', [PlanSemanalFincasController::class, 'tareasLote'])->name('planSemanal.tareasLote');
+    Route::get('/finca/plan-semanal/lotes/{lote:nombre}/{plansemanalfinca}/{tarea}/{tarealote}/asignacion', [PlanSemanalFincasController::class, 'AsignarEmpleados'])->name('planSemanal.Asignar');
+  
     Route::post('/finca/plan-semanal/create', [PlanSemanalFincasController::class, 'store'])->name('planSemanal.store');
+
+    //Usuarios Fincas
+    Route::get('/finca/ingresos', [UsuariosFincaController::class, 'index'])->name('usuariosFincas');
+    
+
 });
 
 

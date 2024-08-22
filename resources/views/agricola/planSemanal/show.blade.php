@@ -5,10 +5,8 @@ Plan Semanal {{ $planSemanal->finca->finca }} Semana - {{ $planSemanal->semana }
 @endsection
 
 @section('contenido')
-@if(session('success'))
-<p class="bg-green-500 uppercase text-xl text-white my-2 rounded-lg p-2 text-center font-bold">{{ session('success') }}
-</p>
-@endif
+
+<x-alertas />
 
 @php
     $clasesEncabezados = 'p-3 text-sm font-bold uppercase text-left rtl:text-right text-gray-500 dark:text-gray-400';
