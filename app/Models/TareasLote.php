@@ -18,7 +18,9 @@ class TareasLote extends Model
         'horas',
         'tarifa',
         'estado',
-        'fecha_ejecucion'
+        'fecha_ejecucion',
+        'cupos',
+        'horas_persona'
     ];
 
     public function lote()

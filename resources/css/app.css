@@ -46,5 +46,13 @@
     @apply transition-transform duration-300 ease-in;
     transform: translateX(-100%);
   }
+
+  .selected {
+    @apply bg-sky-600
+  }
+
+  .not-selected{
+    @apply bg-sky-500 hover:bg-sky-600  ;
+  }
   
 }

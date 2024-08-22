@@ -23,12 +23,13 @@ Asignación de Empleados {{ $tarea->tarea }}, Semana {{ $plansemanalfinca->seman
 
         <div class="flex gap-2">
             <p class="text-xl font-bold">Cupos Disponibles: </p>
-            <p class="text-xl font-bold" id="cupos" data-cupos="{{ $tarealote->personas }}">{{ $tarealote->personas }}
+            <p class="text-xl font-bold" id="cupos" data-cupos="{{ $tarealote->personas }}">{{ $tarealote->cupos }}
             </p>
 
         </div>
 
         <form action="" class="mt-10 w-2/3">
+            @csrf
             <div class="mb-5">
                 <label for="fecha_ejecucion" class="{{ $clasesLabel }}">Fecha de realización de la tarea: </label>
                 <input type="date" id="fecha_ejecucion" name="fecha_ejecucion"
@@ -55,13 +56,21 @@ Asignación de Empleados {{ $tarea->tarea }}, Semana {{ $plansemanalfinca->seman
 
         <div class="mt-2 flex flex-col gap-2 overflow-y-auto h-96">
             @foreach ($ingresos as $ingreso)
-            <div class="border p-5 bg-orange-400 hover:bg-orange-600 rounded cursor-pointer empleados">
-                <p class="text-white font-bold">{{ $ingreso->empleado->first_name }}</p>
-            </div>
+                <div class="border p-3  {{ in_array($ingreso->emp_id,$asignados) ? 'selected' : 'not-selected' }} text-white rounded cursor-pointer empleados" data-user="{{ $ingreso->emp_id }}">
+                    <div class="flex flex-row items-center gap-3">
+                        <i class="fa-solid fa-user text-2xl"></i>
+                        <div>
+                            <p class="font-bold">{{ $ingreso->empleado->first_name }}</p>
+                            <p class="font-bold">Número de Tareas Asignadas: {{ $ingreso->total_asignaciones }}</p>
+                            <input type="hidden" value="{{ $ingreso->emp_id }}" id="usuario_id">
+                        </div>
+                    </div>
+                </div>
             @endforeach
         </div>
     </div>
 
+    <input type="hidden" value="{{ $tarealote->id }}" id="tarealote_id">
 
 </div>
 @endsection

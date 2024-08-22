@@ -17,16 +17,17 @@ Plan Semanal Lote - {{ $lote->nombre }} Semana {{ $plansemanalfinca->semana }}
                 <p><span class="uppercase font-bold">Nombre del Lote:</span> {{ $tarea->lote->nombre }}</p>
                 <p><span class="uppercase font-bold">Semana:</span> {{ $plansemanalfinca->semana }}</p>
                 <p><span class="uppercase font-bold">Semana:</span> {{ $tarea->tarea->tarea }}</p>
-                <p><span class="uppercase font-bold">Cupos disponibles:</span> {{ $tarea->personas }}</p>
+                <p><span class="uppercase font-bold">Cupos disponibles:</span> {{ $tarea->cupos }}</p>
                 <p><span class="uppercase font-bold">Presupuesto:</span> Q{{ $tarea->presupuesto }}</p>
                 <p><span class="uppercase font-bold">Horas Necesarias:</span> {{ $tarea->horas }} horas</p>
             </div>
 
             <div>
-                @if ($tarea->personas > 1)
+                @if (!($tarea->fecha_ejecucion))
                     <a href="{{ route('planSemanal.Asignar',[$lote,$plansemanalfinca,$tarea->tarea, $tarea]) }}">
-                        <i title="Asignar Empleados" class="fa-solid fa-square-plus text-3xl cursor-pointer hover:text-gray-500"></i>
-                    </a>    
+                        <i title="Asignar Empleados"
+                            class="fa-solid fa-square-plus text-3xl cursor-pointer hover:text-gray-500"></i>
+                    </a>
                 @endif
             </div>
         </div>

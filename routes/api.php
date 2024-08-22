@@ -16,3 +16,4 @@ Route::get('/supervisores/areas', [APISupervisoresController::class, 'supervisor
 Route::get('/lotes/{finca_id}', [APILotesController::class, 'lotes']);
 
 Route::post('/tarea/usuario/asignar', [APITareasLotesController::class, 'store']);
+Route::post('/tarea/usuario/desasignar', [APITareasLotesController::class, 'destroy']);

@@ -14,6 +14,7 @@ use App\Models\EmpleadoIngresado;
 use App\Models\Tarea;
 use App\Models\TareasLote;
 use App\Models\User;
+use App\Models\UsuarioTareaLote;
 use Illuminate\Support\Facades\DB;
 use Maatwebsite\Excel\Facades\Excel;
 
@@ -82,7 +83,13 @@ class PlanSemanalFincasController extends Controller
     public function AsignarEmpleados(Lote $lote, PlanSemanalFinca $plansemanalfinca,Tarea $tarea, TareasLote $tarealote)
     {
         $ingresos = EmpleadoIngresado::whereDate('punch_time',Carbon::today())->where('terminal_id',7)->get();
-        return view('agricola.planSemanal.asignar',['lote' => $lote, 'plansemanalfinca' => $plansemanalfinca, 'tarea' => $tarea, 'ingresos' => $ingresos, 'tarealote' => $tarealote]);
+        $asignados = UsuarioTareaLote::where('tarealote_id',$tarealote->id)->pluck('usuario_id')->toArray();
+
+        foreach ($ingresos as $ingreso) {
+            $ingreso->total_asignaciones = UsuarioTareaLote::where('usuario_id',$ingreso->emp_id)->count();
+        }
+
+        return view('agricola.planSemanal.asignar',['lote' => $lote, 'plansemanalfinca' => $plansemanalfinca, 'tarea' => $tarea, 'ingresos' => $ingresos, 'tarealote' => $tarealote, 'asignados' => $asignados]);
     }
 
 }
