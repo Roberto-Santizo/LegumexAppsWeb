@@ -9,10 +9,11 @@ Asignación de Empleados {{ $tarea->tarea }}, Semana {{ $plansemanalfinca->seman
 <x-alertas />
 
 @php
-    $clasesAlertas = 'bg-red-500 text-white my-2 rounded-lg text-sm p-2 text-center';
-    $clasesLabel = 'mb-2 block uppercase text-gray-500 font-bold';
-    $clasesInput = 'border p-3 w-full rounded-lg';
-    $clasesEnlaces = 'bg-orange-500 cursor-pointer hover:bg-orange-700 text-white font-bold py-2 px-4 rounded inline-block mt-5 mb-5';
+$clasesAlertas = 'bg-red-500 text-white my-2 rounded-lg text-sm p-2 text-center';
+$clasesLabel = 'mb-2 block uppercase text-gray-500 font-bold';
+$clasesInput = 'border p-3 w-full rounded-lg';
+$clasesEnlaces = 'bg-orange-500 cursor-pointer hover:bg-orange-700 text-white font-bold py-2 px-4 rounded inline-block
+mt-5 mb-5';
 @endphp
 
 <div class="grid grid-cols-3 mt-10">
@@ -23,30 +24,30 @@ Asignación de Empleados {{ $tarea->tarea }}, Semana {{ $plansemanalfinca->seman
 
         <div class="flex gap-2">
             <p class="text-xl font-bold">Cupos Disponibles: </p>
-            <p class="text-xl font-bold" id="cupos" data-cupos="{{ $tarealote->personas }}">{{ $tarealote->cupos }}
-            </p>
-
+            <p class="text-xl font-bold" id="cupos" data-cupos="{{ $tarealote->personas }}">{{ $tarealote->cupos }}</p>
         </div>
 
-        <form action="" class="mt-10 w-2/3">
-            @csrf
-            <div class="mb-5">
-                <label for="fecha_ejecucion" class="{{ $clasesLabel }}">Fecha de realización de la tarea: </label>
-                <input type="date" id="fecha_ejecucion" name="fecha_ejecucion"
-                    class="{{ $clasesInput }} @error('fecha_ejecucion') border-red-500 @enderror" autocomplete="off"
-                    value="{{ old('fecha_ejecucion') }}" min="{{ now()->format('Y-m-d')}}">
+        <div class="mt-5 w-1/2">
+            <h1 class="text-2xl font-bold">Usuarios Asignados a esta tarea: </h1>
 
-                @error('fecha_ejecucion')
-                <p class="{{ $clasesAlertas }}">{{ $message }}</p>
-                @enderror
+            <div id="usuariosAsignadosContainer" class="flex flex-col gap-2 mt-5">
+                @foreach ($ingresos as $ingreso)
+                    @if(in_array($ingreso->emp_id,$asignados))
+                    <div class="border p-3 selected text-white rounded cursor-pointer empleados"
+                        data-user="{{ $ingreso->emp_id }}">
+                        <div class="flex flex-row items-center gap-3">
+                            <i class="fa-solid fa-user text-2xl"></i>
+                            <div>
+                                <p class="font-bold">{{ $ingreso->empleado->first_name }}</p>
+                                <p class="font-bold">Número de Tareas Asignadas: {{ $ingreso->total_asignaciones }}</p>
+                                <input type="hidden" value="{{ $ingreso->emp_id }}" id="usuario_id">
+                            </div>
+                        </div>
+                    </div>
+                    @endif
+                @endforeach
             </div>
-
-            <div class="flex justify-end mt-10">
-                <input type="submit" value="Guardar"
-                    class=" bg-sky-600 hover:bg-sky-700 p-3 transition-colors cursor-pointer uppercase font-bold text-white rounded-lg">
-            </div>
-
-        </form>
+        </div>
     </div>
 
     <div>
@@ -54,9 +55,13 @@ Asignación de Empleados {{ $tarea->tarea }}, Semana {{ $plansemanalfinca->seman
         <input type="text" id="buscarUsuario" placeholder="Buscar usuario..."
             class="border p-2 rounded mt-4 mb-4 w-full">
 
-        <div class="mt-2 flex flex-col gap-2 overflow-y-auto h-96">
+        <div class="mt-2 flex flex-col gap-2 overflow-y-auto h-96" id="disponiblesContainer">
+
+
             @foreach ($ingresos as $ingreso)
-                <div class="border p-3  {{ in_array($ingreso->emp_id,$asignados) ? 'selected' : 'not-selected' }} text-white rounded cursor-pointer empleados" data-user="{{ $ingreso->emp_id }}">
+                @if(!in_array($ingreso->emp_id,$asignados))
+                <div class="border p-3 not-selected text-white rounded cursor-pointer empleados"
+                    data-user="{{ $ingreso->emp_id }}">
                     <div class="flex flex-row items-center gap-3">
                         <i class="fa-solid fa-user text-2xl"></i>
                         <div>
@@ -66,11 +71,17 @@ Asignación de Empleados {{ $tarea->tarea }}, Semana {{ $plansemanalfinca->seman
                         </div>
                     </div>
                 </div>
+                @endif
             @endforeach
         </div>
     </div>
 
-    <input type="hidden" value="{{ $tarealote->id }}" id="tarealote_id">
+    <form method="POST" action="{{ route('asignacionDiaria.store',[$lote,$plansemanalfinca])  }}">
+        @csrf
+        <input type="hidden" value="{{ $tarealote->id }}" id="tarealote_id" name="tarealote_id">
+        <input type="submit" value="Cerrar Asignación Diaria" class="cursor-pointer bg-orange-500 text-white p-2 font-bold rounded hover:bg-orange-600">
+    </form>
+    
 
 </div>
 @endsection

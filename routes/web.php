@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\AsignacionDiariaController;
 use Illuminate\Auth\Events\Login;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\HomeController;
@@ -188,11 +189,20 @@ Route::group(['middleware' => ['auth', 'role:admin|adminalameda|auxalameda'], 'p
     Route::get('/finca/plan-semanal/plan-{plansemanalfinca}/lotes', [PlanSemanalFincasController::class, 'show'])->name('planSemanal.show');
     Route::get('/finca/plan-semanal/lotes/{lote}/{plansemanalfinca}/tareas', [PlanSemanalFincasController::class, 'tareasLote'])->name('planSemanal.tareasLote');
     Route::get('/finca/plan-semanal/lotes/{lote:nombre}/{plansemanalfinca}/{tarea}/{tarealote}/asignacion', [PlanSemanalFincasController::class, 'AsignarEmpleados'])->name('planSemanal.Asignar');
-  
+    
+    Route::get('/finca/plan-semanal/rendimiento/tarea-{tarealote}', [PlanSemanalFincasController::class, 'rendimiento'])->name('planSemanal.rendimiento');
+    
+    Route::get('/finca/plan-semanal/rendimiento/{usuario}/tarea-{tarealote}/create', [PlanSemanalFincasController::class, 'diario'])->name('planSemanal.diario');
+
     Route::post('/finca/plan-semanal/create', [PlanSemanalFincasController::class, 'store'])->name('planSemanal.store');
+
+
+    //Asignacion Diaria
+    Route::post('/finca/plan-semanal/create/{lote}/{plansemanalfinca}', [AsignacionDiariaController::class, 'store'])->name('asignacionDiaria.store');
 
     //Usuarios Fincas
     Route::get('/finca/ingresos', [UsuariosFincaController::class, 'index'])->name('usuariosFincas');
+
     
 
 });

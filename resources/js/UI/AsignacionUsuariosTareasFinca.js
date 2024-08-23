@@ -6,6 +6,8 @@ import Swal from "sweetalert2";
     if (empleados.length > 0) {
         const cupos = document.getElementById('cupos');
         const tarealote_id = document.getElementById('tarealote_id').value;
+        const asignadosContainer = document.getElementById('usuariosAsignadosContainer');
+        const disponiblesContainer = document.getElementById('disponiblesContainer');
 
         empleados.forEach(empleado => {
             empleado.addEventListener('click', async function(e) {
@@ -14,17 +16,26 @@ import Swal from "sweetalert2";
 
                 if (empleado.classList.contains('selected')) {
                     // Desasignar
-                    await handleAssignment('/api/tarea/usuario/desasignar', usuario_id, tarealote_id);
-                    cupos.textContent = cuposNumero + 1;
-                    empleado.classList.toggle('selected');
-                    empleado.classList.toggle('not-selected');
+                    const success  = await handleAssignment('/api/tarea/usuario/desasignar', usuario_id, tarealote_id);
+
+                    if(success){
+                        cupos.textContent = cuposNumero + 1;
+                        empleado.classList.toggle('selected');
+                        empleado.classList.toggle('not-selected');
+                        disponiblesContainer.appendChild(empleado);
+                    }
                 } else {
                     // Verificar cupos y asignar
                     if (cuposNumero > 0) {
-                        await handleAssignment('/api/tarea/usuario/asignar', usuario_id, tarealote_id);
-                        cupos.textContent = cuposNumero - 1;
-                        empleado.classList.toggle('not-selected');
-                        empleado.classList.toggle('selected');
+                        const success = await handleAssignment('/api/tarea/usuario/asignar', usuario_id, tarealote_id);
+
+                        if(success){
+                            cupos.textContent = cuposNumero - 1;
+                            empleado.classList.toggle('not-selected');
+                            empleado.classList.toggle('selected');
+                            asignadosContainer.appendChild(empleado);
+                        }
+                        
                     } else {
                         Swal.fire({
                             title: 'Ha ocurrido un error',
@@ -54,13 +65,16 @@ import Swal from "sweetalert2";
             });
             const resultado = await respuesta.json();
 
-            if (!resultado.status) {
+            if (resultado.status) {
+                return true;
+            }else{
                 Swal.fire({
                     title: 'Ha ocurrido un error',
                     text: resultado.message,
                     icon: 'error',
                     confirmButtonText: 'Ok'
                 });
+                return false;
             }
         } catch (error) {
             Swal.fire({

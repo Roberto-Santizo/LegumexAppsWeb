@@ -32,4 +32,14 @@ class TareasLote extends Model
     {
         return $this->hasOne(Tarea::class, 'id','tarea_id');
     }
+
+    public function asignacion()
+    {
+        return $this->hasOne(AsignacionDiaria::class, 'tarea_lote_id','id');
+    }
+
+    public function usuarios()
+    {
+        return $this->hasMany(UsuarioTareaLote::class, 'tarealote_id','id');
+    }
 }

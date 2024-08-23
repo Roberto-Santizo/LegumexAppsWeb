@@ -23,7 +23,11 @@ Plan Semanal Lote - {{ $lote->nombre }} Semana {{ $plansemanalfinca->semana }}
             </div>
 
             <div>
-                @if (!($tarea->fecha_ejecucion))
+                @if (($tarea->asignacion))
+                    <a href="{{ route('planSemanal.rendimiento',$tarea)}}">
+                        <i title="Registrar Día" class="fa-solid fa-chart-simple text-3xl  cursor-pointer hover:text-gray-500"></i>
+                    </a>
+                @else
                     <a href="{{ route('planSemanal.Asignar',[$lote,$plansemanalfinca,$tarea->tarea, $tarea]) }}">
                         <i title="Asignar Empleados"
                             class="fa-solid fa-square-plus text-3xl cursor-pointer hover:text-gray-500"></i>
