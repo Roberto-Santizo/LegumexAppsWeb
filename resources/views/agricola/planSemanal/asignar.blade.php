@@ -27,6 +27,11 @@ mt-5 mb-5';
             <p class="text-xl font-bold" id="cupos" data-cupos="{{ $tarealote->personas }}">{{ $tarealote->cupos }}</p>
         </div>
 
+        <div class="flex gap-2">
+            <p class="text-xl font-bold">Fecha de la asignación: </p>
+            <p class="text-xl font-bold">{{ \Carbon\Carbon::now()->format('d-m-Y') }}</p>
+        </div>
+
         <div class="mt-5 w-1/2">
             <h1 class="text-2xl font-bold">Usuarios Asignados a esta tarea: </h1>
 

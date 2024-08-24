@@ -3,26 +3,34 @@
 namespace App\Http\Controllers;
 
 use App\Models\Lote;
+use App\Models\User;
 use App\Models\Finca;
-use App\Models\PlanSemanal;
-use Illuminate\Http\Request;
-use Illuminate\Support\Carbon;
-use App\Models\PlanSemanalFinca;
-use App\Imports\TareasLotesImport;
-use App\Models\AsignacionDiaria;
-use App\Models\EmpleadoFinca;
-use App\Models\EmpleadoIngresado;
 use App\Models\Tarea;
 use App\Models\TareasLote;
-use App\Models\User;
+use App\Models\PlanSemanal;
+use Illuminate\Http\Request;
+use App\Models\EmpleadoFinca;
+use Illuminate\Support\Carbon;
+use App\Services\SemanaService;
+use App\Models\AsignacionDiaria;
+use App\Models\PlanSemanalFinca;
 use App\Models\UsuarioTareaLote;
+use App\Models\EmpleadoIngresado;
+use App\Imports\TareasLotesImport;
 use Illuminate\Support\Facades\DB;
-use Maatwebsite\Excel\Facades\Excel;
 
+use Maatwebsite\Excel\Facades\Excel;
 use function PHPUnit\Framework\isEmpty;
 
 class PlanSemanalFincasController extends Controller
 {
+    protected $semanaService;
+
+    // Inyectar el servicio en el constructor
+    public function __construct(SemanaService $semanaService)
+    {
+        $this->semanaService = $semanaService;
+    }
 
     public function index()
     {
@@ -90,7 +98,7 @@ class PlanSemanalFincasController extends Controller
             return redirect()->route('planSemanal.tareasLote', [$lote, $plansemanalfinca])->with('error', "Esta tarea ya fue cerrada por el día de hoy");
         }
         $ingresos = EmpleadoIngresado::whereDate('punch_time', Carbon::today())->where('terminal_id', 7)->get();
-        $asignados = UsuarioTareaLote::where('tarealote_id', $tarealote->id)->pluck('usuario_id')->toArray();
+        $asignados = UsuarioTareaLote::where('tarealote_id', $tarealote->id)->whereDate('created_at',Carbon::today())->pluck('usuario_id')->toArray();
 
         foreach ($ingresos as $ingreso) {
             $ingreso->total_asignaciones = UsuarioTareaLote::where('usuario_id', $ingreso->emp_id)->count();
@@ -122,5 +130,13 @@ class PlanSemanalFincasController extends Controller
             ->first();
 
         return view('agricola.plansemanal.diario',['tarealote' => $tarealote,'usuario' => $usuario ,'primerMarcaje' => $primerMarcaje, 'ultimoMarcaje' => $ultimoMarcaje]);
+    }
+
+    public function crt(Request $request, Lote $lote, PlanSemanalFinca $plansemanalfinca)
+    {
+        $fechasSemana = $this->semanaService->obtenerFechasDeSemana($plansemanalfinca->semana);
+
+        $tareas = $plansemanalfinca->tareasPorLote($lote->id)->get();
+        return view('agricola.plansemanal.crt',['fechasSemana' => $fechasSemana,'lote'=> $lote,'plansemanalfinca' => $plansemanalfinca, 'tareas' => $tareas]);
     }
 }

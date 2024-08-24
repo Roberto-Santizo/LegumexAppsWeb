@@ -2,8 +2,9 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 class TareasLote extends Model
 {
@@ -35,7 +36,7 @@ class TareasLote extends Model
 
     public function asignacion()
     {
-        return $this->hasOne(AsignacionDiaria::class, 'tarea_lote_id','id');
+        return $this->hasOne(AsignacionDiaria::class, 'tarea_lote_id','id')->where('created_at',Carbon::today());
     }
 
     public function usuarios()
