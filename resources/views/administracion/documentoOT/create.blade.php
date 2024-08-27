@@ -5,7 +5,7 @@
 Crear orden de trabajo
 @endsection
 
-@push('stacks')
+@push('scripts')
 <script src="https://cdnjs.cloudflare.com/ajax/libs/webcamjs/1.0.25/webcam.min.js"></script>
 @endpush
 
@@ -57,9 +57,17 @@ Crear orden de trabajo
             </div>
 
             <div class="mb-5">
-                <div id="my_camera"></div>
-                <div id="takesnapshot">
-                    Tomar Foto
+                
+                <div class="flex flex-col justify-center items-center">
+                   <div id="my_camera"></div>
+                    <div id="takesnapshot" class="text-white font-bold bg-orange-500 cursor-pointer hover:bg-orange-600 inline-block p-2 rounded my-5">
+                        <i class="fa-solid fa-camera"></i>
+                        Tomar Foto
+                    </div>
+               </div>
+
+                <div class="flex justify-center items-center flex-wrap gap-2" id="results">
+
                 </div>
 
             </div>
