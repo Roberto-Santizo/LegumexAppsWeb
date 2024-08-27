@@ -17,7 +17,8 @@
 @endphp
 
 <div class="bg-white p-6 rounded-lg shadow-lg mt-5 container xl:w-2/3  mx-auto">
-    <form action="" method="POST" id="formulario6" enctype="multipart/form-data" novalidate>
+    <form action="{{ route('planSemanal.storediario') }}" method="POST" id="formulario6" enctype="multipart/form-data" novalidate>
+        @csrf
         <fieldset>
             <table class="md:w-1/2 lg:w-full mb-5">
                 <thead class="bg-sky-600">
@@ -28,7 +29,7 @@
                     <tr>
                         <th class="flex justify-center items-center gap-2">
                             <p>Selecciona si aplica</p>
-                            <input class="h-6 w-6 mt-2 lavadas" type="checkbox">
+                            <input class="h-6 w-6 mt-2" type="checkbox" name="terminado">
                         </th>
                     </tr>
                 <tbody>
@@ -61,6 +62,10 @@
                 @enderror
             </div>
         </fieldset>
+
+        <input type="hidden" value="{{ $tarealote->asignacion->id }}" name="asignacion_diaria_id">
+        <input type="hidden" value="{{ $usuario->asignacion_usuario_id->id }}" name="usuario_asignacion_id">
+
         <div class="flex justify-end mt-10">
             <input type="submit" value="Guardar"
                 class=" bg-sky-600 hover:bg-sky-700 p-3 transition-colors cursor-pointer uppercase font-bold text-white rounded-lg">

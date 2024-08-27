@@ -17,6 +17,7 @@ use App\Models\PlanSemanalFinca;
 use App\Models\UsuarioTareaLote;
 use App\Models\EmpleadoIngresado;
 use App\Imports\TareasLotesImport;
+use App\Models\RendimientoDiario;
 use Illuminate\Support\Facades\DB;
 
 use Maatwebsite\Excel\Facades\Excel;
@@ -87,6 +88,18 @@ class PlanSemanalFincasController extends Controller
     public function tareasLote(Lote $lote, PlanSemanalFinca $plansemanalfinca)
     {
         $tareas = $plansemanalfinca->tareasPorLote($lote->id)->get();
+        foreach ($tareas as $tarea) {
+            $tarea->cupos_utilizados = $tarea->usuarios->count();
+            $tarea->asignacion_diaria = false;
+            
+            foreach ($tarea->asignaciones as $asignacion) {
+                if($asignacion->created_at->isToday()){
+                    $tarea->asignacion_diaria = true;
+                    break;
+                }
+            }
+        }
+
         return view('agricola.planSemanal.tareasLote', ['lote' => $lote, 'plansemanalfinca' => $plansemanalfinca, 'tareas' => $tareas]);
     }
 
@@ -99,7 +112,7 @@ class PlanSemanalFincasController extends Controller
         }
         $ingresos = EmpleadoIngresado::whereDate('punch_time', Carbon::today())->where('terminal_id', 7)->get();
         $asignados = UsuarioTareaLote::where('tarealote_id', $tarealote->id)->whereDate('created_at',Carbon::today())->pluck('usuario_id')->toArray();
-
+        $tarealote->cupos_utilizados = $tarealote->usuarios->count();
         foreach ($ingresos as $ingreso) {
             $ingreso->total_asignaciones = UsuarioTareaLote::where('usuario_id', $ingreso->emp_id)->count();
         }
@@ -119,6 +132,9 @@ class PlanSemanalFincasController extends Controller
 
     public function diario(EmpleadoFinca $usuario, TareasLote $tarealote)
     {
+        $tarealote->asignacion = $tarealote->asignaciones()->whereDate('created_at', Carbon::today())->get()->first();
+        $usuario->asignacion_usuario_id = UsuarioTareaLote::where('usuario_id',$usuario->id)->where('tarealote_id',$tarealote->id)->whereDate('created_at',Carbon::today())->get()->first();
+        
         $primerMarcaje = EmpleadoIngresado::where('emp_id', $usuario->id) // Filtrar por usuario si es necesario
             ->whereDate('punch_time', Carbon::today())   // Ordenar por la columna 'created_at' en orden descendente
             ->orderBy('punch_time', 'asc')   // Ordenar por la columna 'created_at' en orden descendente
@@ -132,11 +148,37 @@ class PlanSemanalFincasController extends Controller
         return view('agricola.plansemanal.diario',['tarealote' => $tarealote,'usuario' => $usuario ,'primerMarcaje' => $primerMarcaje, 'ultimoMarcaje' => $ultimoMarcaje]);
     }
 
-    public function crt(Request $request, Lote $lote, PlanSemanalFinca $plansemanalfinca)
+    public function storeDiario(Request $request)
+    {
+        try {
+            RendimientoDiario::create([
+                'asignacion_diaria_id' => $request->asignacion_diaria_id,
+                'usuario_asignacion_id' => $request->usuario_asignacion_id,
+                'terminado' => ($request->terminado) ? 1 : 0
+            ]);
+
+            return redirect()->route('planSemanal')->with('success','El registro fue guardado correctamente');
+        } catch (\Throwable $th) {
+            return redirect()->back()->with('error','Hubo un error al guardar el registro');
+        }
+    }
+
+    public function crt(Lote $lote, PlanSemanalFinca $plansemanalfinca)
     {
         $fechasSemana = $this->semanaService->obtenerFechasDeSemana($plansemanalfinca->semana);
 
         $tareas = $plansemanalfinca->tareasPorLote($lote->id)->get();
+
+        // $terminados = 0;
+        // foreach ($tareas as $tarea) {
+        //     foreach ($tarea->asignaciones as $asignacion) {
+        //         Rendi
+        //         $terminados 
+        //     }
+        // }
+
+        // dd($tareas);
+        
         return view('agricola.plansemanal.crt',['fechasSemana' => $fechasSemana,'lote'=> $lote,'plansemanalfinca' => $plansemanalfinca, 'tareas' => $tareas]);
     }
 }

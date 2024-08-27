@@ -12,4 +12,9 @@ class AsignacionDiaria extends Model
     protected $fillable = [
         'tarea_lote_id'
     ];
+
+    public function rendimiento()
+    {
+        return $this->hasMany(RendimientoDiario::class, 'asignacion_diaria_id','id')->where('terminado',1);
+    }
 }

@@ -24,7 +24,7 @@ mt-5 mb-5';
 
         <div class="flex gap-2">
             <p class="text-xl font-bold">Cupos Disponibles: </p>
-            <p class="text-xl font-bold" id="cupos" data-cupos="{{ $tarealote->personas }}">{{ $tarealote->cupos }}</p>
+            <p class="text-xl font-bold" id="cupos" data-cupos="{{ $tarealote->personas }}">{{ ($tarealote->personas - $tarealote->cupos_utilizados) }}</p>
         </div>
 
         <div class="flex gap-2">

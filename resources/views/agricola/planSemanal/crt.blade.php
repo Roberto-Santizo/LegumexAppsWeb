@@ -29,10 +29,10 @@ $clasesCampo = 'px-4 py-2 text-md font-medium whitespace-nowrap';
         </thead>
         <tbody class="bg-w hite divide-y divide-gray-200 dark:divide-gray-700 dark:bg-gray-900">
             @foreach ($tareas as $tarea)
-            <tr>
-                <th class="{{ $clasesCampo }} text-left">{{ $tarea->tarea->tarea }}</th>
-            </tr>
-                @endforeach
+                <tr>
+                    <th class="{{ $clasesCampo }} text-left">{{ $tarea->tarea->tarea }}</th>
+                </tr>
+            @endforeach
         </tbody>
     </table>
 </div>
