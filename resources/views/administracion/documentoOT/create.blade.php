@@ -5,6 +5,9 @@
 Crear orden de trabajo
 @endsection
 
+@push('stacks')
+<script src="https://cdnjs.cloudflare.com/ajax/libs/webcamjs/1.0.25/webcam.min.js"></script>
+@endpush
 
 @section('contenido')
 <a href="{{ route('documentoOT') }}"
@@ -51,6 +54,14 @@ Crear orden de trabajo
                     class="border p-3 w-full rounded-lg @error('equipo_problema') border-red-500 @enderror"
                     placeholder="Ingrese el equipo con problema" autocomplete="off"
                     value="{{ old('equipo_problema') }}">
+            </div>
+
+            <div class="mb-5">
+                <div id="my_camera"></div>
+                <div id="takesnapshot">
+                    Tomar Foto
+                </div>
+
             </div>
 
             <div class="mb-5 elemento_id">
