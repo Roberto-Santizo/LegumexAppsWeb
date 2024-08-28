@@ -120,6 +120,7 @@ Crear orden de trabajo
                         Tomar Foto
                     </div>
                     <p class="text-xs">(Tome el menor número de fotos posibles)</p>
+                    <i class="fa-solid fa-arrows-rotate text-4xl" id="switch_camera"></i>
                 </div>
     
     

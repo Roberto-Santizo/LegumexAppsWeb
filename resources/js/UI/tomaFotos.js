@@ -7,15 +7,32 @@ import Swal from "sweetalert2";
     if (my_camera) {
         const take_button = document.getElementById("takesnapshot");
         const upload_button = document.getElementById('upload_button');
-        Webcam.set({
-            width: 320,
-            height: 240,
-            image_format: "jpeg",
-            jpeg_quality: 90,
+        const switch_camera_button = document.getElementById('switch_camera');
+
+        navigator.mediaDevices.enumerateDevices()
+        .then(devices => {
+          devices.forEach(device => {
+            if (device.kind === 'videoinput') {
+              alert(device.label, device.deviceId);
+            }
+          });
         });
-
-        Webcam.attach("#my_camera");
-
+        
+        navigator.mediaDevices.getUserMedia({
+            video: {
+                facingMode: { exact: "environment" } // O "user" para la cámara frontal
+            }
+        }).then(function(stream){
+            Webcam.set({
+                width: 250,
+                height: 200,
+                image_format: 'jpeg',
+                jpeg_quality: 90,
+                srcObject: stream // Usa el stream de video que configuraste manualmente
+            });
+            Webcam.attach('#my_camera');
+        });
+     
         upload_button.addEventListener('click', function(){
             Swal.fire({
                 title: "Quieres guardar las imagenes?",
@@ -24,12 +41,13 @@ import Swal from "sweetalert2";
                 showCancelButton: true,
                 confirmButtonText: "Guardar",
                 denyButtonText: `No Guardar`
-              }).then((result) => {
+            }).then((result) => {
                 if (result.isConfirmed) {
-                  guardarImagenes();
+                    guardarImagenes();
                 } 
-              });
+            });
         });
+
         take_button.addEventListener("click", takeSnapshot);
     }
 
@@ -40,7 +58,7 @@ import Swal from "sweetalert2";
             imgContainer.className = "captured-image";
             imgContainer.innerHTML = `
                 <div class="p-2 shadow">
-                    <img src="${data_uri} " />
+                    <img src="${data_uri}" />
                 </div>
             `;
             document.getElementById("results").appendChild(imgContainer);
@@ -94,9 +112,9 @@ import Swal from "sweetalert2";
                 text: 'Las imagenes fueron subidas correctamente',
                 icon: 'success',
                 confirmButtonText: 'Ok'
-              }).then(()=>{
+            }).then(()=>{
                 loadingIcon.classList.toggle('hidden');
-              })
+            });
         }
     }
 })();
