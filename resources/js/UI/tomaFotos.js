@@ -7,20 +7,11 @@ import Swal from "sweetalert2";
     if (my_camera) {
         const take_button = document.getElementById("takesnapshot");
         const upload_button = document.getElementById('upload_button');
-        const switch_camera_button = document.getElementById('switch_camera');
-
-        navigator.mediaDevices.enumerateDevices()
-        .then(devices => {
-          devices.forEach(device => {
-            if (device.kind === 'videoinput') {
-              alert(device.label, device.deviceId);
-            }
-          });
-        });
         
         navigator.mediaDevices.getUserMedia({
             video: {
-                facingMode: { exact: "environment" } // O "user" para la cámara frontal
+                deviceId: { exact: "facing back" } 
+                
             }
         }).then(function(stream){
             Webcam.set({
@@ -28,7 +19,7 @@ import Swal from "sweetalert2";
                 height: 200,
                 image_format: 'jpeg',
                 jpeg_quality: 90,
-                srcObject: stream // Usa el stream de video que configuraste manualmente
+                srcObject: stream 
             });
             Webcam.attach('#my_camera');
         });
