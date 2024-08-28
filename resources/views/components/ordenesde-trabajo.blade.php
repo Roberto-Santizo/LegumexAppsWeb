@@ -116,6 +116,10 @@
                         <i class="fa-solid fa-pen-to-square text-2xl hover:text-gray-500"></i>
                     </a>
                     @endif
+
+                    <a href="{{ $ot->folder_url }}" target="_blank">
+                        <i class="fa-solid fa-image text-2xl hover:text-gray-500"></i>
+                    </a>
                 </div>
                 @endhasanyrole
             </div>

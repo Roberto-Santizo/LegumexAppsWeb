@@ -1,10 +1,12 @@
+import Swal from "sweetalert2";
+
 (function () {
     const my_camera = document.getElementById("my_camera");
+    let images = [];
 
     if (my_camera) {
-        const take_button = document.getElementById('takesnapshot');
-
-
+        const take_button = document.getElementById("takesnapshot");
+        const upload_button = document.getElementById('upload_button');
         Webcam.set({
             width: 320,
             height: 240,
@@ -14,46 +16,87 @@
 
         Webcam.attach("#my_camera");
 
+        upload_button.addEventListener('click', function(){
+            Swal.fire({
+                title: "Quieres guardar las imagenes?",
+                text: 'Una vez guardadas no se pueden tomar más fotos o cambiar las fotos',
+                showDenyButton: true,
+                showCancelButton: true,
+                confirmButtonText: "Guardar",
+                denyButtonText: `No Guardar`
+              }).then((result) => {
+                if (result.isConfirmed) {
+                  guardarImagenes();
+                } 
+              });
+        });
         take_button.addEventListener("click", takeSnapshot);
     }
 
     // Función para capturar la foto
     function takeSnapshot() {
-        const my_camera = document.getElementById('my_camera');
-        const form = document.getElementById('uploadForm');
-        const imageDataInput = document.getElementById('image_data');
-        
-        let images = [];
-
         Webcam.snap(function (data_uri) {
-           
-            const imgContainer = document.createElement('div');
-            imgContainer.className = 'captured-image';
-            imgContainer.innerHTML = 
-                '<img src="' + data_uri + '" />';
-            document.getElementById('results').appendChild(imgContainer);
-            
-            // Guardar la imagen en el array
+            const imgContainer = document.createElement("div");
+            imgContainer.className = "captured-image";
+            imgContainer.innerHTML = `
+                <div class="p-2 shadow">
+                    <img src="${data_uri} " />
+                </div>
+            `;
+            document.getElementById("results").appendChild(imgContainer);
+
             images.push(data_uri);
-
-            // Imprimir el array de imágenes en la consola para verificar
-            console.log(images);
-
-            // Actualizar el campo oculto con los datos de la imagen en formato JSON
-            imageDataInput.value = JSON.stringify(images);
-
-            // También puedes enviar la imagen a tu servidor aquí
-            // var formData = new FormData();
-            // formData.append('image', data_uri);
-            // fetch('/upload', {
-            //     method: 'POST',
-            //     body: formData
-            // }).then(response => response.json())
-            //   .then(data => console.log(data))
-            //   .catch(error => console.error('Error:', error));
         });
     }
 
-    // Exponer la función globalmente
-    window.takeSnapshot = takeSnapshot;
+    async function guardarImagenes() {
+        const loadingIcon = document.getElementById('loading_icon');
+        loadingIcon.classList.toggle('hidden');
+        const datos = new FormData();
+        const url = '/api/imagenes/upload';
+
+        const base64ToBlob = (base64, type = 'image/jpeg') => {
+            const [header, data] = base64.split(',');
+            const byteCharacters = atob(data);
+            const byteNumbers = new Array(byteCharacters.length);
+            for (let i = 0; i < byteCharacters.length; i++) {
+                byteNumbers[i] = byteCharacters.charCodeAt(i);
+            }
+            return new Blob([new Uint8Array(byteNumbers)], { type });
+        };
+
+        // Agrega imágenes a FormData
+        images.forEach((base64, index) => {
+            const blob = base64ToBlob(base64, 'image/jpeg');
+            datos.append(`imagenes${index + 1}`, blob, `firma${index + 1}.jpg`);
+        });
+
+        const response = await fetch(url, {
+            method: "POST",
+            headers: {
+                'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content')
+            },
+            body: datos
+        });
+
+        const result = await response.json();
+        if(result.status){
+            const folder_url = document.getElementById('folder_url');
+            const folder_id = document.getElementById('folder_id');
+            const camera = document.getElementById('camera');
+
+            folder_url.value = result.folder_url;
+            folder_id.value = result.folder_id;
+            camera.classList.add('hidden');
+
+            Swal.fire({
+                title: 'Imagenes subidas correctamente!',
+                text: 'Las imagenes fueron subidas correctamente',
+                icon: 'success',
+                confirmButtonText: 'Ok'
+              }).then(()=>{
+                loadingIcon.classList.toggle('hidden');
+              })
+        }
+    }
 })();

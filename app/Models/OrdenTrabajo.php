@@ -41,7 +41,9 @@ class OrdenTrabajo extends Model
         'especifique',
         'weburl',
         'devolucion_equipo',
-        'observaciones_eliminacion'
+        'observaciones_eliminacion',
+        'folder_url',
+        'folder_id'
         
     ];
 

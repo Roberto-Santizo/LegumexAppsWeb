@@ -218,7 +218,7 @@ class OrdenTrabajoController extends Controller
         return view('administracion.documentoOT.showUrgencia',['ordenes' => $ordenes, 'titulo' => $titulo]);
     }
     
-    public function store(Request $request){       
+    public function store(Request $request){    
         try {
             $orden_trabajo = OrdenTrabajo::create([
                 'planta_id' => $request->planta_id,
@@ -234,7 +234,9 @@ class OrdenTrabajoController extends Controller
                 'urgencia' => $request->urgencia,
                 'especifique' => $request->especifique,
                 'estado_id' => 1,
-                'supervisor_id' => $request->supervisor_id
+                'supervisor_id' => $request->supervisor_id,
+                'folder_url' => $request->folder_url,
+                'folder_id' => $request->folder_id
             ]);
 
             $response = [
