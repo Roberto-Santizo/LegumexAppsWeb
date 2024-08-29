@@ -16,8 +16,8 @@ function inicializarCamara() {
             devices.forEach((device) => {
                 if (device.label.includes("facing back")) {
                     Webcam.set({
-                        width: 320,
-                        height: 240,
+                        width: 800,
+                        height: 600,
                         image_format: "jpeg",
                         jpeg_quality: 90,
                         constraints: {
@@ -130,6 +130,15 @@ async function guardarImagenes() {
             title: "Imagenes subidas correctamente!",
             text: "Las imagenes fueron subidas correctamente",
             icon: "success",
+            confirmButtonText: "Ok",
+        }).then(() => {
+            loadingIcon.classList.toggle("hidden");
+        });
+    }else{
+        Swal.fire({
+            title: "Error!",
+            text: "Hubo un error al subir las imagenes, intentelo de nuevo más tarde!",
+            icon: "error",
             confirmButtonText: "Ok",
         }).then(() => {
             loadingIcon.classList.toggle("hidden");
