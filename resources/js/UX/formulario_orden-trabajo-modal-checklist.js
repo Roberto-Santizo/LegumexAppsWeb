@@ -5,6 +5,7 @@ import Swal from "sweetalert2";
 import validator from "validator";
 import "choices.js/public/assets/styles/choices.min.css";
 import Choices from "choices.js";
+import { inicializarCamara } from "../UI/tomaFotos";
 
 (function () {
     const formulario = document.getElementById("formularioP1");
@@ -85,6 +86,39 @@ import Choices from "choices.js";
                                                 }">                              
                                             </div>
                                         </fieldset>
+
+                                        <fieldset class="p-5 mb-10 shadow-2xl">
+                                            <legend class="text-xl font-bold uppercase">Captura de Imágenes</legend>
+
+                                            <div>
+                                                <h1 class="font-bold text-2xl mb-5 text-center">Imagenes Capturadas: </h1>
+                                                <div class="flex justify-center items-center flex-wrap gap-2" id="results">
+                                                </div>
+                                            </div>
+
+                                            <div id="camera">
+                                                <div class="my-5" id="camera_fieldset">
+                                                    <div class="flex flex-col justify-center items-center mb-5 ">
+                                                        <div id="my_camera"></div>
+                                                        <div id="takesnapshot"
+                                                            class="text-white font-bold bg-orange-500 cursor-pointer hover:bg-orange-600 inline-block p-2 rounded my-5">
+                                                            <i class="fa-solid fa-camera"></i>
+                                                            Tomar Foto
+                                                        </div>
+                                                        <p class="text-xs">(Tome el menor número de fotos posibles)</p>
+                                                    </div>
+
+
+                                                    <div class="bg-orange-500 w-max text-white font-bold p-2 rounded uppercase hover:bg-orange-600 cursor-pointer mt-5 flex justify-center items-center gap-2"
+                                                        id="upload_button">
+                                                        <p>Guardar Fotos</p>
+                                                        <div class="w-5 h-5 border-4 border-white-500 border-dashed rounded-full animate-spin hidden" id="loading_icon"></div>
+                                                    </div>
+                                                </div>
+                                                <input type="hidden" id="folder_url" name="folder_url">
+                                                <input type="hidden" id="folder_id" name="folder_id">
+                                        </fieldset>
+
                                         <fieldset class="p-5 mb-10 shadow-2xl">
                                             <legend class="text-xl font-bold uppercase">Datos del jefe de área</legend>
                                             <div class="mt-5">
@@ -134,6 +168,7 @@ import Choices from "choices.js";
         modalActions(modal);
         guardarDatos(modal);
         fetchSupervisoresArea();
+        inicializarCamara();
     }
 
     function guardarDatos(modal) {
@@ -252,13 +287,14 @@ import Choices from "choices.js";
     async function save() {
         const datos = {
             retiro_equipo: document.getElementById("retiro_equipo").value,
-            problema_detectado:
-                document.getElementById("problema_detectado").value,
+            problema_detectado: document.getElementById("problema_detectado").value,
             urgencia: document.getElementById("urgencia").value,
             fecha_propuesta: document.getElementById("fecha_propuesta").value,
             supervisor_id: document.getElementById("supervisor_id").value,
             firma_solicitante: document.getElementById("firma1").value,
             firma_supervisor: document.getElementById("firma2").value,
+            folder_url: document.getElementById("folder_url").value,
+            folder_id: document.getElementById("folder_id").value,
             planta_id,
             area_id,
             elemento_id,

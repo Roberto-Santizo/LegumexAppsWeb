@@ -115,71 +115,69 @@ Crear orden de trabajo
                     <div class="flex flex-col justify-center items-center mb-5 ">
                         <div id="my_camera"></div>
                         <div id="takesnapshot"
-                        class="text-white font-bold bg-orange-500 cursor-pointer hover:bg-orange-600 inline-block p-2 rounded my-5">
-                        <i class="fa-solid fa-camera"></i>
-                        Tomar Foto
+                            class="text-white font-bold bg-orange-500 cursor-pointer hover:bg-orange-600 inline-block p-2 rounded my-5">
+                            <i class="fa-solid fa-camera"></i>
+                            Tomar Foto
+                        </div>
+                        <p class="text-xs">(Tome el menor número de fotos posibles)</p>
                     </div>
-                    <p class="text-xs">(Tome el menor número de fotos posibles)</p>
-                    <i class="fa-solid fa-arrows-rotate text-4xl" id="switch_camera"></i>
-                </div>
-    
-    
-                <div class="bg-orange-500 w-max text-white font-bold p-2 rounded uppercase hover:bg-orange-600 cursor-pointer mt-5 flex justify-center items-center gap-2"
-                    id="upload_button">
-                    <p>Guardar Fotos</p>
-                    <x-loading-icon />
-                </div>
-    
-            </div>
-            <input type="hidden" id="folder_url" name="folder_url">
-            <input type="hidden" id="folder_id" name="folder_id">
-    </fieldset>
 
-<fieldset class="p-5 mb-10 shadow-2xl">
-    <legend class="text-xl font-bold uppercase">Datos del Supervisor de área</legend>
-    <div class="mt-5">
-        <label for="supervisor_id" class="mb-2 block uppercase text-gray-500 font-bold">Nombre del Supervisor
-            de
-            Área:</label>
-        <select name="supervisor_id" id="supervisor_id" class="w-full p-4 rounded select">
-            <option value="" class="opcion-defaul" selected disabled>---SELECCIONE UNA OPCIÓN---</option>
-            @foreach ($supervisores as $supervisor)
-            <option value="{{ $supervisor->id }}">{{ $supervisor->name . ' - ' . $supervisor->role->name }}
-            </option>
-            @endforeach
-        </select>
-    </div>
 
-    <div class="flex justify-center items-center flex-col">
-        <canvas id="signature-pad-2" width="375" height="200"
-            class="bg-gray-50 mt-10 rounded-xl border border-black"></canvas>
-        <div class="clear_btn flex justify-center items-center flex-col mt-3">
-            <h4 class="font-bold uppercase">Firma del jefe de área</h4>
-            <div id="clear-button-2"
-                class="inline-block mt-2 bg-orange-600 hover:bg-orange-700 p-3 transition-colors cursor-pointer uppercase font-bold text-white rounded-lg formulario__firma--clear">
-                <span>Limpiar</span>
+                    <div class="bg-orange-500 w-max text-white font-bold p-2 rounded uppercase hover:bg-orange-600 cursor-pointer mt-5 flex justify-center items-center gap-2"
+                        id="upload_button">
+                        <p>Guardar Fotos</p>
+                        <x-loading-icon />
+                    </div>
+                </div>
+                <input type="hidden" id="folder_url" name="folder_url">
+                <input type="hidden" id="folder_id" name="folder_id">
+        </fieldset>
+
+        <fieldset class="p-5 mb-10 shadow-2xl">
+            <legend class="text-xl font-bold uppercase">Datos del Supervisor de área</legend>
+            <div class="mt-5">
+                <label for="supervisor_id" class="mb-2 block uppercase text-gray-500 font-bold">Nombre del Supervisor
+                    de
+                    Área:</label>
+                <select name="supervisor_id" id="supervisor_id" class="w-full p-4 rounded select">
+                    <option value="" class="opcion-defaul" selected disabled>---SELECCIONE UNA OPCIÓN---</option>
+                    @foreach ($supervisores as $supervisor)
+                    <option value="{{ $supervisor->id }}">{{ $supervisor->name . ' - ' . $supervisor->role->name }}
+                    </option>
+                    @endforeach
+                </select>
             </div>
-        </div>
-    </div>
-</fieldset>
-<fieldset class="p-5 mb-2 shadow-2xl">
-    <legend class="text-xl font-bold uppercase">Datos del solicitante</legend>
-    <div class="flex justify-center items-center flex-col">
-        <canvas id="signature-pad" width="375" height="200"
-            class="bg-gray-50 mt-10 rounded-xl border border-black"></canvas>
-        <div class="clear_btn flex justify-center items-center flex-col mt-3">
-            <h4 class="font-bold uppercase">Firma del solicitante</h4>
-            <div id="clear-button"
-                class="inline-block mt-5 bg-orange-600 hover:bg-orange-700 p-3 transition-colors cursor-pointer uppercase font-bold text-white rounded-lg formulario__firma--clear">
-                <span>Limpiar</span>
+
+            <div class="flex justify-center items-center flex-col">
+                <canvas id="signature-pad-2" width="375" height="200"
+                    class="bg-gray-50 mt-10 rounded-xl border border-black"></canvas>
+                <div class="clear_btn flex justify-center items-center flex-col mt-3">
+                    <h4 class="font-bold uppercase">Firma del jefe de área</h4>
+                    <div id="clear-button-2"
+                        class="inline-block mt-2 bg-orange-600 hover:bg-orange-700 p-3 transition-colors cursor-pointer uppercase font-bold text-white rounded-lg formulario__firma--clear">
+                        <span>Limpiar</span>
+                    </div>
+                </div>
             </div>
-        </div>
-    </div>
-</fieldset>
-<input type="hidden" value="" id="firma" name="firma_solicitante">
-<input type="hidden" value="" id="firma2" name="firma_supervisor">
-<input id="btnSaveOT" type="submit" value="Guardar"
-    class="inline-block mt-5 bg-blue-600 hover:bg-blue-700 p-3 transition-colors cursor-pointer uppercase font-bold text-white rounded-lg">
-</form>
+        </fieldset>
+        <fieldset class="p-5 mb-2 shadow-2xl">
+            <legend class="text-xl font-bold uppercase">Datos del solicitante</legend>
+            <div class="flex justify-center items-center flex-col">
+                <canvas id="signature-pad" width="375" height="200"
+                    class="bg-gray-50 mt-10 rounded-xl border border-black"></canvas>
+                <div class="clear_btn flex justify-center items-center flex-col mt-3">
+                    <h4 class="font-bold uppercase">Firma del solicitante</h4>
+                    <div id="clear-button"
+                        class="inline-block mt-5 bg-orange-600 hover:bg-orange-700 p-3 transition-colors cursor-pointer uppercase font-bold text-white rounded-lg formulario__firma--clear">
+                        <span>Limpiar</span>
+                    </div>
+                </div>
+            </div>
+        </fieldset>
+        <input type="hidden" value="" id="firma" name="firma_solicitante">
+        <input type="hidden" value="" id="firma2" name="firma_supervisor">
+        <input id="btnSaveOT" type="submit" value="Guardar"
+            class="inline-block mt-5 bg-blue-600 hover:bg-blue-700 p-3 transition-colors cursor-pointer uppercase font-bold text-white rounded-lg">
+    </form>
 </div>
 @endsection

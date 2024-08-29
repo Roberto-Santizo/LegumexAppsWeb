@@ -15,7 +15,6 @@ class DocumentoCPController extends Controller
 {
     public function index(Request $request)
     {
-        dd(session('access_token'));
         $query = Documentocp::query();
 
         if ($request->filled('fecha')) {

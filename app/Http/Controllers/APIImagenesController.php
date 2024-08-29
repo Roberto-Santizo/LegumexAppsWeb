@@ -10,35 +10,33 @@ use Illuminate\Support\Facades\Storage;
 
 class APIImagenesController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
-    public function index()
-    {
-        //
-    }
-
-    /**
-     * Store a newly created resource in storage.
-     */
+  
     public function store(Request $request)
     {
         $accessToken = session('access_token');
         $graph = new Graph();
         $graph->setAccessToken($accessToken);
 
-        // Crear una carpeta en OneDrive (opcional)
-        $folderName = uniqid() . '_' . Carbon::today()->format('d-m-Y');
+        $datos = [];
+        $folderId = $request->folder_id;
+        
+        if(!$request->folder_id){
+            // Crear una carpeta en OneDrive (opcional)
+            $folderName = uniqid() . '_' . Carbon::today()->format('d-m-Y');
 
-        $createFolderResponse = $graph->createRequest('POST', "/me/drive/root:/LegumexAppsWeb/Mantenimiento/UploadedImages:/children")
-            ->attachBody([
-                'name' => $folderName,
-                'folder' => new \stdClass(),
-                '@microsoft.graph.conflictBehavior' => 'rename'
-            ])
-            ->execute();
+            $createFolderResponse = $graph->createRequest('POST', "https://graph.microsoft.com/v1.0/drives/b!CU_CMtvtaEmUlX3R-A80sL7OC60rTsBHt6CzRiilfLTCa6VHDHQGR6wIGs3pVZVG/items/01O5NWAPGP6Y6BDYV5GZGZ7INKQBPEWRGZ/children")
+                ->attachBody([
+                    'name' => $folderName,
+                    'folder' => new \stdClass(),
+                    '@microsoft.graph.conflictBehavior' => 'rename'
+                ])
+                ->execute();
 
-        $folderId = $createFolderResponse->getBody()['id'];
+            $folderId = $createFolderResponse->getBody()['id'];
+
+            $datos['folder_id'] = $folderId;
+            $datos['folder_url'] = $createFolderResponse->getBody()['webUrl'];
+        }
 
         // Procesar y subir las imágenes
         foreach ($request->file() as $file) {
@@ -47,7 +45,7 @@ class APIImagenesController extends Controller
                 $fileName = uniqid() . '_' . Carbon::today()->format('d-m-Y') . '.png';
                 $fileContent = file_get_contents($file->getRealPath());
 
-                $graph->createRequest('PUT', "/me/drive/items/{$folderId}:/$fileName:/content")
+                $graph->createRequest('PUT', "https://graph.microsoft.com/v1.0/drives/b!CU_CMtvtaEmUlX3R-A80sL7OC60rTsBHt6CzRiilfLTCa6VHDHQGR6wIGs3pVZVG/items/{$folderId}:/$fileName:/content")
                     ->attachBody($fileContent)
                     ->execute();
             } else {
@@ -55,32 +53,11 @@ class APIImagenesController extends Controller
             }
         }
 
-        return response()->json(['folder_id' => $folderId,'folder_url' => $createFolderResponse->getBody()['webUrl'], 'status' => 200]);
+        $datos['message'] = 'Las imagenes se han guardado correctamente';
+        $datos['status'] = 200;
+
+        return response()->json($datos,200);
     }
 
-    
 
-    /**
-     * Display the specified resource.
-     */
-    public function show(string $id)
-    {
-        //
-    }
-
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(Request $request, string $id)
-    {
-        //
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy(string $id)
-    {
-        //
-    }
 }

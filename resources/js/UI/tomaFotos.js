@@ -1,111 +1,140 @@
 import Swal from "sweetalert2";
+const my_camera = document.getElementById("my_camera");
+let images = [];
 
-(function () {
-    const my_camera = document.getElementById("my_camera");
-    let images = [];
+if (my_camera) {
+    inicializarCamara();
+}
 
-    if (my_camera) {
-        const take_button = document.getElementById("takesnapshot");
-        const upload_button = document.getElementById('upload_button');
-        
-        navigator.mediaDevices.getUserMedia({
-            video: {
-                deviceId: { exact: "facing back" } 
-                
-            }
-        }).then(function(stream){
-            Webcam.set({
-                width: 250,
-                height: 200,
-                image_format: 'jpeg',
-                jpeg_quality: 90,
-                srcObject: stream 
+function inicializarCamara() {
+    const take_button = document.getElementById("takesnapshot");
+    const upload_button = document.getElementById("upload_button");
+
+    navigator.mediaDevices
+        .enumerateDevices()
+        .then((devices) => {
+            devices.forEach((device) => {
+                if (device.label.includes("facing back")) {
+                    Webcam.set({
+                        width: 320,
+                        height: 240,
+                        image_format: "jpeg",
+                        jpeg_quality: 90,
+                        constraints: {
+                            deviceId: { exact: device.deviceId }, // Configura el deviceId aquí
+                        },
+                    });
+
+                    Webcam.attach("#my_camera");
+                }
             });
-            Webcam.attach('#my_camera');
-        });
-     
-        upload_button.addEventListener('click', function(){
+        })
+        .catch((error) => {
+            console.error("Error al enumerar dispositivos:", error);
+    });
+
+    upload_button.addEventListener("click", function () {
+        if (images.length > 0) {
             Swal.fire({
                 title: "Quieres guardar las imagenes?",
-                text: 'Una vez guardadas no se pueden tomar más fotos o cambiar las fotos',
+                text: "Una vez guardadas no se pueden tomar más fotos o cambiar las fotos",
                 showDenyButton: true,
                 showCancelButton: true,
                 confirmButtonText: "Guardar",
-                denyButtonText: `No Guardar`
+                denyButtonText: `No Guardar`,
             }).then((result) => {
                 if (result.isConfirmed) {
                     guardarImagenes();
-                } 
+                }
             });
-        });
+        } else {
+            Swal.fire({
+                icon: "error",
+                title: "Error",
+                text: "Debe tomar por lo menos una foto.",
+            });
+        }
+    });
 
-        take_button.addEventListener("click", takeSnapshot);
-    }
+    take_button.addEventListener("click", takeSnapshot);
+}
 
-    // Función para capturar la foto
-    function takeSnapshot() {
-        Webcam.snap(function (data_uri) {
-            const imgContainer = document.createElement("div");
-            imgContainer.className = "captured-image";
-            imgContainer.innerHTML = `
+// Función para capturar la foto
+function takeSnapshot() {
+    console.log("boton");
+    Webcam.snap(function (data_uri) {
+        const imgContainer = document.createElement("div");
+        imgContainer.className = "captured-image";
+        imgContainer.innerHTML = `
                 <div class="p-2 shadow">
                     <img src="${data_uri}" />
                 </div>
             `;
-            document.getElementById("results").appendChild(imgContainer);
+        document.getElementById("results").appendChild(imgContainer);
 
-            images.push(data_uri);
-        });
+        images.push(data_uri);
+    });
+}
+
+async function guardarImagenes() {
+    const loadingIcon = document.getElementById("loading_icon");
+    loadingIcon.classList.toggle("hidden");
+    const datos = new FormData();
+    const url = "/api/imagenes/upload";
+    const folder_id = document.getElementById("folder_id");
+
+    const base64ToBlob = (base64, type = "image/jpeg") => {
+        const [header, data] = base64.split(",");
+        const byteCharacters = atob(data);
+        const byteNumbers = new Array(byteCharacters.length);
+        for (let i = 0; i < byteCharacters.length; i++) {
+            byteNumbers[i] = byteCharacters.charCodeAt(i);
+        }
+        return new Blob([new Uint8Array(byteNumbers)], { type });
+    };
+
+    // Agrega imágenes a FormData
+    images.forEach((base64, index) => {
+        const blob = base64ToBlob(base64, "image/jpeg");
+        datos.append(`imagenes${index + 1}`, blob, `firma${index + 1}.jpg`);
+    });
+
+    if (folder_id != "") {
+        datos.append("folder_id", folder_id.value);
     }
 
-    async function guardarImagenes() {
-        const loadingIcon = document.getElementById('loading_icon');
-        loadingIcon.classList.toggle('hidden');
-        const datos = new FormData();
-        const url = '/api/imagenes/upload';
+    const response = await fetch(url, {
+        method: "POST",
+        headers: {
+            "X-CSRF-TOKEN": document
+                .querySelector('meta[name="csrf-token"]')
+                .getAttribute("content"),
+        },
+        body: datos,
+    });
 
-        const base64ToBlob = (base64, type = 'image/jpeg') => {
-            const [header, data] = base64.split(',');
-            const byteCharacters = atob(data);
-            const byteNumbers = new Array(byteCharacters.length);
-            for (let i = 0; i < byteCharacters.length; i++) {
-                byteNumbers[i] = byteCharacters.charCodeAt(i);
-            }
-            return new Blob([new Uint8Array(byteNumbers)], { type });
-        };
+    const result = await response.json();
+    if (result.status) {
+        const folder_url = document.getElementById("folder_url");
+        const folder_id = document.getElementById("folder_id");
+        const camera = document.getElementById("camera");
 
-        // Agrega imágenes a FormData
-        images.forEach((base64, index) => {
-            const blob = base64ToBlob(base64, 'image/jpeg');
-            datos.append(`imagenes${index + 1}`, blob, `firma${index + 1}.jpg`);
-        });
-
-        const response = await fetch(url, {
-            method: "POST",
-            headers: {
-                'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content')
-            },
-            body: datos
-        });
-
-        const result = await response.json();
-        if(result.status){
-            const folder_url = document.getElementById('folder_url');
-            const folder_id = document.getElementById('folder_id');
-            const camera = document.getElementById('camera');
-
+        if (folder_id.value == "" || folder_id == "") {
             folder_url.value = result.folder_url;
             folder_id.value = result.folder_id;
-            camera.classList.add('hidden');
-
-            Swal.fire({
-                title: 'Imagenes subidas correctamente!',
-                text: 'Las imagenes fueron subidas correctamente',
-                icon: 'success',
-                confirmButtonText: 'Ok'
-            }).then(()=>{
-                loadingIcon.classList.toggle('hidden');
-            });
         }
+
+        camera.classList.add("hidden");
+
+        Swal.fire({
+            title: "Imagenes subidas correctamente!",
+            text: "Las imagenes fueron subidas correctamente",
+            icon: "success",
+            confirmButtonText: "Ok",
+        }).then(() => {
+            loadingIcon.classList.toggle("hidden");
+        });
     }
-})();
+}
+
+export { inicializarCamara };

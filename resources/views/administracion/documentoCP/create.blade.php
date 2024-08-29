@@ -4,6 +4,11 @@
 Documento Checklist Preoperacional - {{ $planta->planta }}
 @endsection
 
+@push('scripts')
+<script src="https://cdnjs.cloudflare.com/ajax/libs/webcamjs/1.0.25/webcam.min.js"></script>
+@endpush
+
+
 @section('contenido')
 <x-alertas />
 
