@@ -110,12 +110,23 @@ class PlanSemanalFincasController extends Controller
         if ($asignacionDiaria->count() != 0) {
             return redirect()->route('planSemanal.tareasLote', [$lote, $plansemanalfinca])->with('error', "Esta tarea ya fue cerrada por el día de hoy");
         }
-        $ingresos = EmpleadoIngresado::whereDate('punch_time', Carbon::today())->where('terminal_id', 7)->get();
         $asignados = UsuarioTareaLote::where('tarealote_id', $tarealote->id)->whereDate('created_at',Carbon::today())->pluck('usuario_id')->toArray();
         $tarealote->cupos_utilizados = $tarealote->usuarios->count();
-        foreach ($ingresos as $ingreso) {
-            $ingreso->total_asignaciones = UsuarioTareaLote::where('usuario_id', $ingreso->emp_id)->count();
-        }
+
+        $ingresos = EmpleadoIngresado::whereDate('punch_time', Carbon::today())->where('terminal_id', 7)->get();
+        $ingresos = $ingresos->filter(function($ingreso){
+            $ingreso->asignaciones = UsuarioTareaLote::where('usuario_id', $ingreso->emp_id)->get();
+            $ingreso->horas_totales = 0;
+            if($ingreso->asignaciones->count() > 0){
+                foreach ($ingreso->asignaciones as $asignacion) {
+                    $ingreso->horas_totales += ($asignacion->tarea_lote->horas / $asignacion->tarea_lote->personas);
+                }
+
+            }
+            return $ingreso->horas_totales < 8;
+        });
+
+            
 
         return view('agricola.planSemanal.asignar', ['lote' => $lote, 'plansemanalfinca' => $plansemanalfinca, 'tarea' => $tarea, 'ingresos' => $ingresos, 'tarealote' => $tarealote, 'asignados' => $asignados]);
     }

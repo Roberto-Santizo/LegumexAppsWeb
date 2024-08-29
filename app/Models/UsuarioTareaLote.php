@@ -13,4 +13,10 @@ class UsuarioTareaLote extends Model
         'usuario_id',
         'tarealote_id',
     ];
+
+    public function tarea_lote()
+    {
+        return $this->hasOne(TareasLote::class, 'id','tarealote_id');
+    }
+
 }

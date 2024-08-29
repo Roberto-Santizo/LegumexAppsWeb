@@ -41,11 +41,11 @@ class TareasLotesImport implements ToModel, WithHeadingRow
             'plan_semanal_finca_id' => $this->planSemanal->id,
             'lote_id' => $lote->id,
             'tarea_id' => $tarea->id,
-            'personas' => (floor($row['personas']) == 0) ? 1 : floor($row['personas']),
+            'personas' => ((floor($row['horas']/8)) < 1) ? 1 : floor($row['horas']/8),   
             'presupuesto' => round($row['presupuesto'],2),
             'horas' => round($row['horas'],2),
             'tarifa' => $row['tarifa'],
-            'cupos' => (floor($row['personas']) == 0) ? 1 : floor($row['personas']),
+            'cupos' => ((floor($row['horas']/8)) < 1) ? 1 : floor($row['horas']/8),
             'horas_persona' => $row['horas'] / $row['personas'],
         ]);
     }

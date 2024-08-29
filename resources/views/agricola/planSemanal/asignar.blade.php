@@ -44,7 +44,7 @@ mt-5 mb-5';
                             <i class="fa-solid fa-user text-2xl"></i>
                             <div>
                                 <p class="font-bold">{{ $ingreso->empleado->first_name }}</p>
-                                <p class="font-bold">Número de Tareas Asignadas: {{ $ingreso->total_asignaciones }}</p>
+                                <p class="font-bold">Horas del día de hoy: {{ round($ingreso->horas_totales,2) }}</p>
                                 <input type="hidden" value="{{ $ingreso->emp_id }}" id="usuario_id">
                             </div>
                         </div>
@@ -71,7 +71,7 @@ mt-5 mb-5';
                         <i class="fa-solid fa-user text-2xl"></i>
                         <div>
                             <p class="font-bold">{{ $ingreso->empleado->first_name }}</p>
-                            <p class="font-bold">Número de Tareas Asignadas: {{ $ingreso->total_asignaciones }}</p>
+                            <p class="font-bold">Horas del día de hoy: {{ round($ingreso->horas_totales,2) }}</p>
                             <input type="hidden" value="{{ $ingreso->emp_id }}" id="usuario_id">
                         </div>
                     </div>
