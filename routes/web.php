@@ -191,9 +191,10 @@ Route::group(['middleware' => ['auth', 'role:admin|adminalameda|auxalameda'], 'p
     Route::get('/finca/plan-semanal/lotes/{lote}/{plansemanalfinca}/tareas/ctr', [PlanSemanalFincasController::class, 'crt'])->name('planSemanal.crt');
     Route::get('/finca/plan-semanal/lotes/{lote:nombre}/{plansemanalfinca}/{tarea}/{tarealote}/asignacion', [PlanSemanalFincasController::class, 'AsignarEmpleados'])->name('planSemanal.Asignar');
     
-    Route::get('/finca/plan-semanal/rendimiento/tarea-{tarealote}', [PlanSemanalFincasController::class, 'rendimiento'])->name('planSemanal.rendimiento');
+    Route::get('/finca/plan-semanal/rendimiento/tarea-{tarealote}/plan-{plansemanalfinca}', [PlanSemanalFincasController::class, 'rendimiento'])->name('planSemanal.rendimiento');
     
     Route::get('/finca/plan-semanal/rendimiento/{usuario}/tarea-{tarealote}/create', [PlanSemanalFincasController::class, 'diario'])->name('planSemanal.diario');
+    
     Route::post('/finca/plan-semanal/rendimiento/store', [PlanSemanalFincasController::class, 'storeDiario'])->name('planSemanal.storediario');
 
     Route::post('/finca/plan-semanal/create', [PlanSemanalFincasController::class, 'store'])->name('planSemanal.store');

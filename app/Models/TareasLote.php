@@ -43,4 +43,9 @@ class TareasLote extends Model
     {
         return $this->hasMany(UsuarioTareaLote::class, 'tarealote_id','id')->whereDate('created_at',Carbon::today());
     }
+
+    public function cierre()
+    {
+        return $this->hasOne(RendimientoDiario::class, 'tarea_lote_id','id')->whereDate('created_at',Carbon::today());
+    }
 }

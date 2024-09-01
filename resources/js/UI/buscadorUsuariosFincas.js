@@ -4,7 +4,7 @@
     if(buscadorUsuario){
         document.getElementById('buscarUsuario').addEventListener('input', function() {
             const query = this.value.toLowerCase();
-            const empleados = document.querySelectorAll('.empleados');
+            const empleados = document.querySelectorAll('.empleadosBuscar');
         
             empleados.forEach(function(empleado) {
                 const nombre = empleado.querySelector('p').textContent.toLowerCase();

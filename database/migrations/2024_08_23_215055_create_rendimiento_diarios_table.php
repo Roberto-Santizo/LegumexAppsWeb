@@ -13,8 +13,7 @@ return new class extends Migration
     {
         Schema::create('rendimiento_diarios', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('asignacion_diaria_id')->references('id')->on('asignacion_diarias');
-            $table->foreignId('usuario_asignacion_id')->references('id')->on('usuario_tarea_lotes');
+            $table->foreignId('tarea_lote_id')->references('id')->on('tareas_lotes');
             $table->boolean('terminado');
             $table->timestamps();
         });

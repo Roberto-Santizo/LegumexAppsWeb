@@ -30,4 +30,5 @@ class PlanSemanalFinca extends Model
         return $this->hasMany(TareasLote::class, 'plan_semanal_finca_id','id');
     }
 
+
 }

@@ -35,7 +35,7 @@ mt-5 mb-5';
         <div class="mt-5 w-1/2">
             <h1 class="text-2xl font-bold">Usuarios Asignados a esta tarea: </h1>
 
-            <div id="usuariosAsignadosContainer" class="flex flex-col gap-2 mt-5">
+            <div id="usuariosAsignadosContainer" class="flex flex-col gap-2 mt-5 overflow-y-auto h-96 mb-5">
                 @foreach ($ingresos as $ingreso)
                     @if(in_array($ingreso->emp_id,$asignados))
                     <div class="border p-3 selected text-white rounded cursor-pointer empleados"
@@ -65,7 +65,7 @@ mt-5 mb-5';
 
             @foreach ($ingresos as $ingreso)
                 @if(!in_array($ingreso->emp_id,$asignados))
-                <div class="border p-3 not-selected text-white rounded cursor-pointer empleados"
+                <div class="border p-3 not-selected text-white rounded cursor-pointer empleados empleadosBuscar"
                     data-user="{{ $ingreso->emp_id }}">
                     <div class="flex flex-row items-center gap-3">
                         <i class="fa-solid fa-user text-2xl"></i>

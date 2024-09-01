@@ -38,9 +38,9 @@ class PlanSemanalFincasController extends Controller
         $planes = PlanSemanalFinca::paginate(10);
         foreach ($planes as $plan) {
             $plan->tareas_totales = 0;
+            $plan->totalPersonasNecesarias = $plan->tareasTotales()->orderBy('personas','desc')->first();
             foreach ($plan->tareasTotales as $tarea) {
                 $plan->presupuesto += $tarea->presupuesto;
-                $plan->total_personas += $tarea->personas;
                 $plan->tareas_totales++;
             }
         }
@@ -91,7 +91,6 @@ class PlanSemanalFincasController extends Controller
         foreach ($tareas as $tarea) {
             $tarea->cupos_utilizados = $tarea->usuarios->count();
             $tarea->asignacion_diaria = false;
-            
             foreach ($tarea->asignaciones as $asignacion) {
                 if($asignacion->created_at->isToday()){
                     $tarea->asignacion_diaria = true;
@@ -123,7 +122,7 @@ class PlanSemanalFincasController extends Controller
                 }
 
             }
-            return $ingreso->horas_totales < 8;
+            return $ingreso;
         });
 
             
@@ -131,14 +130,9 @@ class PlanSemanalFincasController extends Controller
         return view('agricola.planSemanal.asignar', ['lote' => $lote, 'plansemanalfinca' => $plansemanalfinca, 'tarea' => $tarea, 'ingresos' => $ingresos, 'tarealote' => $tarealote, 'asignados' => $asignados]);
     }
 
-    public function rendimiento(TareasLote $tarealote)
+    public function rendimiento(TareasLote $tarealote, PlanSemanalFinca $plansemanalfinca)
     {
-        $usuarios = $tarealote->usuarios;
-        foreach ($usuarios as $usuario) {
-            $usuario->usuario = EmpleadoFinca::find($usuario->usuario_id);
-        }
-
-        return view('agricola.plansemanal.rendimiento', ['tarealote' => $tarealote, 'usuarios' => $usuarios]);
+        return view('agricola.plansemanal.rendimiento', ['tarealote' => $tarealote, 'plansemanalfinca' => $plansemanalfinca]);
     }
 
     public function diario(EmpleadoFinca $usuario, TareasLote $tarealote)
@@ -161,14 +155,16 @@ class PlanSemanalFincasController extends Controller
 
     public function storeDiario(Request $request)
     {
+        $request->validate([
+            'tarea_lote_id' => 'required'
+        ]);
         try {
             RendimientoDiario::create([
-                'asignacion_diaria_id' => $request->asignacion_diaria_id,
-                'usuario_asignacion_id' => $request->usuario_asignacion_id,
-                'terminado' => ($request->terminado) ? 1 : 0
+                'tarea_lote_id' => $request->tarea_lote_id,
+                'terminado' => 1
             ]);
 
-            return redirect()->route('planSemanal')->with('success','El registro fue guardado correctamente');
+            return redirect()->back()->with('success','La tarea fue completada con exito');
         } catch (\Throwable $th) {
             return redirect()->back()->with('error','Hubo un error al guardar el registro');
         }

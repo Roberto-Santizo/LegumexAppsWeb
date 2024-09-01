@@ -10,8 +10,7 @@ class RendimientoDiario extends Model
     use HasFactory;
 
     protected $fillable = [
-        'asignacion_diaria_id',
-        'usuario_asignacion_id',
+        'tarea_lote_id',
         'terminado',
     ];
 }

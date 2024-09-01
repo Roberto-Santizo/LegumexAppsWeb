@@ -16,7 +16,19 @@ $clasesCampo = 'px-4 py-2 text-md font-medium whitespace-nowrap';
 @endphp
 
 
+
 <div class="overflow-x-auto mt-10">
+    <div class="flex flex-row gap-5 mb-5 justify-end">
+        <div>
+            <i title="Reporte Tareas Generales"
+                class="fa-solid fa-file-excel text-3xl hover:text-gray-500 cursor-pointer"></i>
+        </div>
+
+        <div>
+            <i title="Reporte Horas Usuarios" class="fa-solid fa-users text-3xl hover:text-gray-500 cursor-pointer"></i>
+        </div>
+    </div>
+
     <table class="min-w-full divide-y divide-gray-200 dark:divide-gray-700 text-xs md:text-sm">
         <thead class="bg-gray-50 dark:bg-gray-800">
             <tr class="text-xs md:text-sm">

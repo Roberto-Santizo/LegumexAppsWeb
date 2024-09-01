@@ -33,10 +33,10 @@ Tareas Finca Semanal
                 <th scope="col" class="{{ $clasesEncabezados }}">
                     Presupuesto Total</th>
                 <th scope="col" class="{{ $clasesEncabezados }}">
-                    Total de Personas</th>
+                    Número máximo de personas para una tarea</th>
                 <th scope="col" class="{{ $clasesEncabezados }}">
                     Total Tareas Semanales</th>
-                <th scope="col" class="{{ $clasesEncabezados }}">
+                <th scope="col" class="{{ $clasesEncabezados }} text-center">
                     Tareas</th>
             </tr>
         </thead>
@@ -47,8 +47,8 @@ Tareas Finca Semanal
                 <td class="{{ $clasesCampo }}">{{ $plan->semana }}</td>
                 <td class="{{ $clasesCampo }}">{{ $plan->created_at->format('d-m-Y') }}</td>
                 <td class="{{ $clasesCampo }}">Q {{ $plan->presupuesto }}</td>
-                <td class="{{ $clasesCampo }}">{{ $plan->total_personas }}</td>
-                <td class="{{ $clasesCampo }}">{{ $plan->tareas_totales }}</td>
+                <td class="{{ $clasesCampo }} text-center">{{ $plan->totalPersonasNecesarias->personas }}</td>
+                <td class="{{ $clasesCampo }} text-center">{{ $plan->tareas_totales }}</td>
                 <td class="{{ $clasesCampo }}">
                     <a class="{{ $clasesEnlaces }}" href="{{ route('planSemanal.show',$plan) }}">
                         Ver Tareas Semanales
