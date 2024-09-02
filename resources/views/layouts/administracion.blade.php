@@ -88,7 +88,7 @@
                     <p><span class="font-bold">Correo:</span> {{ auth()->user()->email }}</p>  
                     <p>Agroindustria Legumex S.A</p>
                 </div> 
-                <div class="mt-10">
+                <div class="mt-10 flex flex-row gap-2">
                     <form action="{{ route('logout.microsoft') }}" method="POST">
                         @csrf
                         <input type="submit" value="Cerrar Sesión" class="mt-5 bg-orange-500 cursor-pointer hover:bg-orange-700 text-white font-bold py-2 px-4 rounded inline-block ">
@@ -98,6 +98,10 @@
                         @csrf
                         <input type="submit" value="Utilizar otro Usuario" class="mt-5 bg-orange-500 cursor-pointer hover:bg-orange-700 text-white font-bold py-2 px-4 rounded inline-block ">
                     </form>
+
+                    <div class="btn" id="permiso_camara">
+                        <i class="fa-solid fa-camera"></i>
+                    </div>
                 </div>
             </div>
 

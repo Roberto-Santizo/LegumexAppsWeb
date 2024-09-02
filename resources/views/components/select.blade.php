@@ -3,7 +3,7 @@
     <select name="{{ $name }}" id="{{ $id }}" class="w-full p-4 rounded bg-gray-50 {{ ( $buscador ) ? 'select' : '' }}">
         <option value="" class="opcion-default" selected disabled>---SELECCIONE UNA OPCIÓN---</option>
         @foreach ($options as $value => $display)
-            <option value="{{ $value }}" {{ $value == $selected ? 'selected' : '' }}>
+            <option value="{{ $value }}" {{ $display == $selected ? 'selected' : '' }}>
                 {{ $display }}
             </option>
         @endforeach

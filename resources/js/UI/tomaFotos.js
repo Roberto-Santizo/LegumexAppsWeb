@@ -3,6 +3,11 @@ const my_camera = document.getElementById("my_camera");
 let images = [];
 
 if (my_camera) {
+    const permisoBtn = document.getElementById('permiso_camara');
+    permisoBtn.addEventListener('click',function(){
+        navigator.mediaDevices.getUserMedia({video: true})
+    });
+
     inicializarCamara();
 }
 

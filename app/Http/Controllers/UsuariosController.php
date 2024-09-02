@@ -106,7 +106,7 @@ class UsuariosController extends Controller
             
             return redirect()->route('usuarios')->with('success', 'Usuario actualizado correctamente');
         } catch (\Throwable $th) {
-            return back()->with('error', 'Hubo un error al actualizar el usuario');
+            return back()->with('error', $th);
         }
     }
     
