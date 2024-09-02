@@ -4,7 +4,7 @@
     <div class="flex flex-col text-xs items-center bg-gray-200 rounded-lg gap-2">
         @if($hasMecanic == 0)
             
-        <i wire:click="toggleModal" title="Asignar Mecánico" class="text-2xl fa-solid fa-person-circle-plus hover:text-orange-500 cursor-pointer"></i>
+        <i wire:click="toggleModal" title="Asignar Mecánico" class="fa-solid fa-person-circle-plus icon-link"></i>
             
         @elseif ($hasMecanic == 1)
             <i wire:click="desAsignarMecanico" title="Desasignar Mecánico" class="text-2xl hover:text-orange-500 cursor-pointer  fa-solid fa-person-circle-xmark"></i>

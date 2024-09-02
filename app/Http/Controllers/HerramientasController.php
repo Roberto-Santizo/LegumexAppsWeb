@@ -57,9 +57,9 @@ class HerramientasController extends Controller
             $herramienta->update([
                 'herramienta' => $request->herramienta
             ]);
-            return redirect()->route('herramientas')->with('mensaje','Herramienta actualizada correctamente');
+            return redirect()->route('herramientas')->with('success','Herramienta actualizada correctamente');
         } catch (\Throwable $th) {
-            return back()->with('mensaje','Hubo un error al actualizar la herramienta, intentelo de nuevo más tarde');
+            return back()->with('error','Hubo un error al actualizar la herramienta, intentelo de nuevo más tarde');
         }
     }
 

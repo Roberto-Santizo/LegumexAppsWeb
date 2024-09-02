@@ -180,6 +180,7 @@ class OrdenTrabajoController extends Controller
         if ($request->filled('nombre_solicitante')) {
             $query->where('nombre_solicitante', 'like', '%' . $request->input('nombre_solicitante') . '%');
         }
+
     
         if ($request->filled('fecha_propuesta')) {
             $query->where('fecha_propuesta', $request->input('fecha_propuesta'));
@@ -188,6 +189,11 @@ class OrdenTrabajoController extends Controller
         if ($request->filled('planta_id')) {
             $query->where('planta_id', $request->input('planta_id'));
         }
+
+        if ($request->filled('urgencia')) {
+            $query->where('urgencia', $request->input('urgencia'));
+        }
+
         // Obtener resultados paginados
         $query->orderBy('created_at', 'desc');
         $ordenesTrabajo = $query->paginate(10)->appends($request->all());
@@ -198,7 +204,7 @@ class OrdenTrabajoController extends Controller
             'filtro' => $request->search,
             'titulo' => $estado->estado,
             'estado' => $estado,
-            'plantas' => $plantas
+            'plantas' => $plantas,
         ]);
     }
 
@@ -218,7 +224,7 @@ class OrdenTrabajoController extends Controller
         return view('mantenimiento.documentoOT.showUrgencia',['ordenes' => $ordenes, 'titulo' => $titulo]);
     }
     
-    public function store(Request $request){       
+    public function store(Request $request){    
         try {
             $orden_trabajo = OrdenTrabajo::create([
                 'planta_id' => $request->planta_id,
@@ -234,7 +240,9 @@ class OrdenTrabajoController extends Controller
                 'urgencia' => $request->urgencia,
                 'especifique' => $request->especifique,
                 'estado_id' => 1,
-                'supervisor_id' => $request->supervisor_id
+                'supervisor_id' => $request->supervisor_id,
+                'folder_url' => $request->folder_url,
+                'folder_id' => $request->folder_id
             ]);
 
             $response = [

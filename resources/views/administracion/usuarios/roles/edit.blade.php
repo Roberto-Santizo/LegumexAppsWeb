@@ -5,36 +5,18 @@
 @endsection
 
 @section('contenido')
-    @if(session('error'))
-        <p class="bg-orange-500 uppercase text-xl text-white my-2 rounded-lg p-2 text-center font-bold">{{ session('error') }}</p>
-    @endif
+   <x-alertas />
 
-    <a href="{{ route('usuarios.roles') }}" class=" bg-orange-500 cursor-pointer hover:bg-orange-700 text-white font-bold py-2 px-4 rounded inline-block mt-5 mb-5 ">
-        <i class="fa-solid fa-arrow-left"></i>
-        Volver
-    </a>
+   <x-link route="usuarios" text="Volver" icon="fa-solid fa-arrow-left" />
+   
 
     <form action="{{ route('usuarios.roles-update',$role) }}" method="POST">
         @csrf
         @method('PATCH')
-        <div class="mb-5">
-            <label for="name" class="mb-2 block uppercase text-gray-500 font-bold">Nombre del rol: </label>
-            <input
-                type="text" 
-                id="name"
-                name="name"
-                class="border p-3 w-full rounded-lg @error('name') border-red-500 @enderror"    
-                placeholder="Nombre del nuevo rol"
-                autocomplete="off"
-                value="{{ $role->name }}"
-            >
-                                        
-            @error('name')
-                <p class="bg-red-500 text-white my-2 rounded-lg text-sm p-2 text-center">{{ $message }}</p>
-            @enderror
-        </div>
 
-        <input type="submit" value="Guardar" class=" bg-orange-600 hover:bg-orange-700 p-3 transition-colors cursor-pointer uppercase font-bold text-white rounded-lg">
+        <x-input type="text" name="name" label="Nombre" value="{{ $role->name }}" placeholder="Nombre del Rol" />
+
+        <input type="submit" value="Guardar" class=" btn">
     </form>
 
 @endsection

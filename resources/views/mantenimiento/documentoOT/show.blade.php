@@ -11,7 +11,7 @@ Orden de trabajo
     <div class="text-sm md:text-xl mt-5 flex flex-col md:grid md:grid-cols-2 gap-2">
 
         <div>
-            <p>Planta: <span class="font-bold">{{ $ot->planta->planta }}</span></p>
+            <p>Planta: <span class="font-bold">{{ $ot->planta->name }}</span></p>
             <p>Area: <span class="font-bold">{{ $ot->area->area }}</span></p>
             <p>Problema detectado: <span class="font-bold">{{ $ot->problema_detectado }}</span></p>
             @if ($ot->equipo_problema)
@@ -21,7 +21,7 @@ Orden de trabajo
         @if ($ot->elemento_id)
         <p>Ubicación: <span class="font-bold">{{ $ot->elemento->elemento }}</span></p>
         @endif
-
+        <p>Imágenes de la reparación: <span class="font-bold hover:text-gray-500"><a href="{{ $ot->folder_url }}" target="__blank">Click Aquí</a></span></p>
 
         <div>
             <p>Fecha de creación: <span class="font-bold">{{ $ot->created_at->format('d-m-Y')}}</span></p>

@@ -5,6 +5,7 @@ import Swal from "sweetalert2";
 import validator from "validator";
 import "choices.js/public/assets/styles/choices.min.css";
 import Choices from "choices.js";
+import { inicializarCamara } from "../UI/tomaFotos";
 
 (function () {
     const formulario = document.getElementById("formularioP1");
@@ -44,96 +45,130 @@ import Choices from "choices.js";
     function ModalOT() {
         const modal = document.createElement("div");
         modal.innerHTML = `
-        <div id="myModal" class="fixed inset-0 bg-gray-800 bg-opacity-75 flex items-center justify-center z-50">
-            <div class="bg-white rounded-lg shadow-xl transform transition-all w-1/2 h-4/5 overflow-y-auto">
-                <div class="px-4 py-5 sm:p-6">
-                    <div class="sm:flex sm:items-start">
-                        <div class="mt-3 text-center sm:mt-0 sm:ml-4 sm:text-left w-full">
-                            <h3 class="text-xl leading-6 font-bold text-gray-900 uppercase" id="modal-title">Formulario para Orden De Trabajo</h3>
-                            <div class="w-full mt-10">
-                                <p class="text-sm text-gray-500">
-                                    <form method="POST" action="/administracion/orden-trabajo/store" id="formulario4">
-                                        <fieldset class="p-5 mb-10 shadow-2xl">
-                                            <legend class="text-xl font-bold uppercase">Datos generales de la Orden</legend>
-                                            <div class="mb-5">
-                                                <label for="retiro_equipo" class="mb-2 block uppercase text-gray-500 font-bold">¿Es necesario retirar el equipo?</label>
-                                                <select name="retiro_equipo" id="retiro_equipo" class="w-full p-4 rounded bg-gray-50">
-                                                    <option value="" class="opcion-default" selected disabled>---SELECCIONE UNA OPCIÓN---</option>
-                                                    <option value="1">SI</option>
-                                                    <option value="2">NO</option>
-                                                </select>                                
-                                            </div>
-                                            <div class="mb-5 flex flex-col gap-2">
-                                                <label for="problema_detectado" class="inline-block uppercase text-gray-500 font-bold">Antecedentes/Problema detectado:</label>
-                                                <textarea id="problema_detectado" name="problema_detectado" rows="4" cols="50" class="border"></textarea>
-                                            </div>
-                                            <div class="mb-5">
-                                                <label for="urgencia" class="mb-2 block uppercase text-gray-500 font-bold">Urgencia del Trabajo:</label>
-                                                <select name="urgencia" id="urgencia" class="w-full p-4 rounded bg-red-50">
-                                                    <option value="" class="opcion-defaul" selected disabled>---SELECCIONE UNA OPCIÓN---</option>
-                                                    <option value="1" class="bg-red-500 text-white">URGENTE</option>
-                                                    <option value="2" class="bg-yellow-500 text-white">MEDIA</option>
-                                                    <option value="3" class="bg-green-500 text-white">BAJA</option>
-                                                </select>                                
-                                            </div>
-                                            <div class="mb-5 flex gap-2 items-center">
-                                                <label for="fecha_propuesta" class="inline-block uppercase text-gray-500 font-bold">Fecha propuesta de entrega:</label>
-                                                <input type="date" name="fecha_propuesta" id="fecha_propuesta" min="${
-                                                    new Date()
-                                                        .toISOString()
-                                                        .split("T")[0]
-                                                }">                              
-                                            </div>
-                                        </fieldset>
-                                        <fieldset class="p-5 mb-10 shadow-2xl">
-                                            <legend class="text-xl font-bold uppercase">Datos del jefe de área</legend>
-                                            <div class="mt-5">
-                                                <label for="supervisor_id" class="mb-2 block uppercase text-gray-500 font-bold">Nombre del Supervisor
-                                                    de
-                                                    Área:</label>
-                                                <select name="supervisor_id" id="supervisor_id" class="w-full p-4 rounded select">
-                                                    <option value="" class="opcion-defaul" selected disabled>---SELECCIONE UNA OPCIÓN---</option>
-                                                    
-                                                </select>
-                                            </div>
-                                            <div class="flex justify-center items-center flex-col">
-                                                <canvas id="signature-pad-2" width="400" height="200" class="bg-gray-50 mt-10 rounded-xl border border-black"></canvas>
-                                                <div class="clear_btn flex justify-center items-center flex-col mt-3">
-                                                    <h4 class="font-bold uppercase">Firma del jefe de área</h4>
-                                                    <div id="clear-button-2" class="inline-block mt-2 bg-orange-600 hover:bg-orange-700 p-3 transition-colors cursor-pointer uppercase font-bold text-white rounded-lg formulario__firma--clear"><span>Limpiar</span></div>
+            <div id="myModal" class="fixed inset-0 bg-gray-800 bg-opacity-75 flex items-center justify-center z-50">
+                <div class="bg-white rounded-lg shadow-xl transform transition-all w-1/2 h-4/5 overflow-y-auto">
+                    <div class="px-4 py-5 sm:p-6">
+                        <div class="sm:flex sm:items-start">
+                            <div class="mt-3 text-center sm:mt-0 sm:ml-4 sm:text-left w-full">
+                                <h3 class="text-xl leading-6 font-bold text-gray-900 uppercase" id="modal-title">Formulario para Orden De Trabajo</h3>
+                                <div class="w-full mt-10">
+                                    <p class="text-sm text-gray-500">
+                                        <form method="POST" action="/administracion/orden-trabajo/store" id="formulario4">
+                                            <fieldset class="p-5 mb-10 shadow-2xl">
+                                                <legend class="text-xl font-bold uppercase">Datos generales de la Orden</legend>
+                                                <div class="mb-5">
+                                                    <label for="retiro_equipo" class="mb-2 block uppercase text-gray-500 font-bold">¿Es necesario retirar el equipo?</label>
+                                                    <select name="retiro_equipo" id="retiro_equipo" class="w-full p-4 rounded bg-gray-50">
+                                                        <option value="" class="opcion-default" selected disabled>---SELECCIONE UNA OPCIÓN---</option>
+                                                        <option value="1">SI</option>
+                                                        <option value="2">NO</option>
+                                                    </select>                                
                                                 </div>
-                                            </div>
-                                        </fieldset>
-                                        <fieldset class="p-5 mb-2 shadow-2xl">
-                                            <legend class="text-xl font-bold uppercase">Datos del solicitante</legend>
-                                            <div class="flex justify-center items-center flex-col">
-                                                <canvas id="signature-pad" width="400" height="200" class="bg-gray-50 mt-10 rounded-xl border border-black"></canvas>
-                                                <div class="clear_btn flex justify-center items-center flex-col mt-3">
-                                                    <h4 class="font-bold uppercase">Firma del solicitante</h4>
-                                                    <div id="clear-button" class="inline-block mt-5 bg-orange-600 hover:bg-orange-700 p-3 transition-colors cursor-pointer uppercase font-bold text-white rounded-lg formulario__firma--clear"><span>Limpiar</span></div>
+                                                <div class="mb-5 flex flex-col gap-2">
+                                                    <label for="problema_detectado" class="inline-block uppercase text-gray-500 font-bold">Antecedentes/Problema detectado:</label>
+                                                    <textarea id="problema_detectado" name="problema_detectado" rows="4" cols="50" class="border"></textarea>
                                                 </div>
-                                            </div>
-                                        </fieldset>
-                                        <input type="hidden" value="" id="firma1">
-                                        <input type="hidden" value="" id="firma2">
-                                        <input id="btnSaveOT" type="submit" value="Guardar" class="inline-block mt-5 bg-blue-600 hover:bg-blue-700 p-3 transition-colors cursor-pointer uppercase font-bold text-white rounded-lg">
-                                    </form>
-                                </p>
+                                                <div class="mb-5">
+                                                    <label for="urgencia" class="mb-2 block uppercase text-gray-500 font-bold">Urgencia del Trabajo:</label>
+                                                    <select name="urgencia" id="urgencia" class="w-full p-4 rounded bg-red-50">
+                                                        <option value="" class="opcion-defaul" selected disabled>---SELECCIONE UNA OPCIÓN---</option>
+                                                        <option value="1" class="bg-red-500 text-white">URGENTE</option>
+                                                        <option value="2" class="bg-yellow-500 text-white">MEDIA</option>
+                                                        <option value="3" class="bg-green-500 text-white">BAJA</option>
+                                                    </select>                                
+                                                </div>
+                                                <div class="mb-5 flex gap-2 items-center">
+                                                    <label for="fecha_propuesta" class="inline-block uppercase text-gray-500 font-bold">Fecha propuesta de entrega:</label>
+                                                    <input type="date" name="fecha_propuesta" id="fecha_propuesta" min="${
+                                                        new Date()
+                                                            .toISOString()
+                                                            .split("T")[0]
+                                                    }">                              
+                                                </div>
+                                            </fieldset>
+
+                                            <fieldset class="p-5 mb-10 shadow-2xl">
+                                                <legend class="text-xl font-bold uppercase">Captura de Imágenes</legend>
+
+                                                <div>
+                                                    <h1 class="font-bold text-2xl mb-5 text-center">Imagenes Capturadas: </h1>
+                                                    <div class="flex justify-center items-center flex-wrap gap-2" id="results">
+                                                    </div>
+                                                </div>
+
+                                                <div id="camera">
+                                                    <div class="my-5" id="camera_fieldset">
+                                                        <div class="flex flex-col justify-center items-center mb-5 ">
+                                                            <div id="my_camera"></div>
+                                                            <div id="takesnapshot"
+                                                                class="text-white font-bold bg-orange-500 cursor-pointer hover:bg-orange-600 inline-block p-2 rounded my-5">
+                                                                <i class="fa-solid fa-camera"></i>
+                                                                Tomar Foto
+                                                            </div>
+                                                            <p class="text-xs">(Tome el menor número de fotos posibles)</p>
+                                                        </div>
+
+
+                                                        <div class="bg-orange-500 w-max text-white font-bold p-2 rounded uppercase hover:bg-orange-600 cursor-pointer mt-5 flex justify-center items-center gap-2"
+                                                            id="upload_button">
+                                                            <p>Guardar Fotos</p>
+                                                            <div class="w-5 h-5 border-4 border-white-500 border-dashed rounded-full animate-spin hidden" id="loading_icon"></div>
+                                                        </div>
+                                                    </div>
+                                                    <input type="hidden" id="folder_url" name="folder_url">
+                                                    <input type="hidden" id="folder_id" name="folder_id">
+                                            </fieldset>
+
+                                            <fieldset class="p-5 mb-10 shadow-2xl">
+                                                <legend class="text-xl font-bold uppercase">Datos del jefe de área</legend>
+                                                <div class="mt-5">
+                                                    <label for="supervisor_id" class="mb-2 block uppercase text-gray-500 font-bold">Nombre del Supervisor
+                                                        de
+                                                        Área:</label>
+                                                    <select name="supervisor_id" id="supervisor_id" class="w-full p-4 rounded select">
+                                                        <option value="" class="opcion-defaul" selected disabled>---SELECCIONE UNA OPCIÓN---</option>
+                                                        
+                                                    </select>
+                                                </div>
+                                                <div class="flex justify-center items-center flex-col">
+                                                    <canvas id="signature-pad-2" width="400" height="200" class="bg-gray-50 mt-10 rounded-xl border border-black"></canvas>
+                                                    <div class="clear_btn flex justify-center items-center flex-col mt-3">
+                                                        <h4 class="font-bold uppercase">Firma del jefe de área</h4>
+                                                        <div id="clear-button-2" class="btn formulario__firma--clear"><span>Limpiar</span></div>
+                                                    </div>
+                                                </div>
+                                            </fieldset>
+                                            <fieldset class="p-5 mb-2 shadow-2xl">
+                                                <legend class="text-xl font-bold uppercase">Datos del solicitante</legend>
+                                                <div class="flex justify-center items-center flex-col">
+                                                    <canvas id="signature-pad" width="400" height="200" class="bg-gray-50 mt-10 rounded-xl border border-black"></canvas>
+                                                    <div class="clear_btn flex justify-center items-center flex-col mt-3">
+                                                        <h4 class="font-bold uppercase">Firma del solicitante</h4>
+                                                        <div id="clear-button" class="btn formulario__firma--clear"><span>Limpiar</span></div>
+                                                    </div>
+                                                </div>
+                                            </fieldset>
+                                            <input type="hidden" value="" id="firma1">
+                                            <input type="hidden" value="" id="firma2">
+                                            <input id="btnSaveOT" type="submit" value="Guardar" class="btn uppercase">
+                                        </form>
+                                    </p>
+                                </div>
                             </div>
                         </div>
                     </div>
+                    <div class="px-4 py-3 sm:px-6 sm:flex sm:flex-row-reverse">
+                        <button id="closeModalBtn" type="button" class="btn-red">Cancelar</button>
+                    </div>
                 </div>
-                <div class="px-4 py-3 sm:px-6 sm:flex sm:flex-row-reverse">
-                    <button id="closeModalBtn" type="button" class="w-full inline-flex justify-center rounded-md border border-transparent shadow-sm px-4 py-2 bg-red-600 uppercase text-base font-medium text-white hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-offset-2  sm:ml-3 sm:w-auto sm:text-sm">Cancelar</button>
-                </div>
-            </div>
-        </div>`;
+            </div>`;
         document.body.appendChild(modal);
 
         inicializarFirma();
         modalActions(modal);
         guardarDatos(modal);
         fetchSupervisoresArea();
+        inicializarCamara();
     }
 
     function guardarDatos(modal) {
@@ -252,13 +287,14 @@ import Choices from "choices.js";
     async function save() {
         const datos = {
             retiro_equipo: document.getElementById("retiro_equipo").value,
-            problema_detectado:
-                document.getElementById("problema_detectado").value,
+            problema_detectado: document.getElementById("problema_detectado").value,
             urgencia: document.getElementById("urgencia").value,
             fecha_propuesta: document.getElementById("fecha_propuesta").value,
             supervisor_id: document.getElementById("supervisor_id").value,
             firma_solicitante: document.getElementById("firma1").value,
             firma_supervisor: document.getElementById("firma2").value,
+            folder_url: document.getElementById("folder_url").value,
+            folder_id: document.getElementById("folder_id").value,
             planta_id,
             area_id,
             elemento_id,

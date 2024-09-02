@@ -29,6 +29,7 @@ import './UI/filtrosSelect.js';
 import './UI/datosTareasFincas.js';
 import './UI/AsignacionUsuariosTareasFinca.js';
 import './UI/buscadorUsuariosFincas.js';
+import './UI/tomaFotos.js';
 
 //UX
 import './UX/formulario_checklist-preoperacional-campos.js';

@@ -70,8 +70,8 @@ Route::group(['middleware' => ['auth', 'role:admin|adminmanto|auxmanto'], 'prefi
     Route::middleware(['permission:create documentocp'])->group(function () {
         Route::get('/documentocp/select', [DocumentoCPController::class, 'select'])->name('documentocp.select');
         Route::get('/documentocp/ordenes/{documentocd}', [DocumentoCPController::class, 'showOrdenesChecklist'])->name('documentocp.showordeneschecklist');
-        Route::get('/documentocp/{planta:planta}/create', [DocumentoCPController::class, 'create'])->name('documentocp.create');
-        Route::post('/documentocp/{planta:planta}/create', [DocumentoCPController::class, 'store'])->name('documentocp.store');
+        Route::get('/documentocp/{planta:name}/create', [DocumentoCPController::class, 'create'])->name('documentocp.create');
+        Route::post('/documentocp/{planta:name}/create', [DocumentoCPController::class, 'store'])->name('documentocp.store');
         Route::get('/documentocp/generar-documento/{documentocp}', [DocumentoCPController::class, 'document'])->name('documentocp.document');
         Route::post('/documentocp/upload', [DocumentoCPController::class, 'uploadFile'])->name('documentocp.upload');
     });
@@ -89,9 +89,9 @@ Route::group(['middleware' => ['auth', 'role:admin|adminmanto|auxmanto'], 'prefi
         Route::post('/orden-trabajo/upload', [OrdenTrabajoController::class, 'uploadFile'])->name('documentoOT.upload');
     });
 
-    Route::get('/ordenes-trabajos', [OrdenTrabajoController::class, 'index'])->name('documentoOT');
-    Route::get('/ordenes-trabajos/{estado:estado}', [OrdenTrabajoController::class, 'showOrdenes'])->name('documentoOT.showordenes');
-    Route::get('/ordenes-trabajos/atrasadas', [OrdenTrabajoController::class, 'showAtrasadas'])->name('documentoOT.showatrasadas');
+    Route::get('/administracion/ordenes-trabajos',[OrdenTrabajoController::class,'index'])->name('documentoOT');
+    Route::get('/administracion/ordenes-trabajos/{estado:estado}',[OrdenTrabajoController::class,'showOrdenes'])->name('documentoOT.showordenes');
+    Route::get('/administracion/ordenes-trabajos/atrasadas',[OrdenTrabajoController::class,'showAtrasadas'])->name('documentoOT.showatrasadas');
 
 });
 

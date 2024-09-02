@@ -9,40 +9,31 @@ Permisos
 
 
 <div class="flex w-full justify-between items-center">
-    <a href="{{ route('usuarios') }}"
-        class=" bg-orange-500 cursor-pointer hover:bg-orange-700 text-white font-bold py-2 px-4 rounded inline-block mt-5 mb-5 ">
-        <i class="fa-solid fa-arrow-left"></i>
-        Volver
-    </a>
-
-    <a href="{{ route('usuarios.permissions-create') }}"
-        class="mt-5 bg-orange-500 cursor-pointer hover:bg-orange-700 text-white font-bold py-2 px-4 rounded inline-block ">
-        <i class="fa-solid fa-plus"></i>
-        Crear Permiso
-    </a>
+    <x-link route="usuarios" text="Volver" icon="fa-solid fa-arrow-left" />
+    <x-link route="usuarios.permissions-create" text="Crear Permiso" icon="fa-solid fa-plus" />
 </div>
+
 <div class="overflow-x-auto mt-10">
-    <table class="min-w-full divide-y divide-gray-200 dark:divide-gray-700 text-xs md:text-sm">
-        <thead class="bg-gray-50 dark:bg-gray-800">
-            <tr
-                class="md:text-sm text-sm font-bold uppercase text-left rtl:text-right text-gray-500 dark:text-gray-400">
-                <th scope="col" class="p-5">No.</th>
-                <th scope="col" class="p-5">Permiso</th>
-                <th scope="col" class="p-5">Fecha de creación</th>
-                <th scope="col" class="p-5">Última fecha de actualización</th>
-                <th scope="col" class="p-5 text-center">Acciones</th>
+    <table class="tabla">
+        <thead class="tabla-head">
+            <tr class="md:text-sm text-sm font-bold uppercase text-left rtl:text-right text-gray-500 dark:text-gray-400">
+                <th scope="col" class="encabezado">No.</th>
+                <th scope="col" class="encabezado">Permiso</th>
+                <th scope="col" class="encabezado">Fecha de creación</th>
+                <th scope="col" class="encabezado">Última fecha de actualización</th>
+                <th scope="col" class="encabezado">Acciones</th>
             </tr>
         </thead>
-        <tbody class="bg-white divide-y divide-gray-200 dark:divide-gray-700 dark:bg-gray-900">
+        <tbody class="tabla-body">
             @foreach ($permissions as $permission)
             <tr>
-                <td class="px-4 py-4 text-md font-medium whitespace-nowrap">{{ $permission->id }}</td>
-                <td class="px-4 py-4 text-md font-medium whitespace-nowrap">{{ $permission->name }}</td>
-                <td class="px-4 py-4 text-md font-medium whitespace-nowrap">{{ $permission->created_at }}</td>
-                <td class="px-4 py-4 text-md font-medium whitespace-nowrap">{{ $permission->updated_at }}</td>
-                <td class="px-4 py-4 text-md font-medium whitespace-nowrap flex gap-5 justify-center items-center">
+                <td class="campo">{{ $permission->id }}</td>
+                <td class="campo">{{ $permission->name }}</td>
+                <td class="campo">{{ $permission->created_at }}</td>
+                <td class="campo">{{ $permission->updated_at }}</td>
+                <td class="campo">
                     <a href="{{ route('usuarios.permissions-edit', $permission) }}">
-                        <i class="fa-solid fa-pen text-xl"></i>
+                        <i class="fa-solid fa-pen text-xl icon-link"></i>
                     </a>
                 </td>
             </tr>
@@ -51,8 +42,6 @@ Permisos
     </table>
 </div>
 
+<x-paginacion :items="$permissions" />
 
-<div class="my-10">
-    {{ $permissions->links('pagination::tailwind') }}
-</div>
 @endsection

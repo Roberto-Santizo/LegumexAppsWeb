@@ -8,6 +8,8 @@ function validarDatosOTVM(){
     const firma2 = document.getElementById('signature-pad-2');
     const fecha_propuesta = document.getElementById('fecha_propuesta').value;
     const supervisor = document.getElementById('supervisor_id').value;
+    const folder_id = document.getElementById('folder_id').value; 
+    const folder_url = document.getElementById('folder_url').value; 
 
     let alertas = [];
     
@@ -21,6 +23,14 @@ function validarDatosOTVM(){
 
     if(problema_detectado == ''){
         alertas.push('Especifique el problema detectado');
+    }
+
+    if(folder_id == ''){
+        alertas.push('Asegurese de haber tomado y guardado las fotos');
+    }
+
+    if(folder_url == ''){
+        alertas.push('Asegurese de haber tomado y guardado las fotos');
     }
 
     if(!(validator.isLength(problema_detectado,{max:750}))){
@@ -48,11 +58,21 @@ function validarDatosOT(){
     const planta_id = document.getElementById('planta_id').value;
     const area_id = document.getElementById('area_id').value;
     const supervisor = document.getElementById('supervisor_id').value;
+    const folder_id = document.getElementById('folder_id').value; 
+    const folder_url = document.getElementById('folder_url').value; 
 
     let alertas = [];
     
     if(planta_id == ''){
         alertas.push('Seleccione un planta');
+    }
+
+    if(folder_id == ''){
+        alertas.push('Asegurese de haber tomado y guardado las fotos');
+    }
+
+    if(folder_url == ''){
+        alertas.push('Asegurese de haber tomado y guardado las fotos');
     }
 
     if(planta_id == '1' || planta_id == '2' || planta_id == '5'){

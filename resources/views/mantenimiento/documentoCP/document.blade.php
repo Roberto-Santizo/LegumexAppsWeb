@@ -31,7 +31,7 @@ Documento
     <div class="grid grid-cols-2 mt-10">
         <div class="flex gap-3 text-4xl">
             <p>Planta: </p>
-            <p> {{ ($documentocp->planta_id == 1) ? 'I.Q.F.1' : $documentocp->planta->planta}}</p>
+            <p> {{ ($documentocp->planta_id == 1) ? 'I.Q.F.1' : $documentocp->planta->name}}</p>
         </div> 
         <div class="justify-end flex gap-5 text-4xl">
             <p>Fecha: </p>

@@ -5,13 +5,13 @@
 Crear orden de trabajo
 @endsection
 
+@push('scripts')
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/webcamjs/1.0.25/webcam.min.js"></script>
+@endpush
 
 @section('contenido')
-<a href="{{ route('documentoOT') }}"
-    class=" bg-orange-500 cursor-pointer hover:bg-orange-700 text-white font-bold py-2 px-4 rounded inline-block mt-5 mb-5 ">
-    <i class="fa-solid fa-arrow-left"></i>
-    Volver
-</a>
+
+<x-link route="documentoOT" text="Volver" icon="fa-solid fa-arrow-left" />
 
 <div class="w-full flex md:justify-center items-center">
     <form method="POST" action="{{ route('documentoOT.store') }}" id="formulario5" class="w-2/3">
@@ -19,99 +19,77 @@ Crear orden de trabajo
         <fieldset class="p-5 mb-10 shadow-2xl">
             <legend class="text-xl font-bold uppercase">Datos generales de la Orden</legend>
 
-            <div class="mb-5">
-                <label for="planta_id" class="mb-2 block uppercase text-gray-500 font-bold">Elija una planta</label>
-                <select name="planta_id" id="planta_id" class="w-full p-4 rounded bg-gray-50">
-                    <option value class="opcion-default" selected disabled>---SELECCIONE UNA OPCIÓN---</option>
-                    @foreach ($plantas as $planta)
-                    <option value="{{ $planta->id }}">{{ $planta->planta }}</option>
-                    @endforeach
-                </select>
-            </div>
-
-            <div class="mb-5">
-                <label for="area_id" class="mb-2 block uppercase text-gray-500 font-bold">Elija una area</label>
-                <select name="area_id" id="area_id" class="w-full p-4 rounded bg-gray-50">
-                    <option value class="opcion-default" selected disabled>---SELECCIONE UNA OPCIÓN---</option>
-
-                </select>
-            </div>
+            <x-select name="planta_id" label="Seleccione una Planta" :options="$plantas"  id="planta_id"/>
+            
+            <x-select name="area_id" label="Seleccione un Área" id="area_id"/>
 
             <div class="mb-5 hidden especifique">
-                <label for="especifique" class="mb-2 block uppercase text-gray-500 font-bold">Especifique</label>
-                <input type="text" id="especifique" name="especifique"
-                    class="border p-3 w-full rounded-lg @error('especifique') border-red-500 @enderror"
-                    placeholder="Especifique el área" autocomplete="off" value="{{ old('especifique') }}">
+                <x-input type="text" name="especifique" label="Especifique" placeholder="Especifique el Área" />
             </div>
 
             <div class="mb-5 hidden equipo_problema">
-                <label for="equipo_problema" class="mb-2 block uppercase text-gray-500 font-bold">Equipo con
-                    problema</label>
-                <input type="text" id="equipo_problema" name="equipo_problema"
-                    class="border p-3 w-full rounded-lg @error('equipo_problema') border-red-500 @enderror"
-                    placeholder="Ingrese el equipo con problema" autocomplete="off"
-                    value="{{ old('equipo_problema') }}">
+                <x-input type="text" name="equipo_problema" label="Equipo con Problema" placeholder="Especifique el Equipo con Problema" />
             </div>
 
-            <div class="mb-5 elemento_id">
-                <label for="elemento_id" class="mb-2 block uppercase text-gray-500 font-bold">Elija una
-                    ubicación</label>
-                <select name="elemento_id" id="elemento_id" class="w-full p-4 rounded bg-gray-50">
-                    <option value class="opcion-default" selected disabled>---SELECCIONE UNA OPCIÓN---</option>
-
-                </select>
-            </div>
-
-
-            <div class="mb-5">
-                <label for="retiro_equipo" class="mb-2 block uppercase text-gray-500 font-bold">¿Es necesario retirar el
-                    equipo?</label>
-                <select name="retiro_equipo" id="retiro_equipo" class="w-full p-4 rounded bg-gray-50">
-                    <option value="" class="opcion-default" selected disabled>---SELECCIONE UNA OPCIÓN---</option>
-                    <option value="1">SI</option>
-                    <option value="2">NO</option>
-                </select>
-            </div>
+           <div class="elemento_id">
+                <x-select name="elemento_id" label="Seleccione una Ubicación" id="elemento_id"/>
+           </div>
+        
+           @php
+               $options = ['1' => 'SI', '2' => 'NO'];
+               $urgenciasOptions = ['1' => 'URGENTE', '2' => 'MEDIA', '3' => 'BAJA'];
+           @endphp
+           
+           <x-select name="retiro_equipo" label="¿Es necesario Retirar el Equipo?" :options="$options" id="retiro_equipo"/>
 
             <div class="mb-5 flex flex-col gap-2">
                 <label for="problema_detectado"
                     class="inline-block uppercase text-gray-500 font-bold">Antecedentes/Problema detectado:</label>
-                <textarea id="problema_detectado" name="problema_detectado" rows="4" cols="50"
-                    class="border"></textarea>
+                <textarea id="problema_detectado" name="problema_detectado" rows="4" cols="50" class="border"></textarea>
             </div>
 
-            <div class="mb-5">
-                <label for="urgencia" class="mb-2 block uppercase text-gray-500 font-bold">Urgencia del Trabajo:</label>
-                <select name="urgencia" id="urgencia" class="w-full p-4 rounded bg-red-50">
-                    <option value="" class="opcion-defaul" selected disabled>---SELECCIONE UNA OPCIÓN---</option>
-                    <option value="1" class="bg-red-500 text-white">URGENTE</option>
-                    <option value="2" class="bg-yellow-500 text-white">MEDIA</option>
-                    <option value="3" class="bg-green-500 text-white">BAJA</option>
-                </select>
-            </div>
 
-            <div class="mb-5 flex gap-2 items-center">
-                <label for="fecha_propuesta" class="inline-block uppercase text-gray-500 font-bold">Fecha propuesta de
-                    entrega:</label>
-                <input type="date" name="fecha_propuesta" id="fecha_propuesta" min="{{ now()->format('Y-m-d') }}">
-            </div>
+            <x-select name="urgencia" label="Urgencia del Trabajo" :options="$urgenciasOptions" id="urgencia"/>
 
+            <x-input type="date" name="fecha_propuesta" label="Fecha propuesta de entrega" />
 
         </fieldset>
 
         <fieldset class="p-5 mb-10 shadow-2xl">
-            <legend class="text-xl font-bold uppercase">Datos del Supervisor de área</legend>
-            <div class="mt-5">
-                <label for="supervisor_id" class="mb-2 block uppercase text-gray-500 font-bold">Nombre del Supervisor
-                    de
-                    Área:</label>
-                <select name="supervisor_id" id="supervisor_id" class="w-full p-4 rounded select">
-                    <option value="" class="opcion-defaul" selected disabled>---SELECCIONE UNA OPCIÓN---</option>
-                    @foreach ($supervisores as $supervisor)
-                        <option value="{{ $supervisor->id }}">{{ $supervisor->name . ' - ' . $supervisor->role->name }}</option>
-                    @endforeach
-                </select>
+            <legend class="text-xl font-bold uppercase">Captura de Imágenes</legend>
+
+            <div>
+                <h1 class="font-bold text-2xl mb-5 text-center">Imagenes Capturadas: </h1>
+                <div class="flex justify-center items-center flex-wrap gap-2" id="results">
+                </div>
             </div>
+
+            <div id="camera">
+                <div class="my-5" id="camera_fieldset">
+                    <div class="flex flex-col justify-center items-center">
+                        <div id="my_camera"></div>
+                        <div id="takesnapshot"
+                            class="btn">
+                            <i class="fa-solid fa-camera"></i>
+                            Tomar Foto
+                        </div>
+                        <p class="text-xs mt-5">(Tome el menor número de fotos posibles)</p>
+                    </div>
+
+                    <div class="btn"
+                        id="upload_button">
+                        <p>Guardar Fotos</p>
+                        <x-loading-icon />
+                    </div>
+                </div>
+                <input type="hidden" id="folder_url" name="folder_url">
+                <input type="hidden" id="folder_id" name="folder_id">
+        </fieldset>
+
+        <fieldset class="p-5 mb-10 shadow-2xl">
+            <legend class="text-xl font-bold uppercase">Datos del Supervisor de área</legend>
+
+            <x-select name="supervisor_id" :options="$supervisores" id="supervisor_id" label="Nombre del Supervisor de Área" buscador="true"/>
 
             <div class="flex justify-center items-center flex-col">
                 <canvas id="signature-pad-2" width="375" height="200"
@@ -141,8 +119,7 @@ Crear orden de trabajo
         </fieldset>
         <input type="hidden" value="" id="firma" name="firma_solicitante">
         <input type="hidden" value="" id="firma2" name="firma_supervisor">
-        <input id="btnSaveOT" type="submit" value="Guardar"
-            class="inline-block mt-5 bg-blue-600 hover:bg-blue-700 p-3 transition-colors cursor-pointer uppercase font-bold text-white rounded-lg">
+        <input id="btnSaveOT" type="submit" value="Guardar" class="btn">
     </form>
 </div>
 @endsection
