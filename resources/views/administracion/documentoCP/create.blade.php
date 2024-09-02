@@ -1,7 +1,7 @@
 @extends('layouts.administracion')
 
 @section('titulo')
-Documento Checklist Preoperacional - {{ $planta->planta }}
+Documento Checklist Preoperacional - {{ $planta->name }}
 @endsection
 
 @push('scripts')
@@ -49,7 +49,7 @@ Documento Checklist Preoperacional - {{ $planta->planta }}
                 <fieldset class="formulario__fieldset">
                     <legend class="formulario__legend text-4xl">Información General</legend>
                     <div class="formulario__campo">
-                        <p class="text-2xl">Planta: <span class="font-bold">{{ $planta->planta }}</span></p>
+                        <p class="text-2xl">Planta: <span class="font-bold">{{ $planta->name }}</span></p>
                     </div>
                     <div class="formulario__campo">
                         <p class="text-2xl">Fecha: <span class="font-bold">{{ now()->format('d-m-Y') }}</span></p>

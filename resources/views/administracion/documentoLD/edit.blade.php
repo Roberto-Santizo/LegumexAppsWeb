@@ -29,7 +29,7 @@ Editar documento
             </div>
 
             <div class="mb-5 bg-gray-200 p-5 rounded-lg">
-                <p class="uppercase text-gray-500 font-bold">Planta: <span class="text-black">{{ $documento->planta->planta }}</span></p>
+                <p class="uppercase text-gray-500 font-bold">Planta: <span class="text-black">{{ $documento->planta->name }}</span></p>
             </div>
 
             <div class="mb-5 bg-gray-200 p-5 rounded-lg">
@@ -118,7 +118,7 @@ Editar documento
 
         <div class="flex justify-end mt-20">
             <input type="submit" value="Guardar"
-                class=" bg-sky-600 hover:bg-sky-700 p-3 transition-colors cursor-pointer uppercase font-bold text-white rounded-lg">
+                class="btn">
         </div>
     </form>
 </div>
