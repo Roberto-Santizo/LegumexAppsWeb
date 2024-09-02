@@ -76,6 +76,7 @@ class UsuariosController extends Controller
         $permissions = Permission::all();
         return view('administracion.usuarios.edit',['usuario' => $usuario, 'roles' => $roles, 'permisos_usuarios' => $permissions_usuarios, 'permisos' => $permissions]);
     }
+    
     public function update(User $usuario, Request $request)
     {
         try {

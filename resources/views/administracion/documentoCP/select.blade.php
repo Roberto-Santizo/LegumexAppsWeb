@@ -5,15 +5,13 @@
 @endsection
 
 @section('contenido')
-    <a href="{{ route('documentocp') }}" class=" bg-orange-500 cursor-pointer hover:bg-orange-700 text-white font-bold py-2 px-4 rounded inline-block mt-5 mb-5 ">
-        <i class="fa-solid fa-arrow-left"></i>
-            Volver
-    </a>
+    <x-link route="documentocp" text="Volver" icon="fa-solid fa-arrow-left" />
+   
 
-    <div class="flex gap-10 justify-center items-center">
+    <div class="flex flex-col uppercase">
         @foreach ($plantas as $planta)
-            <a href="{{ route('documentocp.create',$planta) }}" class="mt-5 bg-orange-500 cursor-pointer hover:bg-orange-700 text-white font-bold py-2 px-4 rounded w-full h-full text-center">
-                {{ $planta->planta }}
+            <a href="{{ route('documentocp.create',$planta->name) }}" class="mt-5 btn">
+                {{ $planta->name }}
             </a>
         @endforeach
     </div>

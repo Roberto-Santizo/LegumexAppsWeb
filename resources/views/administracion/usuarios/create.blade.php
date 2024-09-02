@@ -5,96 +5,24 @@
 @endsection
 
 @section('contenido')
-    @if(session('error'))
-        <p class="bg-orange-500 uppercase text-xl text-white my-2 rounded-lg p-2 text-center font-bold">{{ session('error') }}</p>
-    @endif
+   
+<x-alertas />
 
-    <a href="{{ route('usuarios') }}" class=" bg-orange-500 cursor-pointer hover:bg-orange-700 text-white font-bold py-2 px-4 rounded inline-block mt-5 mb-5 ">
-        <i class="fa-solid fa-arrow-left"></i>
-        Volver
-    </a>
+    <x-link route="usuarios" text="Volver" icon="fa-solid fa-arrow-left" />
+   
 
     <form action="{{ route('usuarios.store') }}" method="POST" class="mt-10">
         @csrf
-        <div class="mb-5">
-            <label for="name" class="mb-2 block uppercase text-gray-500 font-bold">Nombre: </label>
-            <input
-                type="text" 
-                id="name"
-                name="name"
-                class="border p-3 w-full rounded-lg @error('name') border-red-500 @enderror"    
-                placeholder="Nombre del nuevo usuario"
-                autocomplete="off"
-                value="{{ old('name') }}"
-            >
-                                        
-            @error('name')
-                <p class="bg-red-500 text-white my-2 rounded-lg text-sm p-2 text-center">{{ $message }}</p>
-            @enderror
-        </div>
-
-        <div class="mb-5">
-            <label for="username" class="mb-2 block uppercase text-gray-500 font-bold">Nombre de usuario: </label>
-            <input
-                type="text" 
-                id="username"
-                name="username"
-                class="border p-3 w-full rounded-lg @error('username') border-red-500 @enderror"    
-                placeholder="Nombre del nuevo usuario"
-                autocomplete="off"
-                value="{{ old('username') }}"
-            >
-                                        
-            @error('username')
-                <p class="bg-red-500 text-white my-2 rounded-lg text-sm p-2 text-center">{{ $message }}</p>
-            @enderror
-        </div>
-
-        <div class="mb-5">
-            <label for="email" class="mb-2 block uppercase text-gray-500 font-bold">Correo electronico: </label>
-            <input
-                type="email" 
-                id="email"
-                name="email"
-                class="border p-3 w-full rounded-lg @error('email') border-red-500 @enderror"    
-                placeholder="Nombre del nuevo usuario"
-                autocomplete="off"
-                value="{{ old('email') }}"
-            >
-                                        
-            @error('email')
-                <p class="bg-red-500 text-white my-2 rounded-lg text-sm p-2 text-center">{{ $message }}</p>
-            @enderror
-        </div>
-
-        <div class="mb-5">
-            <label for="password" class="mb-2 block uppercase text-gray-500 font-bold">Contraseña</label>
-            <input 
-                type="password"
-                id="password"
-                name="password"
-                placeholder="Contraseña de registro"
-                class="border p-3 w-full rounded-lg @error('passowrd') border-red-500 @enderror"   
-            >
-                                            
-        @error('password')
-            <p class="bg-red-500 text-white my-2 rounded-lg text-sm p-2 text-center">{{ $message }}</p>
-        @enderror
-        </div>
-
-        <div class="mb-5">
-            <label for="role_id" class="mb-2 block uppercase text-gray-500 font-bold ">Rol: </label>
-            <select name="role_id" id="role" class="w-full p-4 rounded bg-gray-50">
-                <option  value class="opcion-default" selected disabled>---SELECCIONE UNA OPCIÓN---</option>
-                @foreach ($roles as $role)
-                    <option value="{{ $role->id }}">{{ $role->name }}</option>
-                @endforeach
-    
-            </select>                                
-            @error('role_id')
-                <p class="bg-red-500 text-white my-2 rounded-lg text-sm p-2 text-center">Seleccione un rol<p>
-            @enderror
-        </div>
+        
+        <x-input type="text" name="name" label="Nombre" value="{{ old('name') }}" placeholder="Nombre Completo del Usuario" />
+        
+        <x-input type="text" name="username" label="Username" value="{{ old('username') }}" placeholder="Username del Usuario" />
+        
+        <x-input type="email" name="email" label="Correo Electronico" value="{{ old('username') }}" placeholder="Correo del Usuario" />
+        
+        <x-input type="password" name="password" label="Contraseña" value="{{ old('password') }}" placeholder="Contraseña del Perfil" />
+        
+        <x-select name="role_id" label="Seleccione un Rol" :options="$roles" />
 
         <table class="w-full mb-5">
             <thead class="bg-sky-600">
@@ -118,6 +46,6 @@
             </tbody>
         </table>
 
-        <input type="submit" value="Crear" class=" bg-orange-600 hover:bg-orange-700 p-3 transition-colors cursor-pointer uppercase font-bold text-white rounded-lg">
+        <input type="submit" value="CREAR" class="btn">
     </form>
 @endsection

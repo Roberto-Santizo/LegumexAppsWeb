@@ -180,6 +180,7 @@ class OrdenTrabajoController extends Controller
         if ($request->filled('nombre_solicitante')) {
             $query->where('nombre_solicitante', 'like', '%' . $request->input('nombre_solicitante') . '%');
         }
+
     
         if ($request->filled('fecha_propuesta')) {
             $query->where('fecha_propuesta', $request->input('fecha_propuesta'));
@@ -188,6 +189,11 @@ class OrdenTrabajoController extends Controller
         if ($request->filled('planta_id')) {
             $query->where('planta_id', $request->input('planta_id'));
         }
+
+        if ($request->filled('urgencia')) {
+            $query->where('urgencia', $request->input('urgencia'));
+        }
+
         // Obtener resultados paginados
         $query->orderBy('created_at', 'desc');
         $ordenesTrabajo = $query->paginate(10)->appends($request->all());
@@ -198,7 +204,7 @@ class OrdenTrabajoController extends Controller
             'filtro' => $request->search,
             'titulo' => $estado->estado,
             'estado' => $estado,
-            'plantas' => $plantas
+            'plantas' => $plantas,
         ]);
     }
 

@@ -21,7 +21,7 @@ Orden de trabajo
         @if ($ot->elemento_id)
         <p>Ubicación: <span class="font-bold">{{ $ot->elemento->elemento }}</span></p>
         @endif
-        <p>Imágenes de la ubicación con problema: <span class="font-bold hover:text-gray-500"><a href="{{ $ot->folder_url }}" target="__blank">Click Aquí</a></span></p>
+        <p>Imágenes de la reparación: <span class="font-bold hover:text-gray-500"><a href="{{ $ot->folder_url }}" target="__blank">Click Aquí</a></span></p>
 
         <div>
             <p>Fecha de creación: <span class="font-bold">{{ $ot->created_at->format('d-m-Y')}}</span></p>

@@ -43,12 +43,13 @@ class SupervisoresController extends Controller implements HasMiddleware
     {
         $validated = $request->validate([
             'name' => 'required',
-            'role_id' => 'required'
+            'role_id' => 'required',
         ]);
 
         Supervisor::create([
             'name' => $request->name,
             'role_id' => $request->role_id,
+            'status' => 1
 
         ]);
 

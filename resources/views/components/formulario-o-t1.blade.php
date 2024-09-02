@@ -25,51 +25,27 @@
 
 
                 <div class="flex gap-10">
-                    <div class="mb-5 flex flex-col">
-                        <label for="hora_inicio" class="font-bold text-start">Hora de inicio: </label>
-                        <input type="time" name="hora_inicio" id="hora_inicio" class="border border-black p-2 rounded"
-                            placeholder="Nombre del jefe de mantenimiento">
-                        @error('hora_inicio')
-                        <p class="bg-red-500 text-white my-2 rounded-lg text-sm p-2 text-center">{{ $message }}</p>
-                        @enderror
-                    </div>
 
-                    <div class="mb-5 flex flex-col">
-                        <label for="hora_final" class="font-bold text-start">Hora de final: </label>
-                        <input type="time" name="hora_final" id="hora_final" class="border border-black p-2 rounded"
-                            placeholder="Nombre del jefe de mantenimiento">
-                        @error('hora_final')
-                        <p class="bg-red-500 text-white my-2 rounded-lg text-sm p-2 text-center">{{ $message }}</p>
-                        @enderror
-                    </div>
+                    <x-input type="time" name="hora_inicio" id="hora_inicio" label="Hora de Inicio del Trabajo" />
+                    <x-input type="time" name="hora_final" id="hora_final" label="Hora de Finalización del Trabajo" />
                 </div>
             </div>
 
             <div class=" p-3 shadow-lg rounded">
-                <div class="mb-5 flex flex-col">
-                    <label for="nombre_mecanico" class="font-bold text-start">Nombre: </label>
-                    <input type="text" name="nombre_mecanico" id="nombre_mecanico"
-                        class="border border-black p-2 rounded" disabled placeholder="{{ $ot->usuario->name }}">
-                    @error('nombre_mecanico')
-                    <p class="bg-red-500 text-white my-2 rounded-lg text-sm p-2 text-center">{{ $message }}</p>
-                    @enderror
-                </div>
+                <x-input type="text" disabled name="nombre_mecanico" label="Nombre del Mécanico Asignado" value="{{ $ot->usuario->name }}"/>
+                <x-input type="hidden" name="nombre_mecanico" value="{{ $ot->usuario->name }}" />
 
-                <div class="mb-5 flex flex-col">
-                    <label for="fecha_entrega" class="font-bold text-start">Fecha de entrega: </label>
-                    <input type="text" name="fecha_entrega" disabled id="fecha_entrega"
-                        class="border border-black p-2 rounded" value="{{now()->format('d-m-Y') }}">
-                    @error('fecha_entrega')
-                    <p class="bg-red-500 text-white my-2 rounded-lg text-sm p-2 text-center">{{ $message }}</p>
-                    @enderror
-                    <input type="hidden" name="fecha_entrega" value="{{now()->format('d-m-Y') }}">
-                </div>
+
+                <x-input disabled type="text" name="fecha_entrega" label="Fecha de Entrega" value="{{ now()->format('d-m-Y') }}" />
+                <x-input type="hidden" name="fecha_entrega" value="{{ now()->format('d-m-Y') }}" />
+                            
+                
                 <div class="flex flex-col justify-center items-center">
                     <canvas id="signature-pad-2" class="border border-black w-full lg:w-96"></canvas>
                     <div class="clear_btn flex flex-col items-center">
                         <h4 class="text-xl font-bold">Mecánico Asignado</h4>
                         <div id="clear-button-2"
-                            class="inline-block mt-5 bg-orange-600 hover:bg-orange-700 p-3 transition-colors cursor-pointer uppercase font-bold text-white rounded-lg">
+                            class="btn">
                             <span>Limpiar</span></div>
                     </div>
                     <input type="hidden" id="firma" name="firma_mecanico">
@@ -93,7 +69,7 @@
                 <div class="flex flex-col justify-center items-center mb-5 ">
                     <div id="my_camera"></div>
                     <div id="takesnapshot"
-                        class="text-white font-bold bg-orange-500 cursor-pointer hover:bg-orange-600 inline-block p-2 rounded my-5">
+                        class="btn">
                         <i class="fa-solid fa-camera"></i>
                         Tomar Foto
                     </div>
@@ -101,7 +77,7 @@
                 </div>
 
 
-                <div class="bg-orange-500 w-max text-white font-bold p-2 rounded uppercase hover:bg-orange-600 cursor-pointer mt-5 flex justify-center items-center gap-2"
+                <div class="btn"
                     id="upload_button">
                     <p>Guardar Fotos</p>
                     <x-loading-icon />

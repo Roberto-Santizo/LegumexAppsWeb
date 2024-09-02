@@ -9,23 +9,13 @@ Ordenes de Trabajo {{ $titulo }}
 @section('contenido')
 
 <x-alertas />
-<div>
-    <a href="{{ route('documentoOT') }}"
-        class=" bg-orange-500 cursor-pointer hover:bg-orange-700 text-white font-bold py-2 px-4 rounded inline-block mt-5 mb-5 ">
-        <i class="fa-solid fa-arrow-left"></i>
-        Volver
-    </a>
-
-    <div id="FiltrosBtn"
-        class="mt-10 md:hidden bg-orange-500 cursor-pointer hover:bg-orange-700 text-white font-bold py-2 px-4 rounded flex justify-center items-center gap-2">
-        <p>Filtros</p>
-        <i class="fa-solid fa-plus"></i>
-    </div>
+<div id="FiltrosBtn" class="mt-10 md:hidden btn">
+    <p>Filtros</p>
 </div>
 
-<div class="flex-col items-center gap-5 p-4 md:flex-row hidden md:flex" id="filtros">
-    <form action="{{ route('documentoOT.showordenes',$estado) }}" method="GET" class="w-full">
-        <div class="bg-gray-100 p-4 rounded-lg flex flex-col md:flex-row gap-4">
+<div class="flex-col items-center gap-5 p-4 md:flex-row hidden md:flex justify-between" id="filtros">
+    <form action="{{ route('documentoOT.showordenes',$estado) }}" method="GET" class="w-full md:w-5/6">
+        <div class="shadow-xl p-4 rounded-lg flex flex-col md:flex-row gap-4">
             <div class="flex flex-col gap-2">
                 <label for="nombre_solicitante" class="text-sm font-medium">Solicitante:</label>
                 <input autocomplete="off" class="border border-black p-2 rounded w-full" type="text"
@@ -46,13 +36,23 @@ Ordenes de Trabajo {{ $titulo }}
                     <option value="">--SIN FILTRO--</option>
                     @foreach ($plantas as $planta)
                     <option value="{{ $planta->id }}" {{ $planta->id == old('planta_id', request()->input('planta_id'))
-                        ? 'selected' : '' }}>{{ $planta->planta }}</option>
+                        ? 'selected' : '' }}>{{ $planta->name }}</option>
                     @endforeach
                 </select>
             </div>
 
+            <div class="flex flex-col gap-2">
+                <label for="urgencia" class="text-sm font-medium">Urgencia:</label>
+                <select name="urgencia" id="urgencia" class="border border-black p-2 rounded w-full">
+                    <option value="">--SIN FILTRO--</option>
+                    <option value="1">URGENTE</option>
+                    <option value="2">MEDIA</option>
+                    <option value="3">BAJA</option>
+                </select>
+            </div>
+
             <div class="flex flex-col gap-2 md:flex-row md:justify-between">
-                <button type="submit" class="bg-orange-500 hover:bg-orange-700 text-white font-bold py-2 px-4 rounded">
+                <button type="submit" class="btn">
                     <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
                         stroke="currentColor" class="w-6 h-6 inline-block align-middle">
                         <path stroke-linecap="round" stroke-linejoin="round"
@@ -60,23 +60,19 @@ Ordenes de Trabajo {{ $titulo }}
                     </svg>
                 </button>
 
-                <a href="{{ route('documentoOT.showordenes',$estado) }}"
-                    class="mt-2 md:mt-0 text-white font-bold bg-orange-500 hover:bg-orange-600 p-2 text-center rounded flex items-center justify-center">
-                    Borrar Filtros
-                </a>
+                <x-link route="documentoOT.showordenes" :model="$estado" text="Borrar Filtros" />
             </div>
         </div>
     </form>
+    <x-link route="documentoOT" text="Volver" icon="fa-solid fa-arrow-left" />
+
 </div>
-
-
-
 
 @if($ordenes->count() > 0)
-<x-ordenesde-trabajo :ots="$ordenes" />
+    <x-ordenesde-trabajo :ots="$ordenes" />
 @else
-<p class="text-center uppercase text-2xl mt-10">No hay ordenes {{ $titulo }}</p>
+    <p class="text-center uppercase text-2xl mt-10">No hay ordenes {{ $titulo }}</p>
 @endif
-{{ $ordenes->links('pagination::tailwind') }}
-</div>
+
+<x-paginacion :items="$ordenes" />
 @endsection

@@ -63,8 +63,8 @@ Route::group(['middleware' => ['auth','role:admin|adminmanto|auxmanto']],functio
     Route::middleware(['permission:create documentocp'])->group(function () {
         Route::get('/administracion/documentocp/select',[DocumentoCPController::class,'select'])->name('documentocp.select');
         Route::get('/administracion/documentocp/ordenes/{documentocd}',[DocumentoCPController::class,'showOrdenesChecklist'])->name('documentocp.showordeneschecklist');
-        Route::get('/administracion/documentocp/{planta:planta}/create',[DocumentoCPController::class,'create'])->name('documentocp.create');
-        Route::post('/administracion/documentocp/{planta:planta}/create',[DocumentoCPController::class,'store'])->name('documentocp.store');
+        Route::get('/administracion/documentocp/{planta:name}/create',[DocumentoCPController::class,'create'])->name('documentocp.create');
+        Route::post('/administracion/documentocp/{planta:name}/create',[DocumentoCPController::class,'store'])->name('documentocp.store');
         Route::get('/administracion/documentocp/generar-documento/{documentocp}',[DocumentoCPController::class,'document'])->name('documentocp.document');
         Route::post('/administracion/documentocp/upload',[DocumentoCPController::class,'uploadFile'])->name('documentocp.upload');
     });
@@ -82,7 +82,9 @@ Route::group(['middleware' => ['auth','role:admin|adminmanto|auxmanto']],functio
     });
 
     Route::get('/administracion/ordenes-trabajos',[OrdenTrabajoController::class,'index'])->name('documentoOT');
+    
     Route::get('/administracion/ordenes-trabajos/{estado:estado}',[OrdenTrabajoController::class,'showOrdenes'])->name('documentoOT.showordenes');
+
     Route::get('/administracion/ordenes-trabajos/atrasadas',[OrdenTrabajoController::class,'showAtrasadas'])->name('documentoOT.showatrasadas');
 
 });

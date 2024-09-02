@@ -3,7 +3,7 @@
     <div class="mt-5 flex flex-col md:flex-row justify-between p-5 rounded-xl shadow-xl border-l-8 ">
         <div class="text-xs md:text-xl">
             <p><span class="uppercase font-bold">Nombre del solicitante:</span> {{ $ot->nombre_solicitante }}</p>
-            <p><span class="uppercase font-bold">Planta:</span> {{ $ot->planta->planta }}</p>
+            <p><span class="uppercase font-bold">Planta:</span> {{ $ot->planta->name }}</p>
             <p><span class="uppercase font-bold">Area:</span> {{ $ot->area->area }}</p>
             @if ($ot->elemento_id)
             <p><span class="uppercase font-bold">Ubicacion:</span> {{ $ot->elemento->elemento }}</p>
@@ -56,10 +56,17 @@
             <div
                 class="bg-gray-200 p-1 md:p-5 rounded-lg shadow md:ml-5 flex md:flex-col flex-row gap-5 items-center justify-around w-full  md:w-min">
                 
+              
+
                 @if (!($ot->weburl))
                 <i title="{{ ($ot->urgencia == 1) ? 'ALTA' : (($ot->urgencia==2) ? 'MODERADA' : 'BAJA') }}"
                     class="text-2xl fa-sharp fa-solid fa-circle-exclamation {{ ($ot->urgencia == 1) ? 'text-red-500' : (($ot->urgencia==2) ? 'text-yellow-500' : 'text-green-500') }}"></i>
                 @endif
+                
+                <a href="{{ $ot->folder_url }}" target="_blank">
+                    <i class="fa-solid fa-image text-2xl hover:text-gray-500"></i>
+                </a>
+
                 @if(!$ot->mecanico_id)
                 @role('auxmanto')
                 <livewire:asignar-mecanico :ot="$ot" />
@@ -81,46 +88,42 @@
                     </a>
                 </td>
                 @else
-                @if ($ot->estado_id == 3)
-                    @hasanyrole('admin|adminmanto')
-                        <td class="px-4 py-4 whitespace-nowrap ">
-                            <a title="Generar Archivo" href="{{ route('documentoOT.documento',$ot) }}">
-                                <i class="fa-solid fa-folder-plus text-xl hover:text-red-500"></i>
-                            </a>
-                        </td>
-                    @endhasanyrole
-                @endif
+                    @if ($ot->estado_id == 3)
+                        @hasanyrole('admin|adminmanto')
+                            <td class="px-4 py-4 whitespace-nowrap ">
+                                <a title="Generar Archivo" href="{{ route('documentoOT.documento',$ot) }}">
+                                    <i class="fa-solid fa-folder-plus text-xl hover:text-red-500"></i>
+                                </a>
+                            </td>
+                        @endhasanyrole
+                    @endif
                 @endif
 
                 @hasanyrole('admin|adminmanto')
-                <div class="flex md:flex-col flex-row items-center justify-center text-xl gap-3">
-                    @if($ot->estado_id != 5)
-                    @if(!($ot->weburl))
-                    <form class="delete-ot" id="deleteForm" action="{{ route('documentoOT.destroy', $ot) }}"
-                        method="POST">
-                        @method('DELETE')
-                        @csrf
-                        <button type="submit" class="icon-button" title="Eliminar Orden de Trabajo">
-                            <i class="fa-solid fa-trash hover:text-red-600 cursor-pointer"></i>
-                        </button>
-                    </form>
-                    @endif
-                    @endif
-
                     @if ($ot->estado_id == 1)
-                    <livewire:mecanico-selector :ot="$ot" />
+                        <livewire:mecanico-selector :ot="$ot" />
                     @endif
 
+                    @if($ot->estado_id != 5)
+                        @if(!($ot->weburl))
+                            <form class="delete-ot" id="deleteForm" action="{{ route('documentoOT.destroy', $ot) }}"
+                                method="POST">
+                                @method('DELETE')
+                                @csrf
+                                <button type="submit" class="icon-button" title="Eliminar Orden de Trabajo">
+                                    <i class="fa-solid fa-trash icon-link"></i>
+                                </button>
+                            </form>
+                        @endif
+                    @endif
+
+                    
                     @if ($ot->estado_id == 2)
                     <a href="{{ route('documentoOT.show',$ot) }}">
-                        <i class="fa-solid fa-pen-to-square text-2xl hover:text-gray-500"></i>
+                        <i class="fa-solid fa-pen-to-square icon-link"></i>
                     </a>
                     @endif
 
-                    <a href="{{ $ot->folder_url }}" target="_blank">
-                        <i class="fa-solid fa-image text-2xl hover:text-gray-500"></i>
-                    </a>
-                </div>
                 @endhasanyrole
             </div>
         </div>

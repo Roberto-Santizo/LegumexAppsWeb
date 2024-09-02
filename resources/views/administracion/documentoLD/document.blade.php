@@ -35,7 +35,7 @@ Documento
             <p class="p-2 border-r border-b  border-black">Fecha: </p>
             <p class="p-2 border-b border-black">{{ $documentold->fecha }}</p>
             <p class="p-2 border-r border-black">Planta: </p>
-            <p class="p-2 border-r border-black">{{ $documentold->planta->planta }}</p>
+            <p class="p-2 border-r border-black">{{ $documentold->planta->name }}</p>
             <p class="p-2 border-r border-black">Área: </p>
             <p class="p-2 border-black">{{ $documentold->area->area }}</p>
         </div>

@@ -6,40 +6,34 @@ Editar documento
 @endsection
 
 @section('contenido')
-<a href="{{ route('documentold') }}"
-    class=" bg-orange-500 cursor-pointer hover:bg-orange-700 text-white font-bold py-2 px-4 rounded inline-block mt-5 mb-5 ">
-    <i class="fa-solid fa-arrow-left"></i>
-    Volver
-</a>
+
+
+
+<x-link route="documentold" text="Volver" icon="fa-solid fa-arrow-left" />
+
 <div class="bg-white p-6 rounded-lg shadow-lg mt-10 md:mt-0 container xl:w-2/3  mx-auto">
     <form action="{{ route('documentold.update',$documento) }}" method="POST" id="formulario2" novalidate>
         @csrf
         @method('PATCH')
-
-        @if(session('mensaje'))
-        <p class="bg-red-500 text-white my-2 rounded-lg text-sm p-2 text-center">{{ session('mensaje') }}</p>
-        @endif
+        
+        <x-alertas />
 
         <div class="flex flex-col p-5 bg-gray-100 rounded-lg mb-10">
             <h1 class="text-2xl mb-5 font-bold text-center uppercase">Información del encabezado</h1>
 
             <div class="mb-5 bg-gray-200 p-5 rounded-lg">
-                <p class="uppercase text-gray-500 font-bold">Técnico de Mantenimiento: <span class="text-black">{{
-                        $documento->tecnico_mantenimiento }}</span></p>
+                <p class="uppercase text-gray-500 font-bold">Técnico de Mantenimiento: <span class="text-black">{{ $documento->tecnico_mantenimiento }}</span></p>
             </div>
             <div class="mb-5 bg-gray-200 p-5 rounded-lg">
-                <p class="uppercase text-gray-500 font-bold">Fecha de creación: <span class="text-black">{{
-                        $documento->fecha }}</span></p>
+                <p class="uppercase text-gray-500 font-bold">Fecha de creación: <span class="text-black">{{ $documento->fecha }}</span></p>
             </div>
 
             <div class="mb-5 bg-gray-200 p-5 rounded-lg">
-                <p class="uppercase text-gray-500 font-bold">Planta: <span class="text-black">{{
-                        $documento->planta->planta }}</span></p>
+                <p class="uppercase text-gray-500 font-bold">Planta: <span class="text-black">{{ $documento->planta->planta }}</span></p>
             </div>
 
             <div class="mb-5 bg-gray-200 p-5 rounded-lg">
-                <p class="uppercase text-gray-500 font-bold">Área: <span class="text-black">{{ $documento->area->area
-                        }}</span></p>
+                <p class="uppercase text-gray-500 font-bold">Área: <span class="text-black">{{ $documento->area->area}}</span></p>
             </div>
         </div>
 
@@ -83,33 +77,15 @@ Editar documento
 
         <fieldset class="mt-5">
             <legend class="font-bold text-center text-2xl">Inspección de calidad</legend>
-            <div class="mb-5">
-                <label for="salida" class="mb-2 block uppercase text-gray-500 font-bold">Salida de herramientas: </label>
-                <select name="salida" id="salida" class="rounded bg-gray-50 w-full p-4 uppercase">
-                    <option value="" selected disabled>---SELECCIONE UNA OPCIÓN---</option>
-                    <option class="uppercase" value="1">Bueno</option>
-                    <option class="uppercase" value="0">Malo</option>
-                </select>
-                @error('salida')
-                    <p class="bg-red-500 text-white my-2 rounded-lg text-sm p-2 text-center">Especifiqué el estado de la salida
-                        de herramientas
-                    <p>
-                @enderror
-            </div>
-    
-            <div class="mb-5">
-                <label for="observaciones_salida" class="mb-2 block uppercase text-gray-500 font-bold">Observaciones de
-                    salida: </label>
-                <input type="text" id="observaciones_salida" name="observaciones_salida"
-                    class="border p-3 w-full rounded-lg @error('observaciones_salida') border-red-500 @enderror"
-                    placeholder="Observaciones de salida de herramientas" autocomplete="off"
-                    value="{{ old('observaciones_salida') }}">
-    
-                @error('observaciones_salida')
-                <p class="bg-red-500 text-white my-2 rounded-lg text-sm p-2 text-center">{{ $message }}</p>
-                @enderror
-            </div>
-            <div class="flex flex-col items-center 2xl:flex-row justify-center gap-2 text-center">
+            @php
+                $options = ['1' => "BUENO", '2' => "MALO"]
+            @endphp
+
+        <x-select name="salida" label="Salida de Herramientas" :options="$options" id="salida" />
+
+        <x-input type="text" name="observaciones_salida" label="Observaciones de Salida" placeholder="Observación de Salida de Herramientas" />
+        
+        <div class="flex flex-col items-center 2xl:flex-row justify-center gap-2 text-center">
                 <div>
                     <canvas id="signature-pad" class="border border-black w-full lg:w-96"></canvas>
                     <div class="clear_btn">
@@ -122,17 +98,8 @@ Editar documento
             </div>
         </fieldset>
 
-        <div class="mb-5">
-            <label for="observaciones" class="mb-2 block uppercase text-gray-500 font-bold">Observaciones Generales:
-            </label>
-            <input type="text" id="observaciones" name="observaciones"
-                class="border p-3 w-full rounded-lg @error('observaciones') border-red-500 @enderror"
-                placeholder="Observaciones generales" autocomplete="off" value="{{ $documento->observaciones }}">
+        <x-input type="text" name="observaciones" label="Observaciones Generales" placeholder="Observación Generales" value="{{ $documento->observaciones }}" />
 
-            @error('observaciones')
-            <p class="bg-red-500 text-white my-2 rounded-lg text-sm p-2 text-center">{{ $message }}</p>
-            @enderror
-        </div>
         <div class="flex flex-col items-center 2xl:flex-row justify-center gap-2 text-center">
             <div class="">
                 <canvas id="signature-pad-2" class="border border-black w-full lg:w-96"></canvas>

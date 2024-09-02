@@ -10,10 +10,7 @@
     <x-alertas />
     
     @can('create ot')
-        <a href="{{ route('documentoOT.create') }}" class="mt-5 bg-orange-500 cursor-pointer hover:bg-orange-700 text-white font-bold py-2 px-4 rounded inline-block ">
-            <i class="fa-solid fa-plus"></i>
-            Crear
-        </a>
+        <x-link route="documentoOT.create" text="Crear Orden" icon="fa-solid fa-plus" />
     @endcan
         
         

@@ -28,7 +28,7 @@
 
         <div class="grid grid-cols-8 grid-rows-2 mt-10">
             <div class="border border-black p-2 inline-block col-start-1 col-span-2">
-                <p class="font-bold">PLANTA: {{ $ot->planta->planta }} </p>
+                <p class="font-bold">PLANTA: {{ $ot->planta->name }} </p>
             </div>
             <div class="border border-black p-2 inline-block col-start-4 col-span-2">
                 <p class="font-bold">ÁREA: {{ $ot->area->area }}</p>
