@@ -14,11 +14,11 @@ class PlantasSeeder extends Seeder
     public function run(): void
     {
         $plantas = [
-            ['planta' => 'Congelado Tejar'],
-            ['planta' => 'FRESCO'],
-            ['planta' => 'Planta El Tejar'],
-            ['planta' => 'Planta Parramos'],
-            ['planta' => 'Planta AB'],
+            ['name' => 'Congelado Tejar'],
+            ['name' => 'FRESCO'],
+            ['name' => 'Planta El Tejar'],
+            ['name' => 'Planta Parramos'],
+            ['name' => 'Planta AB'],
         ];
 
         Planta::insert($plantas); 
