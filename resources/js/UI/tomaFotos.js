@@ -10,30 +10,30 @@ function inicializarCamara() {
     const take_button = document.getElementById("takesnapshot");
     const upload_button = document.getElementById("upload_button");
 
-    // navigator.mediaDevices
-    //     .enumerateDevices()
-    //     .then((devices) => {
-    //         devices.forEach((device) => {
-    //             if (device.label.includes("facing back")) {
-                   
-    //             }
-    //         });
-    //     })
-    //     .catch((error) => {
-    //         console.error("Error al enumerar dispositivos:", error);
-    // });
-
-    Webcam.set({
-        width: 550,
-        height: 350,
-        image_format: "jpeg",
-        jpeg_quality: 90,
-        // constraints: {
-        //     deviceId: { exact: device.deviceId }, // Configura el deviceId aquí
-        // },
+    navigator.mediaDevices
+        .enumerateDevices()
+        .then((devices) => {
+            devices.forEach((device) => {
+                if (device.label.includes("facing back")) {
+                        Webcam.set({
+                            width: 550,
+                            height: 350,
+                            image_format: "jpeg",
+                            jpeg_quality: 90,
+                            constraints: {
+                                deviceId: { exact: device.deviceId }, // Configura el deviceId aquí
+                            },
+                        });
+                    
+                        Webcam.attach("#my_camera");
+                }
+            });
+        })
+        .catch((error) => {
+            console.error("Error al enumerar dispositivos:", error);
     });
 
-    Webcam.attach("#my_camera");
+    
 
     upload_button.addEventListener("click", function () {
         if (images.length > 0) {

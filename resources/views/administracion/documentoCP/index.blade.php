@@ -26,20 +26,20 @@ Documentos Checklists Preoperacionales
 
             <div class="flex flex-col md:flex-row gap-5">
                 <div class="flex flex-col gap-2">
-                    <label for="fecha" class="text-sm font-medium">Fecha:</label>
-                    <input autocomplete="off" class="border border-black p-2 rounded w-full" type="text" name="fecha"
-                        id="fecha" placeholder="Fecha..." value="{{ old('fecha', request()->input('fecha')) }}">
-                </div>
-    
-                <div class="flex flex-col gap-2">
                     <label for="planta_id" class="text-sm font-medium">Planta:</label>
                     <select name="planta_id" id="planta_id" class="border border-black p-2 rounded w-full">
                         <option value="">--SIN FILTRO--</option>
                         @foreach ($plantas as $planta)
                         <option value="{{ $planta->id }}" {{ $planta->id == old('planta_id', request()->input('planta_id'))
-                            ? 'selected' : '' }}>{{ $planta->planta }}</option>
+                            ? 'selected' : '' }}>{{ $planta->name }}</option>
                         @endforeach
                     </select>
+                </div>
+
+                <div class="flex flex-col gap-2">
+                    <label for="fecha" class="text-sm font-medium">Fecha:</label>
+                    <input autocomplete="off" class="border border-black p-2 rounded w-full" type="text" name="fecha"
+                        id="fecha" placeholder="Fecha..." value="{{ old('fecha', request()->input('fecha')) }}">
                 </div>
             </div>
 
