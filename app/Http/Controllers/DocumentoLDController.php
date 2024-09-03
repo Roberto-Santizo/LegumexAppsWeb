@@ -11,10 +11,19 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Crypt;
+use App\Services\MicrosoftTokenService;
 use App\Models\Herramientas_documentold;
 
 class DocumentoLDController extends Controller
 {
+
+    protected $tokenService;
+    
+    public function __construct(MicrosoftTokenService $tokenService)
+    {
+        $this->tokenService = $tokenService;
+    }
+
     public function index(Request $request){
         $query = Documentold::query();
 
@@ -163,13 +172,16 @@ class DocumentoLDController extends Controller
         }
     }
 
-    public function uploadFile(Request $request){        
+    public function uploadFile(Request $request)
+    {  
+        
         try {
             $archivo = file_get_contents($request->file('file')->path());
             // Verifica si el documento existe
             $documentold = DocumentoLD::findOrFail($request->documentold_id);
+            
+            $accessToken = $this->tokenService->getValidAccessToken();
 
-            $accessToken = session('access_token');
             $graph = new Graph();
             $graph->setAccessToken($accessToken);
             $response = $graph->createRequest('PUT', 'https://graph.microsoft.com/v1.0/drives/b!CU_CMtvtaEmUlX3R-A80sL7OC60rTsBHt6CzRiilfLTCa6VHDHQGR6wIGs3pVZVG/items/01O5NWAPC5I5KSBVCQGVDIA5KTPW3RX63S:/' . 'FOR-MN-08_' . $documentold->id . '.pdf:/content')

@@ -6,14 +6,21 @@ use Carbon\Carbon;
 use Microsoft\Graph\Graph;
 use Illuminate\Support\Str;
 use Illuminate\Http\Request;
+use App\Services\MicrosoftTokenService;
 use Illuminate\Support\Facades\Storage;
 
 class APIImagenesController extends Controller
 {
-  
+    protected $tokenService;
+    
+    public function __construct(MicrosoftTokenService $tokenService)
+    {
+        $this->tokenService = $tokenService;
+    }
     public function store(Request $request)
     {
-        $accessToken = session('access_token');
+        $accessToken = $this->tokenService->getValidAccessToken();
+        
         $graph = new Graph();
         $graph->setAccessToken($accessToken);
 

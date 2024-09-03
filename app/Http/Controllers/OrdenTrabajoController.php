@@ -6,17 +6,25 @@ use App\Models\Area;
 use App\Models\User;
 use App\Models\Estado;
 use App\Models\Planta;
+use App\Models\Supervisor;
 use Microsoft\Graph\Graph;
 use App\Models\OrdenTrabajo;
-use App\Models\Supervisor;
 use Illuminate\Http\Request;
 use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Gate;
+use App\Services\MicrosoftTokenService;
 use Illuminate\Routing\Controllers\HasMiddleware;
 
 class OrdenTrabajoController extends Controller 
 {
+
+    protected $tokenService;
+    
+    public function __construct(MicrosoftTokenService $tokenService)
+    {
+        $this->tokenService = $tokenService;
+    }
 
     public function index()
     {
@@ -279,7 +287,7 @@ class OrdenTrabajoController extends Controller
             $archivo = file_get_contents($request->file('file')->path());
             // Verifica si elobservaciones_eliminacion documento existe
             $ot = OrdenTrabajo::findOrFail($request->ot_id);
-            $accessToken = session('access_token');
+            $accessToken = $this->tokenService->getValidAccessToken();
             $graph = new Graph();
             $graph->setAccessToken($accessToken);
             $response = $graph->createRequest('PUT', 'https://graph.microsoft.com/v1.0/drives/b!CU_CMtvtaEmUlX3R-A80sL7OC60rTsBHt6CzRiilfLTCa6VHDHQGR6wIGs3pVZVG/items/01O5NWAPG373ZYCBRGSFFK5TO33HHQWMB3:/' . 'FOR-MN-04_' . $ot->id . '.pdf:/content')

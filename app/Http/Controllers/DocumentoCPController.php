@@ -10,9 +10,17 @@ use App\Models\OrdenChecklist;
 use App\Models\AreasChecklistP;
 use App\Models\AreasCPElementos;
 use Illuminate\Support\Facades\DB;
+use App\Services\MicrosoftTokenService;
 
 class DocumentoCPController extends Controller
 {
+    protected $tokenService;
+    
+    public function __construct(MicrosoftTokenService $tokenService)
+    {
+        $this->tokenService = $tokenService;
+    }
+    
     public function index(Request $request)
     {
         $query = Documentocp::query();
@@ -159,7 +167,7 @@ class DocumentoCPController extends Controller
             // Verifica si el documento existe
             $documentocp = Documentocp::findOrFail($request->documentocp_id);
            
-            $accessToken = session('access_token');
+            $accessToken = $this->tokenService->getValidAccessToken();
             $graph = new Graph();
             $graph->setAccessToken($accessToken);
             $response = $graph->createRequest('PUT', 'https://graph.microsoft.com/v1.0/drives/b!CU_CMtvtaEmUlX3R-A80sL7OC60rTsBHt6CzRiilfLTCa6VHDHQGR6wIGs3pVZVG/items/01O5NWAPDX5AFQJGS62BBK72PWLHYUY4KB:/' . 'FOR-MN-07_' . $documentocp->id . '.pdf:/content')

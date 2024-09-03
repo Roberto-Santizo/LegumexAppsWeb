@@ -13,7 +13,7 @@ class MicrosoftAuthController extends Controller
 {
     public function redirectToMicrosoft(){
 
-        return Socialite::driver('microsoft')->scopes(['Files.read','Files.Read.All','Files.ReadWrite','Files.ReadWrite.All','openid','profile','Sites.Read.All','Sites.ReadWrite.All','User.Read','email'])->redirect();
+        return Socialite::driver('microsoft')->scopes(['Files.read','Files.Read.All','Files.ReadWrite','Files.ReadWrite.All','openid','profile','Sites.Read.All','Sites.ReadWrite.All','User.Read','email','offline_access'])->redirect();
     }
 
     public function handleMicrosoftCallback(){
@@ -31,7 +31,10 @@ class MicrosoftAuthController extends Controller
         
         if($usuario->getRoleNames()->first() == 'admin' || $usuario->getRoleNames()->first() == 'adminmanto'){
             if($usuario->status == 1){
+                $expiresAt = now()->addSeconds($user->tokenExpiresIn);
                 session(['access_token' => $user->token]);
+                session(['refresh_token' => $user->refreshToken]);
+                session(['token_expires_at' => $expiresAt]);
                 auth()->login($usuario);
                 return redirect()->route('dashboard');
             }else{
