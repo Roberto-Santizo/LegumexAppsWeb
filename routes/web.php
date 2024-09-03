@@ -1,16 +1,16 @@
 <?php
 
-use App\Http\Controllers\AsignacionDiariaController;
 use Illuminate\Auth\Events\Login;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\LoteController;
 use App\Http\Controllers\RoleController;
-
 use App\Http\Controllers\FirmaController;
+
 use App\Http\Controllers\LogoutController;
 use App\Http\Controllers\TareasController;
 use App\Http\Controllers\CultivoController;
+use App\Http\Controllers\ReporteController;
 use App\Http\Controllers\UsuariosController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\Auth\LoginController;
@@ -24,6 +24,7 @@ use App\Http\Controllers\RendimientoRController;
 use App\Http\Controllers\SupervisoresController;
 use App\Http\Controllers\MicrosoftAuthController;
 use App\Http\Controllers\UsuariosFincaController;
+use App\Http\Controllers\AsignacionDiariaController;
 use App\Http\Controllers\ControlPlantacionController;
 use App\Http\Controllers\PlanSemanalFincasController;
 
@@ -206,7 +207,8 @@ Route::group(['middleware' => ['auth', 'role:admin|adminalameda|auxalameda'], 'p
     //Usuarios Fincas
     Route::get('/finca/ingresos', [UsuariosFincaController::class, 'index'])->name('usuariosFincas');
 
-    
+    // Reporteria
+    Route::get('/exportar-plansemanal', [ReporteController::class, 'PlanSemanalDiario'])->name('reporte.PlanSemanalDiario');
 
 });
 

@@ -114,7 +114,7 @@ class PlanSemanalFincasController extends Controller
 
         $ingresos = EmpleadoIngresado::whereDate('punch_time', Carbon::today())->where('terminal_id', 7)->get();
         $ingresos = $ingresos->filter(function($ingreso){
-            $ingreso->asignaciones = UsuarioTareaLote::where('usuario_id', $ingreso->emp_id)->get();
+            $ingreso->asignaciones = UsuarioTareaLote::where('usuario_id', $ingreso->emp_id)->whereDate('created_at',Carbon::today())->get();
             $ingreso->horas_totales = 0;
             if($ingreso->asignaciones->count() > 0){
                 foreach ($ingreso->asignaciones as $asignacion) {

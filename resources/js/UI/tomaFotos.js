@@ -15,28 +15,28 @@ function inicializarCamara() {
     const take_button = document.getElementById("takesnapshot");
     const upload_button = document.getElementById("upload_button");
 
-    navigator.mediaDevices
-        .enumerateDevices()
-        .then((devices) => {
-            devices.forEach((device) => {
-                if (device.label.includes("facing back")) {
+    // navigator.mediaDevices
+    //     .enumerateDevices()
+    //     .then((devices) => {
+    //         devices.forEach((device) => {
+    //             if (device.label.includes("facing back")) {
                         Webcam.set({
                             width: 550,
                             height: 350,
                             image_format: "jpeg",
                             jpeg_quality: 90,
-                            constraints: {
-                                deviceId: { exact: device.deviceId }, // Configura el deviceId aquí
-                            },
+                            // constraints: {
+                            //     deviceId: { exact: device.deviceId }, // Configura el deviceId aquí
+                            // },
                         });
                     
                         Webcam.attach("#my_camera");
-                }
-            });
-        })
-        .catch((error) => {
-            console.error("Error al enumerar dispositivos:", error);
-    });
+                // }
+    //         });
+    //     })
+    //     .catch((error) => {
+    //         console.error("Error al enumerar dispositivos:", error);
+    // });
 
     
 

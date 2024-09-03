@@ -20,12 +20,18 @@ $clasesCampo = 'px-4 py-2 text-md font-medium whitespace-nowrap';
 <div class="overflow-x-auto mt-10">
     <div class="flex flex-row gap-5 mb-5 justify-end">
         <div>
-            <i title="Reporte Tareas Generales"
-                class="fa-solid fa-file-excel text-3xl hover:text-gray-500 cursor-pointer"></i>
+           <a href="{{ route('reporte.PlanSemanalDiario') }}">
+                <i title="Reporte Tareas Generales"
+                    class="fa-solid fa-file-excel text-3xl hover:text-gray-500 cursor-pointer"></i>
+           </a>
         </div>
 
         <div>
-            <i title="Reporte Horas Usuarios" class="fa-solid fa-users text-3xl hover:text-gray-500 cursor-pointer"></i>
+
+           <a href="">
+                <i title="Reporte Horas Usuarios" class="fa-solid fa-users text-3xl hover:text-gray-500 cursor-pointer"></i>
+    
+           </a>
         </div>
     </div>
 
