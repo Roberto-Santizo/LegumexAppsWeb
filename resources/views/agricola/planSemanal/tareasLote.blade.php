@@ -26,24 +26,34 @@ Plan Semanal Lote - {{ $lote->nombre }} Semana {{ $plansemanalfinca->semana }}
                 @endif
             </div>
 
-            <div>
-                @if (($tarea->asignacion_diaria))
-                @if(!$tarea->cierre)
-                <form action="{{ route('planSemanal.storediario') }}" method="POST">
-                    @csrf
-                    <input type="hidden" value="{{ $tarea->id }}" name="tarea_lote_id">
-                    <button type="submit"><i class="fa-solid fa-circle-check text-3xl hover:text-gray-600"></i></button>
-                </form>
-                @else
-                <i title="La tarea fue realizada" class="fa-solid fa-circle-check text-3xl text-green-500"></i>
-                @endif
+            <div class="flex flex-col items-center justify-between">
 
-                @else
-                <a href="{{ route('planSemanal.Asignar',[$lote,$plansemanalfinca,$tarea->tarea, $tarea]) }}">
-                    <i title="Asignar Empleados"
-                        class="fa-solid fa-square-plus text-3xl cursor-pointer hover:text-gray-500"></i>
-                </a>
+                <div>
+                    @if(!$tarea->cierre)
+                        @if(!$tarea->asignacion_diaria)
+                            <a href="{{ route('planSemanal.Asignar',[$lote,$plansemanalfinca,$tarea->tarea, $tarea]) }}">
+                                <i title="Asignar Empleados"
+                                    class="fa-solid fa-square-plus text-3xl cursor-pointer hover:text-gray-500"></i>
+                            </a>
+                        @else
+                            <form action="{{ route('planSemanal.storediario') }}" method="POST">
+                                @csrf
+                                <input type="hidden" value="{{ $tarea->id }}" name="tarea_lote_id">
+                                <button type="submit"><i class="fa-solid fa-circle-check text-3xl hover:text-gray-600"></i></button>
+                            </form>
+                        @endif
+                    @else
+                        <i title="La tarea fue realizada" class="fa-solid fa-circle-check text-3xl text-green-500"></i>
+                    @endif
+    
+                </div>
+
+                @if ($tarea->extendido)
+                    <div class="bg-green-500 text-white font-bold p-2 rounded-xl">
+                        <p>{{ $tarea->ingresados  }} / {{ $tarea->personas }}</p>
+                    </div>
                 @endif
+               
             </div>
         </div>
         @endforeach

@@ -54,6 +54,7 @@ import Swal from "sweetalert2";
         const datos = new FormData();
         datos.append('usuario_id', usuario_id);
         datos.append('tarealote_id', tarealote_id);
+        console.log(usuario_id,tarealote_id);
 
         try {
             const respuesta = await fetch(url, {

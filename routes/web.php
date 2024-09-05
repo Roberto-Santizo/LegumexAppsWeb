@@ -51,6 +51,15 @@ Route::post('/firmas',[FirmaController::class,'store'])->middleware('auth');
 //Mantenimiento
 Route::group(['middleware' => ['auth', 'role:admin|adminmanto|auxmanto'], 'prefix' => 'mantenimiento'], function() {
     
+    
+    // Herramientas
+    Route::get('/herramientas', [HerramientasController::class, 'index'])->name('herramientas');
+    Route::get('/herramientas/create', [HerramientasController::class, 'create'])->name('herramientas.create');
+    Route::post('/herramientas/create', [HerramientasController::class, 'store'])->name('herramientas.store');
+    Route::get('/herramientas/edit/{herramienta}', [HerramientasController::class, 'edit'])->name('herramientas.edit');
+    Route::patch('/herramientas/update/{herramienta}', [HerramientasController::class, 'update'])->name('herramientas.update');
+    Route::delete('/herramientas/{herramienta}', [HerramientasController::class, 'destroy'])->name('herramientas.destroy');
+    
     Route::get('/mis-ordenes', [OrdenTrabajoController::class, 'misOrdenes'])->name('misOrdenes');
 
     // Lavado y desinfección
@@ -107,14 +116,6 @@ Route::group(['middleware' => ['auth', 'role:admin|adminmanto'], 'prefix' => 'ma
     Route::get('/ordenes-trabajos/administrar/{user:name}', [OrdenTrabajoController::class, 'OrdenesUsuario'])->name('documentoOT.ordenesUsuario');
     Route::post('/orden-trabajo/rechazar', [OrdenTrabajoController::class, 'rechazar'])->name('documentoOT.rechazar');
     Route::get('/ordenes-trabajos/urgencia/{urgencia}', [OrdenTrabajoController::class, 'showUrgencia'])->name('documentoOT.showurgencia');
-
-    // Herramientas
-    Route::get('/herramientas', [HerramientasController::class, 'index'])->name('herramientas');
-    Route::get('/herramientas/create', [HerramientasController::class, 'create'])->name('herramientas.create');
-    Route::post('/herramientas/create', [HerramientasController::class, 'store'])->name('herramientas.store');
-    Route::get('/herramientas/edit/{herramienta}', [HerramientasController::class, 'edit'])->name('herramientas.edit');
-    Route::patch('/herramientas/update/{herramienta}', [HerramientasController::class, 'update'])->name('herramientas.update');
-    Route::delete('/herramientas/{herramienta}', [HerramientasController::class, 'destroy'])->name('herramientas.destroy');
 
 });
 

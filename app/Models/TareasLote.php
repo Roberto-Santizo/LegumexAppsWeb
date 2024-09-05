@@ -39,9 +39,9 @@ class TareasLote extends Model
         return $this->hasMany(AsignacionDiaria::class, 'tarea_lote_id', 'id');
     }
 
-    public function usuarios()
+    public function users($fecha)
     {
-        return $this->hasMany(UsuarioTareaLote::class, 'tarealote_id','id')->whereDate('created_at',Carbon::today());
+        return $this->hasMany(UsuarioTareaLote::class, 'tarealote_id','id')->whereDate('created_at',$fecha);
     }
 
     public function cierre()

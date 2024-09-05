@@ -38,7 +38,7 @@ class PlanSemanalFincasController extends Controller
         $planes = PlanSemanalFinca::paginate(10);
         foreach ($planes as $plan) {
             $plan->tareas_totales = 0;
-            $plan->totalPersonasNecesarias = $plan->tareasTotales()->orderBy('personas','desc')->first();
+            $plan->totalPersonasNecesarias = $plan->tareasTotales()->orderBy('personas', 'desc')->first();
             foreach ($plan->tareasTotales as $tarea) {
                 $plan->presupuesto += $tarea->presupuesto;
                 $plan->tareas_totales++;
@@ -87,20 +87,54 @@ class PlanSemanalFincasController extends Controller
 
     public function tareasLote(Lote $lote, PlanSemanalFinca $plansemanalfinca)
     {
-        $tareas = $plansemanalfinca->tareasPorLote($lote->id)->get();
+        // Obtener todas las tareas con asignaciones más recientes y usuarios
+        $tareas = $plansemanalfinca->tareasPorLote($lote->id)
+            ->with([
+                'asignaciones' => function ($query) {
+                    $query->latest(); // Ordena las asignaciones por fecha
+                }
+            ])
+            ->get();
+
+        // Recorrer las tareas y calcular los datos necesarios
         foreach ($tareas as $tarea) {
-            $tarea->cupos_utilizados = $tarea->usuarios->count();
-            $tarea->asignacion_diaria = false;
-            foreach ($tarea->asignaciones as $asignacion) {
-                if($asignacion->created_at->isToday()){
-                    $tarea->asignacion_diaria = true;
-                    break;
+            // Contar usuarios asignados hoy
+            $tarea->cupos_utilizados = $tarea->users(Carbon::today())->count();
+
+            // Obtener la asignación diaria más reciente
+            $tarea->asignacion_diaria = $tarea->asignaciones->first();
+
+            // Inicializar el campo extendido y la cantidad de ingresados
+            $tarea->extendido = false;
+            $tarea->ingresados = 0;
+
+            if ($tarea->asignacion_diaria) {
+                if (!$tarea->asignacion_diaria->created_at->isToday() && !$tarea->cierre) {
+                    $tarea->extendido = true;
+
+                    // Obtener los usuarios asignados a la fecha de la asignación diaria
+                    $usuariosIds = $tarea->users($tarea->asignacion_diaria->created_at)->pluck('usuario_id');
+
+                    // Obtener los registros de empleados ingresados en la fecha actual
+                    $empleadosIngresados = EmpleadoIngresado::whereIn('emp_id', $usuariosIds)
+                        ->whereDate('punch_time', Carbon::today())
+                        ->orderBy('punch_time', 'desc')
+                        ->get();
+
+                    // Contar los registros ingresados
+                    $tarea->ingresados = $empleadosIngresados->count();
                 }
             }
         }
 
-        return view('agricola.planSemanal.tareasLote', ['lote' => $lote, 'plansemanalfinca' => $plansemanalfinca, 'tareas' => $tareas]);
+        return view('agricola.planSemanal.tareasLote', [
+            'lote' => $lote,
+            'plansemanalfinca' => $plansemanalfinca,
+            'tareas' => $tareas
+        ]);
     }
+
+
 
     public function AsignarEmpleados(Lote $lote, PlanSemanalFinca $plansemanalfinca, Tarea $tarea, TareasLote $tarealote)
     {
@@ -109,23 +143,22 @@ class PlanSemanalFincasController extends Controller
         if ($asignacionDiaria->count() != 0) {
             return redirect()->route('planSemanal.tareasLote', [$lote, $plansemanalfinca])->with('error', "Esta tarea ya fue cerrada por el día de hoy");
         }
-        $asignados = UsuarioTareaLote::where('tarealote_id', $tarealote->id)->whereDate('created_at',Carbon::today())->pluck('usuario_id')->toArray();
-        $tarealote->cupos_utilizados = $tarealote->usuarios->count();
+        $asignados = UsuarioTareaLote::where('tarealote_id', $tarealote->id)->whereDate('created_at', Carbon::today())->pluck('usuario_id')->toArray();
+        $tarealote->cupos_utilizados = $tarealote->users(Carbon::today())->count();
 
         $ingresos = EmpleadoIngresado::whereDate('punch_time', Carbon::today())->where('terminal_id', 7)->get();
-        $ingresos = $ingresos->filter(function($ingreso){
-            $ingreso->asignaciones = UsuarioTareaLote::where('usuario_id', $ingreso->emp_id)->whereDate('created_at',Carbon::today())->get();
+        $ingresos = $ingresos->filter(function ($ingreso) {
+            $ingreso->asignaciones = UsuarioTareaLote::where('usuario_id', $ingreso->emp_id)->whereDate('created_at', Carbon::today())->get();
             $ingreso->horas_totales = 0;
-            if($ingreso->asignaciones->count() > 0){
+            if ($ingreso->asignaciones->count() > 0) {
                 foreach ($ingreso->asignaciones as $asignacion) {
                     $ingreso->horas_totales += ($asignacion->tarea_lote->horas / $asignacion->tarea_lote->personas);
                 }
-
             }
             return $ingreso;
         });
 
-            
+
 
         return view('agricola.planSemanal.asignar', ['lote' => $lote, 'plansemanalfinca' => $plansemanalfinca, 'tarea' => $tarea, 'ingresos' => $ingresos, 'tarealote' => $tarealote, 'asignados' => $asignados]);
     }
@@ -138,8 +171,8 @@ class PlanSemanalFincasController extends Controller
     public function diario(EmpleadoFinca $usuario, TareasLote $tarealote)
     {
         $tarealote->asignacion = $tarealote->asignaciones()->whereDate('created_at', Carbon::today())->get()->first();
-        $usuario->asignacion_usuario_id = UsuarioTareaLote::where('usuario_id',$usuario->id)->where('tarealote_id',$tarealote->id)->whereDate('created_at',Carbon::today())->get()->first();
-        
+        $usuario->asignacion_usuario_id = UsuarioTareaLote::where('usuario_id', $usuario->id)->where('tarealote_id', $tarealote->id)->whereDate('created_at', Carbon::today())->get()->first();
+
         $primerMarcaje = EmpleadoIngresado::where('emp_id', $usuario->id) // Filtrar por usuario si es necesario
             ->whereDate('punch_time', Carbon::today())   // Ordenar por la columna 'created_at' en orden descendente
             ->orderBy('punch_time', 'asc')   // Ordenar por la columna 'created_at' en orden descendente
@@ -150,7 +183,7 @@ class PlanSemanalFincasController extends Controller
             ->orderBy('punch_time', 'desc')   // Ordenar por la columna 'created_at' en orden descendente
             ->first();
 
-        return view('agricola.plansemanal.diario',['tarealote' => $tarealote,'usuario' => $usuario ,'primerMarcaje' => $primerMarcaje, 'ultimoMarcaje' => $ultimoMarcaje]);
+        return view('agricola.plansemanal.diario', ['tarealote' => $tarealote, 'usuario' => $usuario, 'primerMarcaje' => $primerMarcaje, 'ultimoMarcaje' => $ultimoMarcaje]);
     }
 
     public function storeDiario(Request $request)
@@ -164,9 +197,9 @@ class PlanSemanalFincasController extends Controller
                 'terminado' => 1
             ]);
 
-            return redirect()->back()->with('success','La tarea fue completada con exito');
+            return redirect()->back()->with('success', 'La tarea fue completada con exito');
         } catch (\Throwable $th) {
-            return redirect()->back()->with('error','Hubo un error al guardar el registro');
+            return redirect()->back()->with('error', 'Hubo un error al guardar el registro');
         }
     }
 
@@ -185,7 +218,7 @@ class PlanSemanalFincasController extends Controller
         // }
 
         // dd($tareas);
-        
-        return view('agricola.plansemanal.crt',['fechasSemana' => $fechasSemana,'lote'=> $lote,'plansemanalfinca' => $plansemanalfinca, 'tareas' => $tareas]);
+
+        return view('agricola.plansemanal.crt', ['fechasSemana' => $fechasSemana, 'lote' => $lote, 'plansemanalfinca' => $plansemanalfinca, 'tareas' => $tareas]);
     }
 }

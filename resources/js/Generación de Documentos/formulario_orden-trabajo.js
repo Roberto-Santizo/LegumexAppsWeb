@@ -72,7 +72,7 @@ import Swal from "sweetalert2";
         
         async function guardarDocumento(file){
             const data =  new FormData();
-            const url = '/administracion/orden-trabajo/upload';
+            const url = '/mantenimiento/orden-trabajo/upload';
             const token  =  document.querySelector('meta[name="csrf-token"]').getAttribute('content');
             const orden_trabajo_id = urlObj.pathname.split('/').pop();
     
@@ -97,7 +97,7 @@ import Swal from "sweetalert2";
                         text: 'El archivo se ha subido correctamente',
                         confirmButtonText: 'OK'
                     }).then(()=>{
-                        window.location.href = "/administracion/ordenes-trabajos"
+                        window.location.href = "/mantenimiento/ordenes-trabajos"
                     }); 
                 }
             } catch (error) {
@@ -107,7 +107,7 @@ import Swal from "sweetalert2";
                     text: 'Hubo un error al generar el archivo, intentelo de nuevo más tarde',
                     confirmButtonText: 'OK'
                 }).then(()=>{
-                    window.location.href = "/administracion/ordenes-trabajos"
+                    window.location.href = "/mantenimiento/ordenes-trabajos"
                 });
             }
         }
