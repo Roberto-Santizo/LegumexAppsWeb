@@ -22,7 +22,7 @@ Plan Semanal Lote - {{ $lote->nombre }} Semana {{ $plansemanalfinca->semana }}
                 <p><span class="uppercase font-bold">Presupuesto:</span> Q{{ $tarea->presupuesto }}</p>
                 <p><span class="uppercase font-bold">Horas Necesarias:</span> {{ $tarea->horas }} horas</p>
                 @if($tarea->cierre)
-                    <p><span class="uppercase font-bold">Fecha de cierre:</span> {{ \Illuminate\Support\Carbon::parse($tarea->cierre->created_at)->format('d-m-Y'); }}</p>
+                    <p><span class="uppercase font-bold">Fecha de cierre:</span> {{ \Illuminate\Support\Carbon::parse($tarea->cierre->created_at)->format('d-m-Y h:m:s'); }}</p>
                 @endif
             </div>
 

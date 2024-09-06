@@ -209,7 +209,7 @@ Route::group(['middleware' => ['auth', 'role:admin|adminalameda|auxalameda'], 'p
     Route::get('/finca/ingresos', [UsuariosFincaController::class, 'index'])->name('usuariosFincas');
 
     // Reporteria
-    Route::get('/exportar-plansemanal', [ReporteController::class, 'PlanSemanalDiario'])->name('reporte.PlanSemanalDiario');
+    Route::get('/exportar-plansemanal/{id}', [ReporteController::class, 'PlanSemanalDiario'])->name('reporte.PlanSemanalDiario');
 
 });
 

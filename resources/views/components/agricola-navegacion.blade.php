@@ -52,11 +52,11 @@
                 </div>
             </div>
 
-            <a href="{{ route('dashboard') }}"
+            {{-- <a href="{{ route('dashboard') }}"
                 class=" {{  Route::is('dashboard*') ? 'bg-orange-500' : '' }} {{ $clasesEnlaceSidebar }}">
                 <i class="fa-solid fa-house"></i>
                 <span class="{{ $clasesTextoEnlace }}">Dashboard</span>
-            </a>
+            </a> --}}
 
             <a href="{{ route('planSemanal') }}"
                 class="{{  Route::is('planSemanal*') ? 'bg-orange-500' : '' }} {{ $clasesEnlaceSidebar }}">

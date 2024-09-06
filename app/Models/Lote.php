@@ -25,4 +25,9 @@ class Lote extends Model
     {
         return $this->belongsTo(Finca::class,'finca_id','id');
     }
+
+    public function tareas()
+    {
+        return $this->hasMany(TareasLote::class,'lote_id','id');
+    }
 }

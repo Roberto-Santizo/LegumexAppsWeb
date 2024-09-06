@@ -90,7 +90,7 @@ class PlanSemanalFincasController extends Controller
         // Obtener todas las tareas con asignaciones más recientes y usuarios
         $tareas = $plansemanalfinca->tareasPorLote($lote->id)
             ->with([
-                'asignaciones' => function ($query) {
+                'asignacion' => function ($query) {
                     $query->latest(); // Ordena las asignaciones por fecha
                 }
             ])
@@ -102,7 +102,7 @@ class PlanSemanalFincasController extends Controller
             $tarea->cupos_utilizados = $tarea->users(Carbon::today())->count();
 
             // Obtener la asignación diaria más reciente
-            $tarea->asignacion_diaria = $tarea->asignaciones->first();
+            $tarea->asignacion_diaria = $tarea->asignacion;
 
             // Inicializar el campo extendido y la cantidad de ingresados
             $tarea->extendido = false;

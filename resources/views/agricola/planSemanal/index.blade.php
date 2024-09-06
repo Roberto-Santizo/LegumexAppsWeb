@@ -9,16 +9,18 @@ Tareas Finca Semanal
 <x-alertas />
 
 @php
-    $clasesEncabezados = 'p-3 text-sm font-bold uppercase text-left rtl:text-right text-gray-500 dark:text-gray-400';
-    $clasesEnlaces = 'bg-orange-500 cursor-pointer hover:bg-orange-700 text-white font-bold py-2 px-4 rounded
-    inline-block ';
-    $clasesCampo = 'px-4 py-2 text-md font-medium whitespace-nowrap';
+$clasesEncabezados = 'p-3 text-sm font-bold uppercase text-left rtl:text-right text-gray-500 dark:text-gray-400';
+$clasesEnlaces = 'bg-orange-500 cursor-pointer hover:bg-orange-700 text-white font-bold py-2 px-4 rounded
+inline-block ';
+$clasesCampo = 'px-4 py-2 text-md font-medium whitespace-nowrap';
 @endphp
 
 <a href="{{ route('planSemanal.create') }}" class="{{ $clasesEnlaces }} mt-5">
     <i class="fa-solid fa-plus"></i>
     Crear Plan Semanal
 </a>
+
+
 
 <div class="overflow-x-auto mt-10">
     <table class="min-w-full divide-y divide-gray-200 dark:divide-gray-700 text-xs md:text-sm">
@@ -38,6 +40,8 @@ Tareas Finca Semanal
                     Total Tareas Semanales</th>
                 <th scope="col" class="{{ $clasesEncabezados }} text-center">
                     Tareas</th>
+                <th scope="col" class="{{ $clasesEncabezados }} text-center">
+                    Reporte General</th>
             </tr>
         </thead>
         <tbody class="bg-white divide-y divide-gray-200 dark:divide-gray-700 dark:bg-gray-900">
@@ -52,6 +56,12 @@ Tareas Finca Semanal
                 <td class="{{ $clasesCampo }}">
                     <a class="{{ $clasesEnlaces }}" href="{{ route('planSemanal.show',$plan) }}">
                         Ver Tareas Semanales
+                    </a>
+                </td>
+                <td class="{{ $clasesCampo }} text-center">
+                    <a href="{{ route('reporte.PlanSemanalDiario',$plan->id) }}">
+                        <i title="Reporte Tareas Generales"
+                            class="fa-solid fa-file-excel text-3xl hover:text-gray-500 cursor-pointer"></i>
                     </a>
                 </td>
 
