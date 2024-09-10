@@ -8,6 +8,12 @@ Plan Semanal Lote - {{ $lote->nombre }} Semana {{ $plansemanalfinca->semana }}
 
 <x-alertas />
 
+<div class="flex flex-row justify-end">
+    <a href="{{ route('planSemanal.tareaLote.create',[$lote,$plansemanalfinca]) }}" class="btn uppercase">
+        CREAR TAREA EXTRAORDINARA
+    </a>
+</div>
+
 <div class="bg-white p-6 rounded-lg shadow-lg mt-10 container mx-auto">
     <div>
         @foreach ($tareas as $tarea)
@@ -30,7 +36,7 @@ Plan Semanal Lote - {{ $lote->nombre }} Semana {{ $plansemanalfinca->semana }}
 
                 <div>
                     @if(!$tarea->cierre)
-                        @if(!$tarea->asignacion_diaria)
+                        @if(!$tarea->asignacion)
                             <a href="{{ route('planSemanal.Asignar',[$lote,$plansemanalfinca,$tarea->tarea, $tarea]) }}">
                                 <i title="Asignar Empleados"
                                     class="fa-solid fa-square-plus text-3xl cursor-pointer hover:text-gray-500"></i>

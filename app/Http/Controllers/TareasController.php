@@ -18,7 +18,7 @@ class TareasController extends Controller
      */
     public function index()
     {
-        $tareas = Tarea::paginate(5);
+        $tareas = Tarea::paginate(10);
         return view('agricola.tareas.index', ['tareas' => $tareas]);
     }
 
@@ -36,22 +36,21 @@ class TareasController extends Controller
     public function store(Request $request)
     {
         try {
-            DB::transaction(function () use ($request) {
-                $request->validate([
-                    'tarea' => 'required',
-                    'descripcion' => 'required|max:255',
-                ]);
+            $request->validate([
+                'tarea' => 'required',
+                'descripcion' => 'required|max:255',
+                'code' => 'required'
+            ]);
 
-                Tarea::create([
-                    'tarea' => $request->tarea,
-                    'descripcion' => $request->descripcion,
-                ]);
-
-            });
+            Tarea::create([
+                'tarea' => $request->tarea,
+                'descripcion' => $request->descripcion,
+                'code' => $request->code,
+            ]);
 
             return redirect()->route('tareas')->with('success', 'Tarea creada correctamente');
         } catch (\Throwable $th) {
-            return back()->with('error', 'Hubo un error al crear la tarea');
+            return back()->withInput()->with('error', 'Hubo un error al crear la tarea');
         }
     }
 
@@ -77,52 +76,20 @@ class TareasController extends Controller
     public function update(Request $request, Tarea $tarea)
     {
         try {
-            DB::transaction(function () use ($request, $tarea) {
+            $request->validate([
+                'tarea' => 'required',
+                'descripcion' => 'required|max:255',
+                'code' => 'required',
+            ]);
 
-                $request->validate([
-                    'tarea' => 'required',
-                    'descripcion' => 'required|max:255',
-                    'tarifa' => 'required',
-                    'horas_totales' => 'required',
-                    'presupuesto' => 'required',
-                    'personas' => 'required',
-                ]);
-
-                BitacoraTareas::create([
-                    'tarea_id' => $tarea->id,
-                    'personas_nuevo' => $request->personas,
-                    'personas_anterior' => $tarea->personas,
-                    'horas_nueva' => $request->horas_totales,
-                    'horas_anterior' => $tarea->horas_totales,
-                    'tarifa_nueva' => $request->tarifa,
-                    'tarifa_anterior' => $tarea->tarifa,
-                    'presupuesto_nuevo' => $request->presupuesto,
-                    'presupuesto_anterior' => $tarea->presupuesto,
-                    'descripcion_nuevo' => $request->descripcion,
-                    'descripcion_anterior' => $tarea->descripcion,
-                    'titulo_nuevo' => $request->tarea,
-                    'titulo_anterior' => $tarea->tarea,
-                    'semana' => Carbon::now()->weekOfYear
-                ]);
-
-                $tarea->update([
-                    'tarea' => $request->tarea,
-                    'descrpcion' => $request->descripcion,
-                    'tarifa' => $request->tarifa,
-                    'horas_totales' => $request->horas_totales,
-                    'personas' => $request->personas,
-                    'presupuesto' => $request->presupuesto,
-                ]);
-            });
+            $tarea->update([
+                'tarea' => $request->tarea,
+                'descrpcion' => $request->descripcion,
+                'code' => $request->code,
+            ]);
             return redirect()->route('tareas')->with('success', 'Tarea modificada correctamente');
         } catch (\Throwable $th) {
-            return back()->with('error', 'Hubo un error al modificar la tarea, vuelva a intentarlo más tarde');
+            return back()->withInput()->with('error', 'Hubo un error al modificar la tarea, vuelva a intentarlo más tarde');
         }
-    }
-
-    public function historial()
-    {
-        $cambios = BitacoraTareas::paginate(10);
-        return view('agricola.tareas.historial', ['cambios' => $cambios]);
     }
 }

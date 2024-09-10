@@ -17,29 +17,11 @@ Crear Tarea Finca
 
         <x-alertas />
 
-        <div class="mb-5">
-            <label for="tarea" class="mb-2 block uppercase text-gray-500 font-bold">Nombre de la tarea: </label>
-            <input type="text" id="tarea" name="tarea"
-                class="border p-3 w-full rounded-lg @error('tarea') border-red-500 @enderror" autocomplete="off"
-                value="{{ old('tarea') }}" placeholder="Nombre de la tarea">
 
-            @error('tarea')
-            <p class="bg-red-500 text-white my-2 rounded-lg text-sm p-2 text-center">{{ $message }}</p>
-            @enderror
-        </div>
+        <x-input type="text" name="tarea" label="Nombre de la tarea:" value="{{ old('tarea') }}" placeholder="Nombre de la tarea" />
+        <x-input type="text" name="descripcion" label="Descripción de la tarea:" value="{{ old('descripcion') }}" placeholder="Describa la tarea" />
+        <x-input type="text" name="code" label="Codigo de la tarea:" value="{{ old('code') }}" placeholder="Codigo de la tarea" />
 
-        <div class="mb-5">
-            <label for="descripcion" class="mb-2 block uppercase text-gray-500 font-bold">Descripción de la tarea:
-            </label>
-
-            <input type="text" id="descripcion" name="descripcion"
-                class="border p-3 w-full rounded-lg @error('descripcion') border-red-500 @enderror" autocomplete="off"
-                value="{{ old('descripcion') }}" placeholder="Descripcion de la tarea">
-
-            @error('descripcion')
-            <p class="bg-red-500 text-white my-2 rounded-lg text-sm p-2 text-center">{{ $message }}</p>
-            @enderror
-        </div>
         
         <div class="flex justify-end mt-10">
             <input type="submit" value="Guardar"

@@ -41,6 +41,9 @@ Crear Tarea Finca
             @enderror
         </div>
 
+        <x-input type="text" name="code" label="Codigo de la tarea:" value="{{ $tarea->code }}" placeholder="Codigo de la tarea" />
+
+
         <div class="flex justify-end mt-10">
             <input type="submit" value="Guardar"
                 class=" bg-sky-600 hover:bg-sky-700 p-3 transition-colors cursor-pointer uppercase font-bold text-white rounded-lg">
