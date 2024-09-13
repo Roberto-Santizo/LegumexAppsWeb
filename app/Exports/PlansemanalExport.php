@@ -2,16 +2,17 @@
 
 namespace App\Exports;
 
-use App\Models\PlanSemanalFinca;
 use Carbon\Carbon;
+use App\Models\PlanSemanalFinca;
 use Maatwebsite\Excel\Concerns\WithTitle;
 use Maatwebsite\Excel\Concerns\WithStyles;
 use Maatwebsite\Excel\Concerns\WithHeadings;
 use Maatwebsite\Excel\Concerns\FromCollection;
 use PhpOffice\PhpSpreadsheet\Worksheet\Worksheet;
 use Maatwebsite\Excel\Concerns\WithMultipleSheets;
+use Maatwebsite\Excel\Concerns\WithColumnFormatting;
 
-class PlansemanalExport implements FromCollection, WithHeadings, WithMultipleSheets, WithTitle, WithStyles 
+class PlansemanalExport implements FromCollection, WithHeadings, WithMultipleSheets, WithTitle, WithStyles, WithColumnFormatting
 {
    
 
@@ -35,16 +36,22 @@ class PlansemanalExport implements FromCollection, WithHeadings, WithMultipleShe
         Carbon::setLocale('es');
         foreach($plansemanal->finca->lotes as $lote){
             foreach ($lote->tareas as $tarea) {
-
+                if($tarea->cierre != null){
+                    $tareaCreacion = $tarea->asignacion->created_at; 
+                    $tareaCierre = $tarea->cierre->created_at;
+                    $rendimiento_real = $tareaCreacion->diffInHours($tareaCierre);
+                }
                 $rows->push([
                     'FINCA' => $plansemanal->semana,
                     'SEMANA CALENDARIO' => $plansemanal->finca->finca,
                     'LOTE' => $lote->nombre,
                     'TAREA' => $tarea->tarea->tarea,
-                    'ESTADO' => ($tarea->cierre) ? 'CERRADO' : 'ABIERTO',
-                    'FECHA DE INICIO' => ($tarea->asignacion) ? $tarea->asignacion->created_at->format('d-m-Y h:m') : 'SIN ASIGNACION',
-                    'FECHA DE CIERRE' => ($tarea->cierre) ? $tarea->cierre->created_at : 'SIN CIERRE',
-                    'TOTAL DE HORAS REALES DE LA TAREA' => ($tarea->cierre) ? ((round(($tarea->asignacion->created_at)->diffInHours($tarea->cierre->created_at),2))*$tarea->personas) : '0',
+                    'ESTADO' => ($tarea->cierre != null) ? 'CERRADA' : 'ABIERTA',
+                    'FECHA DE INICIO' => ($tarea->asignacion) ? $tarea->asignacion->created_at : 'SIN ASIGNACION',
+                    'FECHA DE CIERRE' => ($tarea->cierre != null) ? $tarea->cierre->created_at : 'SIN CIERRE',
+                    'HORA RENDIMIENTO TEORICO' => $tarea->horas,
+                    'HORA RENDIMIENTO REAL' => ($tarea->cierre != null) ?  round($rendimiento_real,4) : '0',
+                    'RENDIMIENTO' => ($tarea->cierre != null) ? ($tarea->horas/$rendimiento_real) : '0'
                 ]);
             }
            
@@ -55,13 +62,13 @@ class PlansemanalExport implements FromCollection, WithHeadings, WithMultipleShe
 
     public function headings(): array
     {
-        return ['FINCA','SEMANA CALENDARIO','LOTE', 'TAREA', 'ESTADO','FECHA DE INICIO','FECHA DE CIERRE','HORAS RENDIMIENTO', 'DIA'];
+        return ['FINCA','SEMANA CALENDARIO','LOTE', 'TAREA', 'ESTADO','FECHA DE INICIO','FECHA DE CIERRE','HORAS RENDIMIENTO TEORICO','HORAS RENDIMIENTO REAL', 'RENDIMIENTO'];
     }
 
     public function styles(Worksheet $sheet)
     {
         // Aplica estilos al rango A1:H1 (encabezados)
-        $sheet->getStyle('A1:I1')->applyFromArray([
+        $sheet->getStyle('A1:J1')->applyFromArray([
             'font' => [
                 'bold' => true,
                 'color' => ['argb' => 'FFFFFF'], // Color blanco para el texto
@@ -86,5 +93,14 @@ class PlansemanalExport implements FromCollection, WithHeadings, WithMultipleShe
     {
         return 'General Tareas Finca'; // Nombre de la hoja
     }
+
+      public function columnFormats(): array
+    {
+        return [
+            // Formatear la columna C (índice 2) como porcentaje
+            'J' => '0.00%',
+        ];
+    }
+
 
 }

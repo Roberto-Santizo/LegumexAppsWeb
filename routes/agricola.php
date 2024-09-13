@@ -12,7 +12,7 @@ use App\Http\Controllers\ControlPlantacionController;
 use App\Http\Controllers\PlanSemanalFincasController;
 use App\Http\Controllers\TareaLoteController;
 
-Route::group(['middleware' => ['auth', 'role:admin|adminalameda|auxalameda'], 'prefix' => 'agricola'], function() {
+Route::group(['middleware' => ['auth', 'role:admin|adminagricola|auxalameda'], 'prefix' => 'agricola'], function() {
     
     //Cultivos
     Route::get('/cultivos', [CultivoController::class, 'index'])->name('cultivos');
@@ -44,16 +44,19 @@ Route::group(['middleware' => ['auth', 'role:admin|adminalameda|auxalameda'], 'p
     Route::patch('/lotes/update/{lote}', [LoteController::class, 'update'])->name('lotes.update');
     Route::delete('/{lote}', [LoteController::class, 'destroy'])->name('lotes.destroy');
     
-    //Tareas Fincas
+    //Plan semanal (tareas fincas)
     Route::get('/finca/plan-semanal', [PlanSemanalFincasController::class, 'index'])->name('planSemanal');
     Route::get('/finca/plan-semanal/create', [PlanSemanalFincasController::class, 'create'])->name('planSemanal.create');
     Route::get('/finca/plan-semanal/plan-{plansemanalfinca}/lotes', [PlanSemanalFincasController::class, 'show'])->name('planSemanal.show');
 
     Route::get('/finca/plan-semanal/lotes/{lote}/{plansemanalfinca}/tareas', [PlanSemanalFincasController::class, 'tareasLote'])->name('planSemanal.tareasLote');
     
+
     Route::get('/tarea-lote/{lote:nombre}/plan-{plansemanalfinca}/create', [TareaLoteController::class, 'create'])->name('planSemanal.tareaLote.create');
+    Route::get('/tarea-lote/{tareaslote}/edit', [TareaLoteController::class, 'edit'])->name('planSemanal.tareaLote.edit');
     
     Route::post('/tarea-lote/store/{lote}/{plansemanalfinca}', [TareaLoteController::class, 'store'])->name('planSemanal.tareaLote.store');
+    
     
     Route::get('/finca/plan-semanal/lotes/{lote}/{plansemanalfinca}/tareas/ctr', [PlanSemanalFincasController::class, 'crt'])->name('planSemanal.crt');
     Route::get('/finca/plan-semanal/lotes/{lote:nombre}/{plansemanalfinca}/{tarea}/{tarealote}/asignacion', [PlanSemanalFincasController::class, 'AsignarEmpleados'])->name('planSemanal.Asignar');

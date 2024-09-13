@@ -9,7 +9,6 @@ use App\Http\Controllers\OrdenTrabajoController;
 //Mantenimiento
 Route::group(['middleware' => ['auth', 'role:admin|adminmanto|auxmanto'], 'prefix' => 'mantenimiento'], function() {
     
-    
     // Herramientas
     Route::get('/herramientas', [HerramientasController::class, 'index'])->name('herramientas');
     Route::get('/herramientas/create', [HerramientasController::class, 'create'])->name('herramientas.create');
@@ -56,9 +55,11 @@ Route::group(['middleware' => ['auth', 'role:admin|adminmanto|auxmanto'], 'prefi
         Route::patch('/orden-trabajo/{ordentrabajo}', [OrdenTrabajoController::class, 'update'])->name('documentoOT.update');
         Route::post('/orden-trabajo/upload', [OrdenTrabajoController::class, 'uploadFile'])->name('documentoOT.upload');
     });
+    
+    Route::get('/administracion/ordenes-trabajos/{estado}',[OrdenTrabajoController::class,'showOrdenes'])->name('documentoOT.showordenes');
 
     Route::get('/administracion/ordenes-trabajos',[OrdenTrabajoController::class,'index'])->name('documentoOT');
-    Route::get('/administracion/ordenes-trabajos/{estado:estado}',[OrdenTrabajoController::class,'showOrdenes'])->name('documentoOT.showordenes');
+
     Route::get('/administracion/ordenes-trabajos/atrasadas',[OrdenTrabajoController::class,'showAtrasadas'])->name('documentoOT.showatrasadas');
 
 });

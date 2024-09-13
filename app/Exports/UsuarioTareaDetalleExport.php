@@ -3,7 +3,6 @@
 namespace App\Exports;
 
 use Carbon\Carbon;
-use App\Models\Tarea;
 use App\Models\EmpleadoFinca;
 use App\Models\PlanSemanalFinca;
 use App\Models\EmpleadoIngresado;
@@ -51,10 +50,11 @@ class UsuarioTareaDetalleExport implements FromCollection, WithHeadings, WithTit
                         $salida = EmpleadoIngresado::where('emp_id', $asignacion->usuario_id)->whereDate('punch_time', $asignacion->created_at)->orderBy('punch_time', 'desc')->first();
 
                         $rows->push([
+                            'CODIGO' => $empleado->last_name,
                             'EMPLEADO' => $empleado->first_name,
                             'LOTE' => $lote->nombre,
                             'TAREA REALIZADA' => $tarea->tarea->tarea,
-                            'MONTO' => ($asignacion->tarea_lote->cierre) ? (($asignacion->tarea_lote->presupuesto) / $asignacion->tarea_lote->personas) : '0',
+                            'MONTO' => ($asignacion->tarea_lote->cierre) ? (($asignacion->tarea_lote->presupuesto) / $tarea->users->count()) : '0',
                             'HORAS TOTALES' => ($asignacion->tarea_lote->cierre) ? ($asignacion->tarea_lote->horas_persona) : '0',
                             'ENTRADA' => Carbon::parse($entrada->punch_time)->format('d-m-Y h:m:s'),
                             'SALIDA' => Carbon::parse($salida->punch_time)->format('d-m-Y h:m:s'),
@@ -70,13 +70,13 @@ class UsuarioTareaDetalleExport implements FromCollection, WithHeadings, WithTit
 
     public function headings(): array
     {
-        return ['EMPLEADO', 'LOTE', 'TAREA', 'MONTO GANADO', 'HORAS TOTALES', 'ENTRADA BIOMETRICO', 'SALIDA BIOMETRICO', 'DIA']; // Cambia los encabezados según lo que exportes
+        return ['CODIGO','EMPLEADO', 'LOTE', 'TAREA', 'MONTO GANADO', 'HORAS TOTALES', 'ENTRADA BIOMETRICO', 'SALIDA BIOMETRICO', 'DIA']; // Cambia los encabezados según lo que exportes
     }
 
     public function styles(Worksheet $sheet)
     {
         // Aplica estilos al rango A1:H1 (encabezados)
-        $sheet->getStyle('A1:H1')->applyFromArray([
+        $sheet->getStyle('A1:I1')->applyFromArray([
             'font' => [
                 'bold' => true,
                 'color' => ['argb' => 'FFFFFF'], // Color blanco para el texto

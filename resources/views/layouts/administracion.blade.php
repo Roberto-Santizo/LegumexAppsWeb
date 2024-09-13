@@ -67,7 +67,7 @@
     <div class="md:flex md:flex-row flex-1 pt-24">
         <aside class="pb-32 hidden h-full w-32 bg-blue-500 text-white md:flex flex-col items-center fixed top-24 scroll-container z-20" id="menu-nav">
             @role('admin')
-                {{-- <x-administrador-navegacion/> --}}
+                <x-administrador-navegacion/>
                 <x-agricola-navegacion/>
             @endrole
 

@@ -17,12 +17,17 @@ class TareasLote extends Model
         'personas',
         'presupuesto',
         'horas',
-        'tarifa',
         'estado',
         'fecha_ejecucion',
         'cupos',
-        'horas_persona'
+        'horas_persona',
+        'extraordinaria'
     ];
+
+    public function plansemanal()
+    {
+        return $this->belongsTo(PlanSemanalFinca::class, 'plan_semanal_finca_id','id');
+    }
 
     public function lote()
     {

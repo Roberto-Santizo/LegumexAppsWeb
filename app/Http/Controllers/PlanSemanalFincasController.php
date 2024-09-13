@@ -16,12 +16,9 @@ use App\Models\AsignacionDiaria;
 use App\Models\PlanSemanalFinca;
 use App\Models\UsuarioTareaLote;
 use App\Models\EmpleadoIngresado;
-use App\Imports\TareasLotesImport;
 use App\Models\RendimientoDiario;
-use Illuminate\Support\Facades\DB;
-
+use App\Imports\PlanSemanalImport;
 use Maatwebsite\Excel\Facades\Excel;
-use function PHPUnit\Framework\isEmpty;
 
 class PlanSemanalFincasController extends Controller
 {
@@ -51,33 +48,20 @@ class PlanSemanalFincasController extends Controller
 
     public function create()
     {
-        $fincas = Finca::all();
-        return view('agricola.planSemanal.create', ['fincas' => $fincas]);
+        return view('agricola.planSemanal.create');
     }
-
 
     public function store(Request $request)
     {
-        try {
-            DB::transaction(function () use ($request) {
-                $request->validate([
-                    'finca_id' => 'required',
-                    'file' => 'required'
-                ]);
+        $request->validate([
+            'file' => 'required'
+        ]);
 
-                $planSemanal = PlanSemanalFinca::create([
-                    'finca_id' => $request->finca_id,
-                    'semana' => Carbon::now()->weekOfYear
-                ]);
-
-                Excel::import(new TareasLotesImport($planSemanal), $request->file('file'));
-            });
-        } catch (\Throwable $th) {
-            return redirect()->back()->with('error', 'Existe un error al crear el plan semanal');
-        }
+        Excel::import(new PlanSemanalImport, $request->file('file'));
 
         return redirect()->route('planSemanal')->with('success', 'Plan Semanal Creado Correctamente');
     }
+
 
     public function show(PlanSemanalFinca $plansemanalfinca)
     {

@@ -36,7 +36,6 @@ class TareaLoteController extends Controller
                 'personas' => $request->personas,   
                 'presupuesto' => $request->presupuesto,
                 'horas' => $request->horas,
-                'tarifa' => 11.5,
                 'cupos' => $request->personas,
                 'horas_persona' => ($request->horas)/$request->personas,
             ]);
@@ -62,9 +61,9 @@ class TareaLoteController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(string $id)
+    public function edit(TareasLote $tareaslote)
     {
-        //
+        return view('agricola.tareasLote.edit',['tarea' => $tareaslote]);
     }
 
     /**

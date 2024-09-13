@@ -17,4 +17,6 @@ class AsignacionDiaria extends Model
     {
         return $this->hasMany(RendimientoDiario::class, 'asignacion_diaria_id','id')->where('terminado',1);
     }
+
+    
 }
