@@ -73,6 +73,13 @@ Crear orden de trabajo
                             <i class="fa-solid fa-camera"></i>
                             Tomar Foto
                         </div>
+
+                        <div class="mt-5" id="cameraOptionsContainer">
+                            <label for="cameraOptions" class="label-input">Seleccione una camara: </label>
+                            <select name="cameraOptions" id="cameraOptions" class="w-full p-4 rounded bg-gray-50">
+                            </select>
+                        </div>
+                        
                         <p class="text-xs mt-5">(Tome el menor número de fotos posibles)</p>
                     </div>
 
