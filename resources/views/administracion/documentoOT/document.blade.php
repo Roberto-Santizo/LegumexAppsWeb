@@ -163,7 +163,7 @@
         
         <div class="grid grid-cols-8 grid-rows-5 border border-black">
             <h3 class="col-start-1 col-span-4 text-center  border-black">MECÁNICO ASIGNADO</h3>
-            <p class="row-start-2 col-start-1 col-span-4 border-t border-black p-1">NOMBRE: {{ $ot->usuario->name }}</p>
+            <p class="row-start-2 col-start-1 col-span-4 border-t border-black p-1">NOMBRE: {{ ($ot->mecanico_externo != null) ? $ot->mecanico_externo :  $ot->mecanico->name }}</p>
 
             <p class="row-start-3 col-start-1 col-span-4 border-t border-black p-1">FECHA DE ENTREGA: {{ \Illuminate\Support\Carbon::parse($ot->fecha_entrega)->format('d-m-Y') }}</p>
 

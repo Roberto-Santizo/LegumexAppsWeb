@@ -1,6 +1,5 @@
 <?php
 
-use Illuminate\Auth\Events\Login;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\FirmaController;
 use App\Http\Controllers\LogoutController;
@@ -17,7 +16,6 @@ use App\Http\Controllers\HomeController;
 use App\Http\Controllers\MicrosoftAuthController;
 use App\Http\Controllers\OrdenTrabajoController;
 use App\Http\Controllers\PermissionController;
-use App\Http\Controllers\RendimientoRController;
 use App\Http\Controllers\RoleController;
 use App\Http\Controllers\SupervisoresController;
 

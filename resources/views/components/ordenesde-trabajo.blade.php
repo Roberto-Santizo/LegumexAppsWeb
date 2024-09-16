@@ -68,9 +68,7 @@
                 </a>
 
                 @if(!$ot->mecanico_id)
-                @role('auxmanto')
-                <livewire:asignar-mecanico :ot="$ot" />
-                @endrole
+                    <livewire:asignar-mecanico :ot="$ot" />
                 @endif
 
                 @if($ot->mecanico_id)

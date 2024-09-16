@@ -1,5 +1,7 @@
 import Swal from "sweetalert2";
 const my_camera = document.getElementById("my_camera");
+const anchoVentana = (window.innerWidth > 500) ? 500 : window.innerWidth;
+const altoVentana = (window.innerHeight > 500) ? 450 : window.innerHeight;
 let images = [];
 
 if (my_camera) {
@@ -15,14 +17,17 @@ function inicializarCamara() {
     const take_button = document.getElementById("takesnapshot");
     const upload_button = document.getElementById("upload_button");
 
+
+    let flag = true;
     navigator.mediaDevices
         .enumerateDevices()
         .then((devices) => {
             devices.forEach((device) => {
                 if (device.label.includes("facing back")) {
+                        flag = false;
                         Webcam.set({
-                            width: 550,
-                            height: 350,
+                            width: anchoVentana - 10,
+                            height: altoVentana,
                             image_format: "jpeg",
                             jpeg_quality: 90,
                             constraints: {
@@ -33,6 +38,18 @@ function inicializarCamara() {
                         Webcam.attach("#my_camera");
                 }
             });
+
+            if(flag){
+                Webcam.set({
+                    width: anchoVentana - 10,
+                    height: altoVentana,
+                    image_format: "jpeg",
+                    jpeg_quality: 90,
+                });
+            
+                Webcam.attach("#my_camera");
+            }
+
         })
         .catch((error) => {
             console.error("Error al enumerar dispositivos:", error);
@@ -72,8 +89,8 @@ function takeSnapshot() {
         const imgContainer = document.createElement("div");
         imgContainer.className = "captured-image";
         imgContainer.innerHTML = `
-                <div class="p-2 shadow">
-                    <img src="${data_uri}" />
+                <div class="p-2 shadow w-full flex justify-center items-center flex-wrap gap-2">
+                    <img src="${data_uri}" witdh="${anchoVentana}" height="${altoVentana}"/>
                 </div>
             `;
         document.getElementById("results").appendChild(imgContainer);

@@ -13,7 +13,7 @@ Crear orden de trabajo
 
 <x-link route="documentoOT" text="Volver" icon="fa-solid fa-arrow-left" />
 
-<div class="w-full flex md:justify-center items-center">
+<div class=" w-1/3 md:w-full flex md:justify-center items-center">
     <form method="POST" action="{{ route('documentoOT.store') }}" id="formulario5" class="w-2/3">
         @csrf
         <fieldset class="p-5 mb-10 shadow-2xl">
@@ -51,14 +51,14 @@ Crear orden de trabajo
 
             <x-select name="urgencia" label="Urgencia del Trabajo" :options="$urgenciasOptions" id="urgencia"/>
 
-            <x-input type="date" name="fecha_propuesta" label="Fecha propuesta de entrega" />
+            <x-input type="date" name="fecha_propuesta" label="Fecha propuesta de entrega" min="{{ now()->format('Y-m-d') }}"/>
 
         </fieldset>
 
-        <fieldset class="p-5 mb-10 shadow-2xl">
+        <fieldset class="p-5 mb-10 shadow-2xl w-96 md:w-full">
             <legend class="text-xl font-bold uppercase">Captura de Imágenes</legend>
 
-            <div>
+            <div class="w-full">
                 <h1 class="font-bold text-2xl mb-5 text-center">Imagenes Capturadas: </h1>
                 <div class="flex justify-center items-center flex-wrap gap-2" id="results">
                 </div>
@@ -92,7 +92,7 @@ Crear orden de trabajo
             <x-select name="supervisor_id" :options="$supervisores" id="supervisor_id" label="Nombre del Supervisor de Área" buscador="true"/>
 
             <div class="flex justify-center items-center flex-col">
-                <canvas id="signature-pad-2" width="375" height="200"
+                <canvas id="signature-pad-2" width="350" height="200"
                     class="bg-gray-50 mt-10 rounded-xl border border-black"></canvas>
                 <div class="clear_btn flex justify-center items-center flex-col mt-3">
                     <h4 class="font-bold uppercase">Firma del jefe de área</h4>
@@ -106,7 +106,7 @@ Crear orden de trabajo
         <fieldset class="p-5 mb-2 shadow-2xl">
             <legend class="text-xl font-bold uppercase">Datos del solicitante</legend>
             <div class="flex justify-center items-center flex-col">
-                <canvas id="signature-pad" width="375" height="200"
+                <canvas id="signature-pad" width="350" height="200"
                     class="bg-gray-50 mt-10 rounded-xl border border-black"></canvas>
                 <div class="clear_btn flex justify-center items-center flex-col mt-3">
                     <h4 class="font-bold uppercase">Firma del solicitante</h4>

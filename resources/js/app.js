@@ -27,6 +27,7 @@ import './UI/filtrosMobile.js';
 import './UI/rechazadoModal.js';
 import './UI/filtrosSelect.js';
 import './UI/tomaFotos.js';
+import './UI/mecanicoExterno.js';
 
 //UX
 import './UX/formulario_checklist-preoperacional-campos.js';
