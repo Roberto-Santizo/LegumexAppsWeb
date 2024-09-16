@@ -1,5 +1,5 @@
 <div class="bg-white p-6 rounded-lg shadow-lg mt-10 md:mt-5 container xl:w-2/3  mx-auto">
-    <form wire:submit.prevent='editarTarea'>
+    <form wire:submit.prevent='editarTarea' novalidate>
         <x-alertas />
 
         @hasanyrole('admin|adminagricola')

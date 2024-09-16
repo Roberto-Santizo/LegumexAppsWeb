@@ -48,6 +48,7 @@ Route::group(['middleware' => ['auth', 'role:admin|adminagricola|auxalameda'], '
     Route::get('/finca/plan-semanal', [PlanSemanalFincasController::class, 'index'])->name('planSemanal');
     Route::get('/finca/plan-semanal/create', [PlanSemanalFincasController::class, 'create'])->name('planSemanal.create');
     Route::get('/finca/plan-semanal/plan-{plansemanalfinca}/lotes', [PlanSemanalFincasController::class, 'show'])->name('planSemanal.show');
+    Route::get('/finca/plan-semanal/plan-{plansemanalfinca}/atrasadas', [PlanSemanalFincasController::class, 'atrasadas'])->name('planSemanal.atrasadas');
 
     Route::get('/finca/plan-semanal/lotes/{lote}/{plansemanalfinca}/tareas', [PlanSemanalFincasController::class, 'tareasLote'])->name('planSemanal.tareasLote');
     

@@ -60,7 +60,9 @@ Ordenes de Trabajo {{ $titulo }}
                     </svg>
                 </button>
 
-                <x-link route="documentoOT.showordenes" :model="$estado" text="Borrar Filtros" />
+                <a class="btn" href="{{ route('documentoOT.showordenes',$estado) }}">
+                    Borrar Filtros
+                </a>
             </div>
         </div>
     </form>

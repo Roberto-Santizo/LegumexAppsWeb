@@ -187,6 +187,26 @@ class PlanSemanalFincasController extends Controller
         }
     }
 
+    public function atrasadas(Request $request, PlanSemanalFinca $plansemanalfinca)
+    {
+        $semanaplan = $plansemanalfinca->semana;
+        $tareas = $plansemanalfinca->tareasTotales;
+
+        // Captura la variable $semanaplan con "use"
+        $tareasFiltradas = $tareas->filter(function ($tarea) use ($semanaplan) {
+            if ($semanaplan < Carbon::now()->weekOfYear) {
+                if (!$tarea->cierre) {
+                    return $tarea;  // Retorna la tarea si cumple la condición
+                }
+            }
+        });
+
+        return view('agricola.planSemanal.atrasadas', [
+            'tareas' => $tareasFiltradas,
+            'plansemanalfinca' => $plansemanalfinca
+        ]);
+    }
+
     public function crt(Lote $lote, PlanSemanalFinca $plansemanalfinca)
     {
         $fechasSemana = $this->semanaService->obtenerFechasDeSemana($plansemanalfinca->semana);
