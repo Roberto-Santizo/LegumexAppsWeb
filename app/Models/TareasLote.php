@@ -10,6 +10,7 @@ class TareasLote extends Model
 {
     use HasFactory;
 
+
     protected $fillable = [
         'plan_semanal_finca_id',
         'lote_id',

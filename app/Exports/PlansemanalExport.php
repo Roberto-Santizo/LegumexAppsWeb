@@ -71,33 +71,31 @@ class PlansemanalExport implements FromCollection, WithHeadings, WithMultipleShe
         $sheet->getStyle('A1:J1')->applyFromArray([
             'font' => [
                 'bold' => true,
-                'color' => ['argb' => 'FFFFFF'], // Color blanco para el texto
+                'color' => ['argb' => 'FFFFFF'], 
             ],
             'fill' => [
                 'fillType' => \PhpOffice\PhpSpreadsheet\Style\Fill::FILL_SOLID,
-                'startColor' => ['argb' => '5564eb'], // Color verde para el fondo
+                'startColor' => ['argb' => '5564eb'], 
             ],
         ]);
 
-        // Si quieres aplicar estilos adicionales a otras celdas, puedes hacerlo aquí.
     }
     
     public function sheets(): array
     {
         return [
-            new PlansemanalExport($this->id), // Primera hoja
-            new UsuarioTareaDetalleExport($this->id) // Segunda hoja
+            new PlansemanalExport($this->id), 
+            new UsuarioTareaDetalleExport($this->id) 
         ];
     }
     public function title(): string
     {
-        return 'General Tareas Finca'; // Nombre de la hoja
+        return 'General Tareas Finca'; 
     }
 
       public function columnFormats(): array
     {
         return [
-            // Formatear la columna C (índice 2) como porcentaje
             'J' => '0.00%',
         ];
     }

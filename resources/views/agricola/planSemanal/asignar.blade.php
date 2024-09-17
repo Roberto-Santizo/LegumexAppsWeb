@@ -8,14 +8,6 @@ Asignación de Empleados {{ $tarea->tarea }}, Semana {{ $plansemanalfinca->seman
 
 <x-alertas />
 
-@php
-$clasesAlertas = 'bg-red-500 text-white my-2 rounded-lg text-sm p-2 text-center';
-$clasesLabel = 'mb-2 block uppercase text-gray-500 font-bold';
-$clasesInput = 'border p-3 w-full rounded-lg';
-$clasesEnlaces = 'bg-orange-500 cursor-pointer hover:bg-orange-700 text-white font-bold py-2 px-4 rounded inline-block
-mt-5 mb-5';
-@endphp
-
 <div class="grid grid-cols-3 mt-10">
     <div class="col-span-2">
         <h1 class="text-2xl font-bold">Información de la tarea: </h1>
@@ -29,7 +21,7 @@ mt-5 mb-5';
 
         <div class="flex gap-2">
             <p class="text-xl font-bold">Fecha de la asignación: </p>
-            <p class="text-xl font-bold">{{ \Carbon\Carbon::now()->format('d-m-Y') }}</p>
+            <p class="text-xl font-bold">{{ $hoy }}</p>
         </div>
 
         <div class="mt-5 w-1/2">
@@ -38,17 +30,17 @@ mt-5 mb-5';
             <div id="usuariosAsignadosContainer" class="flex flex-col gap-2 mt-5 overflow-y-auto h-96 mb-5">
                 @foreach ($ingresos as $ingreso)
                     @if(in_array($ingreso->emp_id,$asignados))
-                    <div class="border p-3 selected text-white rounded cursor-pointer empleados"
-                        data-user="{{ $ingreso->emp_id }}">
-                        <div class="flex flex-row items-center gap-3">
-                            <i class="fa-solid fa-user text-2xl"></i>
-                            <div>
-                                <p class="font-bold">{{ $ingreso->empleado->first_name }}</p>
-                                <p class="font-bold">Horas del día de hoy: {{ round($ingreso->horas_totales,2) }}</p>
-                                <input type="hidden" value="{{ $ingreso->emp_id }}" id="usuario_id">
+                        <div class="border p-3 selected text-white rounded cursor-pointer empleados"
+                            data-user="{{ $ingreso->emp_id }}">
+                            <div class="flex flex-row items-center gap-3">
+                                <i class="fa-solid fa-user text-2xl"></i>
+                                <div>
+                                    <p class="font-bold">{{ $ingreso->empleado->first_name }}</p>
+                                    <p class="font-bold">Horas del día de hoy: {{ round($ingreso->horas_totales,2) }}</p>
+                                    <input type="hidden" value="{{ $ingreso->emp_id }}" id="usuario_id">
+                                </div>
                             </div>
                         </div>
-                    </div>
                     @endif
                 @endforeach
             </div>
@@ -65,17 +57,17 @@ mt-5 mb-5';
 
             @foreach ($ingresos as $ingreso)
                 @if(!in_array($ingreso->emp_id,$asignados))
-                <div class="border p-3 not-selected text-white rounded cursor-pointer empleados empleadosBuscar"
-                    data-user="{{ $ingreso->emp_id }}">
-                    <div class="flex flex-row items-center gap-3">
-                        <i class="fa-solid fa-user text-2xl"></i>
-                        <div>
-                            <p class="font-bold">{{ $ingreso->empleado->first_name }}</p>
-                            <p class="font-bold">Horas del día de hoy: {{ round($ingreso->horas_totales,2) }}</p>
-                            <input type="hidden" value="{{ $ingreso->emp_id }}" id="usuario_id">
+                    <div class="border p-3 not-selected text-white rounded cursor-pointer empleados empleadosBuscar"
+                        data-user="{{ $ingreso->emp_id }}">
+                        <div class="flex flex-row items-center gap-3">
+                            <i class="fa-solid fa-user text-2xl"></i>
+                            <div>
+                                <p class="font-bold">{{ $ingreso->empleado->first_name }}</p>
+                                <p class="font-bold">Horas del día de hoy: {{ round($ingreso->horas_totales,2) }}</p>
+                                <input type="hidden" value="{{ $ingreso->emp_id }}" id="usuario_id">
+                            </div>
                         </div>
                     </div>
-                </div>
                 @endif
             @endforeach
         </div>

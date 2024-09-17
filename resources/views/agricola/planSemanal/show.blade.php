@@ -8,48 +8,36 @@ Plan Semanal {{ $planSemanal->finca->finca }} Semana - {{ $planSemanal->semana }
 
 <x-alertas />
 
-@php
-$clasesEncabezados = 'p-3 text-sm font-bold uppercase text-left rtl:text-right text-gray-500 dark:text-gray-400';
-$clasesEnlaces = 'bg-orange-500 cursor-pointer hover:bg-orange-700 text-white font-bold py-2 px-4 rounded
-inline-block ';
-$clasesCampo = 'px-4 py-2 text-md font-medium whitespace-nowrap';
-@endphp
-
+<x-link route="planSemanal" text="Volver" icon="fa-solid fa-arrow-left" />
 
 
 <div class="overflow-x-auto mt-10">
-    <div class="flex flex-row gap-5 mb-5 justify-end">
-        <div>
-           <a href="">
-                <i title="Reporte Horas Usuarios" class="fa-solid fa-users text-3xl hover:text-gray-500 cursor-pointer"></i>
-           </a>
-        </div>
-    </div>
 
-    <table class="min-w-full divide-y divide-gray-200 dark:divide-gray-700 text-xs md:text-sm">
-        <thead class="bg-gray-50 dark:bg-gray-800">
+    <table class="tabla">
+        <thead class="tabla-head">
             <tr class="text-xs md:text-sm">
-                <th scope="col" class="{{ $clasesEncabezados }}">
+                <th scope="col" class="encabezado">
                     Lotes Disponibles</th>
-                <th scope="col" class="{{ $clasesEncabezados }}">
+                <th scope="col" class="encabezado">
+                    Personas</th>
+                <th scope="col" class="encabezado">
+                    Presupuesto</th>
+                <th scope="col" class="encabezado">
+                    Horas</th>
+                <th scope="col" class="encabezado">
                     Ver tareas asignadas</th>
-                <th scope="col" class="{{ $clasesEncabezados }}">
-                    Ver control semanal</th>
             </tr>
         </thead>
-        <tbody class="bg-white divide-y divide-gray-200 dark:divide-gray-700 dark:bg-gray-900">
+        <tbody class="tabla-body">
             @foreach ($lotes as $lote)
             <tr>
-                <td class="{{ $clasesCampo }}">{{ $lote->nombre }}</td>
-                <td class="{{ $clasesCampo }}">
-                    <a class="{{ $clasesEnlaces }}" href="{{ route('planSemanal.tareasLote',[$lote,$planSemanal]) }}">
+                <td class="campo">{{ $lote->lote->nombre }}</td>
+                <td class="campo">{{ $lote->total_personas }}</td>
+                <td class="campo">Q {{ $lote->total_presupuesto }}</td>
+                <td class="campo">{{ $lote->total_horas }}</td>
+                <td class="campo">
+                    <a class="btn" href="{{ route('planSemanal.tareasLote',[$lote->lote,$planSemanal]) }}">
                         Tareas de lote
-                    </a>
-                </td>
-
-                <td class="{{ $clasesCampo }}">
-                    <a class="{{ $clasesEnlaces }}" href="{{ route('planSemanal.crt',[$lote,$planSemanal]) }}">
-                        CRT
                     </a>
                 </td>
             </tr>

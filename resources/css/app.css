@@ -93,10 +93,32 @@
   @apply bg-red-500 cursor-pointer hover:bg-red-700 text-white font-bold py-2 px-4 rounded inline-block uppercase;
 }
 
+.tag-red{
+  @apply bg-red-500 text-white font-bold py-2 px-4 rounded inline-block uppercase;
+}
 
+.tag-blue{
+  @apply bg-blue-500 text-white font-bold py-2 px-4 rounded inline-block uppercase;
+}
+
+.status-green{
+  @apply bg-green-500 hover:bg-green-600;
+}
+
+.status-red{
+  @apply bg-red-500 hover:bg-red-600
+}
 
 .label-input{
   @apply mb-2 block uppercase text-gray-500 font-bold;
+}
+
+.sidebar-link{
+  @apply rounded-lg text-center flex flex-row  gap-5 md:gap-0  md:flex-col items-center md:justify-center p-3 w-full md:w-2/3 hover:bg-blue-400;
+}
+
+.sidebar-text{
+  @apply text-sm md:text-xs uppercase font-bold;
 }
 
 

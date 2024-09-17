@@ -9,28 +9,29 @@
     <link rel="icon" type="image/x-icon" href="{{ asset('favicon.ico') }}" />
     <title>LegumexApps - @yield('titulo')</title>
     <style>
-            /* Estilos para el contenedor donde quieres aplicar la scrollbar */
+           
         .scroll-container {
-            overflow-y: scroll; /* Asegura que la scrollbar aparezca solo cuando sea necesario */
-            scrollbar-width: none; /* Ancho del scrollbar */
+            overflow-y: scroll;
+            scrollbar-width: none; 
         }
-        /* Estilo para el scrollbar */
+    
         .scroll-container::-webkit-scrollbar {
-            width: 2px; /* Ancho del scrollbar para navegadores WebKit */
+            width: 2px; 
         }
         .scroll-container::-webkit-scrollbar-thumb {
-            background-color: #4a4a4a; /* Color de fondo de la barra */
-            border-radius: 4px; /* Radio de borde */
+            background-color: #4a4a4a; 
+            border-radius: 4px;
         }
 
         .scroll-container::-webkit-scrollbar-track {
-            background-color: #f1f1f1; /* Color de fondo de la pista */
+            background-color: #f1f1f1; 
         }
     </style>
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     @vite('resources/css/app.css')
     @vite('resources/js/app.js')
     @livewireStyles
+    @stack('styles')
 </head>
 <body class="flex flex-col h-screen hide-scrollbar scrollable">
     <header class="header flex flex-row h-24 justify-between bg-blue-500 p-5 text-white w-full fixed top-0 left-0 z-10 items-center">
@@ -67,7 +68,7 @@
     <div class="md:flex md:flex-row flex-1 pt-24">
         <aside class="pb-32 hidden h-full w-32 bg-blue-500 text-white md:flex flex-col items-center fixed top-24 scroll-container z-20" id="menu-nav">
             @role('admin')
-                <x-administrador-navegacion/>
+                {{-- <x-administrador-navegacion/> --}}
                 <x-agricola-navegacion/>
             @endrole
 

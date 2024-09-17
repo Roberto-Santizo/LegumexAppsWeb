@@ -79,7 +79,8 @@ Route::group(['middleware' => ['auth', 'role:admin|adminagricola|auxalameda'], '
     Route::get('/finca/ingresos', [UsuariosFincaController::class, 'index'])->name('usuariosFincas');
 
     // Reporteria
-    Route::get('/exportar-plansemanal/{id}', [ReporteController::class, 'PlanSemanalDiario'])->name('reporte.PlanSemanalDiario');
+    Route::get('/exportar-plansemanal/{id}', [ReporteController::class, 'PlanSemanal'])->name('reporte.PlanSemanal');
+    Route::get('/exportar-planillasemanal/{id}', [ReporteController::class, 'PlanillaSemanal'])->name('reporte.PlanillaSemanal');
     
 
 

@@ -18,7 +18,7 @@ class LoteController extends Controller
      */
     public function index()
     {
-        $lotes = Lote::all();
+        $lotes = Lote::paginate(10);
         return view('agricola.lotes.index',['lotes' => $lotes]);
     }
 
@@ -39,13 +39,11 @@ class LoteController extends Controller
     {
         $request->validate([
             'nombre' => 'required',
-            'cdp_id' => 'required',
             'finca_id' => 'required',
         ]);
 
         Lote::create([
             'nombre' => $request->nombre,
-            'cdp_id' => $request->cdp_id,
             'finca_id' => $request->finca_id,
             'estado' => 1
         ]);
@@ -53,76 +51,73 @@ class LoteController extends Controller
         return redirect()->route('lotes')->with('success', 'Lote creado correctamente');
     }
 
-    public function edit(Lote $lote)
-    {
-        $cdps = ControlPlantacion::all();
-        return view('agricola.lotes.edit', ['lote' => $lote, 'cdps' => $cdps]);
-    }
+    // public function edit(Lote $lote)
+    // {
+    //     $cdps = ControlPlantacion::all();
+    //     return view('agricola.lotes.edit', ['lote' => $lote, 'cdps' => $cdps]);
+    // }
 
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(Request $request, Lote $lote)
-    {
-        try {
-            DB::transaction(function () use ($request, $lote) {
+    // public function update(Request $request, Lote $lote)
+    // {
+    //     try {
+    //         DB::transaction(function () use ($request, $lote) {
 
-                $request->validate([
-                    'cdp_id' => 'required',
-                ]);
+    //             $request->validate([
+    //                 'cdp_id' => 'required',
+    //             ]);
 
-                BitacoraLotes::create([
-                    'lote_id' => $lote->id,
-                    'cdp_anterior' => $lote->cdp_id,
-                    'cdp_nuevo' => $request->cdp_id,
-                    'estado_anterior' => $lote->estado,
-                    'estado_nuevo' => $lote->estado,
-                    'semana_cambio' => Carbon::now()->weekOfYear,
-                ]);
+    //             BitacoraLotes::create([
+    //                 'lote_id' => $lote->id,
+    //                 'cdp_anterior' => $lote->cdp_id,
+    //                 'cdp_nuevo' => $request->cdp_id,
+    //                 'estado_anterior' => $lote->estado,
+    //                 'estado_nuevo' => $lote->estado,
+    //                 'semana_cambio' => Carbon::now()->weekOfYear,
+    //             ]);
 
-                $lote->cdp_id = $request->cdp_id;
-                $lote->save();
+    //             $lote->cdp_id = $request->cdp_id;
+    //             $lote->save();
 
-            });
+    //         });
             
-            return redirect()->route('lotes')->with('success', 'Lote modificado correctamente');
-        } catch (\Throwable $th) {
-            return back()->with('error', 'Error al actualizar el lote, vuelva a intentarlo más tarde');
-        }
-    }
+    //         return redirect()->route('lotes')->with('success', 'Lote modificado correctamente');
+    //     } catch (\Throwable $th) {
+    //         return back()->with('error', 'Error al actualizar el lote, vuelva a intentarlo más tarde');
+    //     }
+    // }
 
-    public function destroy(Lote $lote)
-    {
-        try {
-            DB::transaction(function () use ($lote) {
+    // public function destroy(Lote $lote)
+    // {
+    //     try {
+    //         DB::transaction(function () use ($lote) {
                 
-                BitacoraLotes::create([
-                    'lote_id' => $lote->id,
-                    'cdp_anterior' => $lote->cdp_id,
-                    'cdp_nuevo' => $lote->cdp_id,
-                    'estado_anterior' => ($lote->estado == 1) ? 1 : 0,
-                    'estado_nuevo' => ($lote->estado == 1) ? 0 : 1,
-                    'semana_cambio' => Carbon::now()->weekOfYear,
-                ]);
+    //             BitacoraLotes::create([
+    //                 'lote_id' => $lote->id,
+    //                 'cdp_anterior' => $lote->cdp_id,
+    //                 'cdp_nuevo' => $lote->cdp_id,
+    //                 'estado_anterior' => ($lote->estado == 1) ? 1 : 0,
+    //                 'estado_nuevo' => ($lote->estado == 1) ? 0 : 1,
+    //                 'semana_cambio' => Carbon::now()->weekOfYear,
+    //             ]);
 
-                if($lote->estado == 0){
-                    $lote->estado = 1;
-                }else{
-                    $lote->estado = 0;
-                }
+    //             if($lote->estado == 0){
+    //                 $lote->estado = 1;
+    //             }else{
+    //                 $lote->estado = 0;
+    //             }
     
-                $lote->save();
-            });
+    //             $lote->save();
+    //         });
 
-            return redirect()->route('lotes')->with('success','Lote modificado correctamente');
-        } catch (\Throwable $th) {
-            return back()->with('error','Hubo un error al modificar el lote, intentelo de nuevo más tarde');
-        }
-    }
+    //         return redirect()->route('lotes')->with('success','Lote modificado correctamente');
+    //     } catch (\Throwable $th) {
+    //         return back()->with('error','Hubo un error al modificar el lote, intentelo de nuevo más tarde');
+    //     }
+    // }
 
-    public function historial()
-    {
-        $cambios = BitacoraLotes::paginate(10);
-        return view('agricola.lotes.historial',['cambios' => $cambios]);
-    }
+    // public function historial()
+    // {
+    //     $cambios = BitacoraLotes::paginate(10);
+    //     return view('agricola.lotes.historial',['cambios' => $cambios]);
+    // }
 }

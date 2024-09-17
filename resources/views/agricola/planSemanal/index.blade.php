@@ -26,7 +26,7 @@ Tareas Finca Semanal
                 <th scope="col" class="encabezado">
                     Presupuesto Total</th>
                 <th scope="col" class="encabezado">
-                    Número máximo de personas para una tarea</th>
+                    Maximo de Personas</th>
                 <th scope="col" class="encabezado">
                     Total Tareas Semanales</th>
                 <th scope="col" class="encabezado text-center">
@@ -35,6 +35,8 @@ Tareas Finca Semanal
                     Tareas Atrasadas</th>
                 <th scope="col" class="encabezado text-center">
                     Reporte General</th>
+                <th scope="col" class="encabezado text-center">
+                    Planilla Semanal</th>
 
             </tr>
         </thead>
@@ -61,13 +63,18 @@ Tareas Finca Semanal
                 </td>
 
                 <td class="campo text-center">
-                    <a href="{{ route('reporte.PlanSemanalDiario',$plansemanalfinca->id) }}">
+                    <a href="{{ route('reporte.PlanSemanal',$plansemanalfinca->id) }}">
                         <i title="Reporte Tareas Generales"
-                            class="fa-solid fa-file-excel text-3xl hover:text-gray-500 cursor-pointer"></i>
+                            class="fa-solid fa-file-arrow-down text-3xl hover:text-gray-500 cursor-pointer"></i>
                     </a>
                 </td>
 
-
+                <td class="campo text-center">
+                    <a href="{{ route('reporte.PlanillaSemanal',$plansemanalfinca->id) }}">
+                        <i title="Reporte Tareas Generales"
+                            class="fa-solid fa-file-arrow-down text-3xl hover:text-gray-500 cursor-pointer"></i>
+                    </a>
+                </td>
             </tr>
             @endforeach
         </tbody>
