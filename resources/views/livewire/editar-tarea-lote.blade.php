@@ -32,7 +32,7 @@
 
         <div class="flex justify-end mt-10">
             <input type="submit" value="Guardar"
-                class=" bg-sky-600 hover:bg-sky-700 p-3 transition-colors cursor-pointer uppercase font-bold text-white rounded-lg">
+                class=" btn bg-green-moss hover:bg-green-meadow">
         </div>
 
     </form>

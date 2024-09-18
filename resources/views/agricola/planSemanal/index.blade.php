@@ -1,4 +1,4 @@
-@extends('layouts.administracion')
+@extends('layouts.agricola')
 
 @section('titulo')
 Tareas Finca Semanal
@@ -7,11 +7,8 @@ Tareas Finca Semanal
 @section('contenido')
 
 <x-alertas />
+<x-link class="bg-green-moss hover:bg-green-meadow" route="planSemanal.create" text="Crear Plan Semanal" />
 
-<a href="{{ route('planSemanal.create') }}" class="btn mt-5">
-    <i class="fa-solid fa-plus"></i>
-    Crear Plan Semanal
-</a>
 
 <div class="overflow-x-auto mt-10">
     <table class="tabla">
@@ -51,7 +48,7 @@ Tareas Finca Semanal
                 </td>
                 <td class="campo text-center">{{ $plansemanalfinca->tareas_totales }}</td>
                 <td class="campo">
-                    <a class="btn" href="{{ route('planSemanal.show',$plansemanalfinca) }}">
+                    <a class="btn bg-green-moss hover:bg-green-meadow" href="{{ route('planSemanal.show',$plansemanalfinca) }}">
                         Ver Tareas Semanales
                     </a>
                 </td>

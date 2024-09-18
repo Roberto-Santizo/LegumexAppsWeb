@@ -16,12 +16,12 @@ class PlansemanalExport implements FromCollection, WithHeadings, WithMultipleShe
 {
    
 
-    protected $id;
+    protected $plansemanal;
 
     // Constructor para recibir el ID
-    public function __construct($id)
+    public function __construct(PlanSemanalFinca $planSemanalFinca)
     {
-        $this->id = $id;
+        $this->plansemanal = $planSemanalFinca;
     }
 
     /**
@@ -30,11 +30,10 @@ class PlansemanalExport implements FromCollection, WithHeadings, WithMultipleShe
 
     public function collection()
     {
-        $plansemanal = PlanSemanalFinca::findOrFail($this->id);
         
         $rows = collect();
         Carbon::setLocale('es');
-        foreach($plansemanal->finca->lotes as $lote){
+        foreach($this->plansemanal->finca->lotes as $lote){
             foreach ($lote->tareas as $tarea) {
                 if($tarea->cierre != null){
                     $tareaCreacion = $tarea->asignacion->created_at; 
@@ -42,8 +41,8 @@ class PlansemanalExport implements FromCollection, WithHeadings, WithMultipleShe
                     $rendimiento_real = $tareaCreacion->diffInHours($tareaCierre);
                 }
                 $rows->push([
-                    'FINCA' => $plansemanal->semana,
-                    'SEMANA CALENDARIO' => $plansemanal->finca->finca,
+                    'FINCA' => $this->plansemanal->semana,
+                    'SEMANA CALENDARIO' => $this->plansemanal->finca->finca,
                     'LOTE' => $lote->nombre,
                     'TAREA' => $tarea->tarea->tarea,
                     'ESTADO' => ($tarea->cierre != null) ? 'CERRADA' : 'ABIERTA',
@@ -84,8 +83,8 @@ class PlansemanalExport implements FromCollection, WithHeadings, WithMultipleShe
     public function sheets(): array
     {
         return [
-            new PlansemanalExport($this->id), 
-            new UsuarioTareaDetalleExport($this->id) 
+            new PlansemanalExport($this->plansemanal), 
+            new UsuarioTareaDetalleExport($this->plansemanal) 
         ];
     }
     public function title(): string

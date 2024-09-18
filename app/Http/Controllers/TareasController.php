@@ -35,7 +35,7 @@ class TareasController extends Controller
      */
     public function store(Request $request)
     {
-        try {
+    
             $request->validate([
                 'tarea' => 'required',
                 'descripcion' => 'required|max:255',
@@ -49,9 +49,6 @@ class TareasController extends Controller
             ]);
 
             return redirect()->route('tareas')->with('success', 'Tarea creada correctamente');
-        } catch (\Throwable $th) {
-            return back()->withInput()->with('error', 'Hubo un error al crear la tarea');
-        }
     }
 
     /**

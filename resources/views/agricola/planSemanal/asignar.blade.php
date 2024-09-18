@@ -1,4 +1,4 @@
-@extends('layouts.administracion')
+@extends('layouts.agricola')
 
 @section('titulo')
 Asignación de Empleados {{ $tarea->tarea }}, Semana {{ $plansemanalfinca->semana }}
@@ -57,7 +57,7 @@ Asignación de Empleados {{ $tarea->tarea }}, Semana {{ $plansemanalfinca->seman
 
             @foreach ($ingresos as $ingreso)
                 @if(!in_array($ingreso->emp_id,$asignados))
-                    <div class="border p-3 not-selected text-white rounded cursor-pointer empleados empleadosBuscar"
+                    <div class="bg-green-moss hover:bg-green-meadow btn empleados empleadosBuscar"
                         data-user="{{ $ingreso->emp_id }}">
                         <div class="flex flex-row items-center gap-3">
                             <i class="fa-solid fa-user text-2xl"></i>
@@ -76,7 +76,7 @@ Asignación de Empleados {{ $tarea->tarea }}, Semana {{ $plansemanalfinca->seman
     <form method="POST" action="{{ route('asignacionDiaria.store',[$lote,$plansemanalfinca])  }}">
         @csrf
         <input type="hidden" value="{{ $tarealote->id }}" id="tarealote_id" name="tarealote_id">
-        <input type="submit" value="Cerrar Asignación Diaria" class="cursor-pointer bg-orange-500 text-white p-2 font-bold rounded hover:bg-orange-600">
+        <input type="submit" value="Cerrar Asignación Diaria" class="btn bg-green-moss hover:bg-green-meadow">
     </form>
     
 

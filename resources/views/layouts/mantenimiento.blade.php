@@ -39,7 +39,7 @@
 
 <body class="flex flex-col h-screen hide-scrollbar scrollable">
     <header
-        class="header flex flex-row h-24 justify-between bg-red-700 p-5 text-white w-full fixed top-0 left-0 z-10 items-center">
+        class="header flex flex-row h-24 justify-between bg-blue-500 p-5 text-white w-full fixed top-0 left-0 z-10 items-center">
         <div class="w-28 flex flex-row">
             <img src="{{ asset('img/LOGO_LX.png'); }}" alt="Imagen Login de Usuarios" class="hidden md:block">
             <div class="flex flex-row gap-5 justify-center items-center">
@@ -48,7 +48,7 @@
         </div>
 
         <div class="hidden md:flex justify-center items-center gap-2 bg-orange-600 p-3 rounded shadow-xl">
-            <p class="text-2xl font-bold">Administración</p>
+            <p class="text-2xl font-bold">Mantenimiento</p>
             <i class="fa-solid fa-screwdriver-wrench"></i>
         </div>
 
@@ -68,10 +68,11 @@
 
     <div class="md:flex md:flex-row flex-1 pt-24">
         <aside
-            class="pb-32 hidden h-full w-32 bg-red-400 text-white md:flex flex-col items-center fixed top-24 scroll-container z-20"
+            class="pb-32 hidden h-full w-32 bg-blue-500 text-white md:flex flex-col items-center fixed top-24 scroll-container z-20"
             id="menu-nav">
-    
+
             <x-navegacion />
+
         </aside>
 
         <div id="contenido" class="flex-1 md:ml-32 p-10  w-full  md:w-full hide-scrollbar scrollable">

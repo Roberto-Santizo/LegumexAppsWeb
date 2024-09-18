@@ -1,4 +1,4 @@
-@extends('layouts.administracion')
+@extends('layouts.agricola')
 
 @section('titulo')
 Lotes por Finca
@@ -9,7 +9,7 @@ Lotes por Finca
 <x-alertas />
 
 
-<x-link route="lotes.create" text="Crear Lote" />
+<x-link route="lotes.create" text="Crear Lote" class="btn bg-green-moss hover:bg-green-meadow"/>
 
 <div class="overflow-x-auto mt-10">
     <table class="tabla">
@@ -24,10 +24,6 @@ Lotes por Finca
                 <th scope="col"
                     class="encabezado">
                     Estado</th>
-                <th scope="col"
-                    class="encabezado">
-                    Acción</th>
-
             </tr>
         </thead>
         <tbody class="tabla-body">
@@ -48,11 +44,7 @@ Lotes por Finca
                             class="cursor-pointer text-white font-bold rounded p-2 {{ $estado }} ">
                     </form>
                 </td>
-                <td class="campo">
-                    <a href="{{ route('lotes.edit',$lote) }}">
-                        <i class="fa-solid fa-pen text-xl"></i>
-                    </a>
-                </td>
+
             </tr>
             @endforeach
         </tbody>

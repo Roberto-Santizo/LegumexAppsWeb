@@ -15,12 +15,12 @@ use PhpOffice\PhpSpreadsheet\Worksheet\Worksheet;
 class UsuarioTareaDetalleExport implements FromCollection, WithHeadings, WithTitle, WithStyles
 {
 
-    protected $id;
+    protected $plansemanal;
 
     // Constructor para recibir el ID
-    public function __construct($id)
+    public function __construct(PlanSemanalFinca $planSemanalFinca)
     {
-        $this->id = $id;
+        $this->plansemanal = $planSemanalFinca;
     }
 
     /**
@@ -30,12 +30,10 @@ class UsuarioTareaDetalleExport implements FromCollection, WithHeadings, WithTit
 
     public function collection()
     {
-        $plansemanal = PlanSemanalFinca::findOrFail($this->id);
-
         $rows = collect();
         Carbon::setLocale('es');
 
-        foreach ($plansemanal->finca->lotes as $lote) {
+        foreach ($this->plansemanal->finca->lotes as $lote) {
             foreach ($lote->tareas as $tarea) {
                 $carbonFecha = null;
                 if ($tarea->asignacion) {
@@ -55,7 +53,7 @@ class UsuarioTareaDetalleExport implements FromCollection, WithHeadings, WithTit
                             'LOTE' => $lote->nombre,
                             'TAREA REALIZADA' => $tarea->tarea->tarea,
                             'MONTO' => ($asignacion->tarea_lote->cierre) ? (($asignacion->tarea_lote->presupuesto) / $tarea->users->count()) : '0',
-                            'HORAS TOTALES' => ($asignacion->tarea_lote->cierre) ? ($asignacion->tarea_lote->horas_persona) : '0',
+                            'HORAS TOTALES' => ($asignacion->tarea_lote->cierre) ? ($asignacion->tarea_lote->horas / ($tarea->users->count())) : '0',
                             'ENTRADA' => Carbon::parse($entrada->punch_time)->format('d-m-Y h:m:s'),
                             'SALIDA' => Carbon::parse($salida->punch_time)->format('d-m-Y h:m:s'),
                             'DIA' => ($tarea->cierre) ?  $carbonFecha : ''

@@ -48,7 +48,7 @@
         <a href="{{ route('dashboard') }}"
             class=" {{  Route::is('dashboard*') ? 'bg-orange-500' : '' }} rounded-lg text-center flex flex-row  gap-5 md:gap-0  md:flex-col items-center md:justify-center p-3 w-full md:w-2/3 hover:bg-blue-400">
             <i class="fa-solid fa-house"></i>
-            <span class="text-md md:text-xs uppercase font-bold">Dashboard</span>
+            <span class="text-md md:text-xs uppercase font-bold">Dashboard Mantenimiento</span>
         </a>
         <a href="{{ route('documentold') }}"
             class="{{  Route::is('documentold*') ? 'bg-orange-500' : '' }}  rounded-lg text-center flex flex-row  gap-5 md:gap-0  md:flex-col items-center md:justify-center p-3 w-full md:w-2/3 hover:bg-blue-400">

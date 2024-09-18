@@ -86,7 +86,7 @@
 }
 
 .btn{
-  @apply bg-orange-500 cursor-pointer hover:bg-orange-700 text-white font-bold py-2 px-4 rounded inline-block uppercase;
+  @apply  cursor-pointer text-white font-bold py-2 px-4 rounded inline-block uppercase;
 }
 
 .btn-red{
@@ -114,11 +114,10 @@
 }
 
 .sidebar-link{
-  @apply rounded-lg text-center flex flex-row  gap-5 md:gap-0  md:flex-col items-center md:justify-center p-3 w-full md:w-2/3 hover:bg-blue-400;
+  @apply rounded-lg text-center flex flex-row  gap-5 md:gap-0  md:flex-col items-center md:justify-center p-3 w-full md:w-2/3;
 }
 
 .sidebar-text{
   @apply text-sm md:text-xs uppercase font-bold;
 }
-
 

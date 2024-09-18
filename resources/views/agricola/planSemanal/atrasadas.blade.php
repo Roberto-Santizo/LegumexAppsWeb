@@ -1,4 +1,4 @@
-@extends('layouts.administracion')
+@extends('layouts.agricola')
 
 @section('titulo')
 Plan Semanal {{ $plansemanalfinca->finca->finca }} {{ $plansemanalfinca->semana }}, Tareas Atrasadas

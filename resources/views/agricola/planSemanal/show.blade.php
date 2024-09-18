@@ -1,4 +1,4 @@
-@extends('layouts.administracion')
+@extends('layouts.agricola')
 
 @section('titulo')
 Plan Semanal {{ $planSemanal->finca->finca }} Semana - {{ $planSemanal->semana }}
@@ -36,7 +36,7 @@ Plan Semanal {{ $planSemanal->finca->finca }} Semana - {{ $planSemanal->semana }
                 <td class="campo">Q {{ $lote->total_presupuesto }}</td>
                 <td class="campo">{{ $lote->total_horas }}</td>
                 <td class="campo">
-                    <a class="btn" href="{{ route('planSemanal.tareasLote',[$lote->lote,$planSemanal]) }}">
+                    <a class="btn bg-green-moss hover:bg-green-meadow" href="{{ route('planSemanal.tareasLote',[$lote->lote,$planSemanal]) }}">
                         Tareas de lote
                     </a>
                 </td>

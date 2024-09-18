@@ -1,4 +1,4 @@
-@extends('layouts.administracion')
+@extends('layouts.agricola')
 
 @section('titulo')
     Toma Diaria de Rendimiento {{ $usuario->first_name }}

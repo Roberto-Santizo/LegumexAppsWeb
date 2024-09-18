@@ -1,4 +1,4 @@
-@extends('layouts.administracion')
+@extends('layouts.agricola')
 
 @section('titulo')
 Crear Lote
@@ -30,7 +30,7 @@ Crear Lote
         </div>
 
         <div class="flex justify-end mt-10">
-            <input type="submit" value="Guardar" class="btn">
+            <input type="submit" value="Guardar" class="btn bg-green-moss hover:bg-green-meadow">
         </div>
 
     </form>

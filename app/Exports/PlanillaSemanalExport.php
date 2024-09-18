@@ -5,18 +5,20 @@ namespace App\Exports;
 use App\Models\EmpleadoFinca;
 use Illuminate\Support\Carbon;
 use App\Models\PlanSemanalFinca;
-use App\Models\EmpleadoIngresado;
+use App\Models\UsuarioTareaLote;
+use Maatwebsite\Excel\Concerns\WithStyles;
 use Maatwebsite\Excel\Concerns\WithHeadings;
 use Maatwebsite\Excel\Concerns\FromCollection;
+use PhpOffice\PhpSpreadsheet\Worksheet\Worksheet;
 
-class PlanillaSemanalExport implements FromCollection, WithHeadings
+class PlanillaSemanalExport implements FromCollection, WithHeadings, WithStyles
 {
-    protected $id;
+    protected $plansemanal;
 
     // Constructor para recibir el ID
-    public function __construct($id)
+    public function __construct(PlanSemanalFinca $planSemanalFinca)
     {
-        $this->id = $id;
+        $this->plansemanal = $planSemanalFinca;
     }
 
     /**
@@ -25,54 +27,70 @@ class PlanillaSemanalExport implements FromCollection, WithHeadings
 
     public function collection()
     {
-        $plansemanal = PlanSemanalFinca::findOrFail($this->id);
-
         $rows = collect();
         Carbon::setLocale('es');
-        $personalFinca = EmpleadoFinca::where('department_id', $plansemanal->finca->id)->WhereNotIn('position_id', [15, 9])->get();
+        $personalFinca = EmpleadoFinca::where('department_id', $this->plansemanal->finca->id)->WhereNotIn('position_id', [15, 9])->get();
+        $personalIds = $personalFinca->pluck('id')->toArray();
+
+        $asignaciones = UsuarioTareaLote::whereIn('usuario_id', $personalIds)->get();
+        $asignacionesPorEmpleado = $asignaciones->groupBy('usuario_id');
 
 
         foreach ($personalFinca as $empleado) {
+            
+            $asignaciones = $asignacionesPorEmpleado->get($empleado->id, collect());
+            $empleado->horas_totales = 0;
+            $empleado->bono = 0;
+            $empleado->septimo = 0;
+            $empleado->total_devengar = 0;
+
+            if($asignaciones->isNotEmpty()){
+                foreach ($asignaciones as $asignacion) {
+                    if($asignacion->tarea_lote->cierre){
+                        $empleado->horas_totales += (($asignacion->tarea_lote->horas) / $asignacion->tarea_lote->users->count());
+                        $empleado->total_devengar += (($asignacion->tarea_lote->presupuesto) / $asignacion->tarea_lote->users->count());
+                    }
+                }
+            }
+
+            if($empleado->horas_totales >= 44){
+                $empleado->bono = 250/4.33;
+                $empleado->septimo = ($empleado->total_devengar/ 30); 
+                $empleado->total_devengar += $empleado->septimo;
+                
+            }
+
             $rows->push([
                 'CODIGO' => $empleado->last_name,
                 'NOMBRE' => $empleado->first_name,
-                // 'MONTO TAREAS' => $lote->nombre,
-                // 'BONO' => $tarea->tarea->tarea,
-                // 'SEPTIMO' => ($asignacion->tarea_lote->cierre) ? (($asignacion->tarea_lote->presupuesto) / $tarea->users->count()) : '0',
-                // 'TOTAL A DEVENGAR' => ($asignacion->tarea_lote->cierre) ? ($asignacion->tarea_lote->horas_persona) : '0',
+                'HORAS SEMANALES' => $empleado->horas_totales,
+                'BONO' => $empleado->bono,
+                'SEPTIMO' => $empleado->septimo,
+                'TOTAL A DEVENGAR' => ($empleado->total_devengar + $empleado->bono),
             ]);
         }
-        // foreach ($plansemanal->finca->lotes as $lote) {
-
-        //     foreach ($lote->tareas as $tarea) {
-        //         $carbonFecha = null;
-        //         if ($tarea->asignacion) {
-        //             // Formatear la fecha directamente si existe el cierre
-        //             $carbonFecha = $tarea->asignacion->created_at->locale('es')->isoFormat('dddd');
-        //         }
-
-        //         if (!($tarea->users)->isEmpty()) {
-        //             foreach ($tarea->users as $asignacion) {
-        //                 $empleado = EmpleadoFinca::where('id', $plansemanal->finca->id)->get()->first();
-        //                 dd($empleado);
-        //                 $rows->push([
-        //                     'CODIGO' => $empleado->last_name,
-        //                     'NOMBRE' => $empleado->first_name,
-        //                     // 'MONTO TAREAS' => $lote->nombre,
-        //                     // 'BONO' => $tarea->tarea->tarea,
-        //                     // 'SEPTIMO' => ($asignacion->tarea_lote->cierre) ? (($asignacion->tarea_lote->presupuesto) / $tarea->users->count()) : '0',
-        //                     // 'TOTAL A DEVENGAR' => ($asignacion->tarea_lote->cierre) ? ($asignacion->tarea_lote->horas_persona) : '0',
-        //                 ]);
-        //             }
-        //         }
-        //     }
-        // }
 
         return $rows;
     }
 
+    public function styles(Worksheet $sheet)
+    {
+        // Aplica estilos al rango A1:H1 (encabezados)
+        $sheet->getStyle('A1:F1')->applyFromArray([
+            'font' => [
+                'bold' => true,
+                'color' => ['argb' => 'FFFFFF'], 
+            ],
+            'fill' => [
+                'fillType' => \PhpOffice\PhpSpreadsheet\Style\Fill::FILL_SOLID,
+                'startColor' => ['argb' => '5564eb'], 
+            ],
+        ]);
+
+    }
+
     public function headings(): array
     {
-        return ['CODIGO', 'NOMBRE', 'MONTO TAREAS', 'BONO', 'SEPTIMO', 'TOTAL A DEVENGAR'];
+        return ['CODIGO', 'NOMBRE', 'HORAS SEMANALES', 'BONO', 'SEPTIMO', 'TOTAL A DEVENGAR'];
     }
 }

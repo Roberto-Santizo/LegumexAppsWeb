@@ -127,7 +127,7 @@ class PlanSemanalFincasController extends Controller
             $ingreso->horas_totales = 0;
             if ($ingreso->asignaciones->count() > 0) {
                 foreach ($ingreso->asignaciones as $asignacion) {
-                    $ingreso->horas_totales += ($asignacion->tarea_lote->horas / $asignacion->tarea_lote->personas);
+                    $ingreso->horas_totales += ($asignacion->tarea_lote->horas / ($asignacion->tarea_lote->personas - $asignacion->tarea_lote->cupos));
                 }
             }
             return $ingreso;

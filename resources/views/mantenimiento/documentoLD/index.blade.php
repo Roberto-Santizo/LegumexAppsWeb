@@ -1,4 +1,4 @@
-@extends('layouts.administracion')
+@extends('layouts.mantenimiento')
 
 @section('titulo')
 Documento Lavado y Desinfección de Herramientas

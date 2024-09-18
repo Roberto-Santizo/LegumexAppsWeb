@@ -12,6 +12,13 @@ export default {
       },
       fontSize:{
         'xxs': '8.5px', 
+      },
+      backgroundColor:{
+        'green-meadow': '#598234',
+        'green-moss' : '#AEBD38',
+        'green-waterfall' : '#68829E',
+        'green-thunder': '#505160'
+
       }
     },
   },
