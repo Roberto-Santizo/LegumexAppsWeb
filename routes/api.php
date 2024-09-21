@@ -13,7 +13,7 @@ Route::get('/areas', [APIAreasController::class, 'index'])->middleware('web');
 Route::get('/areas/{planta_id}', [APIAreasController::class, 'show']);
 Route::get('/areas/elementos/{area_id}', [APIAreasController::class, 'elementos'])->middleware('web');
 
-Route::get('/rendimiento/{tarea}', [APIRendimientoTareasController::class, 'rendimiento']);
+Route::get('/rendimiento/{tarea}/{finca}/{year}', [APIRendimientoTareasController::class, 'rendimiento']);
 
 Route::get('/supervisores/areas', [APISupervisoresController::class, 'supervisoresAreas'])->middleware('web');
 

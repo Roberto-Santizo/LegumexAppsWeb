@@ -92,6 +92,10 @@ class TareasController extends Controller
 
     public function rendimiento(Tarea $tarea)
     {
-        return view('agricola.tareas.rendimiento', ['tarea' => $tarea]);
+        $currentYear = now()->year;
+        $startYear = 2023;
+        $years = range($currentYear, $startYear);
+        $fincas = Finca::all();
+        return view('agricola.tareas.rendimiento', ['tarea' => $tarea,'fincas' => $fincas, 'years' =>$years]);
     }
 }
