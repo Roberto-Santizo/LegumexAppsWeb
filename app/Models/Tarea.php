@@ -14,4 +14,9 @@ class Tarea extends Model
         'descripcion',
         'code',
     ];
+
+    public function asignacionesHistorico()
+    {
+        return $this->hasMany(TareasLote::class, 'tarea_id','id');
+    }
 }

@@ -49,8 +49,8 @@ class PlansemanalExport implements FromCollection, WithHeadings, WithMultipleShe
                     'FECHA DE INICIO' => ($tarea->asignacion) ? $tarea->asignacion->created_at : 'SIN ASIGNACION',
                     'FECHA DE CIERRE' => ($tarea->cierre != null) ? $tarea->cierre->created_at : 'SIN CIERRE',
                     'HORA RENDIMIENTO TEORICO' => $tarea->horas,
-                    'HORA RENDIMIENTO REAL' => ($tarea->cierre != null) ?  round($rendimiento_real,4) : '0',
-                    'RENDIMIENTO' => ($tarea->cierre != null) ? ($tarea->horas/$rendimiento_real) : '0'
+                    'HORA RENDIMIENTO REAL' => ($tarea->cierre != null) ?  round($rendimiento_real * $tarea->users->count(),4) : '0',
+                    'RENDIMIENTO' => ($tarea->cierre != null) ? ($tarea->horas/round($rendimiento_real*$tarea->users->count(),4)) : '0'
                 ]);
             }
            

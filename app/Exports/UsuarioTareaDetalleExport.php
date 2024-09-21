@@ -46,7 +46,7 @@ class UsuarioTareaDetalleExport implements FromCollection, WithHeadings, WithTit
                         $empleado = EmpleadoFinca::where('id', $asignacion->usuario_id)->get()->first();
                         $entrada = EmpleadoIngresado::where('emp_id', $asignacion->usuario_id)->whereDate('punch_time', $asignacion->created_at)->orderBy('punch_time', 'asc')->first();
                         $salida = EmpleadoIngresado::where('emp_id', $asignacion->usuario_id)->whereDate('punch_time', $asignacion->created_at)->orderBy('punch_time', 'desc')->first();
-
+                    
                         $rows->push([
                             'CODIGO' => $empleado->last_name,
                             'EMPLEADO' => $empleado->first_name,
@@ -54,8 +54,8 @@ class UsuarioTareaDetalleExport implements FromCollection, WithHeadings, WithTit
                             'TAREA REALIZADA' => $tarea->tarea->tarea,
                             'MONTO' => ($asignacion->tarea_lote->cierre) ? (($asignacion->tarea_lote->presupuesto) / $tarea->users->count()) : '0',
                             'HORAS TOTALES' => ($asignacion->tarea_lote->cierre) ? ($asignacion->tarea_lote->horas / ($tarea->users->count())) : '0',
-                            'ENTRADA' => Carbon::parse($entrada->punch_time)->format('d-m-Y h:m:s'),
-                            'SALIDA' => Carbon::parse($salida->punch_time)->format('d-m-Y h:m:s'),
+                            'ENTRADA' => $entrada ? $entrada->punch_time->format('d-m-Y h:m:s') : 'no existe',
+                            'SALIDA' =>  $salida ? $salida->punch_time->format('d-m-Y h:m:s') : 'no existe',
                             'DIA' => ($tarea->cierre) ?  $carbonFecha : ''
                         ]);
                     }

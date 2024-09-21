@@ -14,6 +14,10 @@ class EmpleadoIngresado extends Model
 
     public $timestamps  = false;
 
+    protected $casts = [
+        'punch_time' => 'datetime',
+    ];
+
     public function empleado()
     {
         return $this->hasOne(EmpleadoFinca::class,'id','emp_id');

@@ -1,14 +1,14 @@
 <div>
     @forelse ($tareas as $tarea)
-        <div class="mt-5 flex flex-col md:flex-row justify-between p-5 rounded-xl shadow-xl border-l-8 ">
+        <div class="mt-5 flex flex-col md:flex-row justify-between p-5 rounded-xl shadow-xl border-l-8 border-green-500 ">
             <div class="text-xs md:text-xl">
                 <p><span class="uppercase font-bold">Nombre del Lote:</span> {{ $tarea->lote->nombre }}</p>
                 <p><span class="uppercase font-bold">Semana:</span> {{ $plansemanalfinca->semana }}</p>
                 <p><span class="uppercase font-bold">Tarea:</span> {{ $tarea->tarea->tarea }}</p>
                 <p><span class="uppercase font-bold">Cupos disponibles:</span> {{ ($tarea->personas - $tarea->cupos_utilizados) }}</p>
                 <p><span class="uppercase font-bold">Presupuesto:</span> Q{{ $tarea->presupuesto }}</p>
-                <p><span class="uppercase font-bold">Horas Necesarias:</span> {{ $tarea->horas }} horas</p>
-                @if($tarea->cierre)
+                <p><span class="uppercase font-bold">Horas Necesarias:</span> {{ $tarea->horas }} horas</p> 
+                 @if($tarea->cierre)
                     <p>
                         <span class="uppercase font-bold">
                             Fecha de cierre:
@@ -32,7 +32,7 @@
                     @if(!$tarea->cierre)
                         @if(!$tarea->asignacion)
                         <div class="flex flex-col gap-2">
-                                @if($lote)
+                                @if($lote && $plansemanalfinca->semana >= $semanaActual)
                                     <a href="{{ route('planSemanal.Asignar',[$lote,$plansemanalfinca,$tarea->tarea, $tarea]) }}">
                                         <i title="Asignar Empleados"
                                             class="fa-solid fa-square-plus text-2xl cursor-pointer hover:text-gray-500"></i>

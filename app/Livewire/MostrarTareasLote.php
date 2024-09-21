@@ -5,6 +5,7 @@ namespace App\Livewire;
 use App\Models\Lote;
 use Livewire\Component;
 use App\Models\TareasLote;
+use Carbon\Carbon;
 
 class MostrarTareasLote extends Component
 {
@@ -14,6 +15,7 @@ class MostrarTareasLote extends Component
     public $plansemanalfinca;
     public $atrasadas;
     public $lote;
+    public $semanaActual;
 
     public function eliminarTarea(TareasLote $tarea)
     {
@@ -22,7 +24,8 @@ class MostrarTareasLote extends Component
     }
 
     public function render()
-    {
+    {   
+        $this->semanaActual = Carbon::now()->weekOfYear();
         return view('livewire.mostrar-tareas-lote');
     }
 

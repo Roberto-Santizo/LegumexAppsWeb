@@ -89,4 +89,9 @@ class TareasController extends Controller
             return back()->withInput()->with('error', 'Hubo un error al modificar la tarea, vuelva a intentarlo más tarde');
         }
     }
+
+    public function rendimiento(Tarea $tarea)
+    {
+        return view('agricola.tareas.rendimiento', ['tarea' => $tarea]);
+    }
 }

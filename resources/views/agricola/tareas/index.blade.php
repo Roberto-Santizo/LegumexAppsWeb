@@ -19,6 +19,8 @@ Tareas Generales Fincas
                     Nombre de la Tarea</th>
                 <th scope="col" class="encabezado text-center">
                     Acciones</th>
+                <th scope="col" class="encabezado text-center">
+                    Grafica de Rendimiento</th>
             </tr>
 
         </thead>
@@ -26,12 +28,17 @@ Tareas Generales Fincas
             @foreach ($tareas as $tarea)
             <tr>
                 <td class="campo">{{ $tarea->tarea }}</td>
-                <td class="campo flex flex-row gap-5">
 
-                <a href="{{ route('tareas.edit',$tarea) }}">
-                    <i class="fa-solid fa-pen icon-link"></i>
-                </a>
+                <td class="campo flex flex-row gap-5">
+                    <a href="{{ route('tareas.edit',$tarea) }}">
+                        <i class="fa-solid fa-pen icon-link"></i>
+                    </a>
+                </td>
                 
+                <td class="campo">
+                    <a href="{{ route('tareas.rendimiento',$tarea) }}">
+                        <i class="fa-solid fa-chart-simple icon-link"></i>
+                    </a>
                 </td>
             </tr>
             @endforeach

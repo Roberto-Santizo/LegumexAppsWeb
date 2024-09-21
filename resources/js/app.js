@@ -30,6 +30,7 @@ import './UI/datosTareasFincas.js';
 import './UI/AsignacionUsuariosTareasFinca.js';
 import './UI/buscadorUsuariosFincas.js';
 import './UI/tomaFotos.js';
+import './UI/rendimientoHistoricoTareas.js';
 
 //UX
 import './UX/formulario_checklist-preoperacional-campos.js';

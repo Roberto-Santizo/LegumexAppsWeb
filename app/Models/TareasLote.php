@@ -10,7 +10,6 @@ class TareasLote extends Model
 {
     use HasFactory;
 
-
     protected $fillable = [
         'plan_semanal_finca_id',
         'lote_id',
@@ -37,7 +36,7 @@ class TareasLote extends Model
 
     public function tarea()
     {
-        return $this->hasOne(Tarea::class, 'id','tarea_id');
+        return $this->belongsTo(Tarea::class, 'tarea_id','id');
     }
 
     public function asignacion()

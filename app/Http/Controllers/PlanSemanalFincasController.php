@@ -78,7 +78,6 @@ class PlanSemanalFincasController extends Controller
                 }
             ])
             ->get();
-
         foreach ($tareas as $tarea) {
             $tarea->cupos_utilizados = $tarea->users(Carbon::today())->count();
             $tarea->asignacion_diaria = $tarea->asignacion;
@@ -113,30 +112,57 @@ class PlanSemanalFincasController extends Controller
 
     public function AsignarEmpleados(Lote $lote, PlanSemanalFinca $plansemanalfinca, Tarea $tarea, TareasLote $tarealote)
     {
-        $asignacionDiaria = AsignacionDiaria::where('tarea_lote_id', $tarealote->id)
-            ->whereDate('created_at', Carbon::today())->get();
-        if ($asignacionDiaria->count() != 0) {
-            return redirect()->route('planSemanal.tareasLote', [$lote, $plansemanalfinca])->with('error', "Esta tarea ya fue cerrada por el día de hoy");
+        $hoy = Carbon::today();
+        $semanaActual = Carbon::now()->weekOfYear;
+    
+        if ($plansemanalfinca->semana < $semanaActual) {
+            return redirect()->route('planSemanal.tareasLote', [$lote, $plansemanalfinca])
+                ->with('error', 'El periodo de asignación de esta tarea terminó');
         }
-        $asignados = UsuarioTareaLote::where('tarealote_id', $tarealote->id)->whereDate('created_at', Carbon::today())->pluck('usuario_id')->toArray();
-        $tarealote->cupos_utilizados = $tarealote->users(Carbon::today())->count();
-
-        $ingresos = EmpleadoIngresado::whereDate('punch_time', Carbon::today())->where('terminal_id', 7)->get();
-        $ingresos = $ingresos->filter(function ($ingreso) {
-            $ingreso->asignaciones = UsuarioTareaLote::where('usuario_id', $ingreso->emp_id)->whereDate('created_at', Carbon::today())->get();
-            $ingreso->horas_totales = 0;
-            if ($ingreso->asignaciones->count() > 0) {
-                foreach ($ingreso->asignaciones as $asignacion) {
-                    $ingreso->horas_totales += ($asignacion->tarea_lote->horas / ($asignacion->tarea_lote->personas - $asignacion->tarea_lote->cupos));
-                }
-            }
-            return $ingreso;
-        });
-
-        $hoy = Carbon::now()->format('d-m-Y');
-
-        return view('agricola.planSemanal.asignar', ['lote' => $lote, 'plansemanalfinca' => $plansemanalfinca, 'tarea' => $tarea, 'ingresos' => $ingresos, 'tarealote' => $tarealote, 'asignados' => $asignados, 'hoy' => $hoy]);
+    
+        if (AsignacionDiaria::where('tarea_lote_id', $tarealote->id)
+            ->whereDate('created_at', $hoy)->exists()) {
+            return redirect()->route('planSemanal.tareasLote', [$lote, $plansemanalfinca])
+                ->with('error', "Esta tarea ya fue cerrada por el día de hoy");
+        }
+    
+        $asignados = UsuarioTareaLote::where('tarealote_id', $tarealote->id)
+            ->whereDate('created_at', $hoy)
+            ->pluck('usuario_id')
+            ->toArray();
+    
+        $tarealote->cupos_utilizados = $tarealote->users($hoy)->count();
+    
+        $ingresos = EmpleadoIngresado::whereDate('punch_time', $hoy)
+            ->where('terminal_id', 7)
+            ->get()
+            ->map(function ($ingreso) use ($hoy) {
+                $asignaciones = UsuarioTareaLote::where('usuario_id', $ingreso->emp_id)
+                    ->whereDate('created_at', $hoy)
+                    ->get();
+    
+                $horas_totales = $asignaciones->sum(function ($asignacion) {
+                    return $asignacion->tarea_lote->horas / ($asignacion->tarea_lote->personas - $asignacion->tarea_lote->cupos);
+                });
+    
+                $ingreso->asignaciones = $asignaciones;
+                $ingreso->horas_totales = $horas_totales;
+    
+                return $ingreso;
+            });
+    
+        // Devolver vista con los datos necesarios
+        return view('agricola.planSemanal.asignar', [
+            'lote' => $lote,
+            'plansemanalfinca' => $plansemanalfinca,
+            'tarea' => $tarea,
+            'ingresos' => $ingresos,
+            'tarealote' => $tarealote,
+            'asignados' => $asignados,
+            'hoy' => $hoy->format('d-m-Y')
+        ]);
     }
+    
 
     public function rendimiento(TareasLote $tarealote, PlanSemanalFinca $plansemanalfinca)
     {

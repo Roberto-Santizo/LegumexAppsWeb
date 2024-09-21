@@ -25,7 +25,7 @@ Asignación de Empleados {{ $tarea->tarea }}, Semana {{ $plansemanalfinca->seman
         </div>
 
         <div class="mt-5 w-1/2">
-            <h1 class="text-2xl font-bold">Usuarios Asignados a esta tarea: </h1>
+            <h1 class="text-2xl font-bold">Empleados Asignados a esta tarea: </h1>
 
             <div id="usuariosAsignadosContainer" class="flex flex-col gap-2 mt-5 overflow-y-auto h-96 mb-5">
                 @foreach ($ingresos as $ingreso)
@@ -48,7 +48,7 @@ Asignación de Empleados {{ $tarea->tarea }}, Semana {{ $plansemanalfinca->seman
     </div>
 
     <div>
-        <h1 class="text-2xl font-bold">Usuarios Disponibles: </h1>
+        <h1 class="text-2xl font-bold">Empleados Disponibles: </h1>
         <input type="text" id="buscarUsuario" placeholder="Buscar usuario..."
             class="border p-2 rounded mt-4 mb-4 w-full">
 
