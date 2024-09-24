@@ -4,7 +4,7 @@ let datasets = [];
 
 (function(){
     const grafico = document.getElementById('myChart');
-    const tarea_id = document.getElementById('tarea_id').value;
+    const tarea_id = document.getElementById('tarea_id');
     const form_rendimientos = document.getElementById('form_rendimientos');
 
     if (grafico) {
@@ -31,7 +31,7 @@ let datasets = [];
 
     async function mostrarDatos(finca_id,year) {
         Chart.register(LinearScale, CategoryScale, BarController, BarElement, PointElement, LineController, LineElement, Title, Tooltip, Legend);
-        datasets = await obtenerRendimiento(tarea_id,finca_id,year);
+        datasets = await obtenerRendimiento(tarea_id.value,finca_id,year);
         const labels = ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto','Septiembre','Octubre','Noviembre','Diciembre'];
        
         const chartData = {
@@ -40,7 +40,7 @@ let datasets = [];
         };
                 
         const config = {
-            type: 'line', 
+            type: 'bar', 
             data: chartData,
             options: {
                 scales: {

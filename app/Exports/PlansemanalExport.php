@@ -33,8 +33,7 @@ class PlansemanalExport implements FromCollection, WithHeadings, WithMultipleShe
         
         $rows = collect();
         Carbon::setLocale('es');
-        foreach($this->plansemanal->finca->lotes as $lote){
-            foreach ($lote->tareas as $tarea) {
+        foreach($this->plansemanal->tareasTotales as $tarea){
                 if($tarea->cierre != null){
                     $tareaCreacion = $tarea->asignacion->created_at; 
                     $tareaCierre = $tarea->cierre->created_at;
@@ -43,7 +42,7 @@ class PlansemanalExport implements FromCollection, WithHeadings, WithMultipleShe
                 $rows->push([
                     'FINCA' => $this->plansemanal->semana,
                     'SEMANA CALENDARIO' => $this->plansemanal->finca->finca,
-                    'LOTE' => $lote->nombre,
+                    'LOTE' => $tarea->lote->nombre,
                     'TAREA' => $tarea->tarea->tarea,
                     'ESTADO' => ($tarea->cierre != null) ? 'CERRADA' : 'ABIERTA',
                     'FECHA DE INICIO' => ($tarea->asignacion) ? $tarea->asignacion->created_at : 'SIN ASIGNACION',
@@ -52,7 +51,6 @@ class PlansemanalExport implements FromCollection, WithHeadings, WithMultipleShe
                     'HORA RENDIMIENTO REAL' => ($tarea->cierre != null) ?  round($rendimiento_real * $tarea->users->count(),4) : '0',
                     'RENDIMIENTO' => ($tarea->cierre != null) ? ($tarea->horas/round($rendimiento_real*$tarea->users->count(),4)) : '0'
                 ]);
-            }
            
         }
 

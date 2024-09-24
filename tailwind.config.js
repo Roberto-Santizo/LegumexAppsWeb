@@ -19,6 +19,9 @@ export default {
         'green-waterfall' : '#68829E',
         'green-thunder': '#505160'
 
+      },
+      scale:{
+        '1025': '1.025'
       }
     },
   },

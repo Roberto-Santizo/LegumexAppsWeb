@@ -45,10 +45,13 @@
             </div>
 
 
-            <a href="{{ route('dashboard') }}"
-                class=" {{  Route::is('dashboard*') ? 'bg-green-moss' : '' }} sidebar-link hover:bg-green-moss">
-                <i class="fa-solid fa-house"></i>
-                <span class="text-md md:text-xs uppercase font-bold">Dashboard Agricola</span>
+            @hasanyrole('adminagricola|auxalameda')
+                <a href="{{ route('dashboard') }}"
+                    class=" {{  Route::is('dashboard*') ? 'bg-green-moss' : '' }} sidebar-link hover:bg-green-moss">
+                    <i class="fa-solid fa-house"></i>
+                    <span class="text-md md:text-xs uppercase font-bold">Dashboard</span>
+                </a>
+            @endhasanyrole
 
                 <a href="{{ route('planSemanal') }}"
                     class="{{  Route::is('planSemanal*') ? 'bg-green-moss' : '' }} sidebar-link hover:bg-green-moss">

@@ -21,11 +21,9 @@ Tareas Finca Semanal
                 <th scope="col" class="encabezado">
                     Fecha de Creación</th>
                 <th scope="col" class="encabezado">
-                    Presupuesto Total</th>
+                    Presupuesto Gastado</th>
                 <th scope="col" class="encabezado">
-                    Maximo de Personas</th>
-                <th scope="col" class="encabezado">
-                    Total Tareas Semanales</th>
+                    Control Tareas</th>
                 <th scope="col" class="encabezado text-center">
                     Tareas</th>
                 <th scope="col" class="encabezado text-center">
@@ -43,10 +41,8 @@ Tareas Finca Semanal
                 <td class="campo">{{ $plansemanalfinca->finca->finca }}</td>
                 <td class="campo">{{ $plansemanalfinca->semana }}</td>
                 <td class="campo">{{ $plansemanalfinca->created_at->format('d-m-Y') }}</td>
-                <td class="campo">Q {{ $plansemanalfinca->presupuesto }}</td>
-                <td class="campo text-center">{{ $plansemanalfinca->totalPersonasNecesarias->personas }}
-                </td>
-                <td class="campo text-center">{{ $plansemanalfinca->tareas_totales }}</td>
+                <td class="campo">Q {{ $plansemanalfinca->presupuesto_gastado }} / Q {{ $plansemanalfinca->presupuesto }}</td>
+                <td class="campo"> <span class="bg-sky-500 p-2 text-white rounded-xl">{{ $plansemanalfinca->tareasCierre->count() }} / {{ $plansemanalfinca->tareasTotales->count() }}</span></td>
                 <td class="campo">
                     <a class="btn bg-green-moss hover:bg-green-meadow" href="{{ route('planSemanal.show',$plansemanalfinca) }}">
                         Ver Tareas Semanales
@@ -54,9 +50,12 @@ Tareas Finca Semanal
                 </td>
 
                 <td class="campo">
-                    <a class="btn-red" href="{{ route('planSemanal.atrasadas',$plansemanalfinca) }}">
-                        Ver Tareas Atrasadas
-                    </a>
+                    @if ($plansemanalfinca->tareasCierre->count() == 0 && $plansemanalfinca->semana < now()->weekOfYear)
+                        <a class="btn-red" href="{{ route('planSemanal.atrasadas',$plansemanalfinca) }}">
+                            Ver Tareas Atrasadas
+                        </a>
+                    @endif
+                    
                 </td>
 
                 <td class="campo text-center">
@@ -77,4 +76,7 @@ Tareas Finca Semanal
         </tbody>
     </table>
 </div>
+
+<x-paginacion :items="$planes" />
+
 @endsection

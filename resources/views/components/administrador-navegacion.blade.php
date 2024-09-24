@@ -45,13 +45,15 @@
 
 
         <a href="{{ route('dashboard') }}"
-            class=" {{  Route::is('dashboard*') ? 'bg-orange-500' : '' }} rounded-lg text-center flex flex-row  gap-5 md:gap-0  md:flex-col items-center md:justify-center p-3 w-full md:w-2/3 hover:bg-blue-400">
+            class=" {{  Route::is('dashboard*') ? 'bg-gray-500' : '' }} sidebar-link hover:bg-gray-500">
             <i class="fa-solid fa-house"></i>
-            <span class="text-md md:text-xs uppercase font-bold">Dashboard Admin</span>
-            <a href="{{ route('usuarios') }}" class="{{  Route::is('usuarios*') ? 'bg-orange-500' : '' }} sidebar-link">
-                <i class="fa-solid fa-user"></i>
-                <span class="sidebar-text">Gestionar Usuarios</span>
-            </a>
+            <span class="text-md md:text-xs uppercase font-bold">Dashboard</span>
+        </a>
+
+        <a href="{{ route('usuarios') }}" class="{{  Route::is('usuarios*') ? 'bg-gray-500' : '' }} sidebar-link hover:bg-gray-500">
+            <i class="fa-solid fa-user"></i>
+            <span class="sidebar-text">Gestionar Usuarios</span>
+        </a>
 
 
     </nav>

@@ -1,7 +1,7 @@
 <div>
     @hasrole('admin')
-        {{-- <x-administrador-navegacion /> --}}
-        {{-- <x-mantenimiento-navegacion /> --}}
+        <x-administrador-navegacion />
+        <x-mantenimiento-navegacion />
         <x-agricola-navegacion />
     @endhasrole
 

@@ -33,8 +33,7 @@ class UsuarioTareaDetalleExport implements FromCollection, WithHeadings, WithTit
         $rows = collect();
         Carbon::setLocale('es');
 
-        foreach ($this->plansemanal->finca->lotes as $lote) {
-            foreach ($lote->tareas as $tarea) {
+        foreach($this->plansemanal->tareasTotales as $tarea){
                 $carbonFecha = null;
                 if ($tarea->asignacion) {
                     // Formatear la fecha directamente si existe el cierre
@@ -50,7 +49,7 @@ class UsuarioTareaDetalleExport implements FromCollection, WithHeadings, WithTit
                         $rows->push([
                             'CODIGO' => $empleado->last_name,
                             'EMPLEADO' => $empleado->first_name,
-                            'LOTE' => $lote->nombre,
+                            'LOTE' => $tarea->lote->nombre,
                             'TAREA REALIZADA' => $tarea->tarea->tarea,
                             'MONTO' => ($asignacion->tarea_lote->cierre) ? (($asignacion->tarea_lote->presupuesto) / $tarea->users->count()) : '0',
                             'HORAS TOTALES' => ($asignacion->tarea_lote->cierre) ? ($asignacion->tarea_lote->horas / ($tarea->users->count())) : '0',
@@ -60,7 +59,6 @@ class UsuarioTareaDetalleExport implements FromCollection, WithHeadings, WithTit
                         ]);
                     }
                 }
-            }
         }
 
         return $rows;

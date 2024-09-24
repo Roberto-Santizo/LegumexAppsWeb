@@ -29,15 +29,22 @@ class PlanSemanalFincasController extends Controller
 
     public function index()
     {
-        $planes = PlanSemanalFinca::paginate(10);
-        foreach ($planes as $plan) {
-            $plan->tareas_totales = 0;
-            $plan->totalPersonasNecesarias = $plan->tareasTotales()->orderBy('personas', 'desc')->first();
-            foreach ($plan->tareasTotales as $tarea) {
-                $plan->presupuesto += $tarea->presupuesto;
-                $plan->tareas_totales++;
-            }
-        }
+        
+        $planes = PlanSemanalFinca::orderBy('id', 'DESC')->paginate(10);
+
+        $planes->map(function($plan) {
+            $tareasCierre = $plan->tareasTotales->filter(function($tarea) {
+                return $tarea->cierre;
+            });
+
+            $plan->tareasRealizadas = $tareasCierre; 
+            $plan->presupuesto = $plan->tareasTotales->sum('presupuesto'); 
+            $plan->presupuesto_gastado = $tareasCierre->sum('presupuesto'); 
+            $plan->tareasCierre = $tareasCierre;
+
+            return $plan;
+        });
+
 
         return view('agricola.planSemanal.index', ['planes' => $planes]);
     }
