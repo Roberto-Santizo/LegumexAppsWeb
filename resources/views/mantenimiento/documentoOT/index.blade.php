@@ -10,7 +10,7 @@
     <x-alertas />
     
     @can('create ot')
-        <x-link route="documentoOT.create" text="Crear Orden" icon="fa-solid fa-plus" />
+        <x-link route="documentoOT.create" text="Crear Orden" icon="fa-solid fa-plus" class="btn bg-orange-600 hover:bg-orange-800"/>
     @endcan
         
         

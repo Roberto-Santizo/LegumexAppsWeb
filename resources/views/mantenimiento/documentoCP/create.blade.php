@@ -12,7 +12,7 @@ Documento Checklist Preoperacional - {{ $planta->name }}
 @section('contenido')
 <x-alertas />
 
-<x-link route="documentocp.select" text="Volver" icon="fa-solid fa-arrow-left" />
+<x-link route="documentocp.select" text="Volver" icon="fa-solid fa-arrow-left" class=" btn bg-orange-600 hover:bg-orange-800"/>
 
 <form id="{{ ($planta->id == 1) ? 'formularioP1' : (($planta->id == 2) ? 'formularioP2' : 'formularioP3') }}"
     class="mt-5 w-full" action="{{ route('documentocp.store',$planta) }}" method="POST">
@@ -123,7 +123,7 @@ Documento Checklist Preoperacional - {{ $planta->name }}
                     <div class="clear_btn flex flex-col justify-center items-center">
                         <h4 class="formulario__texto text-xl">Firma Inspector de Calidad</h4>
                         <div id="clear-button{{$area->id}}"
-                            class="formulario__firma--clear inline-block mt-5 bg-orange-600 hover:bg-orange-700 p-3 transition-colors cursor-pointer uppercase font-bold text-white rounded-lg">
+                            class="formulario__firma--clear inline-block mt-5 btn bg-orange-600 hover:bg-orange-800">
                             <span>Limpiar</span>
                         </div>
                     </div>
@@ -143,7 +143,7 @@ Documento Checklist Preoperacional - {{ $planta->name }}
                             <div class="clear_btn flex justify-center items-center flex-col">
                                 <h4 class="formulario__texto">Verificado Por</h4>
                                 <div id="clear-button{{($planta->id == 1) ? '11' : (($planta->id == 2) ? '19' : '38') }}"
-                                    class=" btn formulario__firma--clear">
+                                    class=" btn formulario__firma--clear bg-orange-600 hover:bg-orange-800">
                                     <span>Limpiar</span>
                                 </div>
 
@@ -162,7 +162,7 @@ Documento Checklist Preoperacional - {{ $planta->name }}
                             <div class="clear_btn flex justify-center items-center flex-col">
                                 <h4 class="formulario__texto">Jefe de Mantenimiento</h4>
                                 <div id="clear-button{{($planta->id == 1) ? '12' : (($planta->id == 2) ? '20' : '39') }}"
-                                    class=" btn formulario__firma--clear">
+                                    class=" btn formulario__firma--clear bg-orange-600 hover:bg-orange-800">
                                     <span>Limpiar</span>
                                 </div>
                             </div>
@@ -180,7 +180,7 @@ Documento Checklist Preoperacional - {{ $planta->name }}
                             <div class="clear_btn flex justify-center items-center flex-col">
                                 <h4 class="formulario__texto">Supervisor de calidad</h4>
                                 <div id="clear-button{{($planta->id == 1) ? '13' : (($planta->id == 2) ? '21' : '40') }}"
-                                    class="btn formulario__firma--clear">
+                                    class="btn formulario__firma--clear bg-orange-600 hover:bg-orange-800">
                                     <span>Limpiar</span>
                                 </div>
                             </div>
@@ -190,7 +190,7 @@ Documento Checklist Preoperacional - {{ $planta->name }}
                         
                     <x-input type="text" name="observaciones" label="Observaciones Generales" placeholder="Observación Generales" />
                     
-                    <input type="submit" value="Guardar" class="btn formulario__firma--clear">
+                    <input type="submit" value="Guardar" class="btn formulario__firma--clear bg-orange-600 hover:bg-orange-800">
 
                 </fieldset>
 

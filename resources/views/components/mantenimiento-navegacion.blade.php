@@ -70,7 +70,6 @@
             <span class="text-md md:text-xs uppercase font-bold">Ordenes de trabajo</span>
         </a>
 
-        @role('auxmanto')
         <a href="{{ route('misOrdenes') }}"
             class="{{  Route::is('misOrdenes*') ? 'bg-orange-500' : '' }} relative rounded-lg text-center flex flex-row  gap-5 md:gap-0  md:flex-col items-center md:justify-center p-3 w-full md:w-2/3 hover:bg-blue-400">
             <i class="fa-solid fa-user-tie"></i>
@@ -80,7 +79,6 @@
                 {{ auth()->user()->ordenes() }}
             </span>
         </a>
-        @endrole
 
         @role('adminmanto')
         <a href="{{ route('administrar') }}"

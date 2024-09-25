@@ -86,7 +86,7 @@
 }
 
 .btn{
-  @apply bg-orange-500 hover:bg-orange-600 cursor-pointer text-white font-bold py-2 px-4 rounded inline-block uppercase;
+  @apply cursor-pointer text-white font-bold py-2 px-4 rounded inline-block uppercase;
 }
 
 .btn-red{
@@ -121,3 +121,6 @@
   @apply text-sm md:text-xs uppercase font-bold;
 }
 
+.grow-animation-sm{
+  @apply transform transition-transform duration-300 hover:scale-1025;
+}

@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Exceptions\ImportExeption;
 use App\Models\Lote;
 use App\Models\Tarea;
 use App\Models\TareasLote;
@@ -61,8 +62,12 @@ class PlanSemanalFincasController extends Controller
             'file' => 'required'
         ]);
 
-        Excel::import(new PlanSemanalImport, $request->file('file'));
-
+        try {
+            Excel::import(new PlanSemanalImport, $request->file('file'));
+        } catch (ImportExeption $th) {
+            return back()->with('error', $th->getMessage());
+        }
+        
         return redirect()->route('planSemanal')->with('success', 'Plan Semanal Creado Correctamente');
     }
 

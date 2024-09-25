@@ -47,7 +47,7 @@
             </div>
         </div>
 
-        <div class="hidden md:flex justify-center items-center gap-2 bg-orange-600 p-3 rounded shadow-xl">
+        <div class="hidden md:flex justify-center items-center gap-2 bg-sky-600 p-3 rounded shadow-xl">
             <p class="text-2xl font-bold">Administración</p>
             <i class="fa-solid fa-screwdriver-wrench"></i>
         </div>

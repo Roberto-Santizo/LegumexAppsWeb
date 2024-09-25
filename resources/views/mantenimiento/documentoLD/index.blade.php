@@ -14,7 +14,7 @@ Documento Lavado y Desinfección de Herramientas
     </div>
     @endcan
 
-    <div id="FiltrosBtn" class="mt-10 md:hidden btn">
+    <div id="FiltrosBtn" class="mt-10 md:hidden btn bg-orange-600 hover:bg-orange-800">
         <i class="fa-solid fa-plus"></i>
         Filtros
     </div>
@@ -45,7 +45,7 @@ Documento Lavado y Desinfección de Herramientas
                 <select name="planta_id" id="planta_id" class="border border-black p-2 rounded w-full">
                     <option value="">--SIN FILTRO--</option>
                     @foreach ($plantas as $planta)
-                    <option value="{{ $planta->id }}" {{ $planta->id == old('planta_id', request()->input('planta_id'))
+                    <option  class="text-xs" value="{{ $planta->id }}" {{ $planta->id == old('planta_id', request()->input('planta_id'))
                         ? 'selected' : '' }}>{{ $planta->name }}</option>
                     @endforeach
                 </select>
@@ -56,14 +56,14 @@ Documento Lavado y Desinfección de Herramientas
                 <select name="area_id" id="area_id" class="border border-black p-2 rounded w-full">
                     <option value="">--SIN FILTRO--</option>
                     @foreach ($areas as $area)
-                    <option value="{{ $area->id }}" {{ $area->id == old('area_id', request()->input('area_id')) ?
-                        'selected' : '' }}>{{ ($area->area) }}</option>
+                    <option class="text-xs" value="{{ $area->id }}" {{ $area->id == old('area_id', request()->input('area_id')) ?
+                        'selected' : '' }}>{{ ($area->area) }} - {{ $area->planta->name }}</option>
                     @endforeach
                 </select>
             </div>
 
             <div class="flex flex-col gap-2 md:flex-row md:justify-between">
-                <button type="submit" class="btn">
+                <button type="submit" class="btn bg-orange-600 hover:bg-orange-800">
                     <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
                         stroke="currentColor" class="w-6 h-6 inline-block align-middle">
                         <path stroke-linecap="round" stroke-linejoin="round"
@@ -71,15 +71,15 @@ Documento Lavado y Desinfección de Herramientas
                     </svg>
                 </button>
 
-                <x-link route="documentold" text="Borrar Filtros" />
-
+                
             </div>
+            <x-link route="documentold" text="Borrar Filtros" class="bg-orange-600 hover:bg-orange-800 "/>
         </div>
     </form>
     
     @can('create documentold')
         <div class="hidden md:block">
-            <x-link route="documentold.create" text="Crear Documento" />
+            <x-link route="documentold.create" text="Crear Documento" class=" btn bg-orange-600 hover:bg-orange-800"/>
         </div>
     @endcan 
 

@@ -23,10 +23,10 @@ Route::group(['middleware' => ['auth', 'role:admin|adminagricola|auxalameda'], '
     
     //Tareas
     Route::get('/tareas', [TareasController::class, 'index'])->name('tareas');
-    Route::get('/tareas/{tarea:tarea}', [TareasController::class, 'rendimiento'])->name('tareas.rendimiento');
+    Route::get('/tareas/{tarea:tarea}/rendimiento', [TareasController::class, 'rendimiento'])->name('tareas.rendimiento');
 
     
-    Route::get('/tareas/create', [TareasController::class, 'create'])->name('tareas.create');
+    Route::get('/tarea/create', [TareasController::class, 'create'])->name('tareas.create');
     Route::get('/tareas/edit/{tarea:tarea}', [TareasController::class, 'edit'])->name('tareas.edit');
     Route::get('/tareas/show/{tarea}', [TareasController::class, 'show'])->name('tareas.show');
     Route::get('/tareas/historial', [TareasController::class, 'historial'])->name('tareas.historial');

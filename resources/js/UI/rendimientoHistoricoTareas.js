@@ -6,13 +6,18 @@ let datasets = [];
     const grafico = document.getElementById('myChart');
     const tarea_id = document.getElementById('tarea_id');
     const form_rendimientos = document.getElementById('form_rendimientos');
+    const loading_icon = document.getElementById('loading_icon');
+    const alerta_datos = document.getElementById('alerta_datos');
+    let myChartInstance = null;
 
     if (grafico) {
         form_rendimientos.addEventListener('submit',function(e){
             e.preventDefault();
             let flag = checkSelectsAndFetch();
-
+            
             if(flag){
+                loading_icon.classList.toggle('hidden');
+                loading_icon.classList.toggle('flex');
                 const finca_id = document.getElementById('finca_id').value;
                 const year = document.getElementById('year').value;
                 mostrarDatos(finca_id,year);
@@ -31,7 +36,20 @@ let datasets = [];
 
     async function mostrarDatos(finca_id,year) {
         Chart.register(LinearScale, CategoryScale, BarController, BarElement, PointElement, LineController, LineElement, Title, Tooltip, Legend);
+
+        if (myChartInstance) {
+            myChartInstance.destroy(); 
+        }
+
         datasets = await obtenerRendimiento(tarea_id.value,finca_id,year);
+        if(datasets.length === 0){
+            alerta_datos.classList.toggle('hidden');
+            loading_icon.classList.toggle('hidden');
+            loading_icon.classList.toggle('flex');
+            return;
+        }else{
+            alerta_datos.classList.toggle('hidden'); 
+        }
         const labels = ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto','Septiembre','Octubre','Noviembre','Diciembre'];
        
         const chartData = {
@@ -51,7 +69,9 @@ let datasets = [];
             }
         };
 
-        const myChart = new Chart(grafico, config);
+        myChartInstance = new Chart(grafico, config);
+        loading_icon.classList.toggle('hidden');
+        loading_icon.classList.toggle('flex');
     }
 
     function checkSelectsAndFetch() {

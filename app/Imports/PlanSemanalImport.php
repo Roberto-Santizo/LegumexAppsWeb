@@ -2,6 +2,7 @@
 
 namespace App\Imports;
 
+use App\Exceptions\ImportExeption;
 use App\Models\Lote;
 use App\Models\Finca;
 use App\Models\Tarea;
@@ -21,19 +22,25 @@ class PlanSemanalImport implements ToModel, WithHeadingRow
             return null;
         }
 
-        // Buscar o crear el Plan Semanal para la finca y semana actual
-        $planSemanal = $this->getOrCreatePlanSemanal($row['finca'], $row['numero_de_semana']);
-
-        // Buscar el lote y la tarea
-        $lote = Lote::where('nombre', $row['lote'])->first();
-        $tarea = Tarea::where('code', $row['tarea'])->first();
-
-        if (!$lote || !$tarea) {
-            logger()->warning('Lote o Tarea no encontrados para la fila: ', $row);
-            return null;
+        $finca = Finca::where('code',$row['finca'])->get()->first();
+        if (!$finca) {
+            throw new ImportExeption('La finca ' . $row['finca'] . ' no existe');
         }
 
-        // Crear una nueva tarea para ese lote
+        $planSemanal = $this->getOrCreatePlanSemanal($row['finca'], $row['numero_de_semana']);
+
+        $lote = Lote::where('nombre', $row['lote'])->where('finca_id',$finca->id)->first();
+
+        if (!$lote) {
+            throw new ImportExeption('El lote ' . $row['lote'] . ' no existe o pertenece a otra finca');
+        }
+
+        $tarea = Tarea::where('code', $row['tarea'])->first();
+
+        if (!$tarea) {
+            throw new ImportExeption('La tarea ' . $row['tarea'] . ' no existe');
+        }
+
         return new TareasLote([
             'plan_semanal_finca_id' => $planSemanal->id,
             'lote_id' => $lote->id,
@@ -62,7 +69,6 @@ class PlanSemanalImport implements ToModel, WithHeadingRow
             ]
         );
 
-        // Almacenar el plan en cache
         $this->planesSemanal[$finca][$numeroSemana] = $planSemanal;
 
         return $planSemanal;

@@ -11,7 +11,7 @@ Crear orden de trabajo
 
 @section('contenido')
 
-<x-link route="documentoOT" text="Volver" icon="fa-solid fa-arrow-left" />
+<x-link route="documentoOT" text="Volver" icon="fa-solid fa-arrow-left" class="btn bg-orange-600 hover:bg-orange-800"/>
 
 <div class="w-full flex md:justify-center items-center">
     <form method="POST" action="{{ route('documentoOT.store') }}" id="formulario5" class="w-2/3">
@@ -69,7 +69,7 @@ Crear orden de trabajo
                     <div class="flex flex-col justify-center items-center">
                         <div id="my_camera"></div>
                         <div id="takesnapshot"
-                            class="btn">
+                        class="btn bg-orange-600 hover:bg-orange-800 mt-5">
                             <i class="fa-solid fa-camera"></i>
                             Tomar Foto
                         </div>
@@ -97,7 +97,7 @@ Crear orden de trabajo
                 <div class="clear_btn flex justify-center items-center flex-col mt-3">
                     <h4 class="font-bold uppercase">Firma del jefe de área</h4>
                     <div id="clear-button-2"
-                        class="inline-block mt-2 bg-orange-600 hover:bg-orange-700 p-3 transition-colors cursor-pointer uppercase font-bold text-white rounded-lg formulario__firma--clear">
+                        class="btn bg-orange-600 hover:bg-orange-800 formulario__firma--clear mt-5">
                         <span>Limpiar</span>
                     </div>
                 </div>
@@ -111,7 +111,7 @@ Crear orden de trabajo
                 <div class="clear_btn flex justify-center items-center flex-col mt-3">
                     <h4 class="font-bold uppercase">Firma del solicitante</h4>
                     <div id="clear-button"
-                        class="inline-block mt-5 bg-orange-600 hover:bg-orange-700 p-3 transition-colors cursor-pointer uppercase font-bold text-white rounded-lg formulario__firma--clear">
+                    class="btn bg-orange-600 hover:bg-orange-800 formulario__firma--clear mt-5">
                         <span>Limpiar</span>
                     </div>
                 </div>

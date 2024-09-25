@@ -9,7 +9,7 @@ Editar documento
 
 
 
-<x-link route="documentold" text="Volver" icon="fa-solid fa-arrow-left" />
+<x-link route="documentold" text="Volver" icon="fa-solid fa-arrow-left" class=" btn bg-orange-600 hover:bg-orange-800"/>
 
 <div class="bg-white p-6 rounded-lg shadow-lg mt-10 md:mt-0 container xl:w-2/3  mx-auto">
     <form action="{{ route('documentold.update',$documento) }}" method="POST" id="formulario2" novalidate>
@@ -91,7 +91,7 @@ Editar documento
                     <div class="clear_btn">
                         <h4 class="text-xl font-bold">Firma Inspector de calidad</h4>
                         <div id="clear-button"
-                            class="inline-block mt-5 bg-orange-600 hover:bg-orange-700 p-3 transition-colors cursor-pointer uppercase font-bold text-white rounded-lg">
+                        class=" btn bg-orange-600 hover:bg-orange-800">
                             <span>Limpiar</span></div>
                     </div>
                 </div>
@@ -106,7 +106,7 @@ Editar documento
                 <div class="clear_btn">
                     <h4 class="text-xl font-bold">Firma Inspector de Calidad</h4>
                     <div id="clear-button-2"
-                        class="inline-block mt-5 bg-orange-600 hover:bg-orange-700 p-3 transition-colors cursor-pointer uppercase font-bold text-white rounded-lg">
+                    class=" btn bg-orange-600 hover:bg-orange-800">
                         <span>Limpiar</span>
                     </div>
                 </div>
@@ -118,7 +118,7 @@ Editar documento
 
         <div class="flex justify-end mt-20">
             <input type="submit" value="Guardar"
-                class="btn">
+            class=" btn bg-orange-600 hover:bg-orange-800">
         </div>
     </form>
 </div>

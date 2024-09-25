@@ -11,11 +11,11 @@ Documentos Checklists Preoperacionales
 <div >
     @can('create documentocp')
     <div class="mt-10 md:hidden">
-        <x-link route="documentocp.select" text="Crear Documento"  />
+        <x-link route="documentocp.select" text="Crear Documento"  class=" btn bg-orange-600 hover:bg-orange-800"/>
     </div>
     @endcan
 
-    <div id="FiltrosBtn" class="mt-10 md:hidden btn ">
+    <div id="FiltrosBtn" class="mt-10 md:hidden btn bg-orange-600 hover:bg-orange-800">
         <p>Filtros</p>
     </div>
 </div>
@@ -44,7 +44,7 @@ Documentos Checklists Preoperacionales
             </div>
 
             <div class="flex flex-col gap-2 md:flex-row md:justify-between">
-                <button type="submit" class="btn">
+                <button type="submit" class="btn bg-orange-600 hover:bg-orange-800">
                     <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
                         stroke="currentColor" class="w-6 h-6 inline-block align-middle">
                         <path stroke-linecap="round" stroke-linejoin="round"
@@ -52,13 +52,13 @@ Documentos Checklists Preoperacionales
                     </svg>
                 </button>
 
-                <x-link route="documentocp" text="Borrar Filtros" />
+                <x-link route="documentocp" text="Borrar Filtros" class="btn bg-orange-600 hover:bg-orange-800"/>
             </div>
         </div>
     </form>
     @can('create documentocp')
         <div class="hidden md:block">
-            <x-link route="documentocp.select" text="Crear Documento"  />
+            <x-link route="documentocp.select" text="Crear Documento"  class="btn bg-orange-600 hover:bg-orange-800"/>
         </div>
     @endcan
 </div>

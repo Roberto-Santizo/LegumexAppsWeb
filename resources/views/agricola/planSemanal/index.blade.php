@@ -67,7 +67,7 @@ Tareas Finca Semanal
 
                 <td class="campo text-center">
                     <a href="{{ route('reporte.PlanillaSemanal',$plansemanalfinca->id) }}">
-                        <i title="Reporte Tareas Generales"
+                        <i title="Planilla General Semanal"
                             class="fa-solid fa-file-arrow-down text-3xl hover:text-gray-500 cursor-pointer"></i>
                     </a>
                 </td>

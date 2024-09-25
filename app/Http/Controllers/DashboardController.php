@@ -3,15 +3,25 @@
 namespace App\Http\Controllers;
 
 use Carbon\Carbon;
-use Illuminate\Http\Request;
+use App\Models\Session;
+use App\Models\EmpleadoFinca;
 use App\Models\PlanSemanalFinca;
+use App\Models\UsuarioTareaLote;
 
 class DashboardController extends Controller
 {
     public function index()
     {
-        
-        return view('dashboards.index');
+        $sessions = Session::limit(10)->get();
+
+        $sessions->map(function($session){
+            $last_activity = $session->last_activity;
+            $last_activityDate = Carbon::createFromTimestamp($last_activity);
+
+            $session->ultima_coneccion = $last_activityDate->toDateTimeString();
+        });
+
+        return view('dashboards.index',['sessions' => $sessions]);
     }
 
     public function mantenimiento()
@@ -31,6 +41,19 @@ class DashboardController extends Controller
             });
 
         });
-        return view('dashboards.agricola',['planes' => $planes]);
+        $semana_actual = Carbon::now()->weekOfYear();
+
+        $usuarios = EmpleadoFinca::where('department_id', 8)->WhereNotIn('position_id', [15, 9])->get();
+
+        $usuarios->map(function($usuario) use ($semana_actual){
+            $asignaciones = UsuarioTareaLote::whereRaw('WEEKOFYEAR(created_at) = ?',$semana_actual)->where('usuario_id', $usuario->id)->get();
+            $usuario->horas_totales = $asignaciones->sum(function($asignacion){
+                return round($asignacion->tarea_lote->horas / ($asignacion->tarea_lote->personas - $asignacion->tarea_lote->cupos),2);
+            });
+            
+        });
+        $usuarios = $usuarios->sortBy('horas_totales');
+
+        return view('dashboards.agricola',['planes' => $planes,'usuarios' => $usuarios, 'semana_actual' => $semana_actual]);
     }
 }

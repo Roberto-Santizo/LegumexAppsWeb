@@ -18,12 +18,12 @@ Herramientas
                 </button>
             </div>
         </form>
-        <x-link route="herramientas" text="Borrar Filtros" />
+        <x-link route="herramientas" text="Borrar Filtros" class="btn bg-orange-600 hover:bg-orange-800"/>
 
     </div>
 
-    <div class="flex flex-col md:flex-row gap-5 justify-center md:justify-end items-center">
-        <x-link route="herramientas.create" text="Crear"/>
+    <div class="flex flex-col md:flex-row gap-5 justify-center md:justify-end items-center mt-5">
+        <x-link route="herramientas.create" text="Crear" class="btn bg-orange-600 hover:bg-orange-800"/>
     </div>
 </div>
 

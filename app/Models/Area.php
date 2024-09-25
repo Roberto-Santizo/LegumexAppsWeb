@@ -13,4 +13,9 @@ class Area extends Model
     {
         return $this->hasMany(Elemento::class, 'area_id');
     }
+
+    public function planta()
+    {
+        return $this->belongsTo(Planta::class);
+    }
 }

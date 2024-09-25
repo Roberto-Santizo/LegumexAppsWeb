@@ -5,9 +5,7 @@ Creación Plan Semanal Finca
 @endsection
 
 @section('contenido')
-
-<x-alertas />
-
+<x-link route="planSemanal" text="Volver" icon="fa-solid fa-arrow-left" class="bg-green-moss hover:bg-green-meadow"/>
 <div class="bg-white p-6 rounded-lg shadow-lg mt-5 container xl:w-2/3  mx-auto">
     <form action="{{ route('planSemanal.store') }}" method="POST" id="formulario6" enctype="multipart/form-data" novalidate>
         @csrf
