@@ -45,6 +45,7 @@ class OrdenTrabajo extends Model
         'folder_url',
         'folder_id',
         'mecanico_externo',
+        'correlativo'
         
     ];
 
@@ -55,7 +56,7 @@ class OrdenTrabajo extends Model
 
     public function planta()
     {
-        return $this->hasOne(Planta::class,'id','planta_id');
+        return $this->belongsTo(Planta::class);
     }
 
     public function area()

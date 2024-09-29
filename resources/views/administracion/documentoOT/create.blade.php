@@ -112,6 +112,14 @@ Crear orden de trabajo
         </fieldset>
         <fieldset class="p-5 mb-2 shadow-2xl">
             <legend class="text-xl font-bold uppercase">Datos del solicitante</legend>
+
+            <div class="flex items-center gap-5 justify-between shadow p-2">
+                <label class="text-md font-bold" for="check_solicitante">OTRO SOLICITANTE</label>
+                <input class="h-6 w-6 mt-2" type="checkbox" name="check_solicitante" id="check_solicitante">
+            </div>
+
+            <x-input type="text" disabled name="nombre_solicitante" placeholder="Nombre del Solicitante" id="nombre_solicitante" hidden/>
+
             <div class="flex justify-center items-center flex-col">
                 <canvas id="signature-pad" width="350" height="200"
                     class="bg-gray-50 mt-10 rounded-xl border border-black"></canvas>

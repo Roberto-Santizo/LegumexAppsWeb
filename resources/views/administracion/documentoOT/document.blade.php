@@ -34,7 +34,7 @@
                 <p class="font-bold">ÁREA: {{ $ot->area->area }}</p>
             </div>
             <div class="border border-black p-2 inline-block col-start-7 col-span-2">
-                <p class="font-bold">NO: {{ $ot->id }} </p>
+                <p class="font-bold">NO: {{ $ot->correlativo }} </p>
             </div>
             <div class="border-x border-b border-black p-2 inline-block col-start-1 col-span-2">
                 <p class="font-bold">FECHA: {{ \Illuminate\Support\Carbon::parse($ot->created_at)->format('d-m-Y')  }}</p>

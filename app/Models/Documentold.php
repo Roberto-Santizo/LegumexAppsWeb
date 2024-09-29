@@ -25,7 +25,8 @@ class Documentold extends Model
         'inspector_firma',
         'asistente_firma',
         'estado',
-        'weburl'
+        'weburl',
+        'correlativo'
     ];
 
     public function herramientas()
@@ -35,7 +36,7 @@ class Documentold extends Model
 
     public function planta()
     {
-        return $this->hasOne(Planta::class,'id','planta_id');
+        return $this->belongsTo(Planta::class);
     }
 
     public function area()

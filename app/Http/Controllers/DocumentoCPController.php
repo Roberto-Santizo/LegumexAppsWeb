@@ -83,7 +83,15 @@ class DocumentoCPController extends Controller
         ]);
 
         try {
-        DB::transaction(function () use ($request, $planta) {
+            $ultimoCorrelativo = Documentocp::where('planta_id',$planta->id)->max('correlativo');
+            if($ultimoCorrelativo){
+                $numero = intval(substr($ultimoCorrelativo, strrpos($ultimoCorrelativo, '-') + 1));
+                $nuevoNumero = $numero + 1;
+            }else{
+                $nuevoNumero = 1;
+            }
+
+        DB::transaction(function () use ($request, $planta, $nuevoNumero) {
         //Crear el documento principal
         $documentocp = Documentocp::create([
             'planta_id' => $planta->id,
@@ -92,7 +100,8 @@ class DocumentoCPController extends Controller
             'verificado_firma' => $request->verificado_firma,
             'jefemanto_firma' => $request->jefemanto_firma,
             'supervisor_firma' => $request->supervisor_firma,
-            'estado' => 1
+            'estado' => 1,
+            'correlativo' => $planta->prefix . '-' . $nuevoNumero
         ]);
 
         // Preparar los datos para evitar registros duplicados
@@ -166,11 +175,11 @@ class DocumentoCPController extends Controller
             $archivo = file_get_contents($request->file('file')->path());
             // Verifica si el documento existe
             $documentocp = Documentocp::findOrFail($request->documentocp_id);
-           
+            $folder_id = $documentocp->planta->checklist_folder_id;
             $accessToken = $this->tokenService->getValidAccessToken();
             $graph = new Graph();
             $graph->setAccessToken($accessToken);
-            $response = $graph->createRequest('PUT', 'https://graph.microsoft.com/v1.0/drives/b!CU_CMtvtaEmUlX3R-A80sL7OC60rTsBHt6CzRiilfLTCa6VHDHQGR6wIGs3pVZVG/items/01O5NWAPDX5AFQJGS62BBK72PWLHYUY4KB:/' . 'FOR-MN-07_' . $documentocp->id . '.pdf:/content')
+            $response = $graph->createRequest('PUT', 'https://graph.microsoft.com/v1.0/drives/b!CU_CMtvtaEmUlX3R-A80sL7OC60rTsBHt6CzRiilfLTCa6VHDHQGR6wIGs3pVZVG/items/' . $folder_id . ':/' . 'FOR-MN-07_' . $documentocp->correlativo . '.pdf:/content')
                 ->addHeaders(['Content-Type' => 'application/pdf'])
                 ->attachBody($archivo)
                 ->execute();
