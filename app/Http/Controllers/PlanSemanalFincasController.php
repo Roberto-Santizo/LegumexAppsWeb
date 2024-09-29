@@ -30,23 +30,53 @@ class PlanSemanalFincasController extends Controller
 
     public function index()
     {
-        
         $planes = PlanSemanalFinca::orderBy('id', 'DESC')->paginate(10);
 
-        $planes->map(function($plan) {
-            $tareasCierre = $plan->tareasTotales->filter(function($tarea) {
+        $planes->map(function ($plan) {
+            // Inicializa las colecciones necesarias
+            $tareasCierre = collect();
+            $tareasExtraordinarias = collect();
+            $tareasPresupuestadas = collect();
+
+            // Recorre todas las tareas una sola vez
+            foreach ($plan->tareasTotales as $tarea) {
+                if ($tarea->cierre) {
+                    $tareasCierre->push($tarea);
+                }
+
+                if ($tarea->extraordinaria) {
+                    $tareasExtraordinarias->push($tarea);
+                } else {
+                    $tareasPresupuestadas->push($tarea);
+                }
+            }
+
+            // Asigna las tareas a la propiedad del plan
+            $plan->tareasRealizadas = $tareasCierre;
+            $plan->tareasExtraordinarias = $tareasExtraordinarias;
+            $plan->tareasPresupuestadas = $tareasPresupuestadas;
+
+            // Calcula las tareas extraordinarias terminadas
+            $plan->tareasExtraordinariasTerminadas = $tareasExtraordinarias->filter(function ($tarea) {
                 return $tarea->cierre;
             });
 
-            $plan->tareasRealizadas = $tareasCierre; 
-            $plan->presupuesto = $plan->tareasTotales->sum('presupuesto'); 
-            $plan->presupuesto_gastado = $tareasCierre->sum('presupuesto'); 
-            $plan->tareasCierre = $tareasCierre;
+            // Calcula las tareas presupuestadas terminadas
+            $plan->tareasPresupuestadasTerminadas = $tareasPresupuestadas->filter(function ($tarea) {
+                return $tarea->cierre;
+            });
+
+            // Calcula los presupuestos
+            $plan->presupuesto_extraordinario = $tareasExtraordinarias->sum('presupuesto');
+            $plan->presupuesto_extraordinario_gastado = $plan->tareasExtraordinariasTerminadas->sum('presupuesto');
+
+            $plan->presupuesto_general = $tareasPresupuestadas->sum('presupuesto');
+            $plan->presupuesto_general_gastado = $plan->tareasPresupuestadasTerminadas->sum('presupuesto');
 
             return $plan;
         });
 
-
+        
         return view('agricola.planSemanal.index', ['planes' => $planes]);
     }
 
@@ -67,7 +97,7 @@ class PlanSemanalFincasController extends Controller
         } catch (ImportExeption $th) {
             return back()->with('error', $th->getMessage());
         }
-        
+
         return redirect()->route('planSemanal')->with('success', 'Plan Semanal Creado Correctamente');
     }
 
@@ -75,9 +105,9 @@ class PlanSemanalFincasController extends Controller
     public function show(PlanSemanalFinca $plansemanalfinca)
     {
         $lotes = $plansemanalfinca->tareasTotales()
-                ->select('lote_id', DB::raw('SUM(personas) as total_personas'), DB::raw('SUM(presupuesto) as total_presupuesto'), DB::raw('SUM(horas) as total_horas'))
-                ->groupBy('lote_id')
-                ->get();
+            ->select('lote_id', DB::raw('SUM(personas) as total_personas'), DB::raw('SUM(presupuesto) as total_presupuesto'), DB::raw('SUM(horas) as total_horas'))
+            ->groupBy('lote_id')
+            ->get();
         return view('agricola.planSemanal.show', ['lotes' => $lotes, 'planSemanal' => $plansemanalfinca]);
     }
 
@@ -116,7 +146,8 @@ class PlanSemanalFincasController extends Controller
         return view('agricola.planSemanal.tareasLote', [
             'lote' => $lote,
             'plansemanalfinca' => $plansemanalfinca,
-            'tareas' => $tareas
+            'tareas' => $tareas,
+            'semanaActual' => Carbon::now()->weekOfYear
         ]);
     }
 
@@ -126,25 +157,26 @@ class PlanSemanalFincasController extends Controller
     {
         $hoy = Carbon::today();
         $semanaActual = Carbon::now()->weekOfYear;
-    
+
         if ($plansemanalfinca->semana < $semanaActual) {
             return redirect()->route('planSemanal.tareasLote', [$lote, $plansemanalfinca])
                 ->with('error', 'El periodo de asignación de esta tarea terminó');
         }
-    
+
         if (AsignacionDiaria::where('tarea_lote_id', $tarealote->id)
-            ->whereDate('created_at', $hoy)->exists()) {
+            ->whereDate('created_at', $hoy)->exists()
+        ) {
             return redirect()->route('planSemanal.tareasLote', [$lote, $plansemanalfinca])
                 ->with('error', "Esta tarea ya fue cerrada por el día de hoy");
         }
-    
+
         $asignados = UsuarioTareaLote::where('tarealote_id', $tarealote->id)
             ->whereDate('created_at', $hoy)
             ->pluck('usuario_id')
             ->toArray();
-    
+
         $tarealote->cupos_utilizados = $tarealote->users($hoy)->count();
-    
+
         $ingresos = EmpleadoIngresado::whereDate('punch_time', $hoy)
             ->where('terminal_id', 7)
             ->get()
@@ -152,17 +184,17 @@ class PlanSemanalFincasController extends Controller
                 $asignaciones = UsuarioTareaLote::where('usuario_id', $ingreso->emp_id)
                     ->whereDate('created_at', $hoy)
                     ->get();
-    
+
                 $horas_totales = $asignaciones->sum(function ($asignacion) {
                     return $asignacion->tarea_lote->horas / ($asignacion->tarea_lote->personas - $asignacion->tarea_lote->cupos);
                 });
-    
+
                 $ingreso->asignaciones = $asignaciones;
                 $ingreso->horas_totales = $horas_totales;
-    
+
                 return $ingreso;
             });
-    
+
         // Devolver vista con los datos necesarios
         return view('agricola.planSemanal.asignar', [
             'lote' => $lote,
@@ -174,7 +206,7 @@ class PlanSemanalFincasController extends Controller
             'hoy' => $hoy->format('d-m-Y')
         ]);
     }
-    
+
 
     public function rendimiento(TareasLote $tarealote, PlanSemanalFinca $plansemanalfinca)
     {
@@ -186,14 +218,14 @@ class PlanSemanalFincasController extends Controller
         $tarealote->asignacion = $tarealote->asignaciones()->whereDate('created_at', Carbon::today())->get()->first();
         $usuario->asignacion_usuario_id = UsuarioTareaLote::where('usuario_id', $usuario->id)->where('tarealote_id', $tarealote->id)->whereDate('created_at', Carbon::today())->get()->first();
 
-        $primerMarcaje = EmpleadoIngresado::where('emp_id', $usuario->id) 
-            ->whereDate('punch_time', Carbon::today())   
-            ->orderBy('punch_time', 'asc')   
+        $primerMarcaje = EmpleadoIngresado::where('emp_id', $usuario->id)
+            ->whereDate('punch_time', Carbon::today())
+            ->orderBy('punch_time', 'asc')
             ->first();
 
-        $ultimoMarcaje = EmpleadoIngresado::where('emp_id', $usuario->id) 
-            ->whereDate('punch_time', Carbon::today())   
-            ->orderBy('punch_time', 'desc')   
+        $ultimoMarcaje = EmpleadoIngresado::where('emp_id', $usuario->id)
+            ->whereDate('punch_time', Carbon::today())
+            ->orderBy('punch_time', 'desc')
             ->first();
 
         return view('agricola.plansemanal.diario', ['tarealote' => $tarealote, 'usuario' => $usuario, 'primerMarcaje' => $primerMarcaje, 'ultimoMarcaje' => $ultimoMarcaje]);
@@ -224,7 +256,7 @@ class PlanSemanalFincasController extends Controller
         $tareasFiltradas = $tareas->filter(function ($tarea) use ($semanaplan) {
             if ($semanaplan < Carbon::now()->weekOfYear) {
                 if (!$tarea->cierre) {
-                    return $tarea; 
+                    return $tarea;
                 }
             }
         });

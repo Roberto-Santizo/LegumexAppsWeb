@@ -2,10 +2,12 @@
 
 namespace App\Http\Controllers;
 
-use App\Exports\PlanillaSemanalExport;
-use App\Exports\PlansemanalExport;
+use Carbon\Carbon;
 use App\Models\PlanSemanalFinca;
+use App\Exports\PlansemanalExport;
 use Maatwebsite\Excel\Facades\Excel;
+use App\Exports\PlanillaSemanalExport;
+use App\Exports\PlanControlPresupuestoExport;
 
 class ReporteController extends Controller 
 {
@@ -19,5 +21,12 @@ class ReporteController extends Controller
     {
         $fileName = 'Planilla Semanal ' . $planSemanalFinca->finca->finca . ' S' . $planSemanalFinca->semana . '.xlsx';
         return Excel::download(new PlanillaSemanalExport($planSemanalFinca), $fileName);
+    }
+
+    public function ControlPresupuesto()
+    {
+        $semanaActual = Carbon::now()->weekOfYear();
+        $fileName = 'Control Tareas ' . $semanaActual .'.xlsx';
+        return Excel::download(new PlanControlPresupuestoExport, $fileName);
     }
 }

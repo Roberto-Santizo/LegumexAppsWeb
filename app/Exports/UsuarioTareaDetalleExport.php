@@ -51,6 +51,7 @@ class UsuarioTareaDetalleExport implements FromCollection, WithHeadings, WithTit
                             'EMPLEADO' => $empleado->first_name,
                             'LOTE' => $tarea->lote->nombre,
                             'TAREA REALIZADA' => $tarea->tarea->tarea,
+                            'PLAN' => ($tarea->extraordinaria) ? 'EXTRAORDINARIA' : 'PLANIFICADA',
                             'MONTO' => ($asignacion->tarea_lote->cierre) ? (($asignacion->tarea_lote->presupuesto) / $tarea->users->count()) : '0',
                             'HORAS TOTALES' => ($asignacion->tarea_lote->cierre) ? ($asignacion->tarea_lote->horas / ($tarea->users->count())) : '0',
                             'ENTRADA' => $entrada ? $entrada->punch_time->format('d-m-Y h:m:s') : 'no existe',
@@ -66,13 +67,13 @@ class UsuarioTareaDetalleExport implements FromCollection, WithHeadings, WithTit
 
     public function headings(): array
     {
-        return ['CODIGO','EMPLEADO', 'LOTE', 'TAREA', 'MONTO GANADO', 'HORAS TOTALES', 'ENTRADA BIOMETRICO', 'SALIDA BIOMETRICO', 'DIA']; // Cambia los encabezados según lo que exportes
+        return ['CODIGO','EMPLEADO', 'LOTE', 'TAREA REALIZADA','PLAN', 'MONTO GANADO', 'HORAS TOTALES', 'ENTRADA BIOMETRICO', 'SALIDA BIOMETRICO', 'DIA']; // Cambia los encabezados según lo que exportes
     }
 
     public function styles(Worksheet $sheet)
     {
         // Aplica estilos al rango A1:H1 (encabezados)
-        $sheet->getStyle('A1:I1')->applyFromArray([
+        $sheet->getStyle('A1:J1')->applyFromArray([
             'font' => [
                 'bold' => true,
                 'color' => ['argb' => 'FFFFFF'], // Color blanco para el texto

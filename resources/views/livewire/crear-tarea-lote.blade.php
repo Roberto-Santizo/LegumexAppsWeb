@@ -1,5 +1,5 @@
 <div class="bg-white p-6 rounded-lg shadow-lg mt-10 md:mt-5 container xl:w-2/3  mx-auto">
-    <form wire:submit.prevent='crearTareaLoteExt'>
+    <form wire:submit.prevent='crearTareaLoteExt' novalidate>
         <x-alertas />
 
         <x-input type="number" wire:model="personas" name="personas" label="Total de Personas Necesarias"
@@ -28,7 +28,7 @@
 
         <div class="flex justify-end mt-10">
             <input type="submit" value="Guardar"
-                class=" bg-sky-600 hover:bg-sky-700 p-3 transition-colors cursor-pointer uppercase font-bold text-white rounded-lg">
+                class="btn bg-green-moss hover:bg-green-meadow">
         </div>
 
     </form>

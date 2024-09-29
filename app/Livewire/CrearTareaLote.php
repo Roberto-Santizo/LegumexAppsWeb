@@ -22,6 +22,7 @@ class CrearTareaLote extends Component
         'horas' => 'required',
         'tarea_id' => 'required',
     ];
+    
 
     public function crearTareaLoteExt()
     {

@@ -44,6 +44,7 @@ class PlansemanalExport implements FromCollection, WithHeadings, WithMultipleShe
                     'SEMANA CALENDARIO' => $this->plansemanal->finca->finca,
                     'LOTE' => $tarea->lote->nombre,
                     'TAREA' => $tarea->tarea->tarea,
+                    'EXTRAORDINARIA' => ($tarea->extraordinaria) ?  'EXTRAORDINARIA' : 'PLANIFICADA',
                     'ESTADO' => ($tarea->cierre != null) ? 'CERRADA' : 'ABIERTA',
                     'FECHA DE INICIO' => ($tarea->asignacion) ? $tarea->asignacion->created_at : 'SIN ASIGNACION',
                     'FECHA DE CIERRE' => ($tarea->cierre != null) ? $tarea->cierre->created_at : 'SIN CIERRE',
@@ -59,13 +60,13 @@ class PlansemanalExport implements FromCollection, WithHeadings, WithMultipleShe
 
     public function headings(): array
     {
-        return ['FINCA','SEMANA CALENDARIO','LOTE', 'TAREA', 'ESTADO','FECHA DE INICIO','FECHA DE CIERRE','HORAS RENDIMIENTO TEORICO','HORAS RENDIMIENTO REAL', 'RENDIMIENTO'];
+        return ['FINCA','SEMANA CALENDARIO','LOTE', 'TAREA','PLAN', 'ESTADO','FECHA DE INICIO','FECHA DE CIERRE','HORAS RENDIMIENTO TEORICO','HORAS RENDIMIENTO REAL', 'RENDIMIENTO'];
     }
 
     public function styles(Worksheet $sheet)
     {
         // Aplica estilos al rango A1:H1 (encabezados)
-        $sheet->getStyle('A1:J1')->applyFromArray([
+        $sheet->getStyle('A1:K1')->applyFromArray([
             'font' => [
                 'bold' => true,
                 'color' => ['argb' => 'FFFFFF'], 

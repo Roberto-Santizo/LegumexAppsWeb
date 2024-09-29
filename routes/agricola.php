@@ -84,6 +84,7 @@ Route::group(['middleware' => ['auth', 'role:admin|adminagricola|auxalameda'], '
     // Reporteria
     Route::get('/exportar-plansemanal/{planSemanalFinca}', [ReporteController::class, 'PlanSemanal'])->name('reporte.PlanSemanal');
     Route::get('/exportar-planillasemanal/{planSemanalFinca}', [ReporteController::class, 'PlanillaSemanal'])->name('reporte.PlanillaSemanal');
+    Route::get('/exportar-control-presupuesto', [ReporteController::class, 'ControlPresupuesto'])->name('reporte.ControlPresupuesto');
     
 
 

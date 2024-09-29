@@ -30,28 +30,50 @@ Dashboard Agricola
             <h1 class="text-2xl font-bold">Descarga de Reporteria</h1>
         </div>
 
-        <div class="p-5">
-            @forelse ($planes as $plan)
-            <div class="flex flex-row gap-2 justify-between items-center shadow-xl p-2">
-
-                <p class="font-bold text-white text-sm md:text-xl">{{ $plan->finca->finca }} - SEMANA {{ $plan->semana }}</p>
-
-                <div class="flex flex-row gap-5">
-                    <a href="{{ route('reporte.PlanSemanal',$plan->id) }}">
-                        <i title="Reporte Tareas Generales"
-                            class="fa-solid fa-file-arrow-down text-3xl hover:text-gray-500 cursor-pointer"></i>
-                    </a>
-                    <a href="{{ route('reporte.PlanillaSemanal',$plan->id) }}">
-                        <i title="Planilla General Semanal"
-                            class="fa-solid fa-file-arrow-down text-3xl hover:text-gray-500 cursor-pointer"></i>
-                    </a>
-                </div>
+        <div class="bg-white flex flex-row gap-5 justify-center items-center shadow-xl">
+            <p class="font-bold uppercase">Control de Presupuesto de Semana {{  $semana_actual }}</p>
+            <div  class="flex justify-center items-center">
+                <a href="{{ route('reporte.ControlPresupuesto') }}">
+                    <i title="Control de presupuesto"
+                        class="fa-solid fa-file-arrow-down text-3xl hover:text-gray-500 cursor-pointer"></i>
+                </a>
             </div>
-
-            @empty
-            <p class="text-center font-bold text-white uppercase">Aún no existen planes para esta semana</p>
-            @endforelse
-
+        </div>
+        <div class="p-2 h-96 overflow-y-auto">
+            <table class="tabla">
+                <thead class="bg-green-meadow">
+                    <tr class="text-xs md:text-sm rounded">
+                        <th scope="col" class="text-white">Finca</th>
+                        <th scope="col" class="text-white">Semana</th>
+                        <th scope="col" class="text-white">Tareas Generales</th>
+                        <th scope="col" class="text-white">Planilla Semanal</th>
+                    </tr>
+                </thead>
+                <tbody class="tabla-body">
+                    @foreach ($planes as $plan)
+                    <tr>
+                        <td class="campo">{{ $plan->finca->finca }}</td>
+                        <td class="campo">{{ $plan->semana }}</td>
+                        <td>
+                           <div class="flex justify-center items-center">
+                                <a href="{{ route('reporte.PlanSemanal',$plan->id) }}">
+                                    <i title="Reporte Tareas Generales"
+                                        class="fa-solid fa-file-arrow-down text-3xl hover:text-gray-500 cursor-pointer"></i>
+                                </a>
+                           </div>
+                        </td>
+                        <td>
+                           <div class="flex justify-center items-center">
+                                <a href="{{ route('reporte.PlanillaSemanal',$plan->id) }}">
+                                    <i title="Planilla General Semanal"
+                                        class="fa-solid fa-file-arrow-down text-3xl hover:text-gray-500 cursor-pointer"></i>
+                                </a>
+                           </div>
+                        </td>
+                    </tr>
+                    @endforeach
+                </tbody>
+            </table>
         </div>
     </div>
 
@@ -155,7 +177,6 @@ Dashboard Agricola
                     @endforeach
                 </tbody>
             </table>
-
         </div>
     </div>
 

@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use Carbon\Carbon;
 use App\Models\Lote;
 use App\Models\Tarea;
 use App\Models\TareasLote;
@@ -12,13 +13,15 @@ class TareaLoteController extends Controller
 {
     public function create(Lote $lote, PlanSemanalFinca $plansemanalfinca)
     {
+        $semanaActual = Carbon::now()->weekOfYear();
+        if($semanaActual > $plansemanalfinca->semana){
+            return back()->with('error','No se pueden crear tareas fuera de fecha');
+        }
         $tareas = Tarea::all();
         return view('agricola.tareasLote.create', ['lote' => $lote, 'plansemanalfinca' => $plansemanalfinca, 'tareas' => $tareas]);
     }
 
-    /**
-     * Store a newly created resource in storage.
-     */
+ 
     public function store(Request $request, Lote $lote, PlanSemanalFinca $plansemanalfinca)
     {
         $request->validate([
@@ -46,39 +49,11 @@ class TareaLoteController extends Controller
         } catch (\Throwable $th) {
             return redirect()->back()->with('error','No se ha podido guardar la tarea');
         }
-
         
     }
 
-    /**
-     * Display the specified resource.
-     */
-    public function show(string $id)
-    {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     */
     public function edit(TareasLote $tareaslote)
     {
         return view('agricola.tareasLote.edit',['tarea' => $tareaslote]);
-    }
-
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(Request $request, string $id)
-    {
-        //
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy(string $id)
-    {
-        //
     }
 }
