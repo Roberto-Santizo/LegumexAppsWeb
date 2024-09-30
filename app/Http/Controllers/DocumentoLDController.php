@@ -100,9 +100,10 @@ class DocumentoLDController extends Controller
             DB::transaction(function () use ($request) {
 
                 $planta = Planta::findOrFail($request->planta_id);
-                $ultimoCorrelativo = Documentold::where('planta_id', $planta->id)->max('correlativo');
+                $ultimoCorrelativo = Documentold::where('planta_id', $planta->id)->orderBy('created_at','DESC')->first();
                 if ($ultimoCorrelativo) {
-                    $numero = intval(substr($ultimoCorrelativo, strrpos($ultimoCorrelativo, '-') + 1));
+                    $parts = explode('-', $ultimoCorrelativo);
+                    $numero = intval(end($parts)); 
                     $nuevoNumero = $numero + 1;
                 } else {
                     $nuevoNumero = 1;

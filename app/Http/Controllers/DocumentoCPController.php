@@ -35,7 +35,7 @@ class DocumentoCPController extends Controller
         
         $query->orderBy('created_at', 'desc');
 
-        $documentos = $query->paginate(5)->appends($request->all());
+        $documentos = $query->paginate(10)->appends($request->all());
         $plantas = Planta::whereIn('id', [1, 2, 5])->get();
         return view('administracion.documentoCP.index', ['documentos' => $documentos, 'plantas' => $plantas]);
     }
@@ -83,9 +83,10 @@ class DocumentoCPController extends Controller
         ]);
 
         try {
-            $ultimoCorrelativo = Documentocp::where('planta_id',$planta->id)->max('correlativo');
+            $ultimoCorrelativo = Documentocp::where('planta_id',$planta->id)->orderBy('created_at','DESC')->first();
             if($ultimoCorrelativo){
-                $numero = intval(substr($ultimoCorrelativo, strrpos($ultimoCorrelativo, '-') + 1));
+                $parts = explode('-', $ultimoCorrelativo);
+                $numero = intval(end($parts)); 
                 $nuevoNumero = $numero + 1;
             }else{
                 $nuevoNumero = 1;

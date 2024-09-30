@@ -232,17 +232,19 @@ class OrdenTrabajoController extends Controller
     }
     
     public function store(Request $request){    
-        try {
+        // try {
 
             $planta = Planta::findOrFail($request->planta_id);
-            $ultimoCorrelativo = OrdenTrabajo::where('planta_id',$planta->id)->max('correlativo');
-            if($ultimoCorrelativo){
-                $numero = intval(substr($ultimoCorrelativo, strrpos($ultimoCorrelativo, '-') + 1));
+            $ultimoCorrelativo = OrdenTrabajo::where('planta_id', $planta->id)->orderBy('created_at','DESC')->first();
+            if ($ultimoCorrelativo) {
+                // Encuentra el número después del último guion
+                $parts = explode('-', $ultimoCorrelativo);
+                $numero = intval(end($parts)); // Obtiene la última parte numérica
                 $nuevoNumero = $numero + 1;
-            }else{
+            } else {
                 $nuevoNumero = 1;
             }
-
+            
             $orden_trabajo = OrdenTrabajo::create([
                 'planta_id' => $request->planta_id,
                 'area_id' => $request->area_id,
@@ -276,19 +278,19 @@ class OrdenTrabajoController extends Controller
                 return redirect()->route('documentoOT')->with('success', $response['mensaje']);
             }
 
-        } catch (\Throwable $th) { 
-            $response = [
-                'mensaje' => "Hubo un error al crear la orden de trabajo, vuelva a intentarlo",
-                'ok' => false,
-                'status' => 500
-            ];
+        // } catch (\Throwable $th) { 
+        //     $response = [
+        //         'mensaje' => "Hubo un error al crear la orden de trabajo, vuelva a intentarlo",
+        //         'ok' => false,
+        //         'status' => 500
+        //     ];
 
-            if ($request->ajax()) {
-                return response()->json($response, 500);
-            } else {
-                return back()->with('error', 'Hubo un error al guardar la orden de trabajo');
-            }
-        }
+        //     if ($request->ajax()) {
+        //         return response()->json($response, 500);
+        //     } else {
+        //         return back()->with('error', 'Hubo un error al guardar la orden de trabajo');
+        //     }
+        // }
 
     }
 
