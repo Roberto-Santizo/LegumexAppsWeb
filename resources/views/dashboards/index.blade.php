@@ -132,7 +132,7 @@ Dashboard Admin
         <div class="p-3 flex flex-col gap-5">
             @foreach ($sessions as $session)
             <div class="flex flex-row gap-5 p-2 text-gray-600 font-bold rounded-xl shadow-xl">
-                <p >{{ $session->user->name }}</p>
+                <p>{{ $session->user->name  ?? 'No se encontró nombre'}}</p>
                 <p>{{ $session->ip_address }} </p>
                 <p>{{ $session->ultima_coneccion }} </p>
             </div>
