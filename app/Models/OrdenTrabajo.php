@@ -43,7 +43,9 @@ class OrdenTrabajo extends Model
         'devolucion_equipo',
         'observaciones_eliminacion',
         'folder_url',
-        'folder_id'
+        'folder_id',
+        'mecanico_externo',
+        'correlativo'
         
     ];
 
@@ -54,7 +56,7 @@ class OrdenTrabajo extends Model
 
     public function planta()
     {
-        return $this->hasOne(Planta::class,'id','planta_id');
+        return $this->belongsTo(Planta::class);
     }
 
     public function area()
@@ -65,6 +67,11 @@ class OrdenTrabajo extends Model
     public function elemento()
     {
         return $this->hasOne(Elemento::class,'id','elemento_id');
+    }
+
+    public function mecanico()
+    {
+        return $this->hasOne(User::class,'id','mecanico_id');
     }
 
     public function usuario()

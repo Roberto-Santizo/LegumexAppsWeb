@@ -17,13 +17,14 @@ class Documentocp extends Model
         'jefemanto_firma',
         'supervisor_firma',
         'weburl',
-        'estado'
+        'estado',
+        'correlativo'
     ];
 
     
     public function planta()
     {
-        return $this->hasOne(Planta::class,'id','planta_id');
+        return $this->belongsTo(Planta::class);
     }
 
     public function ordenes(){

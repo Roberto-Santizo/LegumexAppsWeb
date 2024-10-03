@@ -14,6 +14,10 @@ Orden de trabajo
             <p>Planta: <span class="font-bold">{{ $ot->planta->name }}</span></p>
             <p>Area: <span class="font-bold">{{ $ot->area->area }}</span></p>
             <p>Problema detectado: <span class="font-bold">{{ $ot->problema_detectado }}</span></p>
+            @if($ot->mecanico_externo)
+                <p>Mécanico Externo: <span class="font-bold">{{ $ot->mecanico_externo }}</span></p>
+            @endif
+
             @if ($ot->equipo_problema)
             <p>Equipo con problema: <span class="font-bold">{{ $ot->equipo_problema }}</span></p>
             @endif

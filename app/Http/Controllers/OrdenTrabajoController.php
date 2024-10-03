@@ -2,21 +2,27 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Area;
 use App\Models\User;
 use App\Models\Estado;
 use App\Models\Planta;
+use App\Models\Supervisor;
 use Microsoft\Graph\Graph;
 use App\Models\OrdenTrabajo;
-use App\Models\Supervisor;
 use Illuminate\Http\Request;
 use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Gate;
-use Illuminate\Routing\Controllers\HasMiddleware;
+use App\Services\MicrosoftTokenService;
 
 class OrdenTrabajoController extends Controller 
 {
+
+    protected $tokenService;
+    
+    public function __construct(MicrosoftTokenService $tokenService)
+    {
+        $this->tokenService = $tokenService;
+    }
 
     public function index()
     {
@@ -169,6 +175,7 @@ class OrdenTrabajoController extends Controller
     }
 
     public function showOrdenes(Request $request, Estado $estado) {
+    
         if($estado->id != 4){
             $query = OrdenTrabajo::where('estado_id', $estado->id)->latest();
         }else{
@@ -226,11 +233,21 @@ class OrdenTrabajoController extends Controller
     
     public function store(Request $request){    
         try {
+
+            $planta = Planta::findOrFail($request->planta_id);
+            $ultimoCorrelativo = OrdenTrabajo::where('planta_id',$planta->id)->max('correlativo');
+            if($ultimoCorrelativo){
+                $numero = intval(substr($ultimoCorrelativo, strrpos($ultimoCorrelativo, '-') + 1));
+                $nuevoNumero = $numero + 1;
+            }else{
+                $nuevoNumero = 1;
+            }
+
             $orden_trabajo = OrdenTrabajo::create([
                 'planta_id' => $request->planta_id,
                 'area_id' => $request->area_id,
                 'elemento_id' => $request->elemento_id,
-                'nombre_solicitante' => auth()->user()->name,
+                'nombre_solicitante' => ($request->nombre_solicitante) ?? auth()->user()->name,
                 'firma_solicitante' => $request->firma_solicitante,
                 'firma_supervisor' => $request->firma_supervisor,
                 'equipo_problema' => $request->equipo_problema,
@@ -242,7 +259,8 @@ class OrdenTrabajoController extends Controller
                 'estado_id' => 1,
                 'supervisor_id' => $request->supervisor_id,
                 'folder_url' => $request->folder_url,
-                'folder_id' => $request->folder_id
+                'folder_id' => $request->folder_id,
+                'correlativo' => $planta->prefix . '-' . $nuevoNumero
             ]);
 
             $response = [
@@ -279,10 +297,11 @@ class OrdenTrabajoController extends Controller
             $archivo = file_get_contents($request->file('file')->path());
             // Verifica si elobservaciones_eliminacion documento existe
             $ot = OrdenTrabajo::findOrFail($request->ot_id);
-            $accessToken = session('access_token');
+            $folder_id = $ot->planta->ot_folder_id;
+            $accessToken = $this->tokenService->getValidAccessToken();
             $graph = new Graph();
             $graph->setAccessToken($accessToken);
-            $response = $graph->createRequest('PUT', 'https://graph.microsoft.com/v1.0/drives/b!CU_CMtvtaEmUlX3R-A80sL7OC60rTsBHt6CzRiilfLTCa6VHDHQGR6wIGs3pVZVG/items/01O5NWAPG373ZYCBRGSFFK5TO33HHQWMB3:/' . 'FOR-MN-04_' . $ot->id . '.pdf:/content')
+            $response = $graph->createRequest('PUT', 'https://graph.microsoft.com/v1.0/drives/b!CU_CMtvtaEmUlX3R-A80sL7OC60rTsBHt6CzRiilfLTCa6VHDHQGR6wIGs3pVZVG/items/' . $folder_id . ':/' . 'FOR-MN-04_' . $ot->correlativo . '.pdf:/content')
             ->addHeaders(['Content-Type' => 'application/pdf'])
             ->attachBody($archivo)
             ->execute();

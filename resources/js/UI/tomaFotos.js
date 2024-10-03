@@ -1,11 +1,22 @@
+import { error } from "jquery";
 import Swal from "sweetalert2";
 const my_camera = document.getElementById("my_camera");
+const anchoVentana = (window.innerWidth > 500) ? 500 : window.innerWidth;
+const altoVentana = (window.innerHeight > 500) ? 450 : window.innerHeight;
 let images = [];
 
 if (my_camera) {
     const permisoBtn = document.getElementById('permiso_camara');
     permisoBtn.addEventListener('click',function(){
-        navigator.mediaDevices.getUserMedia({video: true})
+        navigator.mediaDevices.getUserMedia({video: true}).then((stream) => {
+            inicializarCamara();
+        }).catch((error) => {
+            Swal.fire({
+                icon: 'error',
+                title: 'Permiso denegado',
+                text: 'Debes permitir el acceso a la cámara para tomar fotos.',
+            });
+        })
     });
 
     inicializarCamara();
@@ -15,30 +26,85 @@ function inicializarCamara() {
     const take_button = document.getElementById("takesnapshot");
     const upload_button = document.getElementById("upload_button");
 
-    // navigator.mediaDevices
-    //     .enumerateDevices()
-    //     .then((devices) => {
-    //         devices.forEach((device) => {
-    //             if (device.label.includes("facing back")) {
+    let flag = true;
+    navigator.mediaDevices.enumerateDevices()
+    .then(devices => {
+        let backCameras = [];
+        devices.forEach(device => {
+            if (device.kind === 'videoinput' && device.label.toLowerCase().includes('back')) {
+                backCameras.push({ deviceId: device.deviceId, label: device.label });
+            }
+        });
+
+        const cameraOptions = document.getElementById('cameraOptions');
+        const cameraOptionsContainer = document.getElementById('cameraOptionsContainer');
+        if(backCameras.length > 0){
+            if (backCameras.length > 1) {
+                let contador = 1;
+                backCameras.forEach(camera => {
+                    const option = document.createElement('option');
+                    option.value = camera.deviceId;
+                    option.textContent = 'Camara ' + contador;
+                    cameraOptions.appendChild(option);
+                    contador = contador + 1;
+                });
+                
+                cameraOptions.addEventListener('change', function () {
+                    const selectedCamera = cameraOptions.value;
+                    
+                    try {
                         Webcam.set({
-                            width: 550,
-                            height: 350,
+                            width: anchoVentana - 10,
+                            height: altoVentana,
                             image_format: "jpeg",
                             jpeg_quality: 90,
-                            // constraints: {
-                            //     deviceId: { exact: device.deviceId }, // Configura el deviceId aquí
-                            // },
+                            constraints: {
+                                deviceId: selectedCamera, 
+                            },
                         });
-                    
+        
                         Webcam.attach("#my_camera");
-                // }
-    //         });
-    //     })
-    //     .catch((error) => {
-    //         console.error("Error al enumerar dispositivos:", error);
-    // });
-
+                    } catch (error) {
+                        Swal.fire({
+                            icon: 'error',
+                            title: 'Permiso denegado',
+                            text: 'Intente con otro dispositivo de video.',
+                        });
+                    }
+                   
+                });
     
+            } else {
+                cameraOptionsContainer.hidden = true;
+                Webcam.set({
+                    width: anchoVentana - 10,
+                    height: altoVentana,
+                    image_format: "jpeg",
+                    jpeg_quality: 90,
+                    constraints: {
+                        deviceId: { exact: backCameras[0].deviceId }, 
+                    },
+                });
+            
+                Webcam.attach("#my_camera");
+            }
+        }else{
+            cameraOptionsContainer.hidden = true;
+                Webcam.set({
+                    width: anchoVentana - 10,
+                    height: altoVentana,
+                    image_format: "jpeg",
+                    jpeg_quality: 90,
+                });
+            
+                Webcam.attach("#my_camera");
+        }
+        
+    })
+    .catch(error => {
+        console.error("Error al enumerar dispositivos:", error);
+    });
+
 
     upload_button.addEventListener("click", function () {
         if (images.length > 0) {
@@ -72,8 +138,8 @@ function takeSnapshot() {
         const imgContainer = document.createElement("div");
         imgContainer.className = "captured-image";
         imgContainer.innerHTML = `
-                <div class="p-2 shadow">
-                    <img src="${data_uri}" />
+                <div class="p-2 shadow w-full flex justify-center items-center flex-wrap gap-2">
+                    <img src="${data_uri}" witdh="${anchoVentana}" height="${altoVentana}"/>
                 </div>
             `;
         document.getElementById("results").appendChild(imgContainer);

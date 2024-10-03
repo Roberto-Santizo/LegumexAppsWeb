@@ -6,24 +6,22 @@ use Carbon\Carbon;
 use Microsoft\Graph\Graph;
 use Illuminate\Support\Str;
 use Illuminate\Http\Request;
+use App\Services\MicrosoftTokenService;
 use Illuminate\Support\Facades\Storage;
 use Microsoft\Graph\Exception\GraphException;
 
 class APIImagenesController extends Controller
 {
-  
+    protected $tokenService;
+    
+    public function __construct(MicrosoftTokenService $tokenService)
+    {
+        $this->tokenService = $tokenService;
+    }
     public function store(Request $request)
     {
-        $request->validate([
-            'folder_id' => 'nullable|string',
-            'imagenes*' => 'required|file|mimes:jpeg,png,gif|max:2048',
-        ]);
-
-        $accessToken = session('access_token');
-        if (!$accessToken) {
-            return response()->json(['message' => 'Token de acceso no encontrado'], 401);
-        }
-
+        $accessToken = $this->tokenService->getValidAccessToken();
+        
         $graph = new Graph();
         $graph->setAccessToken($accessToken);
 

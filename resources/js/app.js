@@ -31,6 +31,8 @@ import './UI/AsignacionUsuariosTareasFinca.js';
 import './UI/buscadorUsuariosFincas.js';
 import './UI/tomaFotos.js';
 import './UI/rendimientoHistoricoTareas.js';
+import './UI/mecanicoExterno.js';
+import './UI/nombreSolicitante.js';
 
 //UX
 import './UX/formulario_checklist-preoperacional-campos.js';
