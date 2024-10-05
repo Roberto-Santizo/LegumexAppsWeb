@@ -11,14 +11,12 @@ use App\Models\PlanSemanalFinca;
 
 class TareaLoteController extends Controller
 {
-    public function create(Lote $lote, PlanSemanalFinca $plansemanalfinca)
+    public function create()
     {
-        $semanaActual = Carbon::now()->weekOfYear();
-        if($semanaActual > $plansemanalfinca->semana){
-            return back()->with('error','No se pueden crear tareas fuera de fecha');
-        }
         $tareas = Tarea::all();
-        return view('agricola.tareasLote.create', ['lote' => $lote, 'plansemanalfinca' => $plansemanalfinca, 'tareas' => $tareas]);
+        $planes = PlanSemanalFinca::orderBy('semana','DESC')->get();
+        $lotes = Lote::all();
+        return view('agricola.tareasLote.create', ['tareas' => $tareas,'planes' => $planes,'lotes' => $lotes]);
     }
 
  

@@ -11,6 +11,8 @@ class UsuarioTareaLote extends Model
 
     protected $fillable = [
         'usuario_id',
+        'nombre',
+        'codigo',
         'tarealote_id',
     ];
 

@@ -17,7 +17,37 @@
                 <option value="" class="opcion-default" selected disabled>---SELECCIONE UNA OPCIÓN---</option>
                 @foreach ($tareas as $tarea)
                 <option value="{{ $tarea->id }}">
-                    {{ $tarea->tarea }}
+                    {{ $tarea->code }}
+                </option>
+                @endforeach
+            </select>
+            @error('tarea_id')
+                <livewire:mostrar-alerta :message="$message" />
+            @enderror
+        </div>
+
+        <div class="mb-5">
+            <label for="tarea_id" class="label-input">Seleccione el plan semanal </label>
+            <select wire:model="plan_semanal_finca_id" name="tarea_id" class="w-full p-4 rounded bg-gray-50 select">
+                <option value="" class="opcion-default" selected disabled>---SELECCIONE UNA OPCIÓN---</option>
+                @foreach ($planes as $plan)
+                <option value="{{ $plan->id }}">
+                    {{ $plan->finca->finca }} - {{ $plan->semana }}
+                </option>
+                @endforeach
+            </select>
+            @error('tarea_id')
+                <livewire:mostrar-alerta :message="$message" />
+            @enderror
+        </div>
+
+        <div class="mb-5">
+            <label for="tarea_id" class="label-input">Seleccione el lote </label>
+            <select wire:model="lote_id" name="tarea_id" class="w-full p-4 rounded bg-gray-50 select">
+                <option value="" class="opcion-default" selected disabled>---SELECCIONE UNA OPCIÓN---</option>
+                @foreach ($lotes as $lote)
+                <option value="{{ $lote->id }}">
+                    {{ $lote->nombre }}
                 </option>
                 @endforeach
             </select>

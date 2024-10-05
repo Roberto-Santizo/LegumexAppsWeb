@@ -8,7 +8,7 @@ Asignación de Empleados {{ $tarea->tarea }}, Semana {{ $plansemanalfinca->seman
 
 <x-alertas />
 
-<div class="grid grid-cols-3 mt-10">
+<div class="md:grid md:grid-cols-3 mt-10 flex flex-col">
     <div class="col-span-2">
         <h1 class="text-2xl font-bold">Información de la tarea: </h1>
 
@@ -24,7 +24,7 @@ Asignación de Empleados {{ $tarea->tarea }}, Semana {{ $plansemanalfinca->seman
             <p class="text-xl font-bold">{{ $hoy }}</p>
         </div>
 
-        <div class="mt-5 w-1/2">
+        <div class="mt-5 md:w-1/2 w-full">
             <h1 class="text-2xl font-bold">Empleados Asignados a esta tarea: </h1>
 
             <div id="usuariosAsignadosContainer" class="flex flex-col gap-2 mt-5 overflow-y-auto h-96 mb-5">
@@ -73,7 +73,7 @@ Asignación de Empleados {{ $tarea->tarea }}, Semana {{ $plansemanalfinca->seman
         </div>
     </div>
 
-    <form method="POST" action="{{ route('asignacionDiaria.store',[$lote,$plansemanalfinca])  }}">
+    <form method="POST" action="{{ route('asignacionDiaria.store',[$lote,$plansemanalfinca])  }}" class="mt-10 md:mt-0">
         @csrf
         <input type="hidden" value="{{ $tarealote->id }}" id="tarealote_id" name="tarealote_id">
         <input type="submit" value="Cerrar Asignación Diaria" class="btn bg-green-moss hover:bg-green-meadow">

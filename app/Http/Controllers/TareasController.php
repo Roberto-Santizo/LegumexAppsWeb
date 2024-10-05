@@ -9,7 +9,10 @@ use App\Models\Tarea;
 use App\Models\TareaEtapa;
 use Illuminate\Http\Request;
 use App\Models\BitacoraTareas;
+use App\Exceptions\ImportExeption;
 use Illuminate\Support\Facades\DB;
+use Maatwebsite\Excel\Facades\Excel;
+use App\Imports\TareasAgricolasImport;
 
 class TareasController extends Controller
 {
@@ -28,6 +31,26 @@ class TareasController extends Controller
     public function create()
     {
         return view('agricola.tareas.create');
+    }
+
+    public function carga()
+    {
+        return view('agricola.tareas.import');
+    }
+
+    public function import(Request $request)
+    {
+        $request->validate([
+            'file' => 'required'
+        ]);
+
+        try {
+            Excel::import(new TareasAgricolasImport, $request->file('file'));
+        } catch (ImportExeption $th) {
+            return back()->with('error', $th->getMessage());
+        }
+
+        return redirect()->route('tareas')->with('success', 'Carga de tareas realizada correctamente');
     }
 
     /**

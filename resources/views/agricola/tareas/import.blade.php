@@ -1,13 +1,13 @@
 @extends('layouts.agricola')
 
 @section('titulo')
-Creación Plan Semanal Finca
+    Carga Masiva de Tareas
 @endsection
 
 @section('contenido')
-<x-link route="planSemanal" text="Volver" icon="fa-solid fa-arrow-left" class="bg-green-moss hover:bg-green-meadow"/>
+<x-link route="tareas" text="Volver" icon="fa-solid fa-arrow-left" class="bg-green-moss hover:bg-green-meadow"/>
 <div class="bg-white p-6 rounded-lg shadow-lg mt-5 container xl:w-2/3  mx-auto">
-    <form action="{{ route('planSemanal.store') }}" method="POST" id="formulario6" enctype="multipart/form-data" novalidate>
+    <form action="{{ route('tareas.import') }}" method="POST" enctype="multipart/form-data" novalidate>
         @csrf
 
         <x-alertas />

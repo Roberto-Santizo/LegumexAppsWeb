@@ -8,7 +8,7 @@ Plan Semanal {{ $planSemanal->finca->finca }} Semana - {{ $planSemanal->semana }
 
 <x-alertas />
 
-<x-link route="planSemanal" text="Volver" icon="fa-solid fa-arrow-left" />
+<x-link route="planSemanal" text="Volver" icon="fa-solid fa-arrow-left" class="bg-green-moss hover:bg-green-meadow" />
 
 
 <div class="overflow-x-auto mt-10">
@@ -20,8 +20,10 @@ Plan Semanal {{ $planSemanal->finca->finca }} Semana - {{ $planSemanal->semana }
                     Lotes Disponibles</th>
                 <th scope="col" class="encabezado">
                     Personas</th>
-                <th scope="col" class="encabezado">
-                    Presupuesto</th>
+                @can('create plan semanal')
+                    <th scope="col" class="encabezado">
+                        Presupuesto</th>
+                @endcan
                 <th scope="col" class="encabezado">
                     Horas</th>
                 <th scope="col" class="encabezado">
@@ -33,7 +35,9 @@ Plan Semanal {{ $planSemanal->finca->finca }} Semana - {{ $planSemanal->semana }
             <tr>
                 <td class="campo">{{ $lote->lote->nombre }}</td>
                 <td class="campo">{{ $lote->total_personas }}</td>
-                <td class="campo">Q {{ $lote->total_presupuesto }}</td>
+                @can('create plan semanal')
+                    <td class="campo">Q {{ $lote->total_presupuesto }}</td>
+                @endcan
                 <td class="campo">{{ $lote->total_horas }}</td>
                 <td class="campo">
                     <a class="btn bg-green-moss hover:bg-green-meadow" href="{{ route('planSemanal.tareasLote',[$lote->lote,$planSemanal]) }}">

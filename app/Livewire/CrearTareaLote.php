@@ -7,20 +7,24 @@ use App\Models\TareasLote;
 
 class CrearTareaLote extends Component
 {
-    public $lote;
-    public $plansemanalfinca;
     public $tareas;
+    public $planes;
+    public $lotes;
 
     public $personas;
     public $presupuesto;
     public $horas;
     public $tarea_id;
+    public $plan_semanal_finca_id;
+    public $lote_id;
 
     protected $rules = [
         'personas' => 'required',
         'presupuesto' => 'required',
         'horas' => 'required',
         'tarea_id' => 'required',
+        'plan_semanal_finca_id' => 'required',
+        'lote_id' => 'required',
     ];
     
 
@@ -29,8 +33,9 @@ class CrearTareaLote extends Component
        $datos = $this->validate();
 
        TareasLote::create([
-            'plan_semanal_finca_id' => $this->plansemanalfinca->id,
-            'lote_id' => $this->lote->id,
+            'plan_semanal_finca_id' => $datos['plan_semanal_finca_id']['value'],
+            'lote_id' => $datos['lote_id']['value'],
+            'plan' => $datos['tarea_id']['value'],
             'tarea_id' => $datos['tarea_id']['value'],
             'personas' => $datos['personas'],   
             'presupuesto' => $datos['presupuesto'],
@@ -41,7 +46,7 @@ class CrearTareaLote extends Component
 
         ]);
 
-        return redirect()->route('planSemanal.tareasLote',[$this->lote,$this->plansemanalfinca])->with('success','Tarea creada Correctamente');
+        return redirect()->route('planSemanal')->with('success','Tarea creada Correctamente');
     }
     public function render()
     {

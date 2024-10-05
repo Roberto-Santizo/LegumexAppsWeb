@@ -47,31 +47,31 @@
 
         @hasanyrole('adminmanto|auxmanto')
             <a href="{{ route('dashboard') }}"
-                class=" {{  Route::is('dashboard*') ? 'bg-orange-500' : '' }} rounded-lg text-center flex flex-row  gap-5 md:gap-0  md:flex-col items-center md:justify-center p-3 w-full md:w-2/3 hover:bg-blue-400">
+                class=" {{  Route::is('dashboard*') ? 'bg-orange-500' : '' }} sidebar-link">
                 <i class="fa-solid fa-house"></i>
                 <span class="text-md md:text-xs uppercase font-bold">Dashboard</span>
             </a>
         @endhasanyrole
         
         <a href="{{ route('documentold') }}"
-            class="{{  Route::is('documentold*') ? 'bg-orange-500' : '' }}  rounded-lg text-center flex flex-row  gap-5 md:gap-0  md:flex-col items-center md:justify-center p-3 w-full md:w-2/3 hover:bg-blue-400">
+            class="{{  Route::is('documentold*') ? 'bg-orange-500' : '' }}  sidebar-link">
             <i class="fa-solid fa-hands-bubbles"></i>
             <span class="text-md md:text-xs uppercase font-bold">Lavado y desinfección</span>
         </a>
         <a href="{{ route('documentocp') }}"
-            class="{{  Route::is('documentocp*') ? 'bg-orange-500' : '' }} rounded-lg text-center flex flex-row  gap-5 md:gap-0  md:flex-col items-center md:justify-center p-3 w-full md:w-2/3 hover:bg-blue-400">
+            class="{{  Route::is('documentocp*') ? 'bg-orange-500' : '' }} sidebar-link">
             <i class="fa-solid fa-list-ul"></i>
             <span class="text-md md:text-xs uppercase font-bold">Checklist Preoperacional</span>
         </a>
 
         <a href="{{ route('documentoOT') }}"
-            class=" {{  Route::is('documentoOT*') ? 'bg-orange-500' : '' }} rounded-lg text-center flex flex-row  gap-5 md:gap-0  md:flex-col items-center md:justify-center p-3 w-full md:w-2/3 hover:bg-blue-400">
+            class=" {{  Route::is('documentoOT*') ? 'bg-orange-500' : '' }} sidebar-link">
             <i class="fa-solid fa-briefcase"></i>
             <span class="text-md md:text-xs uppercase font-bold">Ordenes de trabajo</span>
         </a>
 
         <a href="{{ route('misOrdenes') }}"
-            class="{{  Route::is('misOrdenes*') ? 'bg-orange-500' : '' }} relative rounded-lg text-center flex flex-row  gap-5 md:gap-0  md:flex-col items-center md:justify-center p-3 w-full md:w-2/3 hover:bg-blue-400">
+            class="{{  Route::is('misOrdenes*') ? 'bg-orange-500' : '' }} relative sidebar-link">
             <i class="fa-solid fa-user-tie"></i>
             <span class="text-md md:text-xs uppercase font-bold">Mis Ordenes</span>
             <span
@@ -82,7 +82,7 @@
 
         @role('adminmanto')
         <a href="{{ route('administrar') }}"
-            class="{{  Route::is('administrar*') ? 'bg-orange-500' : '' }} rounded-lg text-center flex flex-row  gap-5 md:gap-0  md:flex-col items-center md:justify-center p-3 w-full md:w-2/3 hover:bg-blue-400">
+            class="{{  Route::is('administrar*') ? 'bg-orange-500' : '' }} sidebar-link">
             <i class="fa-solid fa-universal-access"></i>
             <span class="text-md md:text-xs uppercase font-bold">Administrar ordenes de trabajo</span>
         </a>
@@ -91,7 +91,7 @@
 
         
         <a href="{{ route('herramientas') }}"
-            class="{{  Route::is('herramientas*') ? 'bg-orange-500' : '' }} rounded-lg text-center flex flex-row  gap-5 md:gap-0  md:flex-col items-center md:justify-center p-3 w-full md:w-2/3 hover:bg-blue-400">
+            class="{{  Route::is('herramientas*') ? 'bg-orange-500' : '' }} sidebar-link">
             <i class="fa-solid fa-screwdriver-wrench"></i>
             <span class="text-md md:text-xs uppercase font-bold">Herramientas</span>
         </a>

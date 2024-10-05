@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\EmpleadoFinca;
 use App\Models\TareasLote;
 use App\Models\UsuarioTareaLote;
 use Illuminate\Http\Request;
@@ -15,9 +16,12 @@ class APITareasLotesController extends Controller
             $tarea = TareasLote::find($request->tarealote_id);
 
             if($tarea->cupos > 0){
+                $empleado = EmpleadoFinca::where('id',$request->usuario_id)->get()->first();
                 UsuarioTareaLote::create([
                     'usuario_id' => $request->usuario_id,
-                    'tarealote_id' => $request->tarealote_id
+                    'tarealote_id' => $request->tarealote_id,
+                    'nombre' => $empleado->first_name,
+                    'codigo' => $empleado->last_name
                 ]);
 
                 $tarea->cupos -=1;

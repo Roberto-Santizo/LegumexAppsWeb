@@ -39,10 +39,12 @@ class PlansemanalExport implements FromCollection, WithHeadings, WithMultipleShe
                     $tareaCierre = $tarea->cierre->created_at;
                     $rendimiento_real = $tareaCreacion->diffInHours($tareaCierre);
                 }
+                
                 $rows->push([
                     'FINCA' => $this->plansemanal->semana,
                     'SEMANA CALENDARIO' => $this->plansemanal->finca->finca,
                     'LOTE' => $tarea->lote->nombre,
+                    'CODIGO TAREA' => $tarea->tarea->code,
                     'TAREA' => $tarea->tarea->tarea,
                     'EXTRAORDINARIA' => ($tarea->extraordinaria) ?  'EXTRAORDINARIA' : 'PLANIFICADA',
                     'ESTADO' => ($tarea->cierre != null) ? 'CERRADA' : 'ABIERTA',
@@ -50,7 +52,9 @@ class PlansemanalExport implements FromCollection, WithHeadings, WithMultipleShe
                     'FECHA DE CIERRE' => ($tarea->cierre != null) ? $tarea->cierre->created_at : 'SIN CIERRE',
                     'HORA RENDIMIENTO TEORICO' => $tarea->horas,
                     'HORA RENDIMIENTO REAL' => ($tarea->cierre != null) ?  round($rendimiento_real * $tarea->users->count(),4) : '0',
-                    'RENDIMIENTO' => ($tarea->cierre != null) ? ($tarea->horas/round($rendimiento_real*$tarea->users->count(),4)) : '0'
+                    'RENDIMIENTO' => ($tarea->cierre != null) ? ($tarea->horas/round($rendimiento_real*$tarea->users->count(),4)) : '0',
+                    'ATRASADA' => ($tarea->movimientos->count() > 0) ? 'ATRASADA' : 'PLANIFICADA',
+                    'SEMANA ORIGEN' => ($tarea->movimientos->count() > 0) ? $tarea->movimientos()->orderBy('id','DESC')->first()->plan_origen->semana : 'PLANIFICADA',
                 ]);
            
         }
@@ -60,13 +64,13 @@ class PlansemanalExport implements FromCollection, WithHeadings, WithMultipleShe
 
     public function headings(): array
     {
-        return ['FINCA','SEMANA CALENDARIO','LOTE', 'TAREA','PLAN', 'ESTADO','FECHA DE INICIO','FECHA DE CIERRE','HORAS RENDIMIENTO TEORICO','HORAS RENDIMIENTO REAL', 'RENDIMIENTO'];
+        return ['FINCA','SEMANA CALENDARIO','LOTE','CODIGO TAREA', 'TAREA','PLAN', 'ESTADO','FECHA DE INICIO','FECHA DE CIERRE','HORAS RENDIMIENTO TEORICO','HORAS RENDIMIENTO REAL', 'RENDIMIENTO','ATRASADA','SEMANA ORIGEN'];
     }
 
     public function styles(Worksheet $sheet)
     {
         // Aplica estilos al rango A1:H1 (encabezados)
-        $sheet->getStyle('A1:K1')->applyFromArray([
+        $sheet->getStyle('A1:N1')->applyFromArray([
             'font' => [
                 'bold' => true,
                 'color' => ['argb' => 'FFFFFF'], 

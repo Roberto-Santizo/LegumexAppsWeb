@@ -30,7 +30,7 @@ class PlanSemanalFincasController extends Controller
 
     public function index()
     {
-        $planes = PlanSemanalFinca::orderBy('id', 'DESC')->paginate(10);
+        $planes = PlanSemanalFinca::orderBy('semana', 'DESC')->paginate(10);
 
         $planes->map(function ($plan) {
             // Inicializa las colecciones necesarias
@@ -127,6 +127,10 @@ class PlanSemanalFincasController extends Controller
             $tarea->extendido = false;
             $tarea->ingresados = 0;
 
+            if($tarea->movimientos->count() > 0){
+                $tarea->semana_origen = $tarea->movimientos()->orderBy('id','DESC')->first()->plan_origen->semana;
+                $tarea->finca = $tarea->movimientos()->orderBy('id','DESC')->first()->plan_origen->finca->finca;
+            }
             if ($tarea->asignacion_diaria) {
                 if (!$tarea->asignacion_diaria->created_at->isToday() && !$tarea->cierre) {
                     $tarea->extendido = true;
@@ -256,6 +260,10 @@ class PlanSemanalFincasController extends Controller
         $tareasFiltradas = $tareas->filter(function ($tarea) use ($semanaplan) {
             if ($semanaplan < Carbon::now()->weekOfYear) {
                 if (!$tarea->cierre) {
+                    if($tarea->movimientos->count() > 0){
+                        $tarea->semana_origen = $tarea->movimientos()->orderBy('id','DESC')->first()->plan_origen->semana;
+                        $tarea->finca = $tarea->movimientos()->orderBy('id','DESC')->first()->plan_origen->finca->finca;
+                    }
                     return $tarea;
                 }
             }

@@ -42,13 +42,12 @@ class UsuarioTareaDetalleExport implements FromCollection, WithHeadings, WithTit
 
                 if (!($tarea->users)->isEmpty()) {
                     foreach ($tarea->users as $asignacion) {
-                        $empleado = EmpleadoFinca::where('id', $asignacion->usuario_id)->get()->first();
                         $entrada = EmpleadoIngresado::where('emp_id', $asignacion->usuario_id)->whereDate('punch_time', $asignacion->created_at)->orderBy('punch_time', 'asc')->first();
                         $salida = EmpleadoIngresado::where('emp_id', $asignacion->usuario_id)->whereDate('punch_time', $asignacion->created_at)->orderBy('punch_time', 'desc')->first();
                     
                         $rows->push([
-                            'CODIGO' => $empleado->last_name,
-                            'EMPLEADO' => $empleado->first_name,
+                            'CODIGO' => $asignacion->codigo,
+                            'EMPLEADO' => $asignacion->nombre,
                             'LOTE' => $tarea->lote->nombre,
                             'TAREA REALIZADA' => $tarea->tarea->tarea,
                             'PLAN' => ($tarea->extraordinaria) ? 'EXTRAORDINARIA' : 'PLANIFICADA',

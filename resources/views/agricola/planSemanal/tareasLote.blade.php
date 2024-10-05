@@ -6,16 +6,6 @@ Plan Semanal Lote - {{ $lote->nombre }} Semana {{ $plansemanalfinca->semana }}
 
 @section('contenido')
 
-@if ($semanaActual <= $plansemanalfinca->semana)
-    <div class="flex flex-row justify-end">
-        <a href="{{ route('planSemanal.tareaLote.create',[$lote,$plansemanalfinca]) }}" class="btn bg-green-moss hover:bg-green-meadow uppercase">
-            <i class="fa-solid fa-plus"></i>
-            CREAR TAREA
-        </a>
-    </div>
-@endif
-
-
 <x-alertas />
 
 

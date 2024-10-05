@@ -2,6 +2,7 @@
 
 namespace App\Livewire;
 
+use App\Models\BitacoraTareaLote;
 use App\Models\Lote;
 use Livewire\Component;
 use App\Models\TareasLote;
@@ -44,6 +45,13 @@ class EditarTareaLote extends Component
     public function editarTarea(){
         $datos = $this->validate();
         $tarealote = TareasLote::find($this->id);
+
+        BitacoraTareaLote::create([
+            'plan_semanal_id_dest' => $datos['plan_semanal_finca_id'],
+            'plan_semanal_id_org' => $tarealote->plan_semanal_finca_id,
+            'tarea_lote_id' => $tarealote->id
+        ]);
+        
         $plansemanal = $tarealote->plansemanal;
         $lote = $tarealote->lote;
 
