@@ -9,7 +9,7 @@ class EmpleadoFinca extends Model
 {
     use HasFactory;
 
-    protected $connection = 'sqlsrv_public';
+    // protected $connection = 'sqlsrv_public';
     protected $table = 'personnel_employee';
 
     public $timestamps  = false;

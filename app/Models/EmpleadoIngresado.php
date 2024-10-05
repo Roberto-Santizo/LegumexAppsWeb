@@ -9,7 +9,7 @@ class EmpleadoIngresado extends Model
 {
     use HasFactory;
     
-    protected $connection = 'sqlsrv_public';
+    // protected $connection = 'sqlsrv_public';
     protected $table = 'iclock_transaction';
 
     public $timestamps  = false;
