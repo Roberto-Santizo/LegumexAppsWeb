@@ -53,7 +53,7 @@ Ingreso de Empleados Diarios
             <tr>
                 <td class="campo">{{ $ingreso->empleado->first_name }}</td>
                 <td class="campo">{{ $ingreso->punch_time }}</td>
-                <td class="campo">{{ $ingreso->lugar->alias }}</td>
+                <td class="campo">{{ $ingreso->terminal_alias }}</td>
             </tr>
             @endforeach
         </tbody>

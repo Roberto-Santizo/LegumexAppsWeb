@@ -9,8 +9,7 @@ class Terminal extends Model
 {
     use HasFactory;
       
-    protected $connection = 'sqlsrv_public';
-    protected $table = 'iclock_terminal';
+    // protected $table = 'iclock_terminal';
 
     public $timestamps  = false;
 

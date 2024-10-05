@@ -94,23 +94,6 @@ return [
             'sslmode' => 'prefer',
         ],
 
-        'sqlsrv_public' => [
-            'driver' => 'sqlsrv',
-            'url' => env('DB_URL_FINCA'),
-            'host' => env('DB_HOST_FINCA', '190.111.13.6'),
-            'port' => env('DB_PORT_FINCA', '1433'),
-            'database' => env('DB_DATABASE_FINCA', 'zkbiotime'),
-            'username' => env('DB_USERNAME_FINCA', 'sa'),
-            'password' => env('DB_PASSWORD_FINCA', 'TIC.2021$$'),
-            'charset' =>  'utf8',
-            'prefix' => '',
-            'prefix_indexes' => true,
-            'trust_server_certificate' => true, 
-            'options'   => [
-                'TrustServerCertificate' => true,
-    ],
-        ],
-
     ],
 
     /*
