@@ -11,6 +11,7 @@ Orden de trabajo
     <div class="text-sm md:text-xl mt-5 flex flex-col md:grid md:grid-cols-2 gap-2">
 
         <div>
+            <p>DOC NO: <span class="font-bold">{{ $ot->correlativo }}</span></p>
             <p>Planta: <span class="font-bold">{{ $ot->planta->name }}</span></p>
             <p>Area: <span class="font-bold">{{ $ot->area->area }}</span></p>
             <p>Problema detectado: <span class="font-bold">{{ $ot->problema_detectado }}</span></p>

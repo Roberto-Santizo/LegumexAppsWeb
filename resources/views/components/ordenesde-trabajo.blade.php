@@ -2,6 +2,7 @@
     @foreach ($ots as $ot)
     <div class="mt-5 flex flex-col md:flex-row justify-between p-5 rounded-xl shadow-xl border-l-8 ">
         <div class="text-xs md:text-xl">
+            <p><span class="uppercase font-bold">DOC NO:</span> {{ $ot->correlativo }}</p>
             <p><span class="uppercase font-bold">Nombre del solicitante:</span> {{ $ot->nombre_solicitante }}</p>
             <p><span class="uppercase font-bold">Planta:</span> {{ $ot->planta->name }}</p>
             <p><span class="uppercase font-bold">Area:</span> {{ $ot->area->area }}</p>
