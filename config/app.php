@@ -125,5 +125,6 @@ return [
 
     'middleware' => [
         'permission' => \App\Http\Middleware\CheckPermission::class,
-    ]
+    ],
+   
 ];

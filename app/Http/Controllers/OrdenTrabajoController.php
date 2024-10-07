@@ -27,7 +27,7 @@ class OrdenTrabajoController extends Controller
     public function index()
     {
         $estados = Estado::whereIn('id',[1,2,3,4])->get();
-        return view('administracion.documentoOT.index', [
+        return view('mantenimiento.documentoOT.index', [
             'estados' => $estados
         ]);
     }
@@ -35,7 +35,7 @@ class OrdenTrabajoController extends Controller
     public function create(){
         $plantas = Planta::all();
         $supervisores = Supervisor::all()->where('role_id',4)->where('status',1);
-        return view('administracion.documentoOT.create',['plantas' => $plantas, 'supervisores' => $supervisores]);
+        return view('mantenimiento.documentoOT.create',['plantas' => $plantas, 'supervisores' => $supervisores]);
         
     }
 
@@ -52,7 +52,7 @@ class OrdenTrabajoController extends Controller
             }
         }
         
-        return view('administracion.documentoOT.show',['ot' => $ordentrabajo]);
+        return view('mantenimiento.documentoOT.show',['ot' => $ordentrabajo]);
     }
 
     public function edit(OrdenTrabajo $ordentrabajo){
@@ -71,7 +71,7 @@ class OrdenTrabajoController extends Controller
                     return redirect()->route('documentoOT')->with('error', 'No tienes permiso para editar esta orden de trabajo.');
                 }
             }
-        return view('administracion.documentoOT.edit',['ot' => $ordentrabajo, 'supervisores' => $supervisores]);
+        return view('mantenimiento.documentoOT.edit',['ot' => $ordentrabajo, 'supervisores' => $supervisores]);
     }
 
     public function update(OrdenTrabajo $ordentrabajo, Request $request)
@@ -122,7 +122,7 @@ class OrdenTrabajoController extends Controller
 
     public function document(OrdenTrabajo $ordentrabajo){
         
-        return view('administracion.documentoOT.document',['ot' => $ordentrabajo]);
+        return view('mantenimiento.documentoOT.document',['ot' => $ordentrabajo]);
     }
 
     public function updateEstado(OrdenTrabajo $ordentrabajo, Request $request){
@@ -150,7 +150,7 @@ class OrdenTrabajoController extends Controller
         $misordenes = OrdenTrabajo::all()
             ->where('mecanico_id',auth()->user()->id)
             ->whereIn('estado_id',[1,6]);
-        return view('administracion.documentoOT.misordenes',['misordenes' => $misordenes]);
+        return view('mantenimiento.documentoOT.misordenes',['misordenes' => $misordenes]);
     }
 
     public function administrarOrdenes(){
@@ -160,7 +160,7 @@ class OrdenTrabajoController extends Controller
         })->paginate(4);
         $estados = Estado::all();
 
-        return view('administracion.documentoOT.administrar',[
+        return view('mantenimiento.documentoOT.administrar',[
             'estados' => $estados,
             'users' => $users
         ]);
@@ -171,7 +171,7 @@ class OrdenTrabajoController extends Controller
         $ordenesUsuario = OrdenTrabajo::all()
                     ->where('mecanico_id',$user->id)
                     ->where('estado_id', 1);
-        return view('administracion.documentoOT.showUsuarioOrdenes',['usuario' => $user, 'ordenes' => $ordenesUsuario]);
+        return view('mantenimiento.documentoOT.showUsuarioOrdenes',['usuario' => $user, 'ordenes' => $ordenesUsuario]);
     }
 
     public function showOrdenes(Request $request, Estado $estado) {
@@ -206,7 +206,7 @@ class OrdenTrabajoController extends Controller
         $ordenesTrabajo = $query->paginate(10)->appends($request->all());
         $plantas = Planta::all();
         
-        return view('administracion.documentoOT.ordenes', [
+        return view('mantenimiento.documentoOT.ordenes', [
             'ordenes' => $ordenesTrabajo,
             'filtro' => $request->search,
             'titulo' => $estado->estado,
@@ -220,7 +220,7 @@ class OrdenTrabajoController extends Controller
         $ordenes = OrdenTrabajo::all()
                     ->where('estado_id',5);
                     
-        return view('administracion.documentoOT.showEliminadas',['ordenes' => $ordenes]);
+        return view('mantenimiento.documentoOT.showEliminadas',['ordenes' => $ordenes]);
     }
 
     public function showUrgencia(Request $request, $urgencia){
@@ -228,7 +228,7 @@ class OrdenTrabajoController extends Controller
                             ->where('urgencia',$urgencia)
                             ->whereIn('estado_id', [1,2]);
         $titulo = ($urgencia == 1) ? 'Urgentes' : (($urgencia == 2) ? 'Importantes' : 'No importantes');
-        return view('administracion.documentoOT.showUrgencia',['ordenes' => $ordenes, 'titulo' => $titulo]);
+        return view('mantenimiento.documentoOT.showUrgencia',['ordenes' => $ordenes, 'titulo' => $titulo]);
     }
     
     public function store(Request $request){    

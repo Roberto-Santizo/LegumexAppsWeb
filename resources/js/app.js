@@ -26,7 +26,11 @@ import './UI/menuMobile.js';
 import './UI/filtrosMobile.js';
 import './UI/rechazadoModal.js';
 import './UI/filtrosSelect.js';
+import './UI/datosTareasFincas.js';
+import './UI/AsignacionUsuariosTareasFinca.js';
+import './UI/buscadorUsuariosFincas.js';
 import './UI/tomaFotos.js';
+import './UI/rendimientoHistoricoTareas.js';
 import './UI/mecanicoExterno.js';
 import './UI/nombreSolicitante.js';
 
@@ -39,12 +43,12 @@ import './Generación de Documentos/formulario_checklist-preoperacional.js'
 import './Validación de Formularios/formulario_checklist-preoperacional.js'
 
 //Alertas
-import './Alertas/eliminacion_usuario.js'
+// import './Alertas/eliminacion_usuario.js'
 import './Alertas/eliminacion_orden-trabajo.js'
 import './Alertas/rechazar_orden-trabajo.js'
 import './Alertas/formulario_documentold.js'
 import './Alertas/formulario_checklist-preoperacional.js'
 import './Alertas/formulario_ot.js'
-import './Alertas/estadoSupervisor.js'
+import './Alertas/estadoRegistro.js'
 
 

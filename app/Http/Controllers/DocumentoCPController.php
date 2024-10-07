@@ -37,26 +37,26 @@ class DocumentoCPController extends Controller
 
         $documentos = $query->paginate(10)->appends($request->all());
         $plantas = Planta::whereIn('id', [1, 2, 5])->get();
-        return view('administracion.documentoCP.index', ['documentos' => $documentos, 'plantas' => $plantas]);
+        return view('mantenimiento.documentoCP.index', ['documentos' => $documentos, 'plantas' => $plantas]);
     }
 
 
     public function select()
     {
         $plantas = Planta::whereIn('id', [1,2,5])->get();
-        return view('administracion.documentoCP.select', ['plantas' => $plantas]);
+        return view('mantenimiento.documentoCP.select', ['plantas' => $plantas]);
     }
 
     public function document(Documentocp $documentocp)
     {
         
-        return view('administracion.documentoCP.document', ['documentocp' => $documentocp]);
+        return view('mantenimiento.documentoCP.document', ['documentocp' => $documentocp]);
     }
 
 
     public function create(Planta $planta)
     {
-        return view('administracion.documentoCP.create', ['planta' => $planta]);
+        return view('mantenimiento.documentoCP.create', ['planta' => $planta]);
     }
 
 
@@ -69,7 +69,7 @@ class DocumentoCPController extends Controller
                 $ordenes[] = $orden->orden;
             }
         }
-        return view('administracion.documentoCP.showordenes', ['documento' => $documentocd, 'ordenes' => $ordenes]);
+        return view('mantenimiento.documentoCP.showordenes', ['documento' => $documentocd, 'ordenes' => $ordenes]);
     }
 
     public function store(Planta $planta, Request $request)

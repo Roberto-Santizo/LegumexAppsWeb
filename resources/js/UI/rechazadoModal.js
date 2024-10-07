@@ -70,7 +70,7 @@ import validator from "validator";
 
     async function guardarDatos() {
         const datos = new FormData();
-        const url = "/administracion/orden-trabajo/rechazar";
+        const url = "/mantenimiento/orden-trabajo/rechazar";
         const token = document
             .querySelector('meta[name="csrf-token"]')
             .getAttribute("content");
@@ -96,7 +96,7 @@ import validator from "validator";
                     icon: "success",
                     confirmButtonText: "Ok",
                 }).then(() => {
-                    window.location.href = '/administracion/ordenes-trabajos'
+                    window.location.href = '/mantenimiento/administracion/ordenes-trabajos'
                 });
             } else {
                 Swal.fire({

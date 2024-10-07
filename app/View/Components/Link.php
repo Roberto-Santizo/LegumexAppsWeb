@@ -11,18 +11,20 @@ class Link extends Component
     public $route;
     public $text;
     public $icon;
-    public $model;
     public $params;
+
+    // Acepta una lista variable de modelos
+    public $models;
 
     /**
      * Create a new component instance.
      */
-    public function __construct($route, $text = null , $icon = null,$model = null, $params = [])
+    public function __construct($route, $text = null, $icon = null, $params = [], ...$models)
     {
         $this->route = $route;
         $this->text = $text;
         $this->icon = $icon;
-        $this->model = $model;
+        $this->models = $models;
         $this->params = $params;
     }
 
@@ -34,13 +36,23 @@ class Link extends Component
         return view('components.link');
     }
 
+    /**
+     * Generate the URL with one or more models.
+     */
     public function url()
-    {
-        if ($this->model) {
-            return route($this->route, array_merge([$this->model], $this->params));
-        }
+{
+    if (!empty($this->models)) {
+        $params = array_map(function($model) {
+            return is_object($model) ? $model->id : $model;
+        }, $this->models);
 
-        return route($this->route, $this->params);
+        // Depuración
+        dd($params, $this->params);
+
+        return route($this->route, array_merge($params, $this->params));
     }
+
+    return route($this->route, $this->params);
+}
     
 }

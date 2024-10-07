@@ -8,9 +8,9 @@ Permisos
 <x-alertas />
 
 
-<div class="flex w-full justify-between items-center">
-    <x-link route="usuarios" text="Volver" icon="fa-solid fa-arrow-left" />
-    <x-link route="usuarios.permissions-create" text="Crear Permiso" icon="fa-solid fa-plus" />
+<div class="flex w-full justify-between items-center mt-5">
+    <x-link route="usuarios" text="Volver" icon="fa-solid fa-arrow-left" class="btn bg-sky-600 hover:bg-sky-800"/>
+    <x-link route="usuarios.permissions-create" text="Crear Permiso" icon="fa-solid fa-plus" class="btn bg-sky-600 hover:bg-sky-800"/>
 </div>
 
 <div class="overflow-x-auto mt-10">

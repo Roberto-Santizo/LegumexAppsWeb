@@ -16,12 +16,12 @@ Supervisores
             </button>
         </div>
     </form>
-    <x-link route="usuarios.supervisores" text="Borrar Filtros" />
+    <x-link route="usuarios.supervisores" text="Borrar Filtros" class=" btn bg-sky-600 hover:bg-sky-800"/>
 </div>
 
-<div class="flex flex-col md:flex-row w-full justify-between items-center">
-    <x-link route="usuarios" text="Volver" icon="fa-solid fa-arrow-left" />
-    <x-link route="usuarios.supervisores-create" text="Crear Supervisor" icon="fa-solid fa-plus" />
+<div class="flex flex-col md:flex-row w-full justify-between items-center mt-5">
+    <x-link route="usuarios" text="Volver" icon="fa-solid fa-arrow-left" class=" btn bg-sky-600 hover:bg-sky-800"/>
+    <x-link route="usuarios.supervisores-create" text="Crear Supervisor" icon="fa-solid fa-plus" class=" btn bg-sky-600 hover:bg-sky-800"/>
 </div>
 
 <div class="overflow-x-auto mt-10">
@@ -42,7 +42,7 @@ Supervisores
                 <td class="campo">{{ $supervisor->name }}</td>
                 <td class="campo">{{ $supervisor->role->name }}</td>
                 <td class="campo">
-                    <form action="{{ route('usuarios.supervisores-destroy',$supervisor) }}" class="status_usuario"
+                    <form action="{{ route('usuarios.supervisores-destroy',$supervisor) }}" class="estado"
                         method="POST">
                         @csrf
                         @method('DELETE')

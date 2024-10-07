@@ -19,20 +19,20 @@ Usuarios
                 </button>
             </div>
         </form>
-        <x-link route="documentocp" text="Borrar Filtros" />
+        <x-link route="usuarios" text="Borrar Filtros" class="bg-sky-600 hover:bg-sky-800"/>
     </div>
 
     <div class="flex flex-col md:flex-row gap-5 justify-center md:justify-between items-center">
 
-        <x-link route="usuarios.create" text="Crear Usuario" icon="fa-solid fa-plus" />
+        <x-link route="usuarios.create" text="Crear Usuario" icon="fa-solid fa-plus" class="bg-sky-600 hover:bg-sky-800"/>
         
-        <div class="flex flex-row gap-2">
+        <div class="flex flex-row gap-2 mt-5">
 
-            <x-link route="usuarios.roles" text="Roles" />
+            <x-link route="usuarios.roles" text="Roles" class="bg-sky-600 hover:bg-sky-800"/>
             
-            <x-link route="usuarios.permissions" text="Permisos" />
+            <x-link route="usuarios.permissions" text="Permisos" class="bg-sky-600 hover:bg-sky-800"/>
             
-            <x-link route="usuarios.supervisores" text="Supervisores - Calidad" />
+            <x-link route="usuarios.supervisores" text="Supervisores - Calidad" class="bg-sky-600 hover:bg-sky-800"/>
 
         </div>
     </div>
@@ -59,10 +59,10 @@ Usuarios
                 <td class="campo">{{ $usuario->getRoleNames()->first(); }}
                 </td>
                 <td class="campo">
-                    <form action="{{ route('usuarios.destroy',$usuario) }}" class="status_usuario" method="POST">
+                    <form action="{{ route('usuarios.destroy',$usuario) }}" class="estado" method="POST">
                         @csrf
                         @method('DELETE')
-                        <input data-status="{{ $usuario->status }}" id="usuario_destroy-button" type="submit"
+                        <input data-status="{{ $usuario->status }}" id="destroy-button" type="submit"
                             value="{{ ($usuario->status == 1) ? 'ACTIVO' : 'INACTIVO' }}"
                             class="status-btn {{ ($usuario->status == 1) ? 'bg-green-500 hover:bg-green-600' : 'bg-red-500 hover:bg-red-600' }}">
                     </form>

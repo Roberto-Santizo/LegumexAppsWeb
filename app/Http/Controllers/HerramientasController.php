@@ -20,12 +20,12 @@ class HerramientasController extends Controller
             $herramientas = Herramienta::paginate(5);
         }
 
-        return view('administracion.herramientas.index',['herramientas'=>$herramientas]);
+        return view('mantenimiento.herramientas.index',['herramientas'=>$herramientas]);
     }
 
     public function create()
     {
-        return view('administracion.herramientas.create');
+        return view('mantenimiento.herramientas.create');
     }
 
     public function store(Request $request){ 
@@ -48,7 +48,7 @@ class HerramientasController extends Controller
     }
 
     public function edit(Herramienta $herramienta){ 
-        return view('administracion.herramientas.edit',['herramienta'=>$herramienta]);
+        return view('mantenimiento.herramientas.edit',['herramienta'=>$herramienta]);
     }
 
     public function update(Herramienta $herramienta, Request $request)

@@ -8,7 +8,7 @@
    
 <x-alertas />
 
-    <x-link route="usuarios" text="Volver" icon="fa-solid fa-arrow-left" />
+    <x-link route="usuarios" text="Volver" icon="fa-solid fa-arrow-left" class=" btn bg-sky-600 hover:bg-sky-800"/>
    
 
     <form action="{{ route('usuarios.store') }}" method="POST" class="mt-10">
@@ -46,6 +46,6 @@
             </tbody>
         </table>
 
-        <input type="submit" value="CREAR" class="btn">
+        <input type="submit" value="CREAR" class=" btn bg-sky-600 hover:bg-sky-800">
     </form>
 @endsection
