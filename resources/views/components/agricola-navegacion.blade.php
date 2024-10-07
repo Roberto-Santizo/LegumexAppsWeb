@@ -30,7 +30,7 @@
                 <div class="flex gap-2 w-full md:hidden">
                     <form action="{{ route('logout.microsoft') }}" method="POST" class="text-md">
                         @csrf
-                        <input type="submit" value="Cerrar Sesión" class="btn">
+                        <input type="submit" value="Cerrar Sesión" class="btn bg-green-moss hover:bg-green-meadow mt-5">
                     </form>
 
                     @role('auxmanto')

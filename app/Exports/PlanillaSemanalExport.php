@@ -30,15 +30,15 @@ class PlanillaSemanalExport implements FromCollection, WithHeadings, WithStyles
         $rows = collect();
         Carbon::setLocale('es');
         $personalFinca = EmpleadoFinca::where('department_id', $this->plansemanal->finca->id)->WhereNotIn('position_id', [15, 9])->get();
-        $personalIds = $personalFinca->pluck('id')->toArray();
+        $personalCodigos = $personalFinca->pluck('last_name')->toArray();
 
-        $asignaciones = UsuarioTareaLote::whereIn('usuario_id', $personalIds)->get();
-        $asignacionesPorEmpleado = $asignaciones->groupBy('usuario_id');
+        $asignaciones = UsuarioTareaLote::whereIn('codigo', $personalCodigos)->get();
+        $asignacionesPorEmpleado = $asignaciones->groupBy('codigo');
 
 
         foreach ($personalFinca as $empleado) {
             
-            $asignaciones = $asignacionesPorEmpleado->get($empleado->id, collect());
+            $asignaciones = $asignacionesPorEmpleado->get($empleado->last_name, collect());
             $empleado->horas_totales = 0;
             $empleado->bono = 0;
             $empleado->septimo = 0;

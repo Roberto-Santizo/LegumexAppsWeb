@@ -48,8 +48,8 @@ class PlansemanalExport implements FromCollection, WithHeadings, WithMultipleShe
                     'TAREA' => $tarea->tarea->tarea,
                     'EXTRAORDINARIA' => ($tarea->extraordinaria) ?  'EXTRAORDINARIA' : 'PLANIFICADA',
                     'ESTADO' => ($tarea->cierre != null) ? 'CERRADA' : 'ABIERTA',
-                    'FECHA DE INICIO' => ($tarea->asignacion) ? $tarea->asignacion->created_at : 'SIN ASIGNACION',
-                    'FECHA DE CIERRE' => ($tarea->cierre != null) ? $tarea->cierre->created_at : 'SIN CIERRE',
+                    'FECHA DE INICIO' => ($tarea->asignacion) ? $tarea->asignacion->created_at->format('d-m-Y h:i:s') : 'SIN ASIGNACION',
+                    'FECHA DE CIERRE' => ($tarea->cierre != null) ? $tarea->cierre->created_at->format('d-m-Y h:i:s') : 'SIN CIERRE',
                     'HORA RENDIMIENTO TEORICO' => $tarea->horas,
                     'HORA RENDIMIENTO REAL' => ($tarea->cierre != null) ?  round($rendimiento_real * $tarea->users->count(),4) : '0',
                     'RENDIMIENTO' => ($tarea->cierre != null) ? ($tarea->horas/round($rendimiento_real*$tarea->users->count(),4)) : '0',
@@ -98,7 +98,7 @@ class PlansemanalExport implements FromCollection, WithHeadings, WithMultipleShe
       public function columnFormats(): array
     {
         return [
-            'J' => '0.00%',
+            'L' => '0.00%',
         ];
     }
 

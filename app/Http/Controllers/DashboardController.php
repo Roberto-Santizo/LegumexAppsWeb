@@ -18,7 +18,7 @@ class DashboardController extends Controller
             $last_activity = $session->last_activity;
             $last_activityDate = Carbon::createFromTimestamp($last_activity);
 
-            $session->ultima_coneccion = $last_activityDate->toDateTimeString();
+            $session->ultima_coneccion = $last_activityDate->format('d-m-Y');
         });
 
         return view('dashboards.index',['sessions' => $sessions]);
@@ -48,7 +48,7 @@ class DashboardController extends Controller
         $usuarios->map(function($usuario) use ($semana_actual){
             $asignaciones = UsuarioTareaLote::whereRaw('WEEKOFYEAR(created_at) = ?',$semana_actual)->where('usuario_id', $usuario->id)->get();
             $usuario->horas_totales = $asignaciones->sum(function($asignacion){
-                return round($asignacion->tarea_lote->horas / ($asignacion->tarea_lote->personas - $asignacion->tarea_lote->cupos),2);
+                return round($asignacion->tarea_lote->horas / ($asignacion->tarea_lote->users->count()),2);
             });
             
         });

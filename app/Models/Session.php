@@ -10,6 +10,8 @@ class Session extends Model
     use HasFactory;
 
 
+    protected $date = ['last_activity'];
+
     public function user()
     {
         return $this->belongsTo(User::class);

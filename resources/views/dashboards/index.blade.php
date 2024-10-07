@@ -8,7 +8,7 @@ Dashboard Admin
 <div class="flex flex-col gap-5 xl:grid xl:grid-cols-8 mt-10">
 
     <div
-        class="flex flex-col justify-center items-center col-start-1 col-span-2 bg-gray-300 rounded-lg p-4 shadow-2xl text-gray-600">
+        class="flex flex-col justify-between items-center col-start-1 col-span-2 bg-gray-300 rounded-lg p-4 shadow-2xl text-gray-600">
         <div>
             <svg width="400" height="200" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                 <g id="SVGRepo_bgCarrier" stroke-width="0"></g>
@@ -34,7 +34,7 @@ Dashboard Admin
 
         <div class="grid grid-cols-3 lg:flex lg:flex-row lg:items-center lg:flex-wrap gap-5 p-5">
             <a href="{{ route('usuarios.create') }}"
-                class="flex flex-col justify-center items-center hover:bg-gray-300 rounded-xl lg:p-5 grow-animation-sm">
+                class="flex flex-col justify-between items-center hover:bg-gray-300 rounded-xl lg:p-5 grow-animation-sm">
                 <div>
                     <svg width="100" height="50" viewBox="0 -0.5 17 17" version="1.1" xmlns="http://www.w3.org/2000/svg"
                         xmlns:xlink="http://www.w3.org/1999/xlink" class="si-glyph si-glyph-circle-plus" fill="#000000">
@@ -56,7 +56,7 @@ Dashboard Admin
             </a>
 
             <a href="{{ route('usuarios.roles-create') }}"
-                class="flex flex-col justify-center items-center hover:bg-gray-300 rounded-xl lg:p-5 grow-animation-sm">
+                class="flex flex-col justify-between items-center hover:bg-gray-300 rounded-xl lg:p-5 grow-animation-sm">
                 <div>
                     <svg width="100" height="50" viewBox="0 -0.5 17 17" version="1.1" xmlns="http://www.w3.org/2000/svg"
                         xmlns:xlink="http://www.w3.org/1999/xlink" class="si-glyph si-glyph-circle-plus" fill="#000000">
@@ -78,7 +78,7 @@ Dashboard Admin
             </a>
 
             <a href="{{ route('usuarios.permissions-create') }}"
-                class="flex flex-col justify-center items-center hover:bg-gray-300 rounded-xl lg:p-5 grow-animation-sm">
+                class="flex flex-col justify-between items-center hover:bg-gray-300 rounded-xl lg:p-5 grow-animation-sm">
                 <div>
                     <svg width="100" height="50" viewBox="0 -0.5 17 17" version="1.1" xmlns="http://www.w3.org/2000/svg"
                         xmlns:xlink="http://www.w3.org/1999/xlink" class="si-glyph si-glyph-circle-plus" fill="#000000">
@@ -100,7 +100,7 @@ Dashboard Admin
             </a>
 
             <a href="{{ route('usuarios.supervisores-create') }}"
-                class="flex flex-col justify-center items-center hover:bg-gray-300 rounded-xl lg:p-5 grow-animation-sm">
+                class="flex flex-col justify-between items-center hover:bg-gray-300 rounded-xl lg:p-5 grow-animation-sm">
                 <div>
                     <svg width="100" height="50" viewBox="0 -0.5 17 17" version="1.1" xmlns="http://www.w3.org/2000/svg"
                         xmlns:xlink="http://www.w3.org/1999/xlink" class="si-glyph si-glyph-circle-plus" fill="#000000">
@@ -133,7 +133,6 @@ Dashboard Admin
             @foreach ($sessions as $session)
             <div class="flex flex-row gap-5 p-2 text-gray-600 font-bold rounded-xl shadow-xl">
                 <p>{{ $session->user->name  ?? 'No se encontró nombre'}}</p>
-                <p>{{ $session->ip_address }} </p>
                 <p>{{ $session->ultima_coneccion }} </p>
             </div>
             @endforeach

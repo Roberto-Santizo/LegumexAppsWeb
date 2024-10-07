@@ -31,14 +31,14 @@
                     <form action="{{ route('logout.microsoft') }}" method="POST" class="text-md">
                         @csrf
                         <input type="submit" value="Cerrar Sesión"
-                            class="mt-5 bg-orange-500 cursor-pointer hover:bg-orange-700 text-white font-bold py-2 px-4 rounded inline-block ">
+                            class="btn bg-orange-500 hover:bg-orange-600 mt-5">
                     </form>
 
                     @role('auxmanto')
                     <form action="{{ route('logout') }}" method="POST" class="text-md">
                         @csrf
                         <input type="submit" value="Utilizar otro Usuario"
-                            class="mt-5 bg-orange-500 cursor-pointer hover:bg-orange-700 text-white font-bold py-2 px-4 rounded inline-block ">
+                            class="btn bg-orange-500 hover:bg-orange-600 mt-5">
                     </form>
                     @endrole
                 </div>

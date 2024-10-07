@@ -7,7 +7,7 @@ Dashboard Agricola
 @section('contenido')
 <div class="flex flex-col gap-5 xl:grid xl:grid-cols-8 mt-10">
     <div
-        class="flex flex-col justify-center items-center col-start-1 col-span-2 bg-green-moss rounded-lg p-4 shadow-2xl text-gray-600 text-xl">
+        class="flex flex-col justify-center items-center col-start-1 col-span-2 bg-green-moss rounded-lg p-4 shadow-2xl text-gray-600 text-md">
         <div>
             <svg width="400" height="200" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                 <g id="SVGRepo_bgCarrier" stroke-width="0"></g>
@@ -31,7 +31,7 @@ Dashboard Agricola
                 <h1 class="text-2xl font-bold">Descarga de Reporteria</h1>
             </div>
 
-            <div class="bg-white flex flex-row gap-5 justify-center items-center shadow-xl">
+            <div class="bg-white flex flex-row gap-5 justify-center items-center shadow-xl p-3 my-5 mx-5">
                 <p class="font-bold uppercase text-sm">Control de Presupuesto de Semana {{  $semana_actual }}</p>
                 <div  class="flex justify-center items-center">
                     <a href="{{ route('reporte.ControlPresupuesto') }}">
@@ -40,6 +40,8 @@ Dashboard Agricola
                     </a>
                 </div>
             </div>
+
+
             <div class="p-2 h-96 overflow-y-auto">
                 <table class="tabla">
                     <thead class="bg-green-meadow">
@@ -81,12 +83,12 @@ Dashboard Agricola
     @can('create plan semanal')
         <div class=" col-start-6 col-span-3 bg-green-moss rounded-2xl shadow-xl">
             <div class="bg-green-meadow w-full p-5 flex flex-row gap-2 items-center text-white rounded-t-2xl">
-                <h1 class="text-2xl font-bold">Planes Semanales</h1>
+                <h1 class="text-2xl font-bold">Planes Semanales Acciones</h1>
             </div>
 
             <div class="grid grid-cols-3 lg:flex lg:flex-row lg:items-center lg:flex-wrap gap-5 p-5">
                 <a href="{{ route('planSemanal.create') }}"
-                    class="flex flex-col justify-center items-center hover:bg-green-600 rounded-xl lg:p-5 grow-animation-sm">
+                    class="flex flex-col justify-between items-center hover:bg-green-600 rounded-xl lg:p-5 grow-animation-sm">
                     <svg width="100" height="50" viewBox="0 -0.5 17 17" version="1.1" xmlns="http://www.w3.org/2000/svg"
                         xmlns:xlink="http://www.w3.org/1999/xlink" class="si-glyph si-glyph-circle-plus" fill="#000000">
                         <g id="SVGRepo_bgCarrier" stroke-width="0"></g>
@@ -104,7 +106,7 @@ Dashboard Agricola
                     <p class="text-sm text-center font-bold uppercase text-white">Crear Plan Semanal</p>
                 </a>
                 <a href="{{ route('planSemanal.tareaLote.create') }}"
-                    class="flex flex-col justify-center items-center hover:bg-green-600 rounded-xl lg:p-5 grow-animation-sm">
+                    class="flex flex-col justify-between items-center hover:bg-green-600 rounded-xl lg:p-5 grow-animation-sm">
                     <svg width="100" height="50" viewBox="0 -0.5 17 17" version="1.1" xmlns="http://www.w3.org/2000/svg"
                         xmlns:xlink="http://www.w3.org/1999/xlink" class="si-glyph si-glyph-circle-plus" fill="#000000">
                         <g id="SVGRepo_bgCarrier" stroke-width="0"></g>
@@ -122,8 +124,8 @@ Dashboard Agricola
                     <p class="text-sm text-center font-bold uppercase text-white">Crear Tarea</p>
                 </a>
 
-                <a href="{{ route('planSemanal.create') }}"
-                    class="flex flex-col justify-center items-center hover:bg-green-600 rounded-xl lg:p-5 grow-animation-sm">
+                <a href="{{ route('planSemanal.tareaLote.create') }}"
+                    class="flex flex-col justify-between items-center hover:bg-green-600 rounded-xl lg:p-5 grow-animation-sm">
                     <svg width="100" height="50" viewBox="0 -0.5 17 17" version="1.1" xmlns="http://www.w3.org/2000/svg"
                         xmlns:xlink="http://www.w3.org/1999/xlink" class="si-glyph si-glyph-circle-plus" fill="#000000">
                         <g id="SVGRepo_bgCarrier" stroke-width="0"></g>

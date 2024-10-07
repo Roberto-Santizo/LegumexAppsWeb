@@ -53,8 +53,8 @@ class UsuarioTareaDetalleExport implements FromCollection, WithHeadings, WithTit
                             'PLAN' => ($tarea->extraordinaria) ? 'EXTRAORDINARIA' : 'PLANIFICADA',
                             'MONTO' => ($asignacion->tarea_lote->cierre) ? (($asignacion->tarea_lote->presupuesto) / $tarea->users->count()) : '0',
                             'HORAS TOTALES' => ($asignacion->tarea_lote->cierre) ? ($asignacion->tarea_lote->horas / ($tarea->users->count())) : '0',
-                            'ENTRADA' => $entrada ? $entrada->punch_time->format('d-m-Y h:m:s') : 'no existe',
-                            'SALIDA' =>  $salida ? $salida->punch_time->format('d-m-Y h:m:s') : 'no existe',
+                            'ENTRADA' => $entrada ? $entrada->punch_time->format('d-m-Y h:i:s') : 'no existe',
+                            'SALIDA' =>  $salida ? $salida->punch_time->format('d-m-Y h:i:s') : 'no existe',
                             'DIA' => ($tarea->cierre) ?  $carbonFecha : ''
                         ]);
                     }

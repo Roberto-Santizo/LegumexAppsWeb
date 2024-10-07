@@ -24,8 +24,8 @@ Tareas Generales Fincas
                     Codigo</th>
                 <th scope="col" class="encabezado text-center">
                     Acciones</th>
-                <th scope="col" class="encabezado text-center">
-                    Grafica de Rendimiento</th>
+                <!-- <th scope="col" class="encabezado text-center">
+                    Grafica de Rendimiento</th> -->
             </tr>
 
         </thead>
@@ -41,11 +41,11 @@ Tareas Generales Fincas
                     </a>
                 </td>
 
-                <td class="campo">
+                <!-- <td class="campo">
                     <a href="{{ route('tareas.rendimiento',$tarea) }}">
                         <i class="fa-solid fa-chart-simple icon-link"></i>
                     </a>
-                </td>
+                </td> -->
             </tr>
             @endforeach
         </tbody>

@@ -17,7 +17,7 @@
                         <span class="uppercase font-bold">
                             Fecha de cierre:
                         </span>
-                        {{$tarea->cierre->created_at->format('d-m-Y h:m:s'); }}
+                        {{$tarea->cierre->created_at->format('d-m-Y h:i:s A') }}
                     </p>
                 @endif
 
