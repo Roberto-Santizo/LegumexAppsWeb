@@ -108,6 +108,9 @@ class PlanSemanalFincasController extends Controller
             ->select('lote_id', DB::raw('SUM(personas) as total_personas'), DB::raw('SUM(presupuesto) as total_presupuesto'), DB::raw('SUM(horas) as total_horas'))
             ->groupBy('lote_id')
             ->get();
+        $lotesCosecha = $plansemanalfinca->tareasCosechaTotales()
+                ->get();
+        dd($lotesCosecha);
         return view('agricola.planSemanal.show', ['lotes' => $lotes, 'planSemanal' => $plansemanalfinca]);
     }
 

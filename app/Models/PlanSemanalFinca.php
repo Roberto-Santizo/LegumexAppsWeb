@@ -30,5 +30,10 @@ class PlanSemanalFinca extends Model
         return $this->hasMany(TareasLote::class, 'plan_semanal_finca_id','id');
     }
 
+    public function tareasCosechaTotales()
+    {
+        return $this->hasMany(TareaLoteCosecha::class, 'plan_semanal_finca_id','id');
+    }
+
 
 }
