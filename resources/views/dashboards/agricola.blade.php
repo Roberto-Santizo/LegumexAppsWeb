@@ -174,6 +174,29 @@ Dashboard Agricola
 
     </div>
 
+    <div class=" col-start-1 col-span-8 bg-green-moss rounded-2xl shadow-xl">
+        <div class="bg-green-meadow w-full p-5 flex flex-row gap-2 items-center text-white rounded-t-2xl">
+            <h1 class="text-2xl font-bold">Control de Tareas en Proceso y Asignaciones</h1>
+        </div>
+
+        <div class="flex flex-col gap-5 p-5 text-xs md:text-xl">
+            @forelse ($tareas as $tarea)
+                <a href="{{ route('planSemanal.tareaLote.show',$tarea) }}"
+                    class="flex flex-row gap-5 font-bold text-white bg-green-meadow p-3 rounded-xl justify-between shadow-xl grow-animation-sm">
+                        <div class="flex flex-row gap-5">
+                            <i class="fa-solid fa-clock text-orange-500 text-xl" title="Aún no han sido terminadas todas las tareas"></i>
+                            <p>Tarea: {{ $tarea->tarea->tarea}}</p>
+                        </div>
+
+                    <p>Usuarios Asignados: {{ $tarea->users->count()}} / {{ $tarea->personas }}</p>
+                </a>
+            @empty
+                <p class="text-center font-bold text-white uppercase">No hay tareas en proceso</p>
+            @endforelse
+        </div>
+
+    </div>
+
     <div class=" col-start-1 col-span-4 row-start-2 bg-green-moss rounded-2xl shadow-xl ">
         <div class="bg-green-meadow w-full p-5 flex flex-row gap-2 items-center text-white rounded-t-2xl">
             <h1 class="text-2xl font-bold">Resumen de Horas Por Empleado Semana {{ $semana_actual }}</h1>
@@ -186,6 +209,7 @@ Dashboard Agricola
                         <th scope="col" class="text-white">Codigo</th>
                         <th scope="col" class="text-white">Empleado</th>
                         <th scope="col" class="text-white">Total de Horas</th>
+                        <th scope="col" class="text-white">Activo</th>
                     </tr>
                 </thead>
                 <tbody class="tabla-body">
@@ -193,7 +217,13 @@ Dashboard Agricola
                     <tr>
                         <td class="campo">{{ $usuario->last_name }}</td>
                         <td class="campo">{{ $usuario->first_name }}</td>
-                        <td class="campo">{{ $usuario->horas_totales }} @choice('hora|horas',$usuario->horas_totales)
+                        <td class="campo">{{ $usuario->horas_totales }} @choice('hora|horas',$usuario->horas_totales)</td>
+                        <td class="campo">
+                            @if ($usuario->activo)
+                                <i class="fa-solid fa-circle-check text-md text-green-300"></i>
+                            @else
+                                <i class="fa-solid fa-circle-xmark text-md"></i>
+                            @endif
                         </td>
                     </tr>
                     @endforeach

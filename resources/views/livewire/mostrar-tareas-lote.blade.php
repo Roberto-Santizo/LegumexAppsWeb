@@ -12,6 +12,10 @@
 
                
                 <p><span class="uppercase font-bold">Horas Necesarias:</span> {{ $tarea->horas }} horas</p> 
+                @if($tarea->asignacion)
+                    <p><span class="uppercase font-bold">Fecha de Asignación:</span> {{ $tarea->asignacion->created_at->format('d-m-Y h:i:s') }}</p>
+                @endif
+
                  @if($tarea->cierre)
                     <p>
                         <span class="uppercase font-bold">

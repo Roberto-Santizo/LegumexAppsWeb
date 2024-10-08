@@ -6,6 +6,7 @@ use Carbon\Carbon;
 use App\Models\Session;
 use App\Models\EmpleadoFinca;
 use App\Models\PlanSemanalFinca;
+use App\Models\TareasLote;
 use App\Models\UsuarioTareaLote;
 
 class DashboardController extends Controller
@@ -50,10 +51,24 @@ class DashboardController extends Controller
             $usuario->horas_totales = $asignaciones->sum(function($asignacion){
                 return round($asignacion->tarea_lote->horas / ($asignacion->tarea_lote->users->count()),2);
             });
+            foreach ($asignaciones as $asignacion) {
+                if(!$asignacion->tarea_lote->cierre)
+                {
+                    $usuario->activo = true;
+                }
+            }
             
         });
         $usuarios = $usuarios->sortBy('horas_totales');
 
-        return view('dashboards.agricola',['planes' => $planes,'usuarios' => $usuarios, 'semana_actual' => $semana_actual]);
+        $tareas = TareasLote::all();
+
+        $tareas = $tareas->filter(function($tarea){
+            if($tarea->asignacion && !$tarea->cierre){
+                return $tarea;
+            }
+        });
+
+        return view('dashboards.agricola',['planes' => $planes,'usuarios' => $usuarios, 'semana_actual' => $semana_actual, 'tareas' => $tareas]);
     }
 }

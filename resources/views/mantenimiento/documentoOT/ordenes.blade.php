@@ -9,7 +9,7 @@ Ordenes de Trabajo {{ $titulo }}
 @section('contenido')
 
 <x-alertas />
-<div id="FiltrosBtn" class="mt-10 md:hidden btn">
+<div id="FiltrosBtn" class="mt-10 md:hidden btn bg-orange-500 hover:bg-orange-600">
     <p>Filtros</p>
 </div>
 
@@ -52,7 +52,7 @@ Ordenes de Trabajo {{ $titulo }}
             </div>
 
             <div class="flex flex-col gap-2 md:flex-row md:justify-between">
-                <button type="submit" class="btn">
+                <button type="submit" class="btn bg-orange-500 hover:bg-orange-600">
                     <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
                         stroke="currentColor" class="w-6 h-6 inline-block align-middle">
                         <path stroke-linecap="round" stroke-linejoin="round"
@@ -60,13 +60,13 @@ Ordenes de Trabajo {{ $titulo }}
                     </svg>
                 </button>
 
-                <a class="btn" href="{{ route('documentoOT.showordenes',$estado) }}">
+                <a class="btn bg-orange-500 hover:bg-orange-600" href="{{ route('documentoOT.showordenes',$estado) }}">
                     Borrar Filtros
                 </a>
             </div>
         </div>
     </form>
-    <x-link route="documentoOT" text="Volver" icon="fa-solid fa-arrow-left" />
+    <x-link route="documentoOT" text="Volver" icon="fa-solid fa-arrow-left" class="btn bg-orange-500 hover:bg-orange-600"/>
 
 </div>
 

@@ -41,13 +41,18 @@ class TareaLoteController extends Controller
                 'horas_persona' => ($request->horas)/$request->personas,
             ]);
 
-
         return redirect()->route('planSemanal.tareasLote',[$lote,$plansemanalfinca]);
         
         } catch (\Throwable $th) {
             return redirect()->back()->with('error','No se ha podido guardar la tarea');
         }
         
+    }
+
+    public function show(TareasLote $tarealote)
+    {
+        $fecha_actual = Carbon::now();
+        return view('agricola.tareasLote.show', ['tarea' => $tarealote, 'fecha_actual' => $fecha_actual]);
     }
 
     public function edit(TareasLote $tareaslote)

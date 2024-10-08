@@ -26,7 +26,7 @@ Route::group(['middleware' => ['auth', 'role:admin|adminagricola|auxalameda'], '
     //Asignacion Diaria
     Route::post('/finca/plan-semanal/create/{lote}/{plansemanalfinca}', [AsignacionDiariaController::class, 'store'])->name('asignacionDiaria.store');
 
-
+    Route::post('/finca/plan-semanal/rendimiento/store', [PlanSemanalFincasController::class, 'storeDiario'])->name('planSemanal.storediario');
 
 });
 
@@ -56,7 +56,6 @@ Route::group(['middleware' => ['auth', 'role:admin|adminagricola'], 'prefix' => 
     
     Route::get('/finca/plan-semanal/rendimiento/{usuario}/tarea-{tarealote}/create', [PlanSemanalFincasController::class, 'diario'])->name('planSemanal.diario');
     
-    Route::post('/finca/plan-semanal/rendimiento/store', [PlanSemanalFincasController::class, 'storeDiario'])->name('planSemanal.storediario');
 
     Route::post('/finca/plan-semanal/create', [PlanSemanalFincasController::class, 'store'])->name('planSemanal.store');
 
@@ -83,6 +82,7 @@ Route::group(['middleware' => ['auth', 'role:admin|adminagricola'], 'prefix' => 
 
 
     Route::get('/tarea-lote/create', [TareaLoteController::class, 'create'])->name('planSemanal.tareaLote.create');
+    Route::get('/tarea-lote/{tarealote}', [TareaLoteController::class, 'show'])->name('planSemanal.tareaLote.show');
 
     Route::get('/tarea-lote/{tareaslote}/edit', [TareaLoteController::class, 'edit'])->name('planSemanal.tareaLote.edit');
     

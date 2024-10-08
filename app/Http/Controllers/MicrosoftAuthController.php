@@ -29,7 +29,7 @@ class MicrosoftAuthController extends Controller
         }
 
         
-        if($usuario->getRoleNames()->first() == 'admin' || $usuario->getRoleNames()->first() == 'adminmanto'){
+        if($usuario->getRoleNames()->first() == 'admin' || $usuario->getRoleNames()->first() == 'adminmanto' || $usuario->getRoleNames()->first() == 'adminagricola'){
             if($usuario->status == 1){
                 $expiresAt = now()->addSeconds($user->tokenExpiresIn);
                 session(['access_token' => $user->token]);

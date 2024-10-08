@@ -232,7 +232,7 @@ class OrdenTrabajoController extends Controller
     }
     
     public function store(Request $request){    
-        // try {
+        try {
 
             $planta = Planta::findOrFail($request->planta_id);
             $ultimoCorrelativo = OrdenTrabajo::where('planta_id', $planta->id)->orderBy('created_at','DESC')->first();
@@ -278,19 +278,19 @@ class OrdenTrabajoController extends Controller
                 return redirect()->route('documentoOT')->with('success', $response['mensaje']);
             }
 
-        // } catch (\Throwable $th) { 
-        //     $response = [
-        //         'mensaje' => "Hubo un error al crear la orden de trabajo, vuelva a intentarlo",
-        //         'ok' => false,
-        //         'status' => 500
-        //     ];
+        } catch (\Throwable $th) { 
+            $response = [
+                'mensaje' => "Hubo un error al crear la orden de trabajo, vuelva a intentarlo",
+                'ok' => false,
+                'status' => 500
+            ];
 
-        //     if ($request->ajax()) {
-        //         return response()->json($response, 500);
-        //     } else {
-        //         return back()->with('error', 'Hubo un error al guardar la orden de trabajo');
-        //     }
-        // }
+            if ($request->ajax()) {
+                return response()->json($response, 500);
+            } else {
+                return back()->with('error', 'Hubo un error al guardar la orden de trabajo');
+            }
+        }
 
     }
 

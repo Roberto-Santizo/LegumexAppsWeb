@@ -92,7 +92,7 @@ Documentos Checklists Preoperacionales
                 </td>
                 @endif
                 <td>
-                    <a href="{{ route('documentocp.showordeneschecklist', $documento) }}" class="btn mb-2">Ver Ordenes de trabajo</a>
+                    <a href="{{ route('documentocp.showordeneschecklist', $documento) }}" class="btn mb-2 bg-orange-500 hover:bg-orange-600 mt-2">Ver Ordenes de trabajo</a>
                 </td>
             </tr>
             @endforeach
