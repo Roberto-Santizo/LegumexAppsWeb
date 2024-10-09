@@ -2,7 +2,6 @@
 
 namespace App\Http\Controllers;
 
-use App\Exceptions\ImportExeption;
 use App\Models\Lote;
 use App\Models\Tarea;
 use App\Models\TareasLote;
@@ -12,9 +11,11 @@ use Illuminate\Support\Carbon;
 use App\Services\SemanaService;
 use App\Models\AsignacionDiaria;
 use App\Models\PlanSemanalFinca;
+use App\Models\TareaLoteCosecha;
 use App\Models\UsuarioTareaLote;
 use App\Models\EmpleadoIngresado;
 use App\Models\RendimientoDiario;
+use App\Exceptions\ImportExeption;
 use App\Imports\PlanSemanalImport;
 use Illuminate\Support\Facades\DB;
 use Maatwebsite\Excel\Facades\Excel;
@@ -110,8 +111,7 @@ class PlanSemanalFincasController extends Controller
             ->get();
         $lotesCosecha = $plansemanalfinca->tareasCosechaTotales()
                 ->get();
-        dd($lotesCosecha);
-        return view('agricola.planSemanal.show', ['lotes' => $lotes, 'planSemanal' => $plansemanalfinca]);
+        return view('agricola.planSemanal.show', ['lotes' => $lotes, 'planSemanal' => $plansemanalfinca, 'lotesCosecha' => $lotesCosecha]);
     }
 
     public function tareasLote(Lote $lote, PlanSemanalFinca $plansemanalfinca)
@@ -156,6 +156,13 @@ class PlanSemanalFincasController extends Controller
             'tareas' => $tareas,
             'semanaActual' => Carbon::now()->weekOfYear
         ]);
+    }
+
+    public function tareasCosechaLote(Lote $lote,PlanSemanalFinca $plansemanalfinca)
+    {
+        $tareas = $plansemanalfinca->tareasCosechaPorLote($lote->id)
+            ->get();
+        return view('agricola.planSemanal.tareasLoteCosecha', ['lote' => $lote, 'plansemanalfinca' => $plansemanalfinca,'tareas' => $tareas, 'semanaActual' => Carbon::now()->weekOfYear]);
     }
 
 
@@ -212,6 +219,30 @@ class PlanSemanalFincasController extends Controller
             'asignados' => $asignados,
             'hoy' => $hoy->format('d-m-Y')
         ]);
+    }
+
+    public function AsignarEmpleadosCosecha(Lote $lote, PlanSemanalFinca $plansemanalfinca, Tarea $tarea, TareaLoteCosecha $tarealotecosecha)
+    {
+        $hoy = Carbon::today();
+        $ingresos = EmpleadoIngresado::whereDate('punch_time', $hoy)
+        ->where('terminal_id', 7)
+        ->get()
+        ->map(function ($ingreso) use ($hoy) {
+            $asignaciones = UsuarioTareaLote::where('usuario_id', $ingreso->emp_id)
+                ->whereDate('created_at', $hoy)
+                ->get();
+
+            $horas_totales = $asignaciones->sum(function ($asignacion) {
+                return $asignacion->tarea_lote->horas / ($asignacion->tarea_lote->personas - $asignacion->tarea_lote->cupos);
+            });
+
+            $ingreso->asignaciones = $asignaciones;
+            $ingreso->horas_totales = $horas_totales;
+
+            return $ingreso;
+        });
+
+        return view('agricola.planSemanal.asignarCosecha',compact(['lote','plansemanalfinca','tarea','tarealotecosecha', 'ingresos']));
     }
 
 

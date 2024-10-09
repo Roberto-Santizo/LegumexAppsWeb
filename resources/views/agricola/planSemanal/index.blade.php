@@ -12,6 +12,7 @@
 <div class="flex flex-row gap-5 justify-end mt-10">
     <x-link class="bg-green-moss hover:bg-green-meadow" route="planSemanal.create" text="Crear Plan Semanal" />
     <x-link class="bg-green-moss hover:bg-green-meadow" route="planSemanal.tareaLote.create" text="Crear Tarea Extraordinaria" />
+    <x-link class="bg-green-moss hover:bg-green-meadow" route="planSemanal.tareaCosechaLote.create" text="Crear Tarea Cosecha Extraordinaria" />
 </div>
 @endhasanyrole
 

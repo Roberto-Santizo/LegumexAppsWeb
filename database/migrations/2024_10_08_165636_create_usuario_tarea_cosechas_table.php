@@ -15,6 +15,8 @@ return new class extends Migration
             $table->id();
             $table->integer('usuario_id');
             $table->foreignId('tarealotecosecha_id')->references('id')->on('tarea_lote_cosechas');
+            $table->string('nombre');
+            $table->string('codigo');
             $table->timestamps();
         });
     }

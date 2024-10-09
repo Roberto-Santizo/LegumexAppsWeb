@@ -62,13 +62,13 @@ Plan Semanal {{ $planSemanal->finca->finca }} Semana - {{ $planSemanal->semana }
             </tr>
         </thead>
         <tbody class="tabla-body">
-            @foreach ($lotes as $lote)
+            @foreach ($lotesCosecha as $loteCosecha)
             <tr>
-                <td class="campo">{{ $lote->lote->nombre }}</td>
+                <td class="campo">{{ $loteCosecha->lote->nombre }}</td>
    
                 <td class="campo">
-                    <a class="btn bg-green-moss hover:bg-green-meadow" href="{{ route('planSemanal.tareasLote',[$lote->lote,$planSemanal]) }}">
-                        Tareas de lote
+                    <a class="btn bg-green-moss hover:bg-green-meadow" href="{{ route('planSemanal.tareasCosechaLote',[$lote->lote,$planSemanal]) }}">
+                        Cosechas Por Lote
                     </a>
                 </td>
             </tr>

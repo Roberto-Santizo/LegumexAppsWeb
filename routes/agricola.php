@@ -10,6 +10,7 @@ use App\Http\Controllers\UsuariosFincaController;
 use App\Http\Controllers\AsignacionDiariaController;
 use App\Http\Controllers\ControlPlantacionController;
 use App\Http\Controllers\PlanSemanalFincasController;
+use App\Http\Controllers\TareaCosechaLoteController;
 use App\Http\Controllers\TareaLoteController;
 
 Route::group(['middleware' => ['auth', 'role:admin|adminagricola|auxalameda'], 'prefix' => 'agricola'], function() {
@@ -22,6 +23,7 @@ Route::group(['middleware' => ['auth', 'role:admin|adminagricola|auxalameda'], '
     Route::get('/finca/plan-semanal/lotes/{lote}/{plansemanalfinca}/tareas', [PlanSemanalFincasController::class, 'tareasLote'])->name('planSemanal.tareasLote');
     
     Route::get('/finca/plan-semanal/lotes/{lote:nombre}/{plansemanalfinca}/{tarea}/{tarealote}/asignacion', [PlanSemanalFincasController::class, 'AsignarEmpleados'])->name('planSemanal.Asignar');
+    Route::get('/finca/plan-semanal/lotes/{lote:nombre}/{plansemanalfinca}/{tarea}/{tarealotecosecha}/cosecha/asignacion', [PlanSemanalFincasController::class, 'AsignarEmpleadosCosecha'])->name('planSemanal.AsignarEmpleadosCosecha');
 
     //Asignacion Diaria
     Route::post('/finca/plan-semanal/create/{lote}/{plansemanalfinca}', [AsignacionDiariaController::class, 'store'])->name('asignacionDiaria.store');
@@ -88,6 +90,9 @@ Route::group(['middleware' => ['auth', 'role:admin|adminagricola'], 'prefix' => 
     
     Route::post('/tarea-lote/store/{lote}/{plansemanalfinca}', [TareaLoteController::class, 'store'])->name('planSemanal.tareaLote.store');
 
+    //Tareas de cosecha
+    Route::get('/tarea-lote/cosecha/create', [TareaCosechaLoteController::class, 'create'])->name('planSemanal.tareaCosechaLote.create');
+    Route::get('/finca/plan-semanal/lotes/{lote}/{plansemanalfinca}/cosecha/tareas', [PlanSemanalFincasController::class, 'tareasCosechaLote'])->name('planSemanal.tareasCosechaLote');
     
     // Reporteria
     Route::get('/exportar-plansemanal/{planSemanalFinca}', [ReporteController::class, 'PlanSemanal'])->name('reporte.PlanSemanal');
