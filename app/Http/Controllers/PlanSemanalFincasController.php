@@ -9,12 +9,10 @@ use Illuminate\Http\Request;
 use App\Models\EmpleadoFinca;
 use Illuminate\Support\Carbon;
 use App\Services\SemanaService;
-use App\Models\AsignacionDiaria;
 use App\Models\PlanSemanalFinca;
 use App\Models\TareaLoteCosecha;
 use App\Models\UsuarioTareaLote;
 use App\Models\EmpleadoIngresado;
-use App\Models\RendimientoDiario;
 use App\Exceptions\ImportExeption;
 use App\Imports\PlanSemanalImport;
 use Illuminate\Support\Facades\DB;
@@ -165,84 +163,28 @@ class PlanSemanalFincasController extends Controller
         return view('agricola.planSemanal.tareasLoteCosecha', ['lote' => $lote, 'plansemanalfinca' => $plansemanalfinca,'tareas' => $tareas, 'semanaActual' => Carbon::now()->weekOfYear]);
     }
 
+    public function tareasCosechaLoteRendimiento(Lote $lote, PlanSemanalFinca $plansemanalfinca, TareaLoteCosecha $tarealotecosecha)
+    {
+        $hoy = Carbon::today();
+        return view('agricola.tareasCosechaLote.rendimiento',compact(['lote','plansemanalfinca','tarealotecosecha']));
+    }
+
+    public function tareasCosechaLoteRendimientoReal(Lote $lote, PlanSemanalFinca $plansemanalfinca, TareaLoteCosecha $tarealotecosecha)
+    {
+        $hoy = Carbon::today();
+        return view('agricola.tareasCosechaLote.rendimientoReal',compact(['lote','plansemanalfinca','tarealotecosecha']));
+    }
+
 
 
     public function AsignarEmpleados(Lote $lote, PlanSemanalFinca $plansemanalfinca, Tarea $tarea, TareasLote $tarealote)
     {
-        $hoy = Carbon::today();
-        $semanaActual = Carbon::now()->weekOfYear;
-
-        if ($plansemanalfinca->semana < $semanaActual) {
-            return redirect()->route('planSemanal.tareasLote', [$lote, $plansemanalfinca])
-                ->with('error', 'El periodo de asignación de esta tarea terminó');
-        }
-
-        if (AsignacionDiaria::where('tarea_lote_id', $tarealote->id)
-            ->whereDate('created_at', $hoy)->exists()
-        ) {
-            return redirect()->route('planSemanal.tareasLote', [$lote, $plansemanalfinca])
-                ->with('error', "Esta tarea ya fue cerrada por el día de hoy");
-        }
-
-        $asignados = UsuarioTareaLote::where('tarealote_id', $tarealote->id)
-            ->whereDate('created_at', $hoy)
-            ->pluck('usuario_id')
-            ->toArray();
-
-        $tarealote->cupos_utilizados = $tarealote->users($hoy)->count();
-
-        $ingresos = EmpleadoIngresado::whereDate('punch_time', $hoy)
-            ->where('terminal_id', 7)
-            ->get()
-            ->map(function ($ingreso) use ($hoy) {
-                $asignaciones = UsuarioTareaLote::where('usuario_id', $ingreso->emp_id)
-                    ->whereDate('created_at', $hoy)
-                    ->get();
-
-                $horas_totales = $asignaciones->sum(function ($asignacion) {
-                    return $asignacion->tarea_lote->horas / ($asignacion->tarea_lote->personas - $asignacion->tarea_lote->cupos);
-                });
-
-                $ingreso->asignaciones = $asignaciones;
-                $ingreso->horas_totales = $horas_totales;
-
-                return $ingreso;
-            });
-
-        // Devolver vista con los datos necesarios
-        return view('agricola.planSemanal.asignar', [
-            'lote' => $lote,
-            'plansemanalfinca' => $plansemanalfinca,
-            'tarea' => $tarea,
-            'ingresos' => $ingresos,
-            'tarealote' => $tarealote,
-            'asignados' => $asignados,
-            'hoy' => $hoy->format('d-m-Y')
-        ]);
+        return view('agricola.planSemanal.asignar',compact(['lote','plansemanalfinca','tarea','tarealote']));
     }
 
     public function AsignarEmpleadosCosecha(Lote $lote, PlanSemanalFinca $plansemanalfinca, Tarea $tarea, TareaLoteCosecha $tarealotecosecha)
     {
-        $hoy = Carbon::today();
-        $ingresos = EmpleadoIngresado::whereDate('punch_time', $hoy)
-        ->where('terminal_id', 7)
-        ->get()
-        ->map(function ($ingreso) use ($hoy) {
-            $asignaciones = UsuarioTareaLote::where('usuario_id', $ingreso->emp_id)
-                ->whereDate('created_at', $hoy)
-                ->get();
-
-            $horas_totales = $asignaciones->sum(function ($asignacion) {
-                return $asignacion->tarea_lote->horas / ($asignacion->tarea_lote->personas - $asignacion->tarea_lote->cupos);
-            });
-
-            $ingreso->asignaciones = $asignaciones;
-            $ingreso->horas_totales = $horas_totales;
-
-            return $ingreso;
-        });
-
-        return view('agricola.planSemanal.asignarCosecha',compact(['lote','plansemanalfinca','tarea','tarealotecosecha', 'ingresos']));
+        return view('agricola.planSemanal.asignarCosecha',compact(['lote','plansemanalfinca','tarea','tarealotecosecha']));
     }
 
 
@@ -269,22 +211,6 @@ class PlanSemanalFincasController extends Controller
         return view('agricola.plansemanal.diario', ['tarealote' => $tarealote, 'usuario' => $usuario, 'primerMarcaje' => $primerMarcaje, 'ultimoMarcaje' => $ultimoMarcaje]);
     }
 
-    public function storeDiario(Request $request)
-    {
-        $request->validate([
-            'tarea_lote_id' => 'required'
-        ]);
-        try {
-            RendimientoDiario::create([
-                'tarea_lote_id' => $request->tarea_lote_id,
-                'terminado' => 1
-            ]);
-
-            return redirect()->back()->with('success', 'La tarea fue completada con exito');
-        } catch (\Throwable $th) {
-            return redirect()->back()->with('error', 'Hubo un error al guardar el registro');
-        }
-    }
 
     public function atrasadas(Request $request, PlanSemanalFinca $plansemanalfinca)
     {
@@ -310,22 +236,4 @@ class PlanSemanalFincasController extends Controller
         ]);
     }
 
-    public function crt(Lote $lote, PlanSemanalFinca $plansemanalfinca)
-    {
-        $fechasSemana = $this->semanaService->obtenerFechasDeSemana($plansemanalfinca->semana);
-
-        $tareas = $plansemanalfinca->tareasPorLote($lote->id)->get();
-
-        // $terminados = 0;
-        // foreach ($tareas as $tarea) {
-        //     foreach ($tarea->asignaciones as $asignacion) {
-        //         Rendi
-        //         $terminados 
-        //     }
-        // }
-
-        // dd($tareas);
-
-        return view('agricola.plansemanal.crt', ['fechasSemana' => $fechasSemana, 'lote' => $lote, 'plansemanalfinca' => $plansemanalfinca, 'tareas' => $tareas]);
-    }
 }

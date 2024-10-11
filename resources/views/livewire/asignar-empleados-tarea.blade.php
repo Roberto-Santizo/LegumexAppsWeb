@@ -1,6 +1,26 @@
 <div class="md:grid md:grid-cols-3 mt-10 flex flex-col">
     <div class="col-span-2">
+        @if($errors->has('error'))
+        <div class="border border-red-500 bg-red-100 text-red-700 font-bold uppercase p-2 mt-2 text-sm flex flex-row gap-2 items-center mr-10 mb-5">
+            {{ $errors->first('error') }}
+        </div>
+        @endif
         <h1 class="text-2xl font-bold">Información de la tarea: </h1>
+           
+        <div class="flex gap-2">
+            <p class="text-xl font-bold">Descripcion: </p>
+            <p>{{ $tarea->descripcion }}</p>
+        </div>
+
+        <div class="flex gap-2">
+            <p class="text-xl font-bold">Cupos Disponibles: </p>
+            <p class="text-xl font-bold">{{ $tarealote->cupos }}</p>
+        </div>
+
+        <div class="flex gap-2">
+            <p class="text-xl font-bold">Cupos Minimos: </p>
+            <p class="text-xl font-bold">{{ $cuposMinimos }}</p>
+        </div>
 
         <div class="flex gap-2">
             <p class="text-xl font-bold">Fecha de la asignación: </p>
@@ -17,6 +37,7 @@
                             <i class="fa-solid fa-user text-2xl"></i>
                             <div>
                                 <p class="font-bold">{{ $asignado->nombre }}</p>
+                                {{-- <p class="font-bold">Horas del día de hoy: {{ round($ingreso->horas_totales,2) }}</p> --}}
                             </div>
                         </div>
                     </div>

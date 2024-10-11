@@ -180,15 +180,37 @@ Dashboard Agricola
         </div>
 
         <div class="flex flex-col gap-5 p-5 text-xs md:text-xl">
-            @forelse ($tareas as $tarea)
-                <a href="{{ route('planSemanal.tareaLote.show',$tarea) }}"
+            @forelse ($tareasEnProceso as $tareaEnProceso)
+                <a href="{{ route('planSemanal.tareaLote.show',$tareaEnProceso) }}"
                     class="flex flex-row gap-5 font-bold text-white bg-green-meadow p-3 rounded-xl justify-between shadow-xl grow-animation-sm">
                         <div class="flex flex-row gap-5">
                             <i class="fa-solid fa-clock text-orange-500 text-xl" title="Aún no han sido terminadas todas las tareas"></i>
-                            <p>Tarea: {{ $tarea->tarea->tarea}}</p>
+                            <p>Tarea: {{ $tareaEnProceso->tarea->tarea}} - {{ $tareaEnProceso->plansemanal->finca->finca }} - S{{ $tareaEnProceso->plansemanal->semana }}</p>
                         </div>
 
-                    <p>Usuarios Asignados: {{ $tarea->users->count()}} / {{ $tarea->personas }}</p>
+                    <p>Usuarios Asignados: {{ $tareaEnProceso->users->count()}} / {{ $tareaEnProceso->personas }}</p>
+                </a>
+            @empty
+                <p class="text-center font-bold text-white uppercase">No hay tareas en proceso</p>
+            @endforelse
+        </div>
+    </div>
+
+    <div class=" col-start-1 col-span-8 bg-green-moss rounded-2xl shadow-xl">
+        <div class="bg-green-meadow w-full p-5 flex flex-row gap-2 items-center text-white rounded-t-2xl">
+            <h1 class="text-2xl font-bold">Control de Tareas Terminadas</h1>
+        </div>
+
+        <div class="flex flex-col gap-5 p-5 text-xs md:text-xl">
+            @forelse ($tareasTerminadas as $tareaTerminada)
+                <a href="{{ route('planSemanal.tareaLote.show',$tareaTerminada) }}"
+                    class="flex flex-row gap-5 font-bold text-white bg-green-meadow p-3 rounded-xl justify-between shadow-xl grow-animation-sm">
+                        <div class="flex flex-row gap-5">
+                            <i title="La tarea fue realizada" class="fa-solid fa-circle-check text-xl text-green-500"></i>
+                            <p>Tarea: {{ $tareaTerminada->tarea->tarea}} - {{ $tareaTerminada->plansemanal->finca->finca }} - S{{ $tareaTerminada->plansemanal->semana }}</p>
+                        </div>
+
+                    <p>Usuarios Asignados: {{ $tareaTerminada->users->count()}} / {{ $tareaTerminada->personas }}</p>
                 </a>
             @empty
                 <p class="text-center font-bold text-white uppercase">No hay tareas en proceso</p>

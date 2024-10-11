@@ -2,59 +2,57 @@
 
 namespace App\Livewire;
 
-use App\Models\AsignacionDiariaCosecha;
 use Livewire\Component;
 use App\Models\EmpleadoFinca;
+use Illuminate\Support\Carbon;
+use App\Models\AsignacionDiaria;
 use App\Models\UsuarioTareaLote;
 use App\Models\EmpleadoIngresado;
-use App\Models\UsuarioTareaCosecha;
-use Carbon\Carbon;
 
-class AsignarEmpleadosCosecha extends Component
+class AsignarEmpleadosTarea extends Component
 {
     public $plansemanalfinca;
     public $lote;
     public $tarea;
-    public $tarealotecosecha;
+    public $tarealote;
     public $hoy;
+    public $alertas;
     public $ingresos;
+    public $cuposMinimos;
     public $asignados;
-    public $rendimiento = 960;
-    public $total = 0;
+    
     protected $listeners = ['AsignarEmpleado','DesasignarEmpleado','cerrarAsignacion'];
-
-
+    
     public function mount()
     {
-       $this->actualizarIngresos();
+        $this->cuposMinimos = ceil($this->tarealote->horas / 12);
+        $this->actualizarIngresos();
     }
 
     public function AsignarEmpleado(EmpleadoFinca $empleado)
     {
-        UsuarioTareaCosecha::create([
+        if($this->tarealote->cupos === 0){
+            $this->addError('error', 'No hay cupos disponibles para esta tarea.');
+            $this->actualizarIngresos();
+            return;
+        }
+        UsuarioTareaLote::create([
             'usuario_id' => $empleado->id,
-            'tarealotecosecha_id' => $this->tarealotecosecha->id,
+            'tarealote_id' => $this->tarealote->id,
             'nombre' => $empleado->first_name,
             'codigo' => $empleado->last_name
         ]);
-        $this->total = $this->tarealotecosecha->users->count() * 960;
+        $this->tarealote->cupos--;
+        $this->tarealote->save();
         $this->actualizarIngresos();
     }
-
-    public function DesasignarEmpleado(UsuarioTareaCosecha $asignacion)
+    
+    public function DesasignarEmpleado(UsuarioTareaLote $asignacion)
     {
         $asignacion->delete();
-        $this->total = $this->tarealotecosecha->users->count() * 960;
+        $this->tarealote->cupos++;
+        $this->tarealote->save();
         $this->actualizarIngresos();
-    }
-
-    public function cerrarAsignacion()
-    {
-        AsignacionDiariaCosecha::create([
-            'tarea_lote_cosecha_id' => $this->tarealotecosecha->id
-        ]);
-
-        return redirect()->route('planSemanal.tareasCosechaLote',[$this->lote, $this->plansemanalfinca])->with('success','Asignación cerrada correctamente');
     }
 
     private function actualizarIngresos()
@@ -69,7 +67,7 @@ class AsignarEmpleadosCosecha extends Component
                 ->get();
 
             $horas_totales = $asignaciones->sum(function ($asignacion) {
-                return $asignacion->tarea_lote->horas / $asignacion->tarea_lote->users->count();
+                return $asignacion->tarea_lote->horas / ($asignacion->tarea_lote->users->count());
             });
 
             $ingreso->asignaciones = $asignaciones;
@@ -78,16 +76,31 @@ class AsignarEmpleadosCosecha extends Component
             return $ingreso;
         });
 
-        $this->asignados = $this->tarealotecosecha->users()->whereDate('created_at',$hoy)->get(); 
+        $this->asignados = $this->tarealote->users; 
         $asignadosIds = $this->asignados->pluck('usuario_id')->toArray();
         $this->ingresos = $this->ingresos->filter(function($ingreso) use ($asignadosIds) {
             return !in_array($ingreso->emp_id, $asignadosIds);
         });
 
+
     }
 
+    public function cerrarAsignacion()
+    {
+        if($this->tarealote->users->count() < $this->cuposMinimos){
+            $this->addError('error', 'En número de personas a asignar minima es: '. $this->cuposMinimos);
+            return;
+        }
+
+        AsignacionDiaria::create([
+            'tarea_lote_id' => $this->tarealote->id
+        ]);
+
+        return redirect()->route('planSemanal.tareasLote',[$this->lote,$this->plansemanalfinca])->with('success','Asignación Creada Correctamente');
+    }
+    
     public function render()
     {
-        return view('livewire.asignar-empleados-cosecha');
+        return view('livewire.asignar-empleados-tarea');
     }
 }

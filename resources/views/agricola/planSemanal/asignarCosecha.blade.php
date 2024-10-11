@@ -8,6 +8,6 @@ Asignación de Empleados {{ $tarea->tarea }}, Semana {{ $plansemanalfinca->seman
 
 <x-alertas />
 
-<livewire:asignar-empleados-cosecha :plansemanalfinca="$plansemanalfinca" :tarea="$tarea" :lote="$lote" :tarealotecosecha="$tarealotecosecha" :ingresos="$ingresos"/>
+<livewire:asignar-empleados-cosecha :plansemanalfinca="$plansemanalfinca" :tarea="$tarea" :lote="$lote" :tarealotecosecha="$tarealotecosecha"/>
 
 @endsection

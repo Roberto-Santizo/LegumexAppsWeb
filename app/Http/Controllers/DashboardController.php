@@ -63,12 +63,19 @@ class DashboardController extends Controller
 
         $tareas = TareasLote::all();
 
-        $tareas = $tareas->filter(function($tarea){
+        $tareasEnProceso = $tareas->filter(function($tarea){
             if($tarea->asignacion && !$tarea->cierre){
                 return $tarea;
             }
         });
 
-        return view('dashboards.agricola',['planes' => $planes,'usuarios' => $usuarios, 'semana_actual' => $semana_actual, 'tareas' => $tareas]);
+        $tareasTerminadas = $tareas->filter(function($tarea){
+            if($tarea->cierre)
+            {
+                return $tarea;
+            }
+        });
+
+        return view('dashboards.agricola',['planes' => $planes,'usuarios' => $usuarios, 'semana_actual' => $semana_actual, 'tareasEnProceso' => $tareasEnProceso, 'tareasTerminadas' => $tareasTerminadas]);
     }
 }

@@ -2,6 +2,11 @@
     @forelse ($tareas as $tarea)
         <div class="mt-5 flex flex-col md:flex-row justify-between p-5 rounded-xl shadow-xl border-l-8 border-green-500 ">
             <div class="text-xs md:text-xl">
+                @if($successMessage && $successTareaLoteId === $tarea->id)
+                    <div class="border border-green-500 bg-green-100 text-green-700 font-bold uppercase p-2 mt-5 mb-5  text-sm flex flex-row gap-2 items-center">
+                        {{ $successMessage }}
+                    </div>
+                @endif
                 <p><span class="uppercase font-bold">Nombre del Lote:</span> {{ $tarea->lote->nombre }}</p>
                 <p><span class="uppercase font-bold">Semana:</span> {{ $plansemanalfinca->semana }}</p>
                 <p><span class="uppercase font-bold">Tarea:</span> {{ $tarea->tarea->tarea }}</p>
@@ -65,11 +70,11 @@
                             </div>
                         @else
                         <div class="mt-5">
-                            <form action="{{ route('planSemanal.storediario') }}" method="POST">
-                                @csrf
-                                <input type="hidden" value="{{ $tarea->id }}" name="tarea_lote_id">
-                                <button type="submit"><i class="fa-solid fa-circle-check text-2xl hover:text-gray-600"></i></button>
-                            </form>
+
+                            <button wire:click="$dispatch('terminar',{{ $tarea->id }})">
+                                <i title="Finalizar" class="fa-solid fa-circle-check text-2xl cursor-pointer hover:text-gray-500"></i>
+                            </button>
+
                         </div>
                         @endif
                     @else
@@ -80,7 +85,7 @@
 
                 @if ($tarea->extendido)
                     <div class="bg-green-500 text-white font-bold p-2 rounded-xl">
-                        <p>{{ $tarea->ingresados }} / {{ ($tarea->personas - $tarea->cupos) }}</p>
+                        <p>{{ $tarea->ingresados }} / {{ ($tarea->users->count()) }}</p>
                     </div>
                 @endif
 
@@ -117,6 +122,10 @@
                     }
                 });
             });
+
+            Livewire.on('terminar', tareaId =>{
+                Livewire.dispatch('terminarTarea', {tarea: tareaId});
+            })
         </script>
     @endpush
 </div>

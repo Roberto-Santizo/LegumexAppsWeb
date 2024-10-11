@@ -2,8 +2,13 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Factories\HasFactory;
+use App\Models\Lote;
+use App\Models\Tarea;
+use Illuminate\Support\Carbon;
+use App\Models\UsuarioTareaCosecha;
+use App\Models\AsignacionDiariaCosecha;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 class TareaLoteCosecha extends Model
 {
@@ -29,4 +34,15 @@ class TareaLoteCosecha extends Model
     {
         return $this->hasMany(UsuarioTareaCosecha::class, 'tarealotecosecha_id','id');
     }
+
+    public function asignaciones()
+    {
+        return $this->hasMany(AsignacionDiariaCosecha::class, 'tarea_lote_cosecha_id', 'id');
+    }
+
+    public function cierres()
+    {
+        return $this->hasMany(CierreTareaLoteCosecha::class, 'tarea_lote_cosecha_id','id');
+    }
 }
+
