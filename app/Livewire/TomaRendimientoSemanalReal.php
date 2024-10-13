@@ -3,6 +3,8 @@
 namespace App\Livewire;
 
 use Livewire\Component;
+use Illuminate\Support\Carbon;
+use Illuminate\Support\Facades\DB;
 
 class TomaRendimientoSemanalReal extends Component
 {
@@ -11,12 +13,24 @@ class TomaRendimientoSemanalReal extends Component
     public $tarealotecosecha;
     public $asignaciones;
     public $sumaLibrasFinca;
-    public $resumenPorEmpleado;
+    public $sumaPorFecha;
     
     public function mount()
     {
         // Agrupar las asignaciones por código
-        $this->asignaciones = $this->tarealotecosecha->users;
+        $this->asignaciones = $this->tarealotecosecha->users()->orderBy('codigo')->get();
+
+        $this->sumaLibrasFinca = $this->asignaciones->sum('libras_asignacion');
+
+        $this->sumaPorFecha = $this->tarealotecosecha->users()
+            ->select(DB::raw('DATE(created_at) as fecha'), DB::raw('SUM(libras_asignacion) as total_libras'))
+            ->groupBy(DB::raw('DATE(created_at)'))
+            ->get();
+
+        $this->sumaPorFecha = $this->sumaPorFecha->map(function($fecha){
+            $fecha->fecha = Carbon::parse($fecha->fecha)->locale('es')->isoFormat('dddd D [de] MMMM [de] YYYY');
+            return $fecha;
+        });
 
     }
     public function render()
