@@ -28,7 +28,9 @@
 
             @if (!$tarea->cierre)
                 <p class="text-xl"><span class="font-bold">Horas Empleadas:</span> {{ $totalHoras }} horas {{ $totalMinutosRestantes }} minutos</p>
-                
+                <p class="text-xl"><span class="font-bold">Horas Rendimiento Teórico:</span> {{ $tarea->horas }}</p>
+                <p class="text-xl"><span class="font-bold">Horas Empleadas Totales:</span> {{ $totalHoras * $tarea->users->count(); }} horas {{ $totalMinutosRestantes  * $tarea->users->count(); }} minutos</p>
+                <p class="text-xl"><span class="font-bold">Horas Empleadas Desde Asignación:</span> {{ $totalHoras }} horas {{ $totalMinutosRestantes }} minutos</p>
             @endif
         </div>
     </div>

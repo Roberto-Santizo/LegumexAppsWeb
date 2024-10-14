@@ -22,7 +22,7 @@
             @elseif ($ot->estado_id == 2)
                 <x-formulario-o-t2 :ot="$ot" />
             @endif
-            <input type="submit" value="Guardar Orden de Trabajo" class="btn">
+            <input type="submit" value="Guardar Orden de Trabajo" class="btn bg-orange-500 hover:bg-orange-600 mt-10">
         </form>
     </div>
 

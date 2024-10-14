@@ -35,7 +35,7 @@
                     <canvas id="signature-pad-3" class="border border-black w-80"></canvas>    
                     <div class="flex flex-col items-center">
                         <h4 class="text-xl font-bold">Jefe de mantenimiento</h4>
-                        <div id="clear-button-3" class="btn"><span>Limpiar</span></div>
+                        <div id="clear-button-3" class="btn bg-orange-500 hover:bg-orange-600"><span>Limpiar</span></div>
                     </div>
                 </div> 
             </div>

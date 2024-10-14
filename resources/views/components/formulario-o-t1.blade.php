@@ -49,7 +49,7 @@
                     <div class="clear_btn flex flex-col items-center">
                         <h4 class="text-xl font-bold">Firma Mecanico</h4>
                         <div id="clear-button-2"
-                            class="btn">
+                            class="btn bg-orange-500 hover:bg-orange-600">
                             <span>Limpiar</span></div>
                     </div>
                     <input type="hidden" id="firma" name="firma_mecanico">
