@@ -214,7 +214,7 @@ Dashboard Agricola
                     <p>Usuarios Asignados: {{ $tarea->users->count()}} / {{ $tarea->personas }}</p>
                 </a>
             @empty
-                <p class="text-center font-bold text-white uppercase">No hay tareas en proceso</p>
+                <p class="text-center font-bold text-white uppercase">No hay tareas realizadas esta semana</p>
             @endforelse
         </div>
     </div>

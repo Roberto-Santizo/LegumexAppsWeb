@@ -70,11 +70,15 @@ class DashboardController extends Controller
         });
 
         $tareasRealizadas = $tareas->filter(function($tarea){
-            if($tarea->cierre){
+            return $tarea->cierre;
+        });
+
+        $tareasRealizadasEnSemana = $tareasRealizadas->filter(function($tarea) use ($semana_actual) {
+            if($tarea->cierre && $tarea->cierre->created_at->weekOfYear == $semana_actual){
                 return $tarea;
             }
         });
 
-        return view('dashboards.agricola',['planes' => $planes,'usuarios' => $usuarios, 'semana_actual' => $semana_actual, 'tareasEnProceso' => $tareasEnProceso, 'tareasRealizadas' => $tareasRealizadas]);
+        return view('dashboards.agricola',['planes' => $planes,'usuarios' => $usuarios, 'semana_actual' => $semana_actual, 'tareasEnProceso' => $tareasEnProceso, 'tareasRealizadas' => $tareasRealizadasEnSemana]);
     }
 }

@@ -83,7 +83,7 @@ Crear orden de trabajo
                         <p class="text-xs mt-5">(Tome el menor número de fotos posibles)</p>
                     </div>
 
-                    <div class="btn"
+                    <div class="btn bg-orange-500 hover:bg-orange-600"
                         id="upload_button">
                         <p>Guardar Fotos</p>
                         <x-loading-icon />
