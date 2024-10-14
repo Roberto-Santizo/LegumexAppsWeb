@@ -23,10 +23,9 @@ class ReporteController extends Controller
         return Excel::download(new PlanillaSemanalExport($planSemanalFinca), $fileName);
     }
 
-    public function ControlPresupuesto()
+    public function ControlPresupuesto($semana)
     {
-        $semanaActual = Carbon::now()->weekOfYear();
-        $fileName = 'Control Tareas ' . $semanaActual .'.xlsx';
-        return Excel::download(new PlanControlPresupuestoExport, $fileName);
+        $fileName = 'Control Tareas ' . $semana .'.xlsx';
+        return Excel::download(new PlanControlPresupuestoExport($semana), $fileName);
     }
 }

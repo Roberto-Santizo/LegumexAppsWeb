@@ -17,12 +17,19 @@ class PlanControlPresupuestoExport implements FromCollection, WithHeadings, With
     /**
      * @return \Illuminate\Support\Collection
      */
+    protected $semana;
+
+    public function __construct($semana)
+    {
+        $this->semana = $semana;
+    }
+
 
     public function collection()
     {
         $rows = collect();
         Carbon::setLocale('es');
-        $planes = PlanSemanalFinca::where('semana', Carbon::now()->weekOfYear())->get();
+        $planes = PlanSemanalFinca::where('semana', $this->semana)->get();
 
         $planes->map(function ($plan) use($rows) {
             // Inicializa las colecciones necesarias

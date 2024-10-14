@@ -99,7 +99,7 @@ Route::group(['middleware' => ['auth', 'role:admin|adminagricola'], 'prefix' => 
     // Reporteria
     Route::get('/exportar-plansemanal/{planSemanalFinca}', [ReporteController::class, 'PlanSemanal'])->name('reporte.PlanSemanal');
     Route::get('/exportar-planillasemanal/{planSemanalFinca}', [ReporteController::class, 'PlanillaSemanal'])->name('reporte.PlanillaSemanal');
-    Route::get('/exportar-control-presupuesto', [ReporteController::class, 'ControlPresupuesto'])->name('reporte.ControlPresupuesto');
+    Route::get('/exportar-control-presupuesto/{semana}', [ReporteController::class, 'ControlPresupuesto'])->name('reporte.ControlPresupuesto');
     
     //Usuarios Fincas
     Route::get('/finca/ingresos', [UsuariosFincaController::class, 'index'])->name('usuariosFincas');
