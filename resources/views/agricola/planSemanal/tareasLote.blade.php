@@ -11,7 +11,7 @@ Plan Semanal Lote - {{ $lote->nombre }} Semana {{ $plansemanalfinca->semana }}
 
 <div class="bg-white p-6 rounded-lg shadow-lg mt-10 container mx-auto">
 
-    <livewire:mostrar-tareas-lote :tareas="$tareas" :plansemanalfinca="$plansemanalfinca" :lote="$lote"/>
+    <livewire:mostrar-tareas-lote  :plansemanalfinca="$plansemanalfinca" :lote="$lote"/>
     
 </div>
 

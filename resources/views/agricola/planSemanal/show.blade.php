@@ -1,7 +1,7 @@
 @extends('layouts.agricola')
 
 @section('titulo')
-Plan Semanal {{ $planSemanal->finca->finca }} Semana - {{ $planSemanal->semana }}
+Plan Semanal {{ $plansemanalfinca->finca->finca }} Semana - {{ $plansemanalfinca->semana }}
 @endsection
 
 @section('contenido')
@@ -21,13 +21,16 @@ Plan Semanal {{ $planSemanal->finca->finca }} Semana - {{ $planSemanal->semana }
                 <th scope="col" class="encabezado">
                     Personas</th>
                 @can('create plan semanal')
-                    <th scope="col" class="encabezado">
-                        Presupuesto</th>
+                <th scope="col" class="encabezado">
+                    Presupuesto</th>
                 @endcan
                 <th scope="col" class="encabezado">
                     Horas</th>
+
                 <th scope="col" class="encabezado">
                     Ver tareas asignadas</th>
+                <th scope="col" class="encabezado">
+                    Control de Tareas</th>
             </tr>
         </thead>
         <tbody class="tabla-body">
@@ -36,13 +39,18 @@ Plan Semanal {{ $planSemanal->finca->finca }} Semana - {{ $planSemanal->semana }
                 <td class="campo">{{ $lote->lote->nombre }}</td>
                 <td class="campo">{{ $lote->total_personas }}</td>
                 @can('create plan semanal')
-                    <td class="campo">Q {{ $lote->total_presupuesto }}</td>
+                <td class="campo">Q {{ $lote->total_presupuesto }}</td>
                 @endcan
                 <td class="campo">{{ $lote->total_horas }}</td>
                 <td class="campo">
-                    <a class="btn bg-green-moss hover:bg-green-meadow" href="{{ route('planSemanal.tareasLote',[$lote->lote,$planSemanal]) }}">
+                    <a class="btn bg-green-moss hover:bg-green-meadow"
+                        href="{{ route('planSemanal.tareasLote',[$lote->lote,$plansemanalfinca]) }}">
                         Tareas de lote
                     </a>
+                </td>
+
+                <td class="campo">
+                    <p class="bg-sky-500 rounded-xl inline-block p-2 text-white font-bold">{{ $lote->total_terminadas }} / {{  $lote->total_asignadas }}</p>
                 </td>
             </tr>
             @endforeach

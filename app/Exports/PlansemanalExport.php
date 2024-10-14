@@ -41,8 +41,8 @@ class PlansemanalExport implements FromCollection, WithHeadings, WithMultipleShe
                 }
                 
                 $rows->push([
-                    'FINCA' => $this->plansemanal->semana,
-                    'SEMANA CALENDARIO' => $this->plansemanal->finca->finca,
+                    'FINCA' => $this->plansemanal->finca->finca,
+                    'SEMANA CALENDARIO' => $this->plansemanal->semana,
                     'LOTE' => $tarea->lote->nombre,
                     'CODIGO TAREA' => $tarea->tarea->code,
                     'TAREA' => $tarea->tarea->tarea,

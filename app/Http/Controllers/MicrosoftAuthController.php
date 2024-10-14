@@ -13,7 +13,7 @@ class MicrosoftAuthController extends Controller
 {
     public function redirectToMicrosoft(){
 
-        return Socialite::driver('microsoft')->scopes(['Files.read','Files.Read.All','Files.ReadWrite','Files.ReadWrite.All','openid','profile','Sites.Read.All','Sites.ReadWrite.All','User.Read','email','offline_access'])->redirect();
+        return Socialite::driver('microsoft')->scopes(['Files.read','Files.Read.All','Files.ReadWrite','Files.ReadWrite.All','openid','profile','Sites.Read.All','Sites.ReadWrite.All','User.Read','email','offline_access','Mail.Send'])->redirect();
     }
 
     public function handleMicrosoftCallback(){

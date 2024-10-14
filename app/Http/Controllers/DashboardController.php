@@ -61,14 +61,20 @@ class DashboardController extends Controller
         });
         $usuarios = $usuarios->sortBy('horas_totales');
 
-        $tareas = TareasLote::all();
+        $tareas = TareasLote::orderBy('lote_id','DESC')->get();
 
-        $tareas = $tareas->filter(function($tarea){
+        $tareasEnProceso = $tareas->filter(function($tarea){
             if($tarea->asignacion && !$tarea->cierre){
                 return $tarea;
             }
         });
 
-        return view('dashboards.agricola',['planes' => $planes,'usuarios' => $usuarios, 'semana_actual' => $semana_actual, 'tareas' => $tareas]);
+        $tareasRealizadas = $tareas->filter(function($tarea){
+            if($tarea->cierre){
+                return $tarea;
+            }
+        });
+
+        return view('dashboards.agricola',['planes' => $planes,'usuarios' => $usuarios, 'semana_actual' => $semana_actual, 'tareasEnProceso' => $tareasEnProceso, 'tareasRealizadas' => $tareasRealizadas]);
     }
 }
