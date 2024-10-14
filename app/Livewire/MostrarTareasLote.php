@@ -82,7 +82,7 @@ class MostrarTareasLote extends Component
 
         $emailService = new EmailService($token);
 
-        $recipientEmail = 'soportetecnico.tejar@legumex.net'; 
+        $recipientEmail = 'dgarcia@legumex.net'; 
         $subject = 'Tarea Completada';
         $tareaContent = $tarea->tarea;
         $tareaId = $tarea->id;
