@@ -14,6 +14,7 @@ class TomaRendimientoSemanalReal extends Component
     public $asignaciones;
     public $sumaLibrasFinca;
     public $sumaPorFecha;
+    public $plantas_cosechadas;
     
     public function mount()
     {
@@ -31,6 +32,8 @@ class TomaRendimientoSemanalReal extends Component
             $fecha->fecha = Carbon::parse($fecha->fecha)->locale('es')->isoFormat('dddd D [de] MMMM [de] YYYY');
             return $fecha;
         });
+
+        $this->plantas_cosechadas = $this->tarealotecosecha->cierres()->orderBy('created_at','DESC')->first()->plantas_cosechadas;
 
     }
     public function render()

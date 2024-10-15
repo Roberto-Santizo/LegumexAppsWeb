@@ -15,6 +15,7 @@ use App\Models\UsuarioTareaLote;
 use App\Models\EmpleadoIngresado;
 use App\Exceptions\ImportExeption;
 use App\Imports\PlanSemanalImport;
+use App\Models\TareaCosecha;
 use Illuminate\Support\Facades\DB;
 use Maatwebsite\Excel\Facades\Excel;
 
@@ -36,7 +37,7 @@ class PlanSemanalFincasController extends Controller
             $tareasCierre = collect();
             $tareasExtraordinarias = collect();
             $tareasPresupuestadas = collect();
-
+            $tareasCosechasTerminadas = collect();
             // Recorre todas las tareas una sola vez
             foreach ($plan->tareasTotales as $tarea) {
                 if ($tarea->cierre) {
@@ -50,10 +51,17 @@ class PlanSemanalFincasController extends Controller
                 }
             }
 
+            foreach($plan->tareasCosechaTotales as $tarea){
+                if($tarea->cierreSemanal){
+                    $tareasCosechasTerminadas->push($tarea); 
+                }
+            }
+
             // Asigna las tareas a la propiedad del plan
             $plan->tareasRealizadas = $tareasCierre;
             $plan->tareasExtraordinarias = $tareasExtraordinarias;
             $plan->tareasPresupuestadas = $tareasPresupuestadas;
+            $plan->tareasCosechasTerminadas = $tareasCosechasTerminadas;
 
             // Calcula las tareas extraordinarias terminadas
             $plan->tareasExtraordinariasTerminadas = $tareasExtraordinarias->filter(function ($tarea) {
@@ -108,6 +116,8 @@ class PlanSemanalFincasController extends Controller
             ->groupBy('lote_id')
             ->get();
         $lotesCosecha = $plansemanalfinca->tareasCosechaTotales()
+                ->select('lote_id')
+                ->groupBy('lote_id')
                 ->get();
         return view('agricola.planSemanal.show', ['lotes' => $lotes, 'planSemanal' => $plansemanalfinca, 'lotesCosecha' => $lotesCosecha]);
     }
@@ -182,7 +192,7 @@ class PlanSemanalFincasController extends Controller
         return view('agricola.planSemanal.asignar',compact(['lote','plansemanalfinca','tarea','tarealote']));
     }
 
-    public function AsignarEmpleadosCosecha(Lote $lote, PlanSemanalFinca $plansemanalfinca, Tarea $tarea, TareaLoteCosecha $tarealotecosecha)
+    public function AsignarEmpleadosCosecha(Lote $lote, PlanSemanalFinca $plansemanalfinca,  TareaCosecha $tarea , TareaLoteCosecha $tarealotecosecha)
     {
         return view('agricola.planSemanal.asignarCosecha',compact(['lote','plansemanalfinca','tarea','tarealotecosecha']));
     }

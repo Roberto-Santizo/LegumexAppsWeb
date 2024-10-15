@@ -34,6 +34,12 @@
                             @endif
                         @else
                             <i title="La tarea fue realizada" class="fa-solid fa-circle-check text-2xl text-green-500 mt-5"></i>
+                            
+                            @can('create plan semanal')
+                                <a href="{{ route('planSemanal.tareasCosechaLoteRendimiento.real',[$lote,$plansemanalfinca,$tarea]) }}">
+                                    <i title="Registrar datos que entraron a planta" class="fa-solid fa-table-list text-2xl cursor-pointer hover:text-gray-500"></i>
+                                </a>
+                            @endcan
                         @endif
 
                         @can('create plan semanal')
@@ -48,12 +54,6 @@
 
                     @else
                         <i class="fa-solid fa-calendar-check  text-2xl text-green-500"></i> 
-
-                        @can('create plan semanal')
-                        <a href="{{ route('planSemanal.tareasCosechaLoteRendimiento.real',[$lote,$plansemanalfinca,$tarea]) }}">
-                            <i title="Registrar datos que entraron a planta" class="fa-solid fa-table-list text-2xl cursor-pointer hover:text-gray-500"></i>
-                        </a>
-                        @endcan
                     @endif
                     
                 </div>

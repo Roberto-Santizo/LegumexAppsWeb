@@ -8,6 +8,8 @@ use App\Models\Finca;
 use App\Models\Tarea;
 use App\Models\TareasLote;
 use App\Models\PlanSemanalFinca;
+use App\Models\TareaCosecha;
+use App\Models\TareaLoteCosecha;
 use Maatwebsite\Excel\Concerns\ToModel;
 use Maatwebsite\Excel\Concerns\WithHeadingRow;
 
@@ -37,20 +39,27 @@ class PlanSemanalImport implements ToModel, WithHeadingRow
 
         $tarea = Tarea::where('code', $row['tarea'])->first();
 
-        if (!$tarea) {
-            throw new ImportExeption('La tarea ' . $row['tarea'] . ' no existe');
+        if($tarea){
+            return new TareasLote([
+                'plan_semanal_finca_id' => $planSemanal->id,
+                'lote_id' => $lote->id,
+                'tarea_id' => $tarea->id,
+                'personas' => (floor($row['horas'] / 8) < 1) ? 1 : floor($row['horas'] / 8),
+                'presupuesto' => round($row['presupuesto'], 2),
+                'horas' => round($row['horas'], 2),
+                'cupos' => (floor($row['horas'] / 8) < 1) ? 1 : floor($row['horas'] / 8),
+                'horas_persona' => $row['horas'] / $row['personas'],
+            ]);
+        }else{
+            $tarea = TareaCosecha::where('code',$row['tarea'])->first();
+
+            return new TareaLoteCosecha([
+                'plan_semanal_finca_id' => $planSemanal->id,
+                'lote_id' => $lote->id,
+                'tarea_cosecha_id' => $tarea->id,
+            ]);
         }
 
-        return new TareasLote([
-            'plan_semanal_finca_id' => $planSemanal->id,
-            'lote_id' => $lote->id,
-            'tarea_id' => $tarea->id,
-            'personas' => (floor($row['horas'] / 8) < 1) ? 1 : floor($row['horas'] / 8),
-            'presupuesto' => round($row['presupuesto'], 2),
-            'horas' => round($row['horas'], 2),
-            'cupos' => (floor($row['horas'] / 8) < 1) ? 1 : floor($row['horas'] / 8),
-            'horas_persona' => $row['horas'] / $row['personas'],
-        ]);
     }
 
     private function getOrCreatePlanSemanal($finca, $numeroSemana)

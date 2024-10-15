@@ -12,6 +12,7 @@ class CierreTareaLoteCosecha extends Model
     protected $fillable = [
         'tarea_lote_cosecha_id',
         'terminado',
-        'tipo_cierre'
+        'tipo_cierre',
+        'plantas_cosechadas'
     ];
 }

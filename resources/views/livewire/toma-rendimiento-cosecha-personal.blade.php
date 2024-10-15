@@ -25,9 +25,20 @@
             {{ $errors->first('error') }}
         </div>
     @endif
-    <button wire:click="$dispatch('cerrar')" class="btn bg-green-moss hover:bg-green-meadow">
-        <p>Cerrar Asignación Diaria</p>
-    </button>
+
+    <div>
+        <form wire:submit.prevent='cerrarAsignacion'>
+            <div class="mb-5">
+                <label class="label-input" for="plantas_cosechadas">Plantas Cosechadas</label>
+                <input type="number" placeholder="Ingrese el total de plantas cosechadas" class="border p-3 w-full rounded-lg mb-5" wire:model="plantas_cosechadas" name="plantas_cosechadas" id="plantas_cosechadas">
+                @error('plantas_cosechadas')
+                    <livewire:mostrar-alerta :message="$message" />
+                @enderror
+            </div>
+            <input type="submit" value="Cerrar Asignación" class="btn bg-green-moss hover:bg-green-meadow">
+           
+        </form>
+    </div>
 </div>
 
 @push('scripts')

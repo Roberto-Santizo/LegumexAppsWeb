@@ -15,9 +15,13 @@ class TomaRendimientoCosechaPersonal extends Component
     public $plansemanalfinca;
     public $tarealotecosecha;
     public $hoy;
+    public $plantas_cosechadas;
 
     public $registro = [];
 
+    protected $rules = [
+        'plantas_cosechadas' => 'required'
+    ];
     protected $listeners = ['cerrarAsignacion'];
 
 
@@ -43,6 +47,7 @@ class TomaRendimientoCosechaPersonal extends Component
 
     public function cerrarAsignacion()
     {
+        $this->validate();
         $asignacionesConCeroLibras = $this->asignaciones->filter(function($asignacion){
             return $asignacion->libras_asignacion == 0;
         });
@@ -54,7 +59,8 @@ class TomaRendimientoCosechaPersonal extends Component
         CierreTareaLoteCosecha::create([
             'tarea_lote_cosecha_id' => $this->tarealotecosecha->id,
             'terminado' => 1,
-            'tipo_cierre' => 0
+            'tipo_cierre' => 0,
+            'plantas_cosechadas' => $this->plantas_cosechadas
         ]);
 
         return redirect()->route('planSemanal.tareasCosechaLote',[$this->lote, $this->plansemanalfinca])->with('success','Asignación cerrada correctamente');

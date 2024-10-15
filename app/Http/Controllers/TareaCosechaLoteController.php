@@ -6,6 +6,7 @@ use App\Models\Lote;
 use App\Models\Tarea;
 use Illuminate\Http\Request;
 use App\Models\PlanSemanalFinca;
+use App\Models\TareaCosecha;
 
 class TareaCosechaLoteController extends Controller
 {
@@ -13,7 +14,7 @@ class TareaCosechaLoteController extends Controller
     {
         $planes = PlanSemanalFinca::all();
         $lotes = Lote::all();
-        $tareas = Tarea::where('tarea','like','%cosecha%')->get();
+        $tareas = TareaCosecha::all();
 
         return view('agricola.tareasCosechaLote.create',['planes' => $planes, 'lotes' => $lotes, 'tareas' => $tareas]);
     }

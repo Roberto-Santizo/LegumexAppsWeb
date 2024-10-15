@@ -12,12 +12,12 @@ class CrearTareaCosechaLote extends Component
     public $lotes;
     public $tareas;
 
-    public $tarea_id;
+    public $tarea_cosecha_id;
     public $plan_semanal_finca_id;
     public $lote_id;
     
     protected $rules = [
-        'tarea_id' => 'required',
+        'tarea_cosecha_id' => 'required',
         'plan_semanal_finca_id' => 'required',
         'lote_id' => 'required',
     ];
@@ -29,7 +29,7 @@ class CrearTareaCosechaLote extends Component
         TareaLoteCosecha::create([
             'plan_semanal_finca_id' => $datos['plan_semanal_finca_id']['value'],
             'lote_id' => $datos['lote_id']['value'],
-            'tarea_id' => $datos['tarea_id']['value'],
+            'tarea_cosecha_id' => $datos['tarea_cosecha_id']['value'],
         ]);
 
         return redirect()->route('planSemanal')->with('success','Tarea creada Correctamente');

@@ -3,8 +3,6 @@
 namespace App\Models;
 
 use App\Models\Lote;
-use App\Models\Tarea;
-use Illuminate\Support\Carbon;
 use App\Models\UsuarioTareaCosecha;
 use App\Models\AsignacionDiariaCosecha;
 use Illuminate\Database\Eloquent\Model;
@@ -15,7 +13,7 @@ class TareaLoteCosecha extends Model
     use HasFactory;
 
     protected $fillable = [
-        'tarea_id',
+        'tarea_cosecha_id',
         'lote_id',
         'plan_semanal_finca_id'
     ];
@@ -27,7 +25,7 @@ class TareaLoteCosecha extends Model
 
     public function tarea()
     {
-        return $this->belongsTo(Tarea::class, 'tarea_id','id');
+        return $this->belongsTo(TareaCosecha::class, 'tarea_cosecha_id','id');
     }
 
     public function users()
@@ -43,6 +41,11 @@ class TareaLoteCosecha extends Model
     public function cierres()
     {
         return $this->hasMany(CierreTareaLoteCosecha::class, 'tarea_lote_cosecha_id','id');
+    }
+
+    public function cierreSemanal()
+    {
+        return $this->hasOne(CierreTareaLoteCosecha::class, 'tarea_lote_cosecha_id','id')->where('tipo_cierre',1);
     }
 }
 

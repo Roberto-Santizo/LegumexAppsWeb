@@ -2,8 +2,8 @@
     <div class="shadow-xl p-5 rounded-xl flex flex-row justify-between items-center">
         <div>
             <h2 class="text-3xl font-bold">Información de Cosecha de Semana {{ $plansemanalfinca->semana }}</h2>
-            {{-- <p class="text-xl">Libras totales reportadas en finca: <span class="font-bold">{{ $sumaLibrasFinca }} lbs</span></p> --}}
             <p class="text-xl">Total de Personas que Cosecharon: <span class="font-bold">{{ $tarealotecosecha->users->count() }}</span></p>
+            <p class="text-xl">Plantas Cosechadas: <span class="font-bold">{{ $plantas_cosechadas }}</span></p>
             <div class="mt-5">
                 <h2 class="text-2xl font-bold">Días cosechados: </h2>
                 @foreach ($sumaPorFecha as $fecha)

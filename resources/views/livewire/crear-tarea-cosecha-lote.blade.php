@@ -34,8 +34,8 @@
             </div>
 
             <div class="mb-5">
-                <label for="tarea_id" class="label-input">Seleccione la cosecha </label>
-                <select wire:model="tarea_id" name="tarea_id" class="w-full p-4 rounded bg-gray-50 select">
+                <label for="tarea_cosecha_id" class="label-input">Seleccione la cosecha </label>
+                <select wire:model="tarea_cosecha_id" name="tarea_cosecha_id" class="w-full p-4 rounded bg-gray-50 select">
                     <option value="" class="opcion-default" selected >---SELECCIONE UNA OPCIÓN---</option>
                     @foreach ($tareas as $tarea)
                     <option value="{{ $tarea->id }}">
@@ -43,7 +43,7 @@
                     </option>
                     @endforeach
                 </select>
-                @error('tarea_id')
+                @error('tarea_cosecha_id')
                     <livewire:mostrar-alerta :message="$message" />
                 @enderror
             </div>
