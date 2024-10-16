@@ -95,37 +95,39 @@
         <p class="text-center font-bold uppercase">No existen tareas atrasadas</p>
     @endforelse
 
-    @push('scripts')
-        <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-
-        <script>
-            Livewire.on('eliminar', tareaId => {
-                Swal.fire({
-                title: "¿Deseas eliminar esta tarea?",
-                text: "Una vez eliminada la tarea no se podrá recuperar",
-                icon: "warning",
-                showCancelButton: true,
-                confirmButtonColor: "#3085d6",
-                cancelButtonColor: "#d33",
-                confirmButtonText: "¡Si, eliminar!",
-                cancelButtonText: "Cancelar"
-                }).then((result) => {
-                    if (result.isConfirmed) {
-                        
-                        Livewire.dispatch('eliminarTarea', {tarea: tareaId});
-
-                        Swal.fire({
-                            title: "¡Se eliminó la tarea!",
-                            text: "La tarea ha sido eliminada correctamente",
-                            icon: "success"
-                        });
-                    }
-                });
-            });
-
-            Livewire.on('terminar', tareaId =>{
-                Livewire.dispatch('terminarTarea', {tarea: tareaId});
-            })
-        </script>
-    @endpush
 </div>
+
+
+@push('scripts')
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+<script>
+    Livewire.on('eliminar', tareaId => {
+        Swal.fire({
+        title: "¿Deseas eliminar esta tarea?",
+        text: "Una vez eliminada la tarea no se podrá recuperar",
+        icon: "warning",
+        showCancelButton: true,
+        confirmButtonColor: "#3085d6",
+        cancelButtonColor: "#d33",
+        confirmButtonText: "¡Si, eliminar!",
+        cancelButtonText: "Cancelar"
+        }).then((result) => {
+            if (result.isConfirmed) {
+                
+                Livewire.dispatch('eliminarTarea', {tarea: tareaId});
+
+                Swal.fire({
+                    title: "¡Se eliminó la tarea!",
+                    text: "La tarea ha sido eliminada correctamente",
+                    icon: "success"
+                });
+            }
+        });
+    });
+
+    Livewire.on('terminar', tareaId =>{
+        Livewire.dispatch('terminarTarea', {tarea: tareaId});
+    })
+</script>
+@endpush

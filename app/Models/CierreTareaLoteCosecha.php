@@ -13,6 +13,9 @@ class CierreTareaLoteCosecha extends Model
         'tarea_lote_cosecha_id',
         'terminado',
         'tipo_cierre',
-        'plantas_cosechadas'
+        'plantas_cosechadas',
+        'libras_total_finca',
+        'libras_total_planta',
+        'asignacion_diaria_cosechas_id'
     ];
 }

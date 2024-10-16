@@ -12,9 +12,7 @@ return new class extends Migration
     public function up(): void
     {
         Schema::table('cierre_tarea_lote_cosechas', function (Blueprint $table) {
-            $table->float('plantas_cosechadas');
-            $table->float('libras_total_finca')->nullable();
-            $table->float('libras_total_planta')->nullable();
+            $table->foreignId('asignacion_diaria_cosechas_id')->references('id')->on('asignacion_diaria_cosechas');
         });
     }
 
@@ -24,9 +22,8 @@ return new class extends Migration
     public function down(): void
     {
         Schema::table('cierre_tarea_lote_cosechas', function (Blueprint $table) {
-            $table->dropColumn('plantas_cosechadas');
-            $table->dropColumn('libras_total_finca');
-            $table->dropColumn('libras_total_planta');
+            $table->dropForeign('cierre_tarea_lote_cosechas_asignacion_diaria_cosechas_id_foreign');
+            $table->dropColumn('asignacion_diaria_cosechas_id');
         });
     }
 };

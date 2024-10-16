@@ -5,7 +5,6 @@ namespace App\Livewire;
 use Livewire\Component;
 use Illuminate\Support\Carbon;
 use App\Models\UsuarioTareaCosecha;
-use App\Models\AsignacionDiariaCosecha;
 use App\Models\CierreTareaLoteCosecha;
 
 class TomaRendimientoCosechaPersonal extends Component
@@ -56,11 +55,19 @@ class TomaRendimientoCosechaPersonal extends Component
             $this->addError('error', 'Registre las libras de todos los usuarios');
             return;
         }
+
+        $totalLibrasPorAsignacionDiaria = $this->tarealotecosecha->users()->whereDate('created_at',Carbon::today())->get()->sum('libras_asignacion');
+        $ultimaAsignacionSinCierre= $this->tarealotecosecha->asignaciones->sortByDesc('created_at')->first();
+
+
         CierreTareaLoteCosecha::create([
             'tarea_lote_cosecha_id' => $this->tarealotecosecha->id,
             'terminado' => 1,
             'tipo_cierre' => 0,
-            'plantas_cosechadas' => $this->plantas_cosechadas
+            'plantas_cosechadas' => $this->plantas_cosechadas,
+            'libras_total_finca' => $totalLibrasPorAsignacionDiaria,
+            'libras_total_planta' => $totalLibrasPorAsignacionDiaria,
+            'asignacion_diaria_cosechas_id' => $ultimaAsignacionSinCierre->id
         ]);
 
         return redirect()->route('planSemanal.tareasCosechaLote',[$this->lote, $this->plansemanalfinca])->with('success','Asignación cerrada correctamente');

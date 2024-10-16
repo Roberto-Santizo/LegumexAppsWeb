@@ -8,6 +8,6 @@
 
 <x-alertas />
 
-<livewire:toma-rendimiento-semanal-real :lote="$lote" :plansemanalfinca="$plansemanalfinca" :tarealotecosecha="$tarealotecosecha"/>
+ <livewire:toma-rendimiento-diario-real :lote="$lote" :plansemanalfinca="$plansemanalfinca" :tarealotecosecha="$tarealotecosecha"/>
 
 @endsection

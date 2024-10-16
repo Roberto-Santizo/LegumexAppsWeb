@@ -12,4 +12,9 @@ class AsignacionDiariaCosecha extends Model
     protected $fillable = [
         'tarea_lote_cosecha_id'
     ];
+
+    public function cierre()
+    {
+        return $this->hasOne(CierreTareaLoteCosecha::class, 'asignacion_diaria_cosechas_id','id');
+    }
 }
