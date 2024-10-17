@@ -168,9 +168,8 @@ class PlanSemanalFincasController extends Controller
 
     public function tareasCosechaLote(Lote $lote,PlanSemanalFinca $plansemanalfinca)
     {
-        $tareas = $plansemanalfinca->tareasCosechaPorLote($lote->id)
-            ->get();
-        return view('agricola.planSemanal.tareasLoteCosecha', ['lote' => $lote, 'plansemanalfinca' => $plansemanalfinca,'tareas' => $tareas, 'semanaActual' => Carbon::now()->weekOfYear]);
+        $tarea = $plansemanalfinca->tareaCosechaPorLote($lote->id)->with('asignaciones.cierre')->with('cierres')->first();
+        return view('agricola.planSemanal.tareasLoteCosecha', ['lote' => $lote, 'plansemanalfinca' => $plansemanalfinca,'tarea' => $tarea, 'semanaActual' => Carbon::now()->weekOfYear]);
     }
 
     public function tareasCosechaLoteRendimiento(Lote $lote, PlanSemanalFinca $plansemanalfinca, TareaLoteCosecha $tarealotecosecha)

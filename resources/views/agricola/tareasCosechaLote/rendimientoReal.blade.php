@@ -7,7 +7,11 @@
 @section('contenido')
 
 <x-alertas />
-
- <livewire:toma-rendimiento-diario-real :lote="$lote" :plansemanalfinca="$plansemanalfinca" :tarealotecosecha="$tarealotecosecha"/>
+@if ($tarealotecosecha->tarea->cultivo->id === 1)
+    <livewire:toma-rendimiento-diario-real-brocoli :lote="$lote" :plansemanalfinca="$plansemanalfinca" :tarealotecosecha="$tarealotecosecha"/>
+@elseif ($tarealotecosecha->tarea->cultivo->id === 2)
+    <livewire:toma-rendimiento-diario-real-ejote />
+@endif
+ 
 
 @endsection

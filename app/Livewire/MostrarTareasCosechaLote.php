@@ -3,29 +3,37 @@
 namespace App\Livewire;
 
 use App\Models\CierreTareaLoteCosecha;
+use App\Models\CierreTareaLoteCosechaSemanal;
 use Livewire\Component;
 use App\Models\TareaLoteCosecha;
 use Carbon\Carbon;
 
 class MostrarTareasCosechaLote extends Component
 {
-    public $tareas;
+    public $tarea;
     public $plansemanalfinca;
     public $lote;
     public $successTareaLoteId;
     public $semanaActual; 
     public $successMessage;
+    public $flagLibrasPlanta;
 
     protected $listeners = ['eliminarTarea','terminarTarea'];
 
 
+    public function mount()
+    {
+        $this->flagLibrasPlanta = $this->tarea->asignaciones->every(function ($asignacion) {
+            return $asignacion->cierre && isset($asignacion->cierre->libras_total_planta);
+        });
+
+    }
+
     
     public function terminarTarea(TareaLoteCosecha $tarea)
     {
-        $cierre = CierreTareaLoteCosecha::create([
+        $cierre = CierreTareaLoteCosechaSemanal::create([
             'tarea_lote_cosecha_id' => $tarea->id,
-            'terminado' => 1,
-            'tipo_cierre' => 1
         ]);
 
         $this->successTareaLoteId = $tarea->id;
@@ -44,28 +52,6 @@ class MostrarTareasCosechaLote extends Component
     
     public function render()
     {
-        $hoy = Carbon::today();
-        $this->tareas = $this->tareas->map(function($tarea) use ($hoy){
-            $asignaciones = $tarea->asignaciones();
-            $cierres = $tarea->cierres();
-            $tarea->asignacionDiaria = false;
-            $tarea->cierreDiario = false;
-            $tarea->cierreSemanal = false;
-            if($asignaciones->whereDate('created_at',$hoy)->exists()){
-                $tarea->asignacionDiaria = true;
-            }
-
-            if($cierres->whereDate('created_at',$hoy)->exists()){
-                $tarea->cierreDiario = true;
-            }
-
-            if($cierres->whereDate('created_at',$hoy)->where('tipo_cierre',1)->exists()){
-                $tarea->cierreSemanal = true;
-            }
-            
-            return $tarea;
-        });
-
         return view('livewire.mostrar-tareas-cosecha-lote');
     }
 }

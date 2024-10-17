@@ -66,7 +66,6 @@ class TomaRendimientoCosechaPersonal extends Component
             'tipo_cierre' => 0,
             'plantas_cosechadas' => $this->plantas_cosechadas,
             'libras_total_finca' => $totalLibrasPorAsignacionDiaria,
-            'libras_total_planta' => $totalLibrasPorAsignacionDiaria,
             'asignacion_diaria_cosechas_id' => $ultimaAsignacionSinCierre->id
         ]);
 

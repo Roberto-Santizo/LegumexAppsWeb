@@ -30,15 +30,16 @@ Route::group(['middleware' => ['auth', 'role:admin|adminagricola|auxalameda'], '
 
     Route::get('/finca/plan-semanal/lotes/{lote}/{plansemanalfinca}/cosecha/tareas', [PlanSemanalFincasController::class, 'tareasCosechaLote'])->name('planSemanal.tareasCosechaLote');
     Route::get('/finca/plan-semanal/lotes/{lote}/{plansemanalfinca}/cosecha/{tarealotecosecha}/rendimiento', [PlanSemanalFincasController::class, 'tareasCosechaLoteRendimiento'])->name('planSemanal.tareasCosechaLoteRendimiento');
-    Route::get('/finca/plan-semanal/lotes/{lote}/{plansemanalfinca}/cosecha/{tarealotecosecha}/rendimiento/real', [PlanSemanalFincasController::class, 'tareasCosechaLoteRendimientoReal'])->name('planSemanal.tareasCosechaLoteRendimiento.real');
-    
+
 
 });
 
 Route::group(['middleware' => ['auth', 'role:admin|adminagricola'], 'prefix' => 'agricola'], function() {
     Route::get('/finca/plan-semanal/create', [PlanSemanalFincasController::class, 'create'])->name('planSemanal.create'); 
 
-          
+    Route::get('/finca/plan-semanal/lotes/{lote}/{plansemanalfinca}/cosecha/{tarealotecosecha}/rendimiento/real', [PlanSemanalFincasController::class, 'tareasCosechaLoteRendimientoReal'])->name('planSemanal.tareasCosechaLoteRendimiento.real');
+    Route::get('/finca/plan-semanal/cosecha-{tarealotecosecha}/resumen', [TareaCosechaLoteController::class, 'tareaCosechaResumen'])->name('planSemanal.tareaCosechaResumen');
+    
     
     Route::get('/tarea/create', [TareasController::class, 'create'])->name('tareas.create');
     Route::get('/tarea/carga', [TareasController::class, 'carga'])->name('tareas.carga');

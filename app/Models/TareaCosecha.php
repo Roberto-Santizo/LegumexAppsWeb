@@ -9,4 +9,9 @@ class TareaCosecha extends Model
 {
     use HasFactory;
 
+    public function cultivo()
+    {
+        return $this->hasOne(Cultivo::class, 'id','cultivo_id');
+    }
+
 }

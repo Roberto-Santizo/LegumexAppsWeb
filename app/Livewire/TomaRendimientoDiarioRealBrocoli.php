@@ -6,7 +6,7 @@ use Livewire\Component;
 use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\DB;
 
-class TomaRendimientoDiarioReal extends Component
+class TomaRendimientoDiarioRealBrocoli extends Component
 {
     public $lote;
     public $plansemanalfinca;
@@ -21,21 +21,28 @@ class TomaRendimientoDiarioReal extends Component
     public $montoTotal;
     public $totalLibrasPlantaIngresado;
     public $totalLibrasFincaReportado;
-    
+    public $rendimiento; 
+
     protected $listeners = ['RegistrarLibras'];
+
     public function mount()
     {
+        $this->rendimiento = $this->tarealotecosecha->tarea->cultivo->rendimiento;
         $this->asignacion = $this->tarealotecosecha->asignaciones->sortByDesc('created_at')->first();
-        $this->totalLibrasFincaReportado = $this->asignacion->cierre->libras_total_planta;
-        $this->sumaLibrasFinca = $this->asignacion->cierre->libras_total_planta;
+        $this->totalLibrasFincaReportado = $this->asignacion->cierre->libras_total_finca;
+        $this->sumaLibrasFinca = $this->asignacion->cierre->libras_total_finca;
 
         $this->calculoDatos();
 
     }
 
     public function updatedTotalLibrasPlantaIngresado($value)
-{
-        $this->totalLibrasFincaReportado = (int) $value;
+    {
+        if($value === ''){
+            $this->totalLibrasFincaReportado = $this->asignacion->cierre->libras_total_finca;
+        }else{
+            $this->totalLibrasFincaReportado = (int) $value;
+        }
         $this->calculoDatos();
     }
 
@@ -46,7 +53,7 @@ class TomaRendimientoDiarioReal extends Component
         
         $this->pesoLbCabeza = round(($this->totalLibrasFincaReportado / $this->asignacion->cierre->plantas_cosechadas),2);
         
-        $this->rendimientoTeoricoPorPersona = round(($this->pesoLbCabeza * 960),2);
+        $this->rendimientoTeoricoPorPersona = round(($this->pesoLbCabeza * $this->rendimiento),2);
 
         $this->montoTotal = round(((($this->totalLibrasFincaReportado/ $this->rendimientoTeoricoPorPersona) * 8)*11.98),2);
 
@@ -81,7 +88,7 @@ class TomaRendimientoDiarioReal extends Component
     }
     public function render()
     {
-        return view('livewire.toma-rendimiento-diario-real');
+        return view('livewire.toma-rendimiento-diario-real-brocoli');
     }
 }
 

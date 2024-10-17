@@ -58,7 +58,7 @@ Plan Semanal {{ $planSemanal->finca->finca }} Semana - {{ $planSemanal->semana }
                 <th scope="col" class="encabezado">
                     Lote</th>
                 <th scope="col" class="encabezado">
-                    Ver tareas asignadas</th>
+                    Cosecha Asignada</th>
             </tr>
         </thead>
         <tbody class="tabla-body">
@@ -68,7 +68,7 @@ Plan Semanal {{ $planSemanal->finca->finca }} Semana - {{ $planSemanal->semana }
    
                 <td class="campo">
                     <a class="btn bg-green-moss hover:bg-green-meadow" href="{{ route('planSemanal.tareasCosechaLote',[$loteCosecha->lote,$planSemanal]) }}">
-                        Cosechas Por Lote
+                        VER COSECHA
                     </a>
                 </td>
             </tr>
