@@ -4,10 +4,6 @@ namespace App\Http\Controllers;
 
 use Carbon\Carbon;
 use App\Models\Session;
-use App\Models\EmpleadoFinca;
-use App\Models\PlanSemanalFinca;
-use App\Models\TareasLote;
-use App\Models\UsuarioTareaLote;
 
 class DashboardController extends Controller
 {

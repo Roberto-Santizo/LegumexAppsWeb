@@ -14,6 +14,11 @@ class AsignacionDiariaCosecha extends Model
     ];
 
 
+    public function tareaLoteCosecha()
+    {
+        return $this->belongsTo(TareaLoteCosecha::class, 'tarea_lote_cosecha_id','id');
+    }
+
     public function cierre()
     {
         return $this->hasOne(CierreTareaLoteCosecha::class, 'asignacion_diaria_cosechas_id','id');

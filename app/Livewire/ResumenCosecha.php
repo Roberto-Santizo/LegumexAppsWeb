@@ -17,6 +17,7 @@ class ResumenCosecha extends Component
     public $asignacionSelected = 0;
     public $fecha = null;
     public $totalLibras;
+    public $cierres;
 
 
     protected $listeners = ['actualizarFecha'];
@@ -25,6 +26,7 @@ class ResumenCosecha extends Component
     {
         $this->plansemanalfinca = $this->tarealotecosecha->plansemanal;
         $this->asignacionesUsuariosFiltros = $this->tarealotecosecha->users()->orderBy('codigo','DESC')->get();
+        $this->cierres = $this->tarealotecosecha->cierres;
         $this->lote = $this->tarealotecosecha->lote;
         $this->totalLibras = $this->tarealotecosecha->users->sum('libras_asignacion');
         $this->mostrarDatos();
@@ -34,8 +36,8 @@ class ResumenCosecha extends Component
     {
         $this->asignaciones = $this->tarealotecosecha->asignaciones->map(function($asignacion){
             $asignacion->fechaCosecha = $asignacion->created_at->locale('es')->isoFormat('dddd D [de] MMMM [de] YYYY');
-            $asignacion->fechaInicio = $asignacion->created_at->format('d-m-Y h:i:s A');
-            $asignacion->fechaFinal = $asignacion->cierre->created_at->format('d-m-Y h:i:s A');
+            $asignacion->fechaInicio = $asignacion->created_at->format('h:i:s A');
+            $asignacion->fechaFinal = $asignacion->cierre->created_at->format('h:i:s A');
             $asignacion->TotalHoras = round(Carbon::parse($asignacion->fechaInicio)->diffInHours($asignacion->fechaFinal),3);
             $asignacion->totalCosechadoPlanta = $asignacion->cierre->libras_total_planta;
             $asignacion->totalCosechadoFinca = $asignacion->cierre->libras_total_finca;
@@ -43,7 +45,23 @@ class ResumenCosecha extends Component
             return $asignacion;
         });
 
-        $this->asignacionesUsuarios = $this->asignacionesUsuariosFiltros;
+        $this->asignacionesUsuarios = $this->asignacionesUsuariosFiltros->map(function($asignacionUsuario) {
+            $asignacion = $this->asignaciones->filter(function($asignacionDiaria) use ($asignacionUsuario){
+                if ($asignacionDiaria->created_at->toDateString() === $asignacionUsuario->created_at->toDateString()) {
+                    $asignacionDiaria->totalPersonas = $asignacionDiaria->tareaLoteCosecha->users()->whereDate('created_at',$asignacionDiaria->created_at)->count();
+                    return $asignacionDiaria;
+                }
+            });
+
+            $asignacionUsuario->cosechadoPlanta = $asignacion->first()->totalCosechadoPlanta;
+            $asignacionUsuario->cosechadoFinca = $asignacion->first()->totalCosechadoFinca;
+            $asignacionUsuario->porcentaje = ($asignacionUsuario->libras_asignacion/ $asignacionUsuario->cosechadoFinca ) * 100;
+            $asignacionUsuario->libras_asignacion_planta = round((($asignacionUsuario->porcentaje/100) * $asignacionUsuario->cosechadoPlanta),4);
+            $asignacionUsuario->total_horas = ($asignacionUsuario->libras_asignacion_planta*8)/$this->tarealotecosecha->tarea->cultivo->rendimiento;
+            return $asignacionUsuario;
+
+        });
+
     }
 
     public function actualizarFecha(AsignacionDiariaCosecha $asignacion)

@@ -59,6 +59,39 @@ class PlansemanalExport implements FromCollection, WithHeadings, WithMultipleShe
            
         }
 
+        foreach($this->plansemanal->tareasCosechaTotales as $tareaCosecha)
+        {
+              // if($tareaCosecha->cierreSemanal){
+                    //     $tareaCreacion = $tareaCosecha->asignacion->created_at; 
+                    //     $tareaCierre = $tarea->cierre->created_at;
+                    //     $rendimiento_real = $tareaCreacion->diffInHours($tareaCierre);
+                    // }  
+            foreach ($tareaCosecha->asignaciones as $asignacion) {
+                if($asignacion->cierre){
+                    $EmpleadosAsignados = $tareaCosecha->users()->whereDate('created_at',$asignacion->created_at)->count();
+                    $rendimiento = $tareaCosecha->tarea->cultivo->rendimiento;
+                    $rendimiento_teorico = ($EmpleadosAsignados)*8;
+                    $rendimiento_real = (($asignacion->cierre->libras_total_planta) * 8)/$rendimiento;
+                }
+                $rows->push([
+                    'FINCA' => $this->plansemanal->semana,
+                    'SEMANA CALENDARIO' => $this->plansemanal->finca->finca,
+                    'LOTE' => $tareaCosecha->lote->nombre,
+                    'CODIGO TAREA' => $tareaCosecha->tarea->code,
+                    'TAREA' => $tareaCosecha->tarea->tarea,
+                    'EXTRAORDINARIA' => ($tarea->extraordinaria) ?  'EXTRAORDINARIA' : 'PLANIFICADA',
+                    'ESTADO' => ($asignacion->cierre != null) ? 'CERRADA' : 'ABIERTA',
+                    'FECHA DE INICIO' => ($asignacion->created_at) ? $asignacion->created_at->format('d-m-Y h:i:s') : 'SIN ASIGNACION',
+                    'FECHA DE CIERRE' => ($asignacion->cierre != null) ? $asignacion->cierre->created_at->format('d-m-Y h:i:s') : 'SIN CIERRE',
+                    'HORA RENDIMIENTO TEORICO' => $rendimiento_teorico,
+                    'HORA RENDIMIENTO REAL' => $rendimiento_real,
+                    'RENDIMIENTO' => ($asignacion->cierre != null) ? ($rendimiento_real/($rendimiento_teorico)) : '0',
+                    'ATRASADA' => '',
+                    'SEMANA ORIGEN' => '',
+                ]);
+            }
+        }
+
         return $rows;
     }
 

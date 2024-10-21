@@ -8,6 +8,8 @@ use App\Exports\PlansemanalExport;
 use Maatwebsite\Excel\Facades\Excel;
 use App\Exports\PlanillaSemanalExport;
 use App\Exports\PlanControlPresupuestoExport;
+use App\Exports\UsuariosCosechaExport;
+use App\Models\TareaLoteCosecha;
 
 class ReporteController extends Controller 
 {
@@ -27,5 +29,11 @@ class ReporteController extends Controller
     {
         $fileName = 'Control Tareas ' . $semana .'.xlsx';
         return Excel::download(new PlanControlPresupuestoExport($semana), $fileName);
+    }
+
+    public function ControlCosecha(TareaLoteCosecha $tarealotecosecha)
+    {
+        $fileName = 'Control de cosechas.xlsx';
+        return Excel::download(new UsuariosCosechaExport($tarealotecosecha),$fileName);
     }
 }

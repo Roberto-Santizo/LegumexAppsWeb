@@ -44,9 +44,12 @@ class TareaLoteCosecha extends Model
         return $this->hasMany(AsignacionDiariaCosecha::class, 'tarea_lote_cosecha_id', 'id');
     }
 
-    public function asignacionDiaria()
+    public function asignacionDiaria($fecha = null)
     {
-        return $this->hasOne(AsignacionDiariaCosecha::class, 'tarea_lote_cosecha_id', 'id')->whereDate('created_at',Carbon::today());
+        if($fecha == null){
+            $fecha = Carbon::today();
+        }
+        return $this->hasOne(AsignacionDiariaCosecha::class, 'tarea_lote_cosecha_id', 'id')->whereDate('created_at',$fecha);
     }
 
     public function cierres()

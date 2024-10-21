@@ -16,7 +16,7 @@ class UsuarioTareaCosecha extends Model
         'codigo'
     ];
 
-    public function tareaLote()
+    public function tarealote()
     {
         return $this->belongsTo(TareaLoteCosecha::class, 'tarealotecosecha_id','id');
     }

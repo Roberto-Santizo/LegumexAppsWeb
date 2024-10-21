@@ -6,10 +6,10 @@
         <form class="w-full shadow-xl p-5 rounded-xl" wire:submit.prevent='buscarDatos' novalidate>
             <div class="flex flex-row justify-between">
                 <div>
-                    <label for="semanaNueva" class="uppercase">Semana de Consultas: </label>
+                    <label for="semanaNueva" class="uppercase">Semana Disponibles: </label>
                     <select name="semanaNueva" id="semanaNueva" wire:model="semanaNueva"
                         class="p-2 border border-black rounded-xl">
-                        <option>--SELECIONE UNA OPCIÓN--</option>
+                        <option value selected>--SELECIONE UNA OPCIÓN--</option>
                         @foreach ($planesSelect as $plan)
                         <option value="{{ $plan->semana }}">Semana: {{$plan->semana}}</option>
                         @endforeach

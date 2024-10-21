@@ -7,6 +7,7 @@ use App\Models\TareasLote;
 use App\Models\EmpleadoFinca;
 use Illuminate\Support\Carbon;
 use App\Models\PlanSemanalFinca;
+use App\Models\UsuarioTareaCosecha;
 use App\Models\UsuarioTareaLote;
 
 class DashboardAgricola extends Component
@@ -45,10 +46,25 @@ class DashboardAgricola extends Component
         $this->usuarios = EmpleadoFinca::where('department_id', 8)->WhereNotIn('position_id', [15, 9])->get();
 
         $this->usuarios->map(function($usuario) use ($semana){
+            $horas_totales_cosecha = 0;
             $asignaciones = UsuarioTareaLote::whereRaw('WEEKOFYEAR(created_at) = ?',$semana)->where('usuario_id', $usuario->id)->get();
-            $usuario->horas_totales = $asignaciones->sum(function($asignacion){
+            $asignacionesCosecha = UsuarioTareaCosecha::whereRaw('WEEKOFYEAR(created_at) = ?',$semana)->where('usuario_id', $usuario->id)->get();
+            $horas_totales_tareas = $asignaciones->sum(function($asignacion){
                 return round($asignacion->tarea_lote->horas / ($asignacion->tarea_lote->users->count()),2);
             });
+
+            
+            if(!$asignacionesCosecha->isEmpty())
+            {
+                foreach ($asignacionesCosecha as $asignacionCosecha) {
+                    $rendimiento = $asignacionCosecha->tarealote->tarea->cultivo->rendimiento;
+                    $libras = $asignacionCosecha->libras_asignacion;
+                    $calculoHoras = ($libras*8)/$rendimiento;
+                    $horas_totales_cosecha += $calculoHoras;
+                }
+            }
+
+            $usuario->horas_totales = round($horas_totales_tareas + $horas_totales_cosecha,2);
             foreach ($asignaciones as $asignacion) {
                 if(!$asignacion->tarea_lote->cierre)
                 {
@@ -81,8 +97,14 @@ class DashboardAgricola extends Component
 
     public function buscarDatos()
     {
-        $this->semana_actual = $this->semanaNueva;
-
+        
+        if($this->semanaNueva == null)
+        {
+            $this->semana_actual = Carbon::today()->weekOfYear;
+        }else{
+            $this->semana_actual = $this->semanaNueva;
+        }
+        
         $this->mostrarDatos();
     }
 
