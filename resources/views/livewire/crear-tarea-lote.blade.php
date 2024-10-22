@@ -17,7 +17,7 @@
                 <option value="" class="opcion-default" selected >---SELECCIONE UNA OPCIÓN---</option>
                 @foreach ($tareas as $tarea)
                 <option value="{{ $tarea->id }}">
-                    {{ $tarea->code }}
+                    {{ $tarea->tarea }} - {{ $tarea->code }}
                 </option>
                 @endforeach
             </select>

@@ -92,7 +92,7 @@
             </div>
         </div>
     @empty
-        <p class="text-center font-bold uppercase">No existen tareas atrasadas</p>
+        <p class="text-center font-bold uppercase">No existen tareas asignadas a este lote</p>
     @endforelse
 
 </div>

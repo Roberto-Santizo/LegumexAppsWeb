@@ -1,18 +1,17 @@
 <div>
-    <div class="mt-5 text-2xl flex flex-col gap-2 justify-center ">
+    <div class="mt-5 text-xl flex flex-col gap-2 justify-center ">
         <h2 class="uppercase font-bold">Semana en Presentación: {{ $semana_actual }} <span
                 class="text-sm">(calendario)</span></h2>
 
-        <form class="w-full shadow-xl p-5 rounded-xl" wire:submit.prevent='buscarDatos' novalidate>
-            <div class="flex flex-row justify-between">
+        <form class="w-full flex flex-col md:flex-row justify-between  gap-5 shadow-xl p-5" wire:submit.prevent='buscarDatos' novalidate>
                 <div>
-                    <label for="semanaNueva" class="uppercase">Semana Disponibles: </label>
+                    <label for="semanaNueva" class="uppercase font-bold">Semana Disponibles: </label>
                     <select name="semanaNueva" id="semanaNueva" wire:model="semanaNueva"
-                        class="p-2 border border-black rounded-xl">
-                        <option value selected>--SELECIONE UNA OPCIÓN--</option>
-                        @foreach ($planesSelect as $plan)
-                        <option value="{{ $plan->semana }}">Semana: {{$plan->semana}}</option>
-                        @endforeach
+                        class="md:p-2 border border-black">
+                            <option value selected>--SELECIONE UNA OPCIÓN--</option>
+                            @foreach ($planesSelect as $plan)
+                                <option value="{{ $plan->semana }}">Semana: {{$plan->semana}}</option>
+                            @endforeach
                     </select>
                 </div>
 

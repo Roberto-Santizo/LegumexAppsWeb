@@ -40,24 +40,34 @@ class PlanSemanalImport implements ToModel, WithHeadingRow
         $tarea = Tarea::where('code', $row['tarea'])->first();
 
         if($tarea){
-            return new TareasLote([
-                'plan_semanal_finca_id' => $planSemanal->id,
-                'lote_id' => $lote->id,
-                'tarea_id' => $tarea->id,
-                'personas' => (floor($row['horas'] / 8) < 1) ? 1 : floor($row['horas'] / 8),
-                'presupuesto' => round($row['presupuesto'], 2),
-                'horas' => round($row['horas'], 2),
-                'cupos' => (floor($row['horas'] / 8) < 1) ? 1 : floor($row['horas'] / 8),
-                'horas_persona' => $row['horas'] / $row['personas'],
-            ]);
+            try {
+                return new TareasLote([
+                    'plan_semanal_finca_id' => $planSemanal->id,
+                    'lote_id' => $lote->id,
+                    'tarea_id' => $tarea->id,
+                    'personas' => (floor($row['horas'] / 8) < 1) ? 1 : floor($row['horas'] / 8),
+                    'presupuesto' => round($row['presupuesto'], 2),
+                    'horas' => round($row['horas'], 2),
+                    'cupos' => (floor($row['horas'] / 8) < 1) ? 1 : floor($row['horas'] / 8),
+                    'horas_persona' => $row['horas'] / $row['personas'],
+                ]);
+            } catch (\Throwable $th) {
+                throw new ImportExeption('Existe un error en los datos del archivo');
+            }
+            
         }else{
             $tarea = TareaCosecha::where('code',$row['tarea'])->first();
 
-            return new TareaLoteCosecha([
-                'plan_semanal_finca_id' => $planSemanal->id,
-                'lote_id' => $lote->id,
-                'tarea_cosecha_id' => $tarea->id,
-            ]);
+            try {
+                return new TareaLoteCosecha([
+                    'plan_semanal_finca_id' => $planSemanal->id,
+                    'lote_id' => $lote->id,
+                    'tarea_cosecha_id' => $tarea->id,
+                ]);
+            } catch (\Throwable $th) {
+                throw new ImportExeption('Existe un error en los datos');
+            }
+            
         }
 
     }
