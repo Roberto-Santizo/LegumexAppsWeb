@@ -3,7 +3,7 @@
         <div>
             <h2 class="text-3xl font-bold">Información de Cosecha de {{ $sumaPorFecha[0]->fecha }}</h2>
             <h3 class="text-xl">Total de Libras Reportadas en Finca: <span class="font-bold">{{ $totalLibrasFincaReportado }} LBS</span></h3>
-            <p class="text-xl">Total de Personas que Cosecharon: <span class="font-bold">{{ $tarealotecosecha->users->count() }}</span></p>
+            <p class="text-xl">Total de Personas que Cosecharon: <span class="font-bold">{{ $tarealotecosecha->users()->whereDate('created_at',$asignacion->created_at)->count() }}</span></p>
             <p class="text-xl">Plantas Cosechadas: <span class="font-bold">{{ $plantas_cosechadas }}</span></p>
             <p class="text-xl">Peso por Planta: <span class="font-bold">{{ $pesoLbCabeza }}</span> LBS</p>
             <p class="text-xl">Rendimiento Teorico Por Persona: <span class="font-bold">{{ $rendimientoTeoricoPorPersona }}</span> LBS</p>

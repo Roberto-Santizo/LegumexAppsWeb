@@ -31,11 +31,22 @@ class TomaRendimientoCosechaPersonal extends Component
     }
     public function registrarDato($asignacionId)
     {
+        if(!isset($this->registro[$asignacionId]))
+        {
+            $this->addError('error', 'Debe colocar el dato correspondiente de las libras cosechadas');
+            return;
+        }
         $dato = $this->registro[$asignacionId] ?? ''; // Obtiene el valor registrado
         $asignacion = UsuarioTareaCosecha::find($asignacionId);
 
-        $asignacion->libras_asignacion = $dato;
-        $asignacion->save();
+        try {
+            $asignacion->libras_asignacion = $dato;
+            $asignacion->save();
+        } catch (\Throwable $th) {
+            $this->addError('error', 'Existe un error al guardar, intentelo de nuevo');
+            return;
+        }
+
         $this->actualizarAsignaciones();
     }
 
@@ -60,14 +71,20 @@ class TomaRendimientoCosechaPersonal extends Component
         $ultimaAsignacionSinCierre= $this->tarealotecosecha->asignaciones->sortByDesc('created_at')->first();
 
 
-        CierreTareaLoteCosecha::create([
-            'tarea_lote_cosecha_id' => $this->tarealotecosecha->id,
-            'terminado' => 1,
-            'tipo_cierre' => 0,
-            'plantas_cosechadas' => $this->plantas_cosechadas,
-            'libras_total_finca' => $totalLibrasPorAsignacionDiaria,
-            'asignacion_diaria_cosechas_id' => $ultimaAsignacionSinCierre->id
-        ]);
+        try {
+            CierreTareaLoteCosecha::create([
+                'tarea_lote_cosecha_id' => $this->tarealotecosecha->id,
+                'terminado' => 1,
+                'tipo_cierre' => 0,
+                'plantas_cosechadas' => $this->plantas_cosechadas,
+                'libras_total_finca' => $totalLibrasPorAsignacionDiaria,
+                'asignacion_diaria_cosechas_id' => $ultimaAsignacionSinCierre->id
+            ]);
+        } catch (\Throwable $th) {
+            $this->addError('error', 'Existe un error al darle cierre a la asignación');
+            return;
+        }
+       
 
         return redirect()->route('planSemanal.tareasCosechaLote',[$this->lote, $this->plansemanalfinca])->with('success','Asignación cerrada correctamente');
     }

@@ -31,33 +31,35 @@
                             @endif
                         @else
                             <i title="La tarea fue realizada" class="fa-solid fa-circle-check text-2xl text-green-500 mt-5"></i>
-                            
-                            @if (!$tarea->cierreDiario->libras_total_planta)
-                                @can('create plan semanal')
-                                    <a href="{{ route('planSemanal.tareasCosechaLoteRendimiento.real',[$lote,$plansemanalfinca,$tarea]) }}">
-                                        <i title="Registrar datos que entraron a planta" class="fa-solid fa-table-list text-2xl cursor-pointer hover:text-gray-500"></i>
-                                    </a>
-                                @endcan
-                            @else
-                                <i title="Libras Entradas en Planta Registradas" class="fa-solid fa-table-list text-2xl text-green-500"></i>
-                            @endif
-                           
 
                         @endif
                     @else
                         <i class="fa-solid fa-calendar-check  text-2xl text-green-500"></i> 
-                        <a href="{{ route('planSemanal.tareaCosechaResumen',$tarea) }}">
-                            <i title="Resúmen de la Semana" class="fa-solid fa-receipt text-2xl cursor-pointer hover:text-gray-500"></i>
-                        </a>
+                       
+                    @endif
+
+                    @if (!$asignacionSinCierre)
+                        @if ($asignacionSinLibras)
+                            @can('create plan semanal')
+                                <a href="{{ route('planSemanal.tareasCosechaLoteRendimiento.real',[$lote,$plansemanalfinca,$tarea]) }}">
+                                    <i title="Registrar datos que entraron a planta" class="fa-solid fa-table-list text-2xl cursor-pointer hover:text-gray-500"></i>
+                                </a>
+                            @endcan
+                        @else
+                            <a href="{{ route('planSemanal.tareaCosechaResumen',$tarea) }}">
+                                <i title="Resúmen de la Semana" class="fa-solid fa-receipt text-2xl cursor-pointer hover:text-gray-500"></i>
+                            </a>
+                        @endif
                     @endif
 
                     {{-- cierres semanales --}}
                     @if ($tarea->cierres->count() >= 1)
-                        @if ($flagLibrasPlanta && !$tarea->cierreSemanal)
+                        @if (!$asignacionSinLibras && !$tarea->cierreSemanal)
                             <button wire:click="$dispatch('terminar',{{ $tarea->id }})">
                                 <i title="Finalizar Cosecha Semanal" class="fa-solid fa-calendar-check  text-2xl cursor-pointer hover:text-gray-500"></i>
                             </button>
                         @endif
+                        
                     @else
                         @can('create plan semanal')
                             <button wire:click="$dispatch('eliminar',{{ $tarea->id }})">

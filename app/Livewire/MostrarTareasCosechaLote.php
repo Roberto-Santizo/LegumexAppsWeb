@@ -15,16 +15,24 @@ class MostrarTareasCosechaLote extends Component
     public $lote;
     public $successTareaLoteId;
     public $semanaActual; 
+    public $asignaciones;
     public $successMessage;
-    public $flagLibrasPlanta;
-
+    public $asignacionSinCierre;
+    public $asignacionSinLibras;
+    
     protected $listeners = ['eliminarTarea','terminarTarea'];
 
 
     public function mount()
     {
-        $this->flagLibrasPlanta = $this->tarea->asignaciones->every(function ($asignacion) {
-            return $asignacion->cierre && isset($asignacion->cierre->libras_total_planta);
+        $this->asignaciones = $this->tarea->asignaciones;
+
+        $this->asignacionSinCierre = $this->asignaciones->contains(function($asignacion) {
+            return !$asignacion->cierre;
+        });
+
+        $this->asignacionSinLibras = $this->asignaciones->contains(function($asignacion) {
+            return $asignacion->cierre && !$asignacion->cierre->libras_total_planta;
         });
 
     }

@@ -8,7 +8,7 @@
 
             @if (!$asignacion->libras_asignacion)
                 <div class="flex flex-col">
-                    <input type="text" wire:model.defer="registro.{{ $asignacion->id }}" class="text-black p-2 rounded" placeholder="Registrar libras del día...">
+                    <input type="number" wire:model.defer="registro.{{ $asignacion->id }}" class="text-black p-2 rounded" placeholder="Registrar libras del día...">
                     <div class="flex flex-row gap-2 justify-center items-center bg-red-500 p-2 text-white font-bold uppercase text-xs rounded mt-5">
                         <i class="fa-solid fa-circle-exclamation"></i>
                         <p>El dato se registra en libras</p>
@@ -30,7 +30,7 @@
         <form wire:submit.prevent='cerrarAsignacion'>
             <div class="mb-5">
                 <label class="label-input" for="plantas_cosechadas">Plantas Cosechadas</label>
-                <input type="number" placeholder="Ingrese el total de plantas cosechadas" class="border p-3 w-full rounded-lg mb-5" wire:model="plantas_cosechadas" name="plantas_cosechadas" id="plantas_cosechadas">
+                <input  autocomplete="off" type="number" placeholder="Ingrese el total de plantas cosechadas" class="border p-3 w-full rounded-lg mb-5" wire:model="plantas_cosechadas" name="plantas_cosechadas" id="plantas_cosechadas">
                 @error('plantas_cosechadas')
                     <livewire:mostrar-alerta :message="$message" />
                 @enderror

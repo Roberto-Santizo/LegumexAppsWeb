@@ -28,7 +28,11 @@ class TomaRendimientoDiarioRealBrocoli extends Component
     public function mount()
     {
         $this->rendimiento = $this->tarealotecosecha->tarea->cultivo->rendimiento;
-        $this->asignacion = $this->tarealotecosecha->asignaciones->sortByDesc('created_at')->first();
+        $this->asignacion = $this->tarealotecosecha->asignaciones()
+        ->whereHas('cierre', function($query) {
+            $query->whereNull('libras_total_planta');
+        })
+        ->first();
         $this->totalLibrasFincaReportado = $this->asignacion->cierre->libras_total_finca;
         $this->sumaLibrasFinca = $this->asignacion->cierre->libras_total_finca;
 

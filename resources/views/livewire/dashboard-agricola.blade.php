@@ -3,23 +3,23 @@
         <h2 class="uppercase font-bold">Semana en Presentación: {{ $semana_actual }} <span
                 class="text-sm">(calendario)</span></h2>
 
-        <form class="w-full flex flex-col md:flex-row justify-between  gap-5 shadow-xl p-5" wire:submit.prevent='buscarDatos' novalidate>
-                <div>
-                    <label for="semanaNueva" class="uppercase font-bold">Semana Disponibles: </label>
-                    <select name="semanaNueva" id="semanaNueva" wire:model="semanaNueva"
-                        class="md:p-2 border border-black">
-                            <option value selected>--SELECIONE UNA OPCIÓN--</option>
-                            @foreach ($planesSelect as $plan)
-                                <option value="{{ $plan->semana }}">Semana: {{$plan->semana}}</option>
-                            @endforeach
-                    </select>
-                </div>
+        <form class="w-full flex flex-col md:flex-row justify-between  gap-5 shadow-xl p-5"
+            wire:submit.prevent='buscarDatos' novalidate>
+            <div>
+                <label for="semanaNueva" class="uppercase font-bold">Semana Disponibles: </label>
+                <select name="semanaNueva" id="semanaNueva" wire:model="semanaNueva" class="md:p-2 border border-black">
+                    <option value selected>--SELECIONE UNA OPCIÓN--</option>
+                    @foreach ($planesSelect as $plan)
+                    <option value="{{ $plan->semana }}">Semana: {{$plan->semana}}</option>
+                    @endforeach
+                </select>
+            </div>
 
-                <button type="submit"
-                    class="flex flex-row gap-2 text-lg justify-center items-center bg-green-moss hover:bg-green-meadow cursor-pointer p-2 text-white uppercase rounded-xl font-bold">
-                    <i class="fa-solid fa-magnifying-glass"></i>
-                    <p>Buscar Datos</p>
-                </button>
+            <button type="submit"
+                class="flex flex-row gap-2 text-lg justify-center items-center bg-green-moss hover:bg-green-meadow cursor-pointer p-2 text-white uppercase rounded-xl font-bold">
+                <i class="fa-solid fa-magnifying-glass"></i>
+                <p>Buscar Datos</p>
+            </button>
         </form>
     </div>
     <div class="flex flex-col gap-5 xl:grid xl:grid-cols-8 mt-10">
@@ -191,6 +191,7 @@
 
         </div>
 
+
         <div class=" col-start-1 col-span-8 bg-green-moss rounded-2xl shadow-xl">
             <div class="bg-green-meadow w-full p-5 flex flex-row gap-2 items-center text-white rounded-t-2xl">
                 <h1 class="text-2xl font-bold">Control de Tareas en Proceso y Asignaciones</h1>
@@ -238,6 +239,55 @@
             </div>
 
         </div>
+
+        <div class=" col-start-1 col-span-8 bg-green-moss rounded-2xl shadow-xl">
+            <div class="bg-green-meadow w-full p-5 flex flex-row gap-2 items-center text-white rounded-t-2xl">
+                <h1 class="text-2xl font-bold">Control de Cosecha</h1>
+            </div>
+
+            <div class="flex flex-col gap-5 p-5 text-xs md:text-xl">
+                @foreach ($tareasCosecha as $tareacosecha)
+                    @foreach ($tareacosecha->asignaciones as $asignacion)
+                        @if ($asignacion && !$asignacion->cierre)
+                            <a class="flex flex-row gap-5 font-bold text-white bg-green-meadow p-3 rounded-xl justify-between shadow-xl grow-animation-sm">
+                                <div class="flex flex-row gap-5">
+                                    <i class="fa-solid fa-clock text-orange-500 text-xl"
+                                        title="Aún no han sido terminadas todas las tareas"></i>
+                                    <p>Tarea: {{ $tareacosecha->tarea->tarea }} - {{ $tareacosecha->lote->nombre }} - {{ $tareacosecha->plansemanal->finca->finca }} - S{{ $tareacosecha->plansemanal->semana }}</p>
+                                </div>
+                                <p>Usuarios Asignados: {{ $tareacosecha->users()->whereDate('created_at',$asignacion->created_at)->count()}}</p>
+                            </a>
+                        @endif
+                    @endforeach
+                @endforeach
+            </div>
+        </div>
+
+        <div class=" col-start-1 col-span-8 bg-green-moss rounded-2xl shadow-xl">
+            <div class="bg-green-meadow w-full p-5 flex flex-row gap-2 items-center text-white rounded-t-2xl">
+                <h1 class="text-2xl font-bold">Control de Cosecha</h1>
+            </div>
+
+            <div class="flex flex-col gap-5 p-5 text-xs md:text-xl">
+                @forelse ($tareasCosecha as $tareacosecha)
+                    @foreach ($tareacosecha->asignaciones as $asignacion)
+                        @if ($asignacion && $asignacion->cierre)
+                            <a class="flex flex-row gap-5 font-bold text-white bg-green-meadow p-3 rounded-xl justify-between shadow-xl grow-animation-sm">
+                                <div class="flex flex-row gap-5">
+                                    <i title="La tarea fue realizada" class="fa-solid fa-circle-check text-xl text-green-500"></i>
+                                    <p>Tarea: {{ $tareacosecha->tarea->tarea }} - {{ $tareacosecha->lote->nombre }} - {{ $tareacosecha->plansemanal->finca->finca }} - S{{ $tareacosecha->plansemanal->semana }}</p>
+                                    <p>{{ $asignacion->cierre->created_at->format('d-m-Y') }}</p>
+                                </div>
+                                    <p>Usuarios Asignados: {{ $tareacosecha->users()->whereDate('created_at',$asignacion->created_at)->count()}}</p>
+                            </a>
+                        @endif
+                    @endforeach
+                @empty
+                    <p class="text-center font-bold text-white uppercase">No hay cosechas en proceso</p>
+                @endforelse
+            </div>
+        </div>
+
 
         <div class=" col-start-1 col-span-4 row-start-2 bg-green-moss rounded-2xl shadow-xl ">
             <div class="bg-green-meadow w-full p-5 flex flex-row gap-2 items-center text-white rounded-t-2xl">
