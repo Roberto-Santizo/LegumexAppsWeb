@@ -49,7 +49,7 @@
                     <div class="clear_btn flex flex-col items-center">
                         <h4 class="text-xl font-bold">Firma Mecanico</h4>
                         <div id="clear-button-2"
-                            class="btn">
+                            class="btn bg-orange-500 hover:bg-orange-600">
                             <span>Limpiar</span></div>
                     </div>
                     <input type="hidden" id="firma" name="firma_mecanico">
@@ -73,7 +73,7 @@
                 <div class="flex flex-col justify-center items-center mb-5 ">
                     <div id="my_camera"></div>
                     <div id="takesnapshot"
-                        class="btn">
+                        class="btn bg-orange-600 hover:bg-orange-800">
                         <i class="fa-solid fa-camera"></i>
                         Tomar Foto
                     </div>
@@ -86,7 +86,7 @@
                 </div>
 
 
-                <div class="btn"
+                <div class="btn bg-orange-500 hover:bg-orange-600"
                     id="upload_button">
                     <p>Guardar Fotos</p>
                     <x-loading-icon />

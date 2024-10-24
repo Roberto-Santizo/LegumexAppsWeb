@@ -46,16 +46,20 @@ class EditarTareaLote extends Component
         $datos = $this->validate();
         $tarealote = TareasLote::find($this->id);
 
-        BitacoraTareaLote::create([
-            'plan_semanal_id_dest' => $datos['plan_semanal_finca_id'],
-            'plan_semanal_id_org' => $tarealote->plan_semanal_finca_id,
-            'tarea_lote_id' => $tarealote->id
-        ]);
+        if($datos['plan_semanal_finca_id'] != $tarealote->plan_semanal_finca_id)
+        {
+            BitacoraTareaLote::create([
+                'plan_semanal_id_dest' => $datos['plan_semanal_finca_id'],
+                'plan_semanal_id_org' => $tarealote->plan_semanal_finca_id,
+                'tarea_lote_id' => $tarealote->id
+            ]);
+        }
         
         $plansemanal = $tarealote->plansemanal;
         $lote = $tarealote->lote;
 
         $tarealote->personas = $datos['personas'];
+        $tarealote->cupos = $datos['personas'];
         $tarealote->presupuesto = $datos['presupuesto'];
         $tarealote->horas = $datos['horas'];
         $tarealote->plan_semanal_finca_id = $datos['plan_semanal_finca_id'];

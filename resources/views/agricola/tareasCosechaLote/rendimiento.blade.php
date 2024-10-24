@@ -7,6 +7,7 @@
 @section('contenido')
 
 <x-alertas />
+<x-link-volver ruta="planSemanal.tareasCosechaLote" class="bg-green-moss hover:bg-green-meadow" :parametros="[$tarealotecosecha->lote, $plansemanalfinca]"/>
 
 <livewire:toma-rendimiento-cosecha-personal :lote="$lote" :plansemanalfinca="$plansemanalfinca" :tarealotecosecha="$tarealotecosecha"/>
 

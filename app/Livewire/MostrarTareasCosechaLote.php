@@ -54,8 +54,8 @@ class MostrarTareasCosechaLote extends Component
         $tarea->asignaciones()->delete();
         $tarea->cierres()->delete();
         $tarea->delete();
-        $this->successTareaLoteId = $tarea->id;
-        $this->successMessage = 'La tarea fue eliminada';
+
+        return redirect()->route('planSemanal.show',$this->plansemanalfinca)->with('success','Tarea eliminada correctamente');
     }
     
     public function render()

@@ -8,7 +8,7 @@ Plan Semanal {{ $planSemanal->finca->finca }} Semana - {{ $planSemanal->semana }
 
 <x-alertas />
 
-<x-link route="planSemanal" text="Volver" icon="fa-solid fa-arrow-left" class="bg-green-moss hover:bg-green-meadow" />
+<x-link-volver ruta="planSemanal" class="bg-green-moss hover:bg-green-meadow"/>
 
 
 <div class="overflow-x-auto mt-10">
@@ -50,6 +50,7 @@ Plan Semanal {{ $planSemanal->finca->finca }} Semana - {{ $planSemanal->semana }
     </table>
 </div>
 
+@if ($lotesCosecha->count() > 0)
 <div class="overflow-x-auto mt-10">
     <h2 class="text-xl font-bold uppercase mb-5">Cosechas</h2>
     <table class="tabla">
@@ -75,5 +76,7 @@ Plan Semanal {{ $planSemanal->finca->finca }} Semana - {{ $planSemanal->semana }
             @endforeach
         </tbody>
     </table>
-</div>
+</div>  
+@endif
+
 @endsection

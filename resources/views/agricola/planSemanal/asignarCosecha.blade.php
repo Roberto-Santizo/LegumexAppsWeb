@@ -7,6 +7,7 @@ Asignación de Empleados {{ $tarea->tarea }}, Semana {{ $plansemanalfinca->seman
 @section('contenido')
 
 <x-alertas />
+<x-link-volver ruta="planSemanal.tareasCosechaLote" class="bg-green-moss hover:bg-green-meadow" :parametros="[$lote, $plansemanalfinca]"/>
 
 <livewire:asignar-empleados-cosecha :plansemanalfinca="$plansemanalfinca" :tarea="$tarea" :lote="$lote" :tarealotecosecha="$tarealotecosecha"/>
 

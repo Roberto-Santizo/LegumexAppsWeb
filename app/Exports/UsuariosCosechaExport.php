@@ -61,7 +61,6 @@ class UsuariosCosechaExport implements FromCollection, WithHeadings, WithTitle, 
             $libras_asignacion_planta = round((($porcentaje) * $cosechadoPlanta),4);
             $total_horas_empleadas = round($asignacion->first()->TotalHoras / $asignacion->first()->totalPersonas,3);
 
-            
             $rows->push([
                 'CODIGO' => $asignacionUsuario->codigo,
                 'EMPLEADO' => $asignacionUsuario->nombre,
@@ -70,8 +69,8 @@ class UsuariosCosechaExport implements FromCollection, WithHeadings, WithTitle, 
                 'LIBRAS REPORTADAS EN FINCA' => $asignacion->first()->totalCosechadoFinca,
                 'LIBRAS ENTRADAS EN PLANTA' => $asignacion->first()->totalCosechadoPlanta,
                 'TOTAL LIBRAS COSECHADAS (FINCA)' =>  $asignacionUsuario->libras_asignacion,
-                'TOTAL LIBRAS COSECHADAS AJUSTADO (PLANTA)' => $libras_asignacion_planta,
-                'MONTO GANADO' => round($porcentaje*$asignacion->montoTotal,4),
+                'PLANTAS COSECHADAS' =>  $asignacion->first()->cierre->plantas_cosechadas,
+                'MONTO GANADO' => round($porcentaje*$asignacion->first()->montoTotal,4),
                 'HORAS EMPLEADAS' => $total_horas_empleadas
             ]);
         });
@@ -81,7 +80,7 @@ class UsuariosCosechaExport implements FromCollection, WithHeadings, WithTitle, 
 
     public function headings(): array
     { 
-        return ['CODIGO', 'EMPLEADO','PORCENTAJE','FECHA','LIBRAS REPORTADAS EN FINCA','LIBRAS ENTRADAS EN PLANTA','TOTAL LIBRAS COSECHADAS (FINCA)','TOTAL LIBRAS COSECHADAS AJUSTADO (PLANTA)','MONTO GANADO', 'HORAS EMPLEADAS'];
+        return ['CODIGO', 'EMPLEADO','PORCENTAJE','FECHA','LIBRAS REPORTADAS EN FINCA','LIBRAS ENTRADAS EN PLANTA','TOTAL LIBRAS COSECHADAS (FINCA)','PLANTAS COSECHADAS','MONTO GANADO', 'HORAS EMPLEADAS'];
     }
 
     public function styles(Worksheet $sheet)

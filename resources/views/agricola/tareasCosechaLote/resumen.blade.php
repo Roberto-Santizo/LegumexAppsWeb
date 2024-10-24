@@ -7,12 +7,7 @@
 @section('contenido')
 
 <x-alertas />
-<div class="flex justify-end mt-5">
-    <a href="{{ route('planSemanal.tareasCosechaLote',[$tarealotecosecha->lote,$tarealotecosecha->plansemanal]) }}" class="btn bg-green-moss hover:bg-green-meadow ">
-        <i class="fa-solid fa-arrow-left"></i>
-        Volver
-    </a>
-</div>
+<x-link-volver ruta="planSemanal.tareasCosechaLote" class="bg-green-moss hover:bg-green-meadow" :parametros="[$tarealotecosecha->lote, $tarealotecosecha->plansemanal]"/>
 
 <livewire:resumen-cosecha :tarealotecosecha="$tarealotecosecha"/>
  
