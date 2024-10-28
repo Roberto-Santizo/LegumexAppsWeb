@@ -21,7 +21,7 @@ class AsignarEmpleadosTarea extends Component
     public $cuposMinimos;
     public $asignados;
     
-    protected $listeners = ['AsignarEmpleado','DesasignarEmpleado','cerrarAsignacion'];
+    protected $listeners = ['AsignarEmpleado','DesasignarEmpleado','cerrarAsignacion','cerrarAsignacionForzada'];
     
     public function mount()
     {
@@ -88,7 +88,9 @@ class AsignarEmpleadosTarea extends Component
     public function cerrarAsignacion()
     {
         if($this->tarealote->users->count() < $this->cuposMinimos){
-            $this->addError('error', 'En número de personas a asignar minima es: '. $this->cuposMinimos);
+            $this->dispatch ('mostrarAlertaCierre', [
+                'cuposMinimos' => $this->cuposMinimos,
+            ]);
             return;
         }
 
@@ -97,6 +99,16 @@ class AsignarEmpleadosTarea extends Component
         ]);
 
         return redirect()->route('planSemanal.tareasLote',[$this->lote,$this->plansemanalfinca])->with('success','Asignación Creada Correctamente');
+    }
+
+    public function cerrarAsignacionForzada()
+    {
+    AsignacionDiaria::create([
+        'tarea_lote_id' => $this->tarealote->id
+    ]);
+
+    return redirect()->route('planSemanal.tareasLote', [$this->lote, $this->plansemanalfinca])
+                     ->with('success', 'Asignación Creada Correctamente a pesar de los cupos mínimos.');
     }
     
     public function render()

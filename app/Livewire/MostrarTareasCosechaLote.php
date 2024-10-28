@@ -53,6 +53,7 @@ class MostrarTareasCosechaLote extends Component
         $tarea->users()->delete();
         $tarea->asignaciones()->delete();
         $tarea->cierres()->delete();
+        $tarea->cierreSemanal()->delete();
         $tarea->delete();
 
         return redirect()->route('planSemanal.show',$this->plansemanalfinca)->with('success','Tarea eliminada correctamente');

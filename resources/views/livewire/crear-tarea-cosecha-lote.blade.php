@@ -1,7 +1,10 @@
 <div>
     <div class="bg-white p-6 rounded-lg shadow-lg mt-10 md:mt-5 container xl:w-2/3  mx-auto">
-        <form wire:submit.prevent='crearTareaLoteCosecha' novalidate>
-            <x-alertas />
+        @error('error')
+            <x-alerta-error :message="$message" />
+        @enderror
+        <form wire:submit.prevent='crearTareaLoteCosecha' novalidate class="mt-5">
+            
     
             <div class="mb-5">
                 <label for="plan_semanal_finca_id" class="label-input">Seleccione el plan semanal </label>

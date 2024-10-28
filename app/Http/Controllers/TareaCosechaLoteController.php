@@ -13,11 +13,7 @@ class TareaCosechaLoteController extends Controller
 {
     public function create()
     {
-        $planes = PlanSemanalFinca::all();
-        $lotes = Lote::all();
-        $tareas = TareaCosecha::all();
-
-        return view('agricola.tareasCosechaLote.create',['planes' => $planes, 'lotes' => $lotes, 'tareas' => $tareas]);
+        return view('agricola.tareasCosechaLote.create');
     }
 
     public function tareaCosechaResumen(TareaLoteCosecha $tarealotecosecha)

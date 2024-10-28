@@ -17,6 +17,7 @@ class EditarTareaLote extends Component
     public $plan_semanal_finca_id;
     public $lote_id;
     public $finca_id;
+    public $tarea;
 
     protected $rules = [
         'personas' => 'required',
@@ -28,6 +29,7 @@ class EditarTareaLote extends Component
 
 
     public function mount(TareasLote $tareaslote){
+        $this->tarea = $tareaslote;
         $this->id = $tareaslote->id;
         $this->personas = $tareaslote->personas;
         $this->presupuesto = $tareaslote->presupuesto;

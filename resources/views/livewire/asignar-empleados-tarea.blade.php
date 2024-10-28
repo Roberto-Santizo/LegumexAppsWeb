@@ -82,6 +82,22 @@
             Livewire.on('cerrar', () => {
                 Livewire.dispatch('cerrarAsignacion')
             });
+
+            window.addEventListener('mostrarAlertaCierre', event => {
+            const cuposMinimos = event.detail[0].cuposMinimos;
+            Swal.fire({
+                title: 'Advertencia',
+                text: `El número de asignados es menor que el mínimo requerido: ${cuposMinimos}. ¿Deseas continuar?`,
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonText: 'Sí, continuar',
+                cancelButtonText: 'No'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    Livewire.dispatch('cerrarAsignacionForzada');
+                }
+            });
+        });
         </script>
     @endpush
 </div>

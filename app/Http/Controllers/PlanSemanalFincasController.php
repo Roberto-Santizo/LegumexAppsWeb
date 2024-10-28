@@ -96,7 +96,7 @@ class PlanSemanalFincasController extends Controller
     public function store(Request $request)
     {
         $request->validate([
-            'file' => 'required'
+            'file' => 'required|mimes:xlsx,csv'
         ]);
 
         try {
@@ -223,26 +223,8 @@ class PlanSemanalFincasController extends Controller
 
     public function atrasadas(Request $request, PlanSemanalFinca $plansemanalfinca)
     {
-        $semanaplan = $plansemanalfinca->semana;
-        $tareas = $plansemanalfinca->tareasTotales;
-
-        $tareasFiltradas = $tareas->filter(function ($tarea) use ($semanaplan) {
-            if ($semanaplan < Carbon::now()->weekOfYear) {
-                if (!$tarea->cierre) {
-                    if($tarea->movimientos->count() > 0){
-                        $tarea->semana_origen = $tarea->movimientos()->orderBy('id','DESC')->first()->plan_origen->semana;
-                        $tarea->finca = $tarea->movimientos()->orderBy('id','DESC')->first()->plan_origen->finca->finca;
-                    }
-                    return $tarea;
-                }
-            }
-        });
-
-        return view('agricola.planSemanal.atrasadas', [
-            'tareas' => $tareasFiltradas,
-            'plansemanalfinca' => $plansemanalfinca,
-            'atrasadas' => true
-        ]);
+       
+        return view('agricola.planSemanal.atrasadas', compact(['plansemanalfinca']));
     }
 
 }

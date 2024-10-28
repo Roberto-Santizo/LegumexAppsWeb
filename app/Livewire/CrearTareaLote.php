@@ -3,17 +3,19 @@
 namespace App\Livewire;
 
 use App\Models\Lote;
+use App\Models\Tarea;
 use Livewire\Component;
 use App\Models\TareasLote;
+use Illuminate\Support\Carbon;
 use App\Models\PlanSemanalFinca;
-use App\Exceptions\ImportExeption;
 
 class CrearTareaLote extends Component
 {
     public $tareas;
     public $planes;
     public $lotes;
-
+    public $semana;
+    
     public $personas;
     public $presupuesto;
     public $horas;
@@ -29,7 +31,15 @@ class CrearTareaLote extends Component
         'plan_semanal_finca_id' => 'required',
         'lote_id' => 'required',
     ];
-    
+
+    public function mount()
+    {
+        $this->semana = Carbon::now()->weekOfYear;
+        $this->tareas = Tarea::all();
+        $this->planes = PlanSemanalFinca::where('semana','>=',$this->semana)->get();
+        $this->lotes = Lote::all();
+    }
+
 
     public function crearTareaLoteExt()
     {
@@ -40,8 +50,10 @@ class CrearTareaLote extends Component
         $lote = Lote::where('id', $datos['lote_id']['value'])->where('finca_id', $plan_semanal_finca->finca->id)->first();
         if(!$lote)
         {
-            return redirect()->route('planSemanal')->with('error','El lote no coincide con la finca del plan seleccionado');
+            $this->addError('error','El lote seleccionado no coincide con la finca del plan seleccionado');
+            return;
         }
+
         TareasLote::create([
                 'plan_semanal_finca_id' => $datos['plan_semanal_finca_id']['value'],
                 'lote_id' => $datos['lote_id']['value'],
@@ -56,7 +68,7 @@ class CrearTareaLote extends Component
 
             ]);
        } catch (\Throwable $th) {
-        return redirect()->route('planSemanal')->with('error','Existe algún error al crear la tarea extraordinaria');
+            $this->addError('error','Existe un error al crear la tarea extraordinaria, intentelo de nuevo o comuniquese con el administrador');
        }
        
 

@@ -30,7 +30,10 @@ class UsuarioTareaDetalleExport implements FromCollection, WithHeadings, WithTit
         });
 
         $this->plansemanal->tareasCosechaTotales->each(function ($tareaLoteCosecha) use ($rows) {
-            $this->procesarTareaCosecha($tareaLoteCosecha, $rows);
+            if($tareaLoteCosecha->asignacionDiaria->cierre)
+            {
+                $this->procesarTareaCosecha($tareaLoteCosecha, $rows);
+            }
         });
 
         return $rows;
