@@ -24,57 +24,10 @@ class PlanSemanalFincasController extends Controller
 
     public function index()
     {
-        $planes = PlanSemanalFinca::orderBy('semana', 'DESC')->paginate(10);
-
-        $planes->map(function ($plan) {
-            $tareasCierre = collect();
-            $tareasExtraordinarias = collect();
-            $tareasPresupuestadas = collect();
-            $tareasCosechasTerminadas = collect();
-            // Recorre todas las tareas una sola vez
-            foreach ($plan->tareasTotales as $tarea) {
-                if ($tarea->cierre) {
-                    $tareasCierre->push($tarea);
-                }
-
-                if ($tarea->extraordinaria) {
-                    $tareasExtraordinarias->push($tarea);
-                } else {
-                    $tareasPresupuestadas->push($tarea);
-                }
-            }
-
-            foreach($plan->tareasCosechaTotales as $tarea){
-                if($tarea->cierreSemanal){
-                    $tareasCosechasTerminadas->push($tarea); 
-                }
-            }
-
-            // Asigna las tareas a la propiedad del plan
-            $plan->tareasRealizadas = $tareasCierre;
-            $plan->tareasExtraordinarias = $tareasExtraordinarias;
-            $plan->tareasPresupuestadas = $tareasPresupuestadas;
-            $plan->tareasCosechasTerminadas = $tareasCosechasTerminadas;
-
-            $plan->tareasExtraordinariasTerminadas = $tareasExtraordinarias->filter(function ($tarea) {
-                return $tarea->cierre;
-            });
-
-            $plan->tareasPresupuestadasTerminadas = $tareasPresupuestadas->filter(function ($tarea) {
-                return $tarea->cierre;
-            });
-
-            $plan->presupuesto_extraordinario = $tareasExtraordinarias->sum('presupuesto');
-            $plan->presupuesto_extraordinario_gastado = $plan->tareasExtraordinariasTerminadas->sum('presupuesto');
-
-            $plan->presupuesto_general = $tareasPresupuestadas->sum('presupuesto');
-            $plan->presupuesto_general_gastado = $plan->tareasPresupuestadasTerminadas->sum('presupuesto');
-
-            return $plan;
-        });
+        
 
         
-        return view('agricola.planSemanal.index', compact(['planes']));
+        return view('agricola.planSemanal.index');
     }
 
 

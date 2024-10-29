@@ -5,9 +5,7 @@
                 <input type="text" class="p-2 border w-64" placeholder="Nombre de la tarea" wire:model='nombre_tarea'>
             </div>
 
-            <button type="submit">
-                <i class="fa-solid fa-magnifying-glass text-3xl hover:text-gray-600"></i>
-            </button>
+            <x-boton-buscador />
         </form>
     </div>
     <div class="flex justify-end gap-5">
