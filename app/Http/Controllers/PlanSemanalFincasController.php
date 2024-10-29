@@ -5,7 +5,9 @@ namespace App\Http\Controllers;
 use App\Models\Lote;
 use App\Models\Tarea;
 use App\Models\TareasLote;
+use App\Models\TareaCosecha;
 use Illuminate\Http\Request;
+use App\Models\EmpleadoFinca;
 use Illuminate\Support\Carbon;
 use App\Services\SemanaService;
 use App\Models\PlanSemanalFinca;
@@ -14,7 +16,6 @@ use App\Models\UsuarioTareaLote;
 use App\Models\EmpleadoIngresado;
 use App\Exceptions\ImportExeption;
 use App\Imports\PlanSemanalImport;
-use App\Models\TareaCosecha;
 use Illuminate\Support\Facades\DB;
 use Maatwebsite\Excel\Facades\Excel;
 
@@ -108,7 +109,6 @@ class PlanSemanalFincasController extends Controller
                 ->select('lote_id')
                 ->groupBy('lote_id')
                 ->get();
-        dd($lotes);
         return view('agricola.planSemanal.show', ['lotes' => $lotes, 'plansemanalfinca' => $plansemanalfinca, 'lotesCosecha' => $lotesCosecha]);
     }
 
