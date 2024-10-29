@@ -67,10 +67,6 @@
 
 
                     @can('create plan semanal')
-                    <a href="{{ route('planSemanal.tareaLote.edit',$tarea) }}">
-                        <i title="Editar Tarea"
-                            class="fa-solid fa-arrow-right-arrow-left text-2xl cursor-pointer hover:text-gray-500"></i>
-                    </a>
 
                     <button wire:click="$dispatch('eliminar',{{ $tarea->id }})">
                         <i title="Eliminar Tarea"
@@ -106,6 +102,29 @@
                 </div>
                 @endif
 
+
+                @if (!$tarea->cierre)
+                    @hasanyrole('admin|adminagricola')
+                    <div class="mt-5">
+                        <a href="{{ route('planSemanal.tareaLote.edit',$tarea) }}">
+                            <i title="Editar Tarea"
+                                class="fa-solid fa-arrow-right-arrow-left text-2xl cursor-pointer hover:text-gray-500"></i>
+                        </a>
+                    </div>
+                    @endhasanyrole
+                    
+                @else
+                    @role('admin')
+                        <div class="mt-5">
+                            <a href="{{ route('planSemanal.tareaLote.edit',$tarea) }}">
+                                <i title="Editar Tarea"
+                                    class="fa-solid fa-arrow-right-arrow-left text-2xl cursor-pointer hover:text-gray-500"></i>
+                            </a>
+                        </div>
+                    @endrole
+                @endif
+               
+                
             </div>
 
             @if ($tarea->extendido)

@@ -4,10 +4,6 @@ namespace App\Http\Controllers;
 
 use Carbon\Carbon;
 use App\Models\Session;
-use App\Models\EmpleadoFinca;
-use App\Models\PlanSemanalFinca;
-use App\Models\TareasLote;
-use App\Models\UsuarioTareaLote;
 
 class DashboardController extends Controller
 {
@@ -33,52 +29,7 @@ class DashboardController extends Controller
 
     public function agricola()
     {
-        $planes = PlanSemanalFinca::where('semana',Carbon::now()->weekOfYear())->get();
-        $planes->map(function($plan){
-            $plan->tareasRealizadas = $plan->tareasTotales->filter(function($tarea){
-                if($tarea->cierre){
-                    return $tarea;
-                }
-            });
 
-        });
-        $semana_actual = Carbon::now()->weekOfYear();
-
-        $usuarios = EmpleadoFinca::where('department_id', 8)->WhereNotIn('position_id', [15, 9])->get();
-
-        $usuarios->map(function($usuario) use ($semana_actual){
-            $asignaciones = UsuarioTareaLote::whereRaw('WEEKOFYEAR(created_at) = ?',$semana_actual)->where('usuario_id', $usuario->id)->get();
-            $usuario->horas_totales = $asignaciones->sum(function($asignacion){
-                return round($asignacion->tarea_lote->horas / ($asignacion->tarea_lote->users->count()),2);
-            });
-            foreach ($asignaciones as $asignacion) {
-                if(!$asignacion->tarea_lote->cierre)
-                {
-                    $usuario->activo = true;
-                }
-            }
-            
-        });
-        $usuarios = $usuarios->sortBy('horas_totales');
-
-        $tareas = TareasLote::orderBy('lote_id','DESC')->get();
-
-        $tareasEnProceso = $tareas->filter(function($tarea){
-            if($tarea->asignacion && !$tarea->cierre){
-                return $tarea;
-            }
-        });
-
-        $tareasRealizadas = $tareas->filter(function($tarea){
-            return $tarea->cierre;
-        });
-
-        $tareasRealizadasEnSemana = $tareasRealizadas->filter(function($tarea) use ($semana_actual) {
-            if($tarea->cierre && $tarea->cierre->created_at->weekOfYear == $semana_actual){
-                return $tarea;
-            }
-        });
-
-        return view('dashboards.agricola',['planes' => $planes,'usuarios' => $usuarios, 'semana_actual' => $semana_actual, 'tareasEnProceso' => $tareasEnProceso, 'tareasRealizadas' => $tareasRealizadasEnSemana]);
+        return view('dashboards.agricola');
     }
 }

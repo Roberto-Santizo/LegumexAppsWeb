@@ -134,7 +134,7 @@ Crear orden de trabajo
         </fieldset>
         <input type="hidden" value="" id="firma" name="firma_solicitante">
         <input type="hidden" value="" id="firma2" name="firma_supervisor">
-        <input id="btnSaveOT" type="submit" value="Guardar" class="btn">
+        <input id="btnSaveOT" type="submit" value="Guardar" class="btn bg-orange-500 hover:bg-orange-700">
     </form>
 </div>
 @endsection

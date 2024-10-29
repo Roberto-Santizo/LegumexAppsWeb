@@ -3,8 +3,11 @@
         <x-alertas />
 
         @hasanyrole('admin|adminagricola')
-        <x-input type="number" wire:model="personas" name="personas" label="Total de Personas Necesarias"
+        @if (!$tarea->asignacion)
+            <x-input type="number" wire:model="personas" name="personas" label="Total de Personas Necesarias"
             value="{{ old('personas') }}" placeholder="Ingrese el total de personas necesarias para la tarea" />
+        @endif
+      
 
         <x-input type="number" wire:model="presupuesto" name="presupuesto" label="Presupuesto de la Tarea"
             value="{{ old('presupuesto') }}" placeholder="Presupuesto de la Tarea en Quetzales" />

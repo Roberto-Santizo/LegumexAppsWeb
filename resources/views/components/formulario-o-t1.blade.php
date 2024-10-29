@@ -73,7 +73,7 @@
                 <div class="flex flex-col justify-center items-center mb-5 ">
                     <div id="my_camera"></div>
                     <div id="takesnapshot"
-                        class="btn">
+                        class="btn bg-orange-600 hover:bg-orange-800">
                         <i class="fa-solid fa-camera"></i>
                         Tomar Foto
                     </div>
@@ -86,7 +86,7 @@
                 </div>
 
 
-                <div class="btn"
+                <div class="btn bg-orange-500 hover:bg-orange-600"
                     id="upload_button">
                     <p>Guardar Fotos</p>
                     <x-loading-icon />

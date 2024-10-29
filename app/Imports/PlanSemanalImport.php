@@ -2,66 +2,88 @@
 
 namespace App\Imports;
 
-use App\Exceptions\ImportExeption;
 use App\Models\Lote;
 use App\Models\Finca;
 use App\Models\Tarea;
 use App\Models\TareasLote;
+use App\Models\TareaCosecha;
+use Illuminate\Support\Carbon;
 use App\Models\PlanSemanalFinca;
+use App\Models\TareaLoteCosecha;
+use App\Exceptions\ImportExeption;
 use Maatwebsite\Excel\Concerns\ToModel;
 use Maatwebsite\Excel\Concerns\WithHeadingRow;
 
 class PlanSemanalImport implements ToModel, WithHeadingRow
 {
     private $planesSemanal = [];
+    private $fincas;
+    private $tareas;
+
+    public function __construct()
+    {
+        // Carga todas las fincas y tareas en memoria para evitar consultas repetitivas
+        $this->fincas = Finca::all()->keyBy('code');
+        $this->tareas = Tarea::all()->keyBy('code');
+    }
 
     public function model(array $row)
     {
-        // Valida que no falten datos clave
-        if (empty($row['lote']) || empty($row['finca']) || empty($row['tarea']) || empty($row['numero_de_semana'])) {
-            return null;
+        if (empty($row['finca']) || empty($row['lote']) || empty($row['tarea']) || empty($row['horas']) || empty($row['presupuesto'])) {
+            return null; 
         }
 
-        $finca = Finca::where('code',$row['finca'])->get()->first();
-        if (!$finca) {
-            throw new ImportExeption('La finca ' . $row['finca'] . ' no existe');
+        $semana = Carbon::now()->weekOfYear;
+
+        try {
+            $finca = $this->fincas[$row['finca']] ?? null;
+            if (!$finca) {
+                throw new ImportExeption("Finca con código {$row['finca']} no encontrada.");
+            }
+
+            $lote = Lote::where('nombre', $row['lote'])->where('finca_id', $finca->id)->first();
+            $tarea = $this->tareas[$row['tarea']] ?? TareaCosecha::where('code', $row['tarea'])->first();
+            $planSemanal = $this->getOrCreatePlanSemanal($finca->code, $row['numero_de_semana']);
+
+            if ($row['numero_de_semana'] < $semana) {
+                throw new ImportExeption("La semana indicada es anterior a la semana actual.");
+            }
+
+            if ($tarea instanceof Tarea) {
+                return new TareasLote([
+                    'plan_semanal_finca_id' => $planSemanal->id,
+                    'lote_id' => $lote->id,
+                    'tarea_id' => $tarea->id,
+                    'personas' => max(1, floor($row['horas'] / 8)),
+                    'presupuesto' => round($row['presupuesto'], 2),
+                    'horas' => round($row['horas'], 2),
+                    'cupos' => max(1, floor($row['horas'] / 8)),
+                    'horas_persona' => $row['horas'] / $row['personas'],
+                ]);
+            }
+
+            return new TareaLoteCosecha([
+                'plan_semanal_finca_id' => $planSemanal->id,
+                'lote_id' => $lote->id,
+                'tarea_cosecha_id' => $tarea->id,
+            ]);
+
+        } catch (\Throwable $th) {
+            throw new ImportExeption('Existe un error al crear el plan semanal, verifique los datos del archivo e intentelo de nuevo');
         }
-
-        $planSemanal = $this->getOrCreatePlanSemanal($row['finca'], $row['numero_de_semana']);
-
-        $lote = Lote::where('nombre', $row['lote'])->where('finca_id',$finca->id)->first();
-
-        if (!$lote) {
-            throw new ImportExeption('El lote ' . $row['lote'] . ' no existe o pertenece a otra finca');
-        }
-
-        $tarea = Tarea::where('code', $row['tarea'])->first();
-
-        if (!$tarea) {
-            throw new ImportExeption('La tarea ' . $row['tarea'] . ' no existe');
-        }
-
-        return new TareasLote([
-            'plan_semanal_finca_id' => $planSemanal->id,
-            'lote_id' => $lote->id,
-            'tarea_id' => $tarea->id,
-            'personas' => (floor($row['horas'] / 8) < 1) ? 1 : floor($row['horas'] / 8),
-            'presupuesto' => round($row['presupuesto'], 2),
-            'horas' => round($row['horas'], 2),
-            'cupos' => (floor($row['horas'] / 8) < 1) ? 1 : floor($row['horas'] / 8),
-            'horas_persona' => $row['horas'] / $row['personas'],
-        ]);
     }
 
     private function getOrCreatePlanSemanal($finca, $numeroSemana)
     {
-        // Si ya tenemos este plan en cache, lo devolvemos
         if (isset($this->planesSemanal[$finca][$numeroSemana])) {
             return $this->planesSemanal[$finca][$numeroSemana];
         }
 
-        $fincaModel = Finca::where('code',$finca)->get()->first();
-        
+        $fincaModel = $this->fincas[$finca] ?? null;
+        if (!$fincaModel) {
+            throw new ImportExeption("Finca con código {$finca} no encontrada.");
+        }
+
         $planSemanal = PlanSemanalFinca::firstOrCreate(
             [
                 'finca_id' => $fincaModel->id,

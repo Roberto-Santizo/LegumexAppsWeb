@@ -10,10 +10,12 @@ use App\Http\Controllers\UsuariosFincaController;
 use App\Http\Controllers\AsignacionDiariaController;
 use App\Http\Controllers\ControlPlantacionController;
 use App\Http\Controllers\PlanSemanalFincasController;
+use App\Http\Controllers\TareaCosechaLoteController;
 use App\Http\Controllers\TareaLoteController;
 
 Route::group(['middleware' => ['auth', 'role:admin|adminagricola|auxalameda'], 'prefix' => 'agricola'], function() {
-
+    Route::get('/finca/plan-semanal/lotes/{lote:nombre}/{plansemanalfinca}/{tarea}/{tarealotecosecha}/cosecha/asignacion', [PlanSemanalFincasController::class, 'AsignarEmpleadosCosecha'])->name('planSemanal.AsignarEmpleadosCosecha');
+    Route::get('/tarea-lote/{tarealote}', [TareaLoteController::class, 'show'])->name('planSemanal.tareaLote.show');
     //Plan semanal (tareas fincas)
     Route::get('/finca/plan-semanal', [PlanSemanalFincasController::class, 'index'])->name('planSemanal');
     Route::get('/finca/plan-semanal/plan-{plansemanalfinca}/lotes', [PlanSemanalFincasController::class, 'show'])->name('planSemanal.show');
@@ -26,14 +28,18 @@ Route::group(['middleware' => ['auth', 'role:admin|adminagricola|auxalameda'], '
     //Asignacion Diaria
     Route::post('/finca/plan-semanal/create/{lote}/{plansemanalfinca}', [AsignacionDiariaController::class, 'store'])->name('asignacionDiaria.store');
 
-    Route::post('/finca/plan-semanal/rendimiento/store', [PlanSemanalFincasController::class, 'storeDiario'])->name('planSemanal.storediario');
+    Route::get('/finca/plan-semanal/lotes/{lote}/{plansemanalfinca}/cosecha/tareas', [PlanSemanalFincasController::class, 'tareasCosechaLote'])->name('planSemanal.tareasCosechaLote');
+    Route::get('/finca/plan-semanal/lotes/{lote}/{plansemanalfinca}/cosecha/{tarealotecosecha}/rendimiento', [PlanSemanalFincasController::class, 'tareasCosechaLoteRendimiento'])->name('planSemanal.tareasCosechaLoteRendimiento');
+
 
 });
 
 Route::group(['middleware' => ['auth', 'role:admin|adminagricola'], 'prefix' => 'agricola'], function() {
     Route::get('/finca/plan-semanal/create', [PlanSemanalFincasController::class, 'create'])->name('planSemanal.create'); 
 
-          
+    Route::get('/finca/plan-semanal/lotes/{lote}/{plansemanalfinca}/cosecha/{tarealotecosecha}/rendimiento/real', [PlanSemanalFincasController::class, 'tareasCosechaLoteRendimientoReal'])->name('planSemanal.tareasCosechaLoteRendimiento.real');
+    Route::get('/finca/plan-semanal/cosecha-{tarealotecosecha}/resumen', [TareaCosechaLoteController::class, 'tareaCosechaResumen'])->name('planSemanal.tareaCosechaResumen');
+    
     
     Route::get('/tarea/create', [TareasController::class, 'create'])->name('tareas.create');
     Route::get('/tarea/carga', [TareasController::class, 'carga'])->name('tareas.carga');
@@ -82,17 +88,20 @@ Route::group(['middleware' => ['auth', 'role:admin|adminagricola'], 'prefix' => 
 
 
     Route::get('/tarea-lote/create', [TareaLoteController::class, 'create'])->name('planSemanal.tareaLote.create');
-    Route::get('/tarea-lote/{tarealote}', [TareaLoteController::class, 'show'])->name('planSemanal.tareaLote.show');
+
 
     Route::get('/tarea-lote/{tareaslote}/edit', [TareaLoteController::class, 'edit'])->name('planSemanal.tareaLote.edit');
     
     Route::post('/tarea-lote/store/{lote}/{plansemanalfinca}', [TareaLoteController::class, 'store'])->name('planSemanal.tareaLote.store');
 
-    
+    //Tareas de cosecha
+    Route::get('/tarea-lote/cosecha/create', [TareaCosechaLoteController::class, 'create'])->name('planSemanal.tareaCosechaLote.create');
+
     // Reporteria
     Route::get('/exportar-plansemanal/{planSemanalFinca}', [ReporteController::class, 'PlanSemanal'])->name('reporte.PlanSemanal');
     Route::get('/exportar-planillasemanal/{planSemanalFinca}', [ReporteController::class, 'PlanillaSemanal'])->name('reporte.PlanillaSemanal');
-    Route::get('/exportar-control-presupuesto', [ReporteController::class, 'ControlPresupuesto'])->name('reporte.ControlPresupuesto');
+    Route::get('/exportar-control-presupuesto/{semana}', [ReporteController::class, 'ControlPresupuesto'])->name('reporte.ControlPresupuesto');
+    Route::get('/exportar-cosecha/{tarealotecosecha}', [ReporteController::class, 'ControlCosecha'])->name('reporte.ControlCosecha');
     
     //Usuarios Fincas
     Route::get('/finca/ingresos', [UsuariosFincaController::class, 'index'])->name('usuariosFincas');

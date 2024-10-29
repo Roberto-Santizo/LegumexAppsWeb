@@ -2,9 +2,11 @@
 
 namespace App\Exports;
 
+use App\Models\AsignacionDiariaCosecha;
 use App\Models\EmpleadoFinca;
 use Illuminate\Support\Carbon;
 use App\Models\PlanSemanalFinca;
+use App\Models\UsuarioTareaCosecha;
 use App\Models\UsuarioTareaLote;
 use Maatwebsite\Excel\Concerns\WithStyles;
 use Maatwebsite\Excel\Concerns\WithHeadings;
@@ -29,16 +31,20 @@ class PlanillaSemanalExport implements FromCollection, WithHeadings, WithStyles
     {
         $rows = collect();
         Carbon::setLocale('es');
+        
+
         $personalFinca = EmpleadoFinca::where('department_id', $this->plansemanal->finca->id)->WhereNotIn('position_id', [15, 9])->get();
         $personalCodigos = $personalFinca->pluck('last_name')->toArray();
 
         $asignaciones = UsuarioTareaLote::whereIn('codigo', $personalCodigos)->get();
-        $asignacionesPorEmpleado = $asignaciones->groupBy('codigo');
-
+        
+        $asignacionesPorEmpleado = UsuarioTareaLote::whereRaw('WEEKOFYEAR(created_at) = ?', [$this->plansemanal->semana])->get()->groupBy('codigo');
+        $asignacionesPorEmpleadoCosecha = UsuarioTareaCosecha::whereRaw('WEEKOFYEAR(created_at) = ?', [$this->plansemanal->semana])->get()->groupBy('codigo');
 
         foreach ($personalFinca as $empleado) {
             
             $asignaciones = $asignacionesPorEmpleado->get($empleado->last_name, collect());
+            $asignacionesCosecha = $asignacionesPorEmpleadoCosecha->get($empleado->last_name,collect());
             $empleado->horas_totales = 0;
             $empleado->bono = 0;
             $empleado->septimo = 0;
@@ -51,6 +57,26 @@ class PlanillaSemanalExport implements FromCollection, WithHeadings, WithStyles
                         $empleado->total_devengar += (($asignacion->tarea_lote->presupuesto) / $asignacion->tarea_lote->users->count());
                     }
                 }
+                
+            }
+            
+            if($asignacionesCosecha->isNotEmpty()){
+                foreach ($asignacionesCosecha as $asignacion) {
+                    $asignacionCosecha = AsignacionDiariaCosecha::whereDate('created_at',$asignacion->created_at)->get()->first();
+                    if($asignacionCosecha->cierre && $asignacionCosecha->cierre->libras_total_planta){
+                        $rendimiento = $asignacion->tarealote->tarea->cultivo->rendimiento;
+                        $horasxcosecha = ($asignacion->libras_asignacion*8)/$rendimiento;
+                       
+                        $pesoLbCabeza = round(($asignacionCosecha->cierre->libras_total_planta / $asignacionCosecha->cierre->plantas_cosechadas),2);
+                        $porcentaje = ($asignacion->libras_asignacion/ $asignacionCosecha->cierre->libras_total_finca);
+                        $rendimientoTeoricoPorPersona =  round(($pesoLbCabeza * $asignacionCosecha->tareaLoteCosecha->tarea->cultivo->rendimiento),2);
+                       
+                        $montoTotal = round(((($asignacionCosecha->cierre->libras_total_planta/ $rendimientoTeoricoPorPersona) * 8)*11.98),2);
+                        $empleado->horas_totales += $horasxcosecha;
+                        $empleado->total_devengar += $montoTotal*$porcentaje;
+                    }
+                }
+                
             }
 
             if($empleado->horas_totales >= 44){

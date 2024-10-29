@@ -11,6 +11,7 @@ class Cultivo extends Model
 
     protected $fillable = [
         'cultivo',
-        'semanas'
+        'semanas',
+        'rendimiento'
     ];
 }

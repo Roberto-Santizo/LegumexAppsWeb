@@ -7,7 +7,8 @@
 @section('contenido')
 
 <x-alertas />
+<x-link-volver ruta="planSemanal" class="bg-green-moss hover:bg-green-meadow"/>
 
-<livewire:crear-tarea-lote :planes="$planes" :lotes="$lotes" :tareas="$tareas"/>
+<livewire:crear-tarea-lote />
 
 @endsection

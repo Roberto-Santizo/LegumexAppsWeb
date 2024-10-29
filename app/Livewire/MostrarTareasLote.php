@@ -77,34 +77,8 @@ class MostrarTareasLote extends Component
             'terminado' => 1
         ]);
 
-        $tokenService = app(MicrosoftTokenService::class);
-        $token = $tokenService->getValidAccessToken();
-
-        $emailService = new EmailService($token);
-
-        $recipientEmail = 'soportetecnico.tejar@legumex.net'; 
-        $subject = 'Tarea Completada';
-        $tareaContent = $tarea->tarea;
-        $tareaId = $tarea->id;
-        $loteContent = $tarea->lote;
-        $planSemanalContent = $tarea->plansemanal;
-        $bodyContent = <<<HTML
-            <h1>¡La tarea: {$tareaContent->tarea} de lote {$loteContent->nombre} semana {$planSemanalContent->semana} fue completada con éxito!</h1>
-            <table>
-                <tr>
-                    <td style="padding: 10px;">
-                        <a href="https://legumexapps.domcloud.dev/agricola/tarea-lote/$tareaId" >
-                            Click aquí para ver los detalles
-                        </a>
-                    </td>
-                </tr>
-            </table>
-        HTML;
-
-        $mensaje = $emailService->sendEmail($recipientEmail, $subject, $bodyContent);
-        
         $this->successTareaLoteId = $tarea->id;
-        $this->successMessage = 'La tarea fue terminada en fecha: ' . $cierre->created_at->format('d-m-Y h:i:s A') . ' ' .$mensaje;
+        $this->successMessage = 'La tarea fue terminada en fecha: ' . $cierre->created_at->format('d-m-Y h:i:s A');
         
     }
 

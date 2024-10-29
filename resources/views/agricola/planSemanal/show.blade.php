@@ -8,16 +8,16 @@ Plan Semanal {{ $plansemanalfinca->finca->finca }} Semana - {{ $plansemanalfinca
 
 <x-alertas />
 
-<x-link route="planSemanal" text="Volver" icon="fa-solid fa-arrow-left" class="bg-green-moss hover:bg-green-meadow" />
+<x-link-volver ruta="planSemanal" class="bg-green-moss hover:bg-green-meadow"/>
 
 
 <div class="overflow-x-auto mt-10">
-
+    <h2 class="text-xl font-bold uppercase mb-5">Tareas Generales</h2>
     <table class="tabla">
         <thead class="tabla-head">
             <tr class="text-xs md:text-sm">
                 <th scope="col" class="encabezado">
-                    Lotes Disponibles</th>
+                    Lote</th>
                 <th scope="col" class="encabezado">
                     Personas</th>
                 @can('create plan semanal')
@@ -57,4 +57,34 @@ Plan Semanal {{ $plansemanalfinca->finca->finca }} Semana - {{ $plansemanalfinca
         </tbody>
     </table>
 </div>
+
+@if ($lotesCosecha->count() > 0)
+<div class="overflow-x-auto mt-10">
+    <h2 class="text-xl font-bold uppercase mb-5">Cosechas</h2>
+    <table class="tabla">
+        <thead class="tabla-head">
+            <tr class="text-xs md:text-sm">
+                <th scope="col" class="encabezado">
+                    Lote</th>
+                <th scope="col" class="encabezado">
+                    Cosecha Asignada</th>
+            </tr>
+        </thead>
+        <tbody class="tabla-body">
+            @foreach ($lotesCosecha as $loteCosecha)
+            <tr>
+                <td class="campo">{{ $loteCosecha->lote->nombre }}</td>
+   
+                <td class="campo">
+                    <a class="btn bg-green-moss hover:bg-green-meadow" href="{{ route('planSemanal.tareasCosechaLote',[$loteCosecha->lote,$planSemanal]) }}">
+                        VER COSECHA
+                    </a>
+                </td>
+            </tr>
+            @endforeach
+        </tbody>
+    </table>
+</div>  
+@endif
+
 @endsection
