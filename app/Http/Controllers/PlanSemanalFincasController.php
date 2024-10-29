@@ -102,9 +102,18 @@ class PlanSemanalFincasController extends Controller
     public function show(PlanSemanalFinca $plansemanalfinca)
     {
         $lotes = $plansemanalfinca->tareasTotales()
-            ->select('lote_id', DB::raw('SUM(personas) as total_personas'), DB::raw('SUM(presupuesto) as total_presupuesto'), DB::raw('SUM(horas) as total_horas'))
-            ->groupBy('lote_id')
-            ->get();
+                ->select(
+                    'lote_id', 
+                    DB::raw('SUM(personas) as total_personas'),
+                    DB::raw('SUM(presupuesto) as total_presupuesto'),
+                    DB::raw('SUM(horas) as total_horas'),
+                    DB::raw('COUNT(tareas_lotes.id) as total_asignadas'), 
+                    DB::raw('COUNT(cierre.id) as total_terminadas')       
+                )
+                ->leftJoin('rendimiento_diarios as cierre', 'tareas_lotes.id', '=', 'cierre.tarea_lote_id') 
+                ->groupBy('lote_id')
+                ->get();
+                
         $lotesCosecha = $plansemanalfinca->tareasCosechaTotales()
                 ->select('lote_id')
                 ->groupBy('lote_id')
