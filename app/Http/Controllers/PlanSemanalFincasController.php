@@ -108,7 +108,8 @@ class PlanSemanalFincasController extends Controller
                 ->select('lote_id')
                 ->groupBy('lote_id')
                 ->get();
-        return view('agricola.planSemanal.show', ['lotes' => $lotes, 'planSemanal' => $plansemanalfinca, 'lotesCosecha' => $lotesCosecha]);
+        dd($lotes);
+        return view('agricola.planSemanal.show', ['lotes' => $lotes, 'plansemanalfinca' => $plansemanalfinca, 'lotesCosecha' => $lotesCosecha]);
     }
 
     public function tareasLote(Lote $lote, PlanSemanalFinca $plansemanalfinca)
