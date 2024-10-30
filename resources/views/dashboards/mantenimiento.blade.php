@@ -5,5 +5,5 @@
 @endsection
 
 @section('contenido')
-    
+    <livewire:dashboard-mantenimiento />
 @endsection
