@@ -72,6 +72,12 @@ class DashboardAgricola extends Component
                     $usuario->activo = true;
                 }
             }
+
+            foreach ($asignacionesCosecha as $asignacion) {
+                if (!$asignacion->tarealote->cierreDiario) {
+                    $usuario->activo = true;
+                };
+            }
         });
 
         $this->usuarios = $this->usuarios->sortBy('horas_totales');
