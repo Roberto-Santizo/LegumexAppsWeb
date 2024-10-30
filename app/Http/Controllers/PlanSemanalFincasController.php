@@ -9,7 +9,6 @@ use App\Models\TareaCosecha;
 use Illuminate\Http\Request;
 use App\Models\EmpleadoFinca;
 use Illuminate\Support\Carbon;
-use App\Services\SemanaService;
 use App\Models\PlanSemanalFinca;
 use App\Models\TareaLoteCosecha;
 use App\Models\UsuarioTareaLote;
@@ -113,16 +112,17 @@ class PlanSemanalFincasController extends Controller
                 ->leftJoin('rendimiento_diarios as cierre', 'tareas_lotes.id', '=', 'cierre.tarea_lote_id') 
                 ->groupBy('lote_id')
                 ->get();
-                
+
         $lotesCosecha = $plansemanalfinca->tareasCosechaTotales()
                 ->select('lote_id')
                 ->groupBy('lote_id')
                 ->get();
-        return view('agricola.planSemanal.show', ['lotes' => $lotes, 'plansemanalfinca' => $plansemanalfinca, 'lotesCosecha' => $lotesCosecha]);
+        return view('agricola.planSemanal.show', compact(['lotes','plansemanalfinca','lotesCosecha']));
     }
 
     public function tareasLote(Lote $lote, PlanSemanalFinca $plansemanalfinca)
     {
+        $semanaActual = Carbon::now()->weekOfYear;
         $tareas = $plansemanalfinca->tareasPorLote($lote->id)
             ->with([
                 'asignacion' => function ($query) {
@@ -156,19 +156,14 @@ class PlanSemanalFincasController extends Controller
                 }
             }
         }
-
-        return view('agricola.planSemanal.tareasLote', [
-            'lote' => $lote,
-            'plansemanalfinca' => $plansemanalfinca,
-            'tareas' => $tareas,
-            'semanaActual' => Carbon::now()->weekOfYear
-        ]);
+        return view('agricola.planSemanal.tareasLote', compact(['lote','plansemanalfinca','tareas','semanaActual']));
     }
 
     public function tareasCosechaLote(Lote $lote,PlanSemanalFinca $plansemanalfinca)
     {
+        $semanaActual = Carbon::now()->weekOfYear;
         $tarea = $plansemanalfinca->tareaCosechaPorLote($lote->id)->with('asignaciones.cierre')->with('cierres')->first();
-        return view('agricola.planSemanal.tareasLoteCosecha', ['lote' => $lote, 'plansemanalfinca' => $plansemanalfinca,'tarea' => $tarea, 'semanaActual' => Carbon::now()->weekOfYear]);
+        return view('agricola.planSemanal.tareasLoteCosecha', compact(['lote','plansemanalfinca','tarea','semanaActual']));
     }
 
     public function tareasCosechaLoteRendimiento(Lote $lote, PlanSemanalFinca $plansemanalfinca, TareaLoteCosecha $tarealotecosecha)
@@ -183,8 +178,6 @@ class PlanSemanalFincasController extends Controller
         return view('agricola.tareasCosechaLote.rendimientoReal',compact(['lote','plansemanalfinca','tarealotecosecha']));
     }
 
-
-
     public function AsignarEmpleados(Lote $lote, PlanSemanalFinca $plansemanalfinca, Tarea $tarea, TareasLote $tarealote)
     {
         return view('agricola.planSemanal.asignar',compact(['lote','plansemanalfinca','tarea','tarealote']));
@@ -198,7 +191,7 @@ class PlanSemanalFincasController extends Controller
 
     public function rendimiento(TareasLote $tarealote, PlanSemanalFinca $plansemanalfinca)
     {
-        return view('agricola.plansemanal.rendimiento', ['tarealote' => $tarealote, 'plansemanalfinca' => $plansemanalfinca]);
+        return view('agricola.plansemanal.rendimiento', compact(['tarealote','plansemanalfinca']));
     }
 
     public function diario(EmpleadoFinca $usuario, TareasLote $tarealote)
@@ -216,13 +209,12 @@ class PlanSemanalFincasController extends Controller
             ->orderBy('punch_time', 'desc')
             ->first();
 
-        return view('agricola.plansemanal.diario', ['tarealote' => $tarealote, 'usuario' => $usuario, 'primerMarcaje' => $primerMarcaje, 'ultimoMarcaje' => $ultimoMarcaje]);
+        return view('agricola.plansemanal.diario', compact(['tarealote','usuarios','primerMarcaje','ultimoMarcaje']));
     }
 
 
     public function atrasadas(Request $request, PlanSemanalFinca $plansemanalfinca)
     {
-       
         return view('agricola.planSemanal.atrasadas', compact(['plansemanalfinca']));
     }
 
