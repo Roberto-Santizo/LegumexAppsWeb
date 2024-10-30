@@ -34,7 +34,7 @@ class EmailService
         $recipientAddress->setAddress($recipientEmail);
         $recipient->setEmailAddress($recipientAddress);
         $message->setToRecipients([$recipient]);
-
+        
         try {
             $this->graph->createRequest("POST", "/me/sendMail")
                         ->attachBody(['message' => $message])
