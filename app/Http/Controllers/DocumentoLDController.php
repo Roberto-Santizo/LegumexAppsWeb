@@ -25,34 +25,6 @@ class DocumentoLDController extends Controller
 
     public function index(Request $request)
     {
-        // $query = Documentold::query();
-
-        // if ($request->filled('tecnico_mantenimiento')) {
-        //     $query->where('tecnico_mantenimiento', 'like', '%' . $request->input('tecnico_mantenimiento') . '%');
-        // }
-
-        // if ($request->filled('fecha')) {
-        //     $query->where('fecha', 'like', '%' . $request->input('fecha') . '%');
-        // }
-
-        // if ($request->filled('planta_id')) {
-        //     $query->where('planta_id', $request->input('planta_id'));
-        // }
-
-        // if ($request->filled('area_id')) {
-        //     $query->where('area_id', $request->input('area_id'));
-        // }
-
-        // if(auth()->user()->getRoleNames()->first() === 'auxmanto')
-        // {
-        //     $query->where('tecnico_mantenimiento',auth()->user()->name);
-        // }
-
-        // $query->orderBy('created_at', 'desc');
-
-        // $documentosld = $query->paginate(10)->appends($request->all());
-        // $plantas = Planta::all();
-        // $areas = Area::all();
         return view('mantenimiento.documentoLD.index');
     }
 
