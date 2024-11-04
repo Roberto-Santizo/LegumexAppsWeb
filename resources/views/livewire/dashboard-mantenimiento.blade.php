@@ -25,7 +25,7 @@
             <h1 class="text-2xl font-bold">Acciones Mantenimiento</h1>
         </div>
 
-        <div class="grid grid-cols-3 lg:flex lg:flex-row lg:items-center lg:flex-wrap gap-5 p-5">
+        <div class="grid grid-cols-2 md:grid-cols-3 lg:flex lg:flex-row lg:items-center lg:flex-wrap gap-5 p-5">
             @can('create ot')
                 <a href="{{ route('documentoOT.create') }}"
                     class="flex flex-col justify-between items-center hover:bg-blue-300 rounded-xl lg:p-5 grow-animation-sm text-white">
