@@ -1,5 +1,5 @@
-<div>
-    <div class="mt-5 text-xl flex flex-col gap-2 justify-center ">
+<div data-aos="zoom-in-right">
+    <div class="mt-5 text-xl flex flex-col gap-2 justify-center" >
         <h2 class="uppercase font-bold">Semana en Presentación: {{ $semana_actual }} <span
                 class="text-sm">(calendario)</span></h2>
 
@@ -22,6 +22,7 @@
             </button>
         </form>
     </div>
+
     <div class="flex flex-col gap-5 xl:grid xl:grid-cols-8 mt-10">
         <div
             class="flex flex-col justify-center items-center col-start-1 col-span-2 bg-green-moss rounded-lg p-4 shadow-2xl text-gray-600 text-md">
@@ -216,7 +217,7 @@
             </div>
         </div>
 
-        <div class=" col-start-1 col-span-8 bg-green-moss rounded-2xl shadow-xl">
+        <div class=" col-start-1 col-span-8 bg-green-moss rounded-2xl shadow-xl" >
             <div class="bg-green-meadow w-full p-5 flex flex-row gap-2 items-center text-white rounded-t-2xl">
                 <h1 class="text-2xl font-bold">Control de Tareas Terminadas</h1>
             </div>
@@ -289,7 +290,7 @@
         </div>
 
 
-        <div class=" col-start-1 col-span-4 row-start-2 bg-green-moss rounded-2xl shadow-xl ">
+        <div class=" col-start-1 col-span-4 row-start-2 bg-green-moss rounded-2xl shadow-xl">
             <div class="bg-green-meadow w-full p-5 flex flex-row gap-2 items-center text-white rounded-t-2xl">
                 <h1 class="text-2xl font-bold">Resumen de Horas Por Empleado Semana {{ $semana_actual }}</h1>
             </div>

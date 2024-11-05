@@ -5,7 +5,7 @@ Dashboard Admin
 @endsection
 
 @section('contenido')
-<div class="flex flex-col gap-5 xl:grid xl:grid-cols-8 mt-10">
+<div class="flex flex-col gap-5 xl:grid xl:grid-cols-8 mt-10" data-aos="zoom-in">
 
     <div
         class="flex flex-col justify-between items-center col-start-1 col-span-2 bg-gray-300 rounded-lg p-4 shadow-2xl text-gray-600">
