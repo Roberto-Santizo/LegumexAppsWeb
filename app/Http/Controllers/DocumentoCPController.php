@@ -88,7 +88,8 @@ class DocumentoCPController extends Controller
             'jefemanto_firma' => $request->jefemanto_firma,
             'supervisor_firma' => $request->supervisor_firma,
             'estado' => 1,
-            'correlativo' => $planta->prefix . '-' . $nuevoNumero
+            'correlativo' => $planta->prefix . '-' . $nuevoNumero,
+            'user_id' => auth()->user()->id
         ]);
 
         // Preparar los datos para evitar registros duplicados

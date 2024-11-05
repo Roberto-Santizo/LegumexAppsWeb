@@ -31,7 +31,9 @@
                     <th scope="col" class="encabezado">Fecha</th>
                     <th scope="col" class="encabezado">Acción</th>
                     <th scope="col" class="encabezado">Ordenes de Trabajo relacionadas</th>
+                    <th scope="col" class="encabezado">Empleado que lo Realizó</th>
                     <th scope="col" class="encabezado">Eliminar</th>
+                    
                 </tr>
             </thead>
             <tbody class="tabla-body">
@@ -57,11 +59,21 @@
                             class="btn mb-2 bg-orange-500 hover:bg-orange-600 mt-2">Ver Ordenes de trabajo</a>
                     </td>
 
+                    <td class="campo">
+                        @if ($documento->user)
+                            {{ $documento->user->name }}
+                        @endif
+                        
+                    </td>
+
                     @role('admin')
                     <td>
                         <i class="fa-solid fa-trash icon-link" wire:click="$dispatch('eliminar',{{ $documento }})"></i>
                     </td>
                     @endrole
+
+                    
+
 
                 </tr>
                 @endforeach

@@ -18,7 +18,8 @@ class Documentocp extends Model
         'supervisor_firma',
         'weburl',
         'estado',
-        'correlativo'
+        'correlativo',
+        'user_id'
     ];
 
     
@@ -34,6 +35,11 @@ class Documentocp extends Model
     public function areas()
     {
         return $this->hasMany(AreasChecklistP::class,'documentocps_id','id');
+    }
+
+    public function user()
+    {
+        return $this->belongsTo(User::class);
     }
 
     
