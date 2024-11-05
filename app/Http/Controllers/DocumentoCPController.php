@@ -23,21 +23,7 @@ class DocumentoCPController extends Controller
     
     public function index(Request $request)
     {
-        $query = Documentocp::query();
-
-        if ($request->filled('fecha')) {
-            $query->where('fecha', 'like', '%' . $request->input('fecha') . '%');
-        }
-
-        if ($request->filled('planta_id')) {
-            $query->where('planta_id', $request->input('planta_id'));
-        }
-        
-        $query->orderBy('created_at', 'desc');
-
-        $documentos = $query->paginate(10)->appends($request->all());
-        $plantas = Planta::whereIn('id', [1, 2, 5])->get();
-        return view('mantenimiento.documentoCP.index', ['documentos' => $documentos, 'plantas' => $plantas]);
+        return view('mantenimiento.documentoCP.index');
     }
 
 

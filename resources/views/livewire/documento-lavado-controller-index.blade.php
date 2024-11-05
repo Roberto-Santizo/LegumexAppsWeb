@@ -72,7 +72,7 @@
                         </td>
                         @endif
 
-                        @role('admin|adminmanto')
+                        @role('admin')
                             <td>
                                 <i class="fa-solid fa-trash icon-link" wire:click="$dispatch('eliminar',{{$documento }})"></i>
                             </td>
