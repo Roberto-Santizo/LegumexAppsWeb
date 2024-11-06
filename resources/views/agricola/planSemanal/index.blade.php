@@ -9,7 +9,7 @@ Tareas Finca Semanal
 <x-alertas />
 
 @hasanyrole('admin|adminagricola')
-<div class="flex flex-row gap-5 justify-end mt-10">
+<div class="flex flex-col md:flex-row md:gap-5 justify-end mt-10">
     <x-link class="bg-green-moss hover:bg-green-meadow" route="planSemanal.create" text="Crear Plan Semanal" />
     <x-link class="bg-green-moss hover:bg-green-meadow" route="planSemanal.tareaLote.create"
         text="Crear Tarea Extraordinaria" />

@@ -14,12 +14,12 @@ class NotificacionOrdenTrabajoPendienteService
     public function checkSendNotification()
     {
         $fechaActual = Carbon::now();
-        $fechaLimite = $fechaActual->addDay(); 
+        $fechaLimite = $fechaActual->addDay();
         $ordenesPendientes = OrdenTrabajo::where('estado_id', 1)
             ->where('mecanico_id', null)
             ->where(function ($query) use ($fechaActual, $fechaLimite) {
-                $query->whereDate('fecha_propuesta', $fechaLimite->toDateString()) 
-                    ->orWhereDate('fecha_propuesta', '<', $fechaActual->toDateString()); 
+                $query->whereDate('fecha_propuesta', $fechaLimite->toDateString())
+                    ->orWhereDate('fecha_propuesta', '<', $fechaActual->toDateString());
             })
             ->with('estado')
             ->get();
@@ -42,7 +42,7 @@ class NotificacionOrdenTrabajoPendienteService
         $recipient1->setEmailAddress(new EmailAddress(['address' => 'soportetecnico.tejar@legumex.net']));
 
         $recipient2 = new Recipient();
-        $recipient2->setEmailAddress(new EmailAddress(['address' => 'pedro.soto@legumex.net']));
+        $recipient2->setEmailAddress(new EmailAddress(['address' => 'robertsantizo76@gmail.com']));
 
         $message = new Message();
         $message->setSubject('Notificación de órdenes de trabajo pendientes');
@@ -50,7 +50,7 @@ class NotificacionOrdenTrabajoPendienteService
             'content' => $this->buildMessageBody($ordenesPendientes),
             'contentType' => 'HTML'
         ]);
-        $message->setToRecipients([$recipient1]);
+        $message->setToRecipients([$recipient1, $recipient2]);
 
         $graph->createRequest("POST", "/users/$userId/sendMail")
             ->attachBody([
@@ -79,18 +79,66 @@ class NotificacionOrdenTrabajoPendienteService
         return $token['access_token'];
     }
 
+
     private function buildMessageBody($ordenesPendientes)
     {
-        $message = "<div style='font-family: Arial, sans-serif;'>";
-        $message .= "<p style='font-size: 25px; font-weight: bold;'>¡Se acerca la fecha de entrega!</p>";
-        $message .= "<p style='font-size: 14px; font-weight: bold;'>Existen ordenes que su fecha de entrega se acerca y no cuentan con un mecánico.</p>";
-        
         $url = 'https://legumexapps.domcloud.dev/mantenimiento/administracion/ordenes-trabajos/1';
-        $message .= "<a href='$url'>
-                        Click Aquí para Ver
-                    </a>";
 
-        $message .= "</div>";
+        $anio = Carbon::today()->year;
+        $message = <<<HTML
+                <!DOCTYPE html>
+                <html lang="en">
+                <head>
+                    <meta charset="UTF-8">
+                    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+                    <title>Legumex</title>
+                </head>
+                <body style="margin: 0; padding: 0; font-family: Arial, sans-serif; font-size: 16px; line-height: 1.5; color: #333333; background-color: #f4f4f4;">
+                    <table role="presentation" style="width: 100%; border-collapse: collapse;">
+                        <tr>
+                            <td align="center" style="padding: 20px 0;">
+                                <table role="presentation" style="width: 600px; max-width: 100%; border-collapse: collapse; background-color: #ffffff; box-shadow: 0 0 10px rgba(0,0,0,0.1);">
+                                    <!-- Header -->
+                                    <tr>
+                                        <td style="background-color: #4a90e2; padding: 20px; text-align: center;">
+                                            <h1 style="color: #ffffff; margin: 0; font-size: 24px;">¡Se acerca la fecha de entrega!</h1>
+                                        </td>
+                                    </tr>
+
+                                    <!-- Main Content -->
+                                    <tr>
+                                        <td style="padding: 20px;">
+                                            <h2 style="color: #333333; font-size: 20px;">Existen órdenes que su fecha de entrega se acerca y no cuentan con un mecánico.</h2>
+                                            <p style="margin-bottom: 20px;">Para revisar estas órdenes y asignar a un mecánico, haz clic en el siguiente enlace.</p>
+
+                                            <!-- Action Link -->
+                                            <table role="presentation" style="width: 100%; border-collapse: collapse; margin-bottom: 20px; text-align: center;">
+                                                <tr>
+                                                    <td>
+                                                        <a href="$url" style="background-color: #4a90e2; color: #ffffff; padding: 10px 20px; text-decoration: none; border-radius: 5px; display: inline-block;">Click Aquí para Ver</a>
+                                                    </td>
+                                                </tr>
+                                            </table>
+
+                                        </td>
+                                    </tr>
+
+                                    <!-- Footer -->
+                                    <tr>
+                                        <td style="background-color: #f0f0f0; padding: 20px; text-align: center; font-size: 14px; color: #666666;">
+                                            <p style="margin: 0 0 10px 0;">© $anio Agroindustria Legumex. Todos los derechos reservados.</p>
+                                            <p style="margin: 0;">
+                                                Este correo es enviado automáticamente y se utiliza con motivo de notificación.
+                                            </p>
+                                        </td>
+                                    </tr>
+                                </table>
+                            </td>
+                        </tr>
+                    </table>
+                </body>
+                </html>
+                HTML;
 
         return $message;
     }
