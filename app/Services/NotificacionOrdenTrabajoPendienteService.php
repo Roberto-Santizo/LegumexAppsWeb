@@ -42,8 +42,13 @@ class NotificacionOrdenTrabajoPendienteService
         $recipient1->setEmailAddress(new EmailAddress(['address' => 'soportetecnico.tejar@legumex.net']));
 
         $recipient2 = new Recipient();
-        $recipient2->setEmailAddress(new EmailAddress(['address' => 'robertsantizo76@gmail.com']));
+        $recipient2->setEmailAddress(new EmailAddress(['address' => 'manto.parramos@legumex.net']));
 
+        $recipient3 = new Recipient();
+        $recipient3->setEmailAddress(new EmailAddress(['address' => 'pedro.soto@legumex.net']));
+
+        $recipient4 = new Recipient();
+        $recipient4->setEmailAddress(new EmailAddress(['address' => 'auxmantoparramos@legumex.net']));
         $message = new Message();
         $message->setSubject('Notificación de órdenes de trabajo pendientes');
         $message->setBody([
@@ -98,14 +103,12 @@ class NotificacionOrdenTrabajoPendienteService
                         <tr>
                             <td align="center" style="padding: 20px 0;">
                                 <table role="presentation" style="width: 600px; max-width: 100%; border-collapse: collapse; background-color: #ffffff; box-shadow: 0 0 10px rgba(0,0,0,0.1);">
-                                    <!-- Header -->
                                     <tr>
                                         <td style="background-color: #4a90e2; padding: 20px; text-align: center;">
                                             <h1 style="color: #ffffff; margin: 0; font-size: 24px;">¡Se acerca la fecha de entrega!</h1>
                                         </td>
                                     </tr>
 
-                                    <!-- Main Content -->
                                     <tr>
                                         <td style="padding: 20px;">
                                             <h2 style="color: #333333; font-size: 20px;">Existen órdenes que su fecha de entrega se acerca y no cuentan con un mecánico.</h2>
@@ -123,7 +126,6 @@ class NotificacionOrdenTrabajoPendienteService
                                         </td>
                                     </tr>
 
-                                    <!-- Footer -->
                                     <tr>
                                         <td style="background-color: #f0f0f0; padding: 20px; text-align: center; font-size: 14px; color: #666666;">
                                             <p style="margin: 0 0 10px 0;">© $anio Agroindustria Legumex. Todos los derechos reservados.</p>

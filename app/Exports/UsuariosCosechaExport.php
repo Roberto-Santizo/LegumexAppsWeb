@@ -57,9 +57,10 @@ class UsuariosCosechaExport implements FromCollection, WithHeadings, WithTitle, 
 
             $cosechadoPlanta = $asignacion->first()->totalCosechadoPlanta;
             $cosechadoFinca = $asignacion->first()->totalCosechadoFinca;
+            dd($asignacion->first());
             $porcentaje = ($asignacionUsuario->libras_asignacion/ $cosechadoFinca );
             $libras_asignacion_planta = round((($porcentaje) * $cosechadoPlanta),4);
-            $total_horas_empleadas = round($asignacion->first()->TotalHoras / $asignacion->first()->totalPersonas,3);
+            // $total_horas_empleadas = round($libras_asignacion_planta / );
 
             $rows->push([
                 'CODIGO' => $asignacionUsuario->codigo,
@@ -68,7 +69,6 @@ class UsuariosCosechaExport implements FromCollection, WithHeadings, WithTitle, 
                 'FECHA' => $asignacion->first()->created_at->format('d-m-y h:i:s'),
                 'LIBRAS REPORTADAS EN FINCA' => $asignacion->first()->totalCosechadoFinca,
                 'LIBRAS ENTRADAS EN PLANTA' => $asignacion->first()->totalCosechadoPlanta,
-                'TOTAL LIBRAS COSECHADAS (FINCA)' =>  $asignacionUsuario->libras_asignacion,
                 'PLANTAS COSECHADAS' =>  $asignacion->first()->cierre->plantas_cosechadas,
                 'MONTO GANADO' => round($porcentaje*$asignacion->first()->montoTotal,4),
                 'HORAS EMPLEADAS' => $total_horas_empleadas

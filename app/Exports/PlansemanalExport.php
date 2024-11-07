@@ -70,8 +70,8 @@ class PlansemanalExport implements FromCollection, WithHeadings, WithMultipleShe
                         $rendimiento_real = (($asignacion->cierre->libras_total_planta) * 8)/$rendimiento;
 
                         $rows->push([
-                            'FINCA' => $this->plansemanal->semana,
-                            'SEMANA CALENDARIO' => $this->plansemanal->finca->finca,
+                            'FINCA' => $this->plansemanal->finca->finca,
+                            'SEMANA CALENDARIO' => $this->plansemanal->semana,
                             'LOTE' => $tareaCosecha->lote->nombre,
                             'CODIGO TAREA' => $tareaCosecha->tarea->code,
                             'TAREA' => $tareaCosecha->tarea->tarea,

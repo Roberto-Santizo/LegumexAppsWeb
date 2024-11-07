@@ -88,13 +88,11 @@
                 </td>
                 @else
                     @if ($ot->estado_id == 3)
-                        @hasanyrole('admin|adminmanto')
                             <td class="px-4 py-4 whitespace-nowrap ">
                                 <a title="Generar Archivo" href="{{ route('documentoOT.documento',$ot) }}">
                                     <i class="fa-solid fa-folder-plus text-xl hover:text-red-500"></i>
                                 </a>
                             </td>
-                        @endhasanyrole
                     @endif
                 @endif
 

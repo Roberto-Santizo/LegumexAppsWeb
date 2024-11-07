@@ -46,6 +46,7 @@
             <div class="flex flex-row gap-5 justify-center items-center">
                 <p class="text-4xl font-bold">LegumexApps</p>
             </div>
+            <img src="{{ asset('img/noviembre_icon.gif'); }}" alt="Imagen Barrilete" class="hidden md:block w-14">
         </div>
 
         <div class="hidden md:flex justify-center items-center gap-2 bg-orange-600 p-3 rounded shadow-xl">
