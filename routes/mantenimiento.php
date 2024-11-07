@@ -76,4 +76,7 @@ Route::group(['middleware' => ['auth', 'role:admin|adminmanto'], 'prefix' => 'ma
     Route::post('/orden-trabajo/rechazar', [OrdenTrabajoController::class, 'rechazar'])->name('documentoOT.rechazar');
     Route::get('/ordenes-trabajos/urgencia/{urgencia}', [OrdenTrabajoController::class, 'showUrgencia'])->name('documentoOT.showurgencia');
 
+    //Areas y ubicaciones
+    
+
 });
