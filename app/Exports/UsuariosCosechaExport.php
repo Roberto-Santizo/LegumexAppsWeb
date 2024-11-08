@@ -32,6 +32,7 @@ class UsuariosCosechaExport implements FromCollection, WithHeadings, WithTitle, 
 
         $asignaciones = $this->tarealotecosecha->asignaciones->map(function($asignacion){
             $asignacion->fechaCosecha = $asignacion->created_at->locale('es')->isoFormat('dddd D [de] MMMM [de] YYYY');
+            $asignacion->plantas_cosechadas = $asignacion->cierre->plantas_cosechadas;
             $asignacion->fechaInicio = $asignacion->created_at->format('d-m-Y h:i:s A');
             $asignacion->fechaFinal = $asignacion->cierre->created_at->format('d-m-Y h:i:s A');
             $asignacion->TotalHoras = round(Carbon::parse($asignacion->fechaInicio)->diffInHours($asignacion->fechaFinal),3);
@@ -47,31 +48,31 @@ class UsuariosCosechaExport implements FromCollection, WithHeadings, WithTitle, 
             $asignacion = $asignaciones->filter(function($asignacionDiaria) use ($asignacionUsuario){
                 if ($asignacionDiaria->created_at->toDateString() === $asignacionUsuario->created_at->toDateString()) {
                     $asignacionDiaria->totalPersonas = $asignacionDiaria->tareaLoteCosecha->users()->whereDate('created_at',$asignacionDiaria->created_at)->count();
-                    $pesoLbCabeza = round(($asignacionDiaria->totalCosechadoPlanta / $asignacionDiaria->cierre->plantas_cosechadas),2);
+                    $pesoLbCabeza = $asignacionDiaria->totalCosechadoPlanta / $asignacionDiaria->cierre->plantas_cosechadas;
+                    $porcentaje = $asignacionUsuario->libras_asignacion/$asignacionDiaria->totalCosechadoFinca;
+                    $cabezas_cosechadas = ($porcentaje*$asignacionDiaria->totalCosechadoPlanta)/$pesoLbCabeza;
                     $rendimientoTeoricoPorPersona =  round(($pesoLbCabeza * $asignacionDiaria->tareaLoteCosecha->tarea->cultivo->rendimiento),2);
 
                     $asignacionDiaria->montoTotal = round(((($asignacionDiaria->totalCosechadoPlanta/ $rendimientoTeoricoPorPersona) * 8)*11.98),2);
+                    $asignacionDiaria->cabezas_cosechadas = $cabezas_cosechadas;
+                    $asignacionDiaria->porcentaje = $porcentaje;
                     return $asignacionDiaria;
                 }
             });
 
-            $cosechadoPlanta = $asignacion->first()->totalCosechadoPlanta;
-            $cosechadoFinca = $asignacion->first()->totalCosechadoFinca;
-            dd($asignacion->first());
-            $porcentaje = ($asignacionUsuario->libras_asignacion/ $cosechadoFinca );
-            $libras_asignacion_planta = round((($porcentaje) * $cosechadoPlanta),4);
-            // $total_horas_empleadas = round($libras_asignacion_planta / );
+            $horas_totales_cosecha = $asignacion->first()->cabezas_cosechadas/120;
 
             $rows->push([
                 'CODIGO' => $asignacionUsuario->codigo,
                 'EMPLEADO' => $asignacionUsuario->nombre,
-                'PORCENTAJE' => $porcentaje,
+                'PORCENTAJE' => $asignacion->first()->porcentaje,
                 'FECHA' => $asignacion->first()->created_at->format('d-m-y h:i:s'),
                 'LIBRAS REPORTADAS EN FINCA' => $asignacion->first()->totalCosechadoFinca,
                 'LIBRAS ENTRADAS EN PLANTA' => $asignacion->first()->totalCosechadoPlanta,
+                'TOTAL LIBRAS COSECHADAS' =>  $asignacionUsuario->libras_asignacion,
                 'PLANTAS COSECHADAS' =>  $asignacion->first()->cierre->plantas_cosechadas,
-                'MONTO GANADO' => round($porcentaje*$asignacion->first()->montoTotal,4),
-                'HORAS EMPLEADAS' => $total_horas_empleadas
+                'MONTO GANADO' => round($asignacion->first()->porcentaje*$asignacion->first()->montoTotal,4),
+                'HORAS EMPLEADAS' => $horas_totales_cosecha
             ]);
         });
 

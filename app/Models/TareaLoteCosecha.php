@@ -62,9 +62,12 @@ class TareaLoteCosecha extends Model
         return $this->hasOne(CierreTareaLoteCosechaSemanal::class, 'tarea_lote_cosecha_id','id');
     }
 
-    public function cierreDiario()
+    public function cierreDiario($fecha = null)
     {
-        return $this->hasOne(CierreTareaLoteCosecha::class, 'tarea_lote_cosecha_id','id')->where('tipo_cierre',0)->whereDate('created_at',Carbon::today());
+        if($fecha == null){
+            $fecha = Carbon::today();
+        }
+        return $this->hasOne(CierreTareaLoteCosecha::class, 'tarea_lote_cosecha_id','id')->where('tipo_cierre',0)->whereDate('created_at',$fecha);
     }
 }
 

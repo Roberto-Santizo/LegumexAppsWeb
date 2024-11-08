@@ -59,9 +59,10 @@ class ResumenCosecha extends Component
 
             $asignacionUsuario->cosechadoPlanta = $asignacion->first()->totalCosechadoPlanta;
             $asignacionUsuario->cosechadoFinca = $asignacion->first()->totalCosechadoFinca;
-            $asignacionUsuario->porcentaje = ($asignacionUsuario->libras_asignacion/ $asignacionUsuario->cosechadoFinca ) * 100;
-            $asignacionUsuario->libras_asignacion_planta = round((($asignacionUsuario->porcentaje/100) * $asignacionUsuario->cosechadoPlanta),4);
-            $asignacionUsuario->total_horas = (($asignacionUsuario->libras_asignacion_planta/$asignacion->first()->peso_cabeza)*8)/$this->tarealotecosecha->tarea->cultivo->rendimiento;
+            $asignacionUsuario->porcentaje = ($asignacionUsuario->libras_asignacion/ $asignacionUsuario->cosechadoFinca);
+            $asignacionUsuario->cabezas_cosechadas = ($asignacionUsuario->porcentaje*$asignacion->first()->totalCosechadoPlanta)/$asignacion->first()->peso_cabeza;
+            $asignacionUsuario->total_horas = $asignacionUsuario->cabezas_cosechadas/120;
+
             return $asignacionUsuario;
 
         });

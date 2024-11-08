@@ -49,13 +49,18 @@ class NotificacionOrdenTrabajoPendienteService
 
         $recipient4 = new Recipient();
         $recipient4->setEmailAddress(new EmailAddress(['address' => 'auxmantoparramos@legumex.net']));
+
+        $recipient5 = new Recipient();
+        $recipient5->setEmailAddress(new EmailAddress(['address' => 'manto.tejar@legumex.net']));
+
+
         $message = new Message();
         $message->setSubject('Notificación de órdenes de trabajo pendientes');
         $message->setBody([
             'content' => $this->buildMessageBody($ordenesPendientes),
             'contentType' => 'HTML'
         ]);
-        $message->setToRecipients([$recipient1, $recipient2]);
+        $message->setToRecipients([$recipient1, $recipient2,$recipient3,$recipient4,$recipient5]);
 
         $graph->createRequest("POST", "/users/$userId/sendMail")
             ->attachBody([

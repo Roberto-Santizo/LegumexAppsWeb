@@ -66,9 +66,9 @@ class DashboardAgricola extends Component
                         if($libras_planta){
                             $plantas_cosechadas = $asignacionCosecha->tarealote->cierreDiario($asignacionCosecha->created_at)->get()->first()->plantas_cosechadas;
                             $peso_cabeza = $libras_planta/$plantas_cosechadas;
-                            $porcentaje = ($asignacionCosecha->libras_asignacion/$libras_finca) * 100;
-                            $libras_asignacion_planta = round(($porcentaje/100) * $libras_planta,2);
-                            $horas_totales_cosecha = (($libras_asignacion_planta/$peso_cabeza)*8)/$asignacionCosecha->tarealote->tarea->cultivo->rendimiento;
+                            $porcentaje = ($asignacionCosecha->libras_asignacion/$libras_finca);
+                            $cabezas_cosechadas = ($porcentaje*$libras_planta)/$peso_cabeza;
+                            $horas_totales_cosecha = $cabezas_cosechadas/120;
                         }
                     }
 
