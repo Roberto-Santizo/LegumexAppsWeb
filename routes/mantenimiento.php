@@ -1,6 +1,7 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\AreaController;
 use App\Http\Controllers\DocumentoCPController;
 use App\Http\Controllers\DocumentoLDController;
 use App\Http\Controllers\HerramientasController;
@@ -77,6 +78,10 @@ Route::group(['middleware' => ['auth', 'role:admin|adminmanto'], 'prefix' => 'ma
     Route::get('/ordenes-trabajos/urgencia/{urgencia}', [OrdenTrabajoController::class, 'showUrgencia'])->name('documentoOT.showurgencia');
 
     //Areas y ubicaciones
+    Route::get('/areas/create',[AreaController::class,'create'])->name('areas.create');
+    Route::get('/areas',[AreaController::class,'index'])->name('areas');
+    Route::get('/areas/{area:area}',[AreaController::class,'show'])->name('areas.show');
+    
     
 
 });

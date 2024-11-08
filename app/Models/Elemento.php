@@ -9,6 +9,9 @@ class Elemento extends Model
 {
     use HasFactory;
 
-
+    protected $fillable = [
+      'elemento',
+      'area_id'  
+    ];
     
 }

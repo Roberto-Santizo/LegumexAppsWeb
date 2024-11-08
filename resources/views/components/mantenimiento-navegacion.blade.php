@@ -30,8 +30,7 @@
                 <div class="flex gap-2 w-full md:hidden">
                     <form action="{{ route('logout.microsoft') }}" method="POST" class="text-md">
                         @csrf
-                        <input type="submit" value="Cerrar Sesión"
-                            class="btn bg-orange-500 hover:bg-orange-600 mt-5">
+                        <input type="submit" value="Cerrar Sesión" class="btn bg-orange-500 hover:bg-orange-600 mt-5">
                     </form>
 
                     @role('auxmanto')
@@ -46,13 +45,13 @@
         </div>
 
         @hasanyrole('adminmanto|auxmanto')
-            <a href="{{ route('dashboard') }}"
-                class=" {{  Route::is('dashboard*') ? 'bg-orange-500' : '' }} sidebar-link hover:bg-orange-500">
-                <i class="fa-solid fa-house"></i>
-                <span class="text-md md:text-xs uppercase font-bold">Dashboard</span>
-            </a>
+        <a href="{{ route('dashboard') }}"
+            class=" {{  Route::is('dashboard*') ? 'bg-orange-500' : '' }} sidebar-link hover:bg-orange-500">
+            <i class="fa-solid fa-house"></i>
+            <span class="text-md md:text-xs uppercase font-bold">Dashboard</span>
+        </a>
         @endhasanyrole
-        
+
         <a href="{{ route('documentold') }}"
             class="{{  Route::is('documentold*') ? 'bg-orange-500' : '' }}  sidebar-link hover:bg-orange-500">
             <i class="fa-solid fa-hands-bubbles"></i>
@@ -86,9 +85,16 @@
             <i class="fa-solid fa-universal-access"></i>
             <span class="text-md md:text-xs uppercase font-bold">Administrar ordenes de trabajo</span>
         </a>
+
+        <a href="{{ route('areas') }}"
+            class="{{  Route::is('areas*') ? 'bg-orange-500' : '' }} sidebar-link hover:bg-orange-500">
+            <iconify-icon icon="majesticons:map-simple" class="icon-link"></iconify-icon>
+            <span class="text-md md:text-xs uppercase font-bold">Áreas y Ubicaciones</span>
+        </a>
+
         @endhasanyrole
 
-        
+
         <a href="{{ route('herramientas') }}"
             class="{{  Route::is('herramientas*') ? 'bg-orange-500' : '' }} sidebar-link hover:bg-orange-500">
             <i class="fa-solid fa-screwdriver-wrench"></i>

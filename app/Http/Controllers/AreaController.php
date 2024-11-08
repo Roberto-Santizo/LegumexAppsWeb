@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Area;
 use Illuminate\Http\Request;
 
 class AreaController extends Controller
@@ -11,7 +12,7 @@ class AreaController extends Controller
      */
     public function index()
     {
-        //
+        return view('mantenimiento.areas.index');
     }
 
     /**
@@ -19,7 +20,7 @@ class AreaController extends Controller
      */
     public function create()
     {
-        //
+        return view('mantenimiento.areas.create');
     }
 
     /**
@@ -33,9 +34,9 @@ class AreaController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(string $id)
+    public function show(Area $area)
     {
-        //
+        return view('mantenimiento.areas.show',compact('area'));
     }
 
     /**
