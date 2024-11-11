@@ -60,6 +60,7 @@ class DocumentoCPController extends Controller
 
     public function store(Planta $planta, Request $request)
     {
+        dd($request);
         $validated = $request->validate([
             'observaciones' => 'max:500',
             'verificado_firma' => 'required',
@@ -68,7 +69,9 @@ class DocumentoCPController extends Controller
 
         ]);
 
-        try {
+        
+
+        // try {
             $ultimoCorrelativo = Documentocp::where('planta_id',$planta->id)->orderBy('created_at','DESC')->first();
             if($ultimoCorrelativo){
                 $parts = explode('-', $ultimoCorrelativo);
@@ -149,10 +152,10 @@ class DocumentoCPController extends Controller
         }
         });
 
-            return redirect()->route('documentocp')->with(['success' => 'Documento creado exitosamente']);
-        } catch (\Throwable $th) {
-            return back()->with('error', 'Hubo un problema al guardar el documento. Inténtelo de nuevo más tarde ' . $th->getMessage());
-        }
+            // return redirect()->route('documentocp')->with(['success' => 'Documento creado exitosamente']);
+        // } catch (\Throwable $th) {
+        //     return back()->with('error', 'Hubo un problema al guardar el documento. Inténtelo de nuevo más tarde ' . $th->getMessage());
+        // }
 
     }
 

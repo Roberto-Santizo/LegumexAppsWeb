@@ -1,12 +1,9 @@
 import {quitarAlertas } from "../helpers";
 (function(){
     const checks = document.querySelectorAll('.table__check');
-    const formulario = document.getElementById('formularioP1');
-    const formulario2 = document.getElementById('formularioP2');
-    const formulario3 = document.getElementById('formularioP3');
+    const formulario = document.getElementById('formularioCP');
 
-
-    if(formulario || formulario2 || formulario3){
+    if(formulario){
         checks.forEach(check => {
             check.addEventListener('change',function(){
                 const problema = document.querySelector(`.problem-${check.dataset.id}`);

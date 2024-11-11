@@ -18,9 +18,7 @@ import './Generación de Documentos/formulario_orden-trabajo.js'
 
 //UI
 import './UI/modal-profileMenu.js';
-import './UI/formulario_checklist-preoperacional-stepper-IQF1.js';
-import './UI/formulario_checklist-preoperacional-stepper-FRESCO.js';
-import './UI/formulario_checklist-preoperacional-stepper-AB.js';
+import './UI/formulario_checklist-preoperacional-stepper.js';
 import './UI/formulario_orden-trabajo-especificacion.js';
 import './UI/menuMobile.js';
 import './UI/filtrosMobile.js';

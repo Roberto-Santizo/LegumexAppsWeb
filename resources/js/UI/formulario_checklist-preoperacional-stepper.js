@@ -5,7 +5,7 @@ import $ from 'jquery';
 import validator from "validator";
 
 (function(){
-    const formulario = document.getElementById('formularioP1');
+    const formulario = document.getElementById('formularioCP');
     const canvasPads = [];
     const signaturePads = [];
     const inputsText = document.querySelectorAll('.input-text');

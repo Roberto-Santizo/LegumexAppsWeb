@@ -15,7 +15,7 @@ Documento Checklist Preoperacional - {{ $planta->name }}
 <x-link route="documentocp.select" text="Volver" icon="fa-solid fa-arrow-left"
     class=" btn bg-orange-600 hover:bg-orange-800" />
 
-<form id="{{ ($planta->id == 1) ? 'formularioP1' : (($planta->id == 2) ? 'formularioP2' : 'formularioP3') }}"
+<form id="formularioCP"
     class="mt-5 w-full" action="{{ route('documentocp.store',$planta) }}" method="POST">
     @csrf
     <div class="bs-stepper">
@@ -130,7 +130,7 @@ Documento Checklist Preoperacional - {{ $planta->name }}
                             <span>Limpiar</span>
                         </div>
                     </div>
-                    <input type="hidden" id="signature-pad{{$area->id}}-input" name="areas[{{$area->id}}][firma]">
+                    <input type="hidden" id="signature-pad{{$count}}-input" name="areas[{{$area->id}}][firma]">
                 </div>
             </div>
             @php
@@ -139,59 +139,59 @@ Documento Checklist Preoperacional - {{ $planta->name }}
             @endforeach
 
             <div id="stepPiePagina-content" class="content" role="tabpanel" aria-labelledby="stepPiePagina-content">
-                {{-- <fieldset class="formulario__fieldset flex flex-col">
+                <fieldset class="formulario__fieldset flex flex-col">
                     <div class="formulario__firmas flex justify-center items-center gap-2">
                         <div class="formulario__firma flex justify-center items-center flex-col">
                             <canvas
-                                id="signature-pad{{($planta->id == 1) ? '11' : (($planta->id == 2) ? '19' : '38') }}"
+                                id="signature-pad{{ $count+1 }}"
                                 class="formulario__firma-canva  bg-gray-50 mt-10 rounded-xl border border-black"
                                 width="325" height="175"></canvas>
                             <div class="clear_btn flex justify-center items-center flex-col">
                                 <h4 class="formulario__texto">Verificado Por</h4>
-                                <div id="clear-button{{($planta->id == 1) ? '11' : (($planta->id == 2) ? '19' : '38') }}"
+                                <div id="clear-button{{ $count+1 }}"
                                     class=" btn formulario__firma--clear bg-orange-600 hover:bg-orange-800">
                                     <span>Limpiar</span>
                                 </div>
 
                             </div>
                             <input type="hidden"
-                                id="signature-pad{{($planta->id == 1) ? '11' : (($planta->id == 2) ? '19' : '38') }}-input"
+                                id="signature-pad{{ $count+1 }}-input"
                                 name="verificado_firma">
                         </div>
 
                         <div class="formulario__firma flex justify-center items-center flex-col">
                             <canvas
-                                id="signature-pad{{($planta->id == 1) ? '12' : (($planta->id == 2) ? '20' : '39') }}"
+                                id="signature-pad{{ $count+2 }}"
                                 class="formulario__firma-canva  bg-gray-50 mt-10 rounded-xl border border-black"
                                 width="325" height="175"></canvas>
 
                             <div class="clear_btn flex justify-center items-center flex-col">
                                 <h4 class="formulario__texto">Jefe de Mantenimiento</h4>
-                                <div id="clear-button{{($planta->id == 1) ? '12' : (($planta->id == 2) ? '20' : '39') }}"
+                                <div id="clear-button{{ $count+2 }}"
                                     class=" btn formulario__firma--clear bg-orange-600 hover:bg-orange-800">
                                     <span>Limpiar</span>
                                 </div>
                             </div>
                             <input type="hidden"
-                                id="signature-pad{{($planta->id == 1) ? '12' : (($planta->id == 2) ? '20' : '39') }}-input"
+                                id="signature-pad{{ $count+2 }}-input"
                                 name="jefemanto_firma">
                         </div>
 
                         <div class="formulario__firma flex justify-center items-center flex-col">
                             <canvas
-                                id="signature-pad{{($planta->id == 1) ? '13' : (($planta->id == 2) ? '21' : '40') }}"
+                                id="signature-pad{{  $count+3 }}"
                                 width="325" height="175"
                                 class=" bg-gray-50 mt-10 rounded-xl border border-black"></canvas>
 
                             <div class="clear_btn flex justify-center items-center flex-col">
                                 <h4 class="formulario__texto">Supervisor de calidad</h4>
-                                <div id="clear-button{{($planta->id == 1) ? '13' : (($planta->id == 2) ? '21' : '40') }}"
+                                <div id="clear-button{{ $count+3 }}"
                                     class="btn formulario__firma--clear bg-orange-600 hover:bg-orange-800">
                                     <span>Limpiar</span>
                                 </div>
                             </div>
                             <input type="hidden"
-                                id="signature-pad{{($planta->id == 1) ? '13' : (($planta->id == 2) ? '21' : '40') }}-input"
+                                id="signature-pad{{ $count+3 }}-input"
                                 name="supervisor_firma">
                         </div>
                     </div>
@@ -202,7 +202,7 @@ Documento Checklist Preoperacional - {{ $planta->name }}
                     <input type="submit" value="Guardar"
                         class="btn formulario__firma--clear bg-orange-600 hover:bg-orange-800">
 
-                </fieldset> --}}
+                </fieldset>
 
 
             </div>
@@ -212,7 +212,7 @@ Documento Checklist Preoperacional - {{ $planta->name }}
     </div>
 
     <input type="hidden" value="{{ auth()->user()->name }}" id="user">
-    <input type="hidden" value="{{ $planta->areas->count()+1 }}" id="total_firmas">
+    <input type="hidden" value="{{ $planta->areas->count()+4 }}" id="total_firmas">
 
 </form>
 
