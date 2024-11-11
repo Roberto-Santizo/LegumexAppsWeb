@@ -15,28 +15,28 @@ Cultivos
 </a>
 
 <div class="overflow-x-auto mt-10">
-    <table class="min-w-full divide-y divide-gray-200 dark:divide-gray-700 text-xs md:text-sm">
-        <thead class="bg-gray-50 dark:bg-gray-800">
+    <table class="min-w-full divide-y divide-gray-200 text-xs md:text-sm">
+        <thead class="bg-gray-50">
             <tr class="text-xs md:text-sm">
                 <th scope="col"
-                    class="p-3 text-sm font-bold uppercase text-left rtl:text-right text-gray-500 dark:text-gray-400">
+                    class="p-3 text-sm font-bold uppercase text-left rtl:text-right text-gray-500">
                     Nombre/Codificación del cultivo</th>
                 <th scope="col"
-                    class="p-3 text-sm font-bold uppercase text-left rtl:text-right text-gray-500 dark:text-gray-400">
+                    class="p-3 text-sm font-bold uppercase text-left rtl:text-right text-gray-500">
                     Semanas totales del Cultivo</th>
                 <th scope="col"
-                    class="p-3 text-sm font-bold uppercase text-left rtl:text-right text-gray-500 dark:text-gray-400">
+                    class="p-3 text-sm font-bold uppercase text-left rtl:text-right text-gray-500">
                     Fecha de Creación</th>
                 <th scope="col"
-                    class="p-3 text-sm font-bold uppercase text-left rtl:text-right text-gray-500 dark:text-gray-400">
+                    class="p-3 text-sm font-bold uppercase text-left rtl:text-right text-gray-500">
                     Ultima fecha de actualización</th>
                 <th scope="col"
-                    class="p-3 text-sm font-bold uppercase text-left rtl:text-right text-gray-500 dark:text-gray-400">
+                    class="p-3 text-sm font-bold uppercase text-left rtl:text-right text-gray-500">
                     Acción</th>
 
             </tr>
         </thead>
-        <tbody class="bg-white divide-y divide-gray-200 dark:divide-gray-700 dark:bg-gray-900">
+        <tbody class="bg-white divide-y divide-gray-200">
             @foreach ($cultivos as $cultivo)
             <tr>
                 <td class="px-4 py-2 text-md font-medium whitespace-nowrap">{{ $cultivo->cultivo }}</td>

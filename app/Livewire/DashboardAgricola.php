@@ -52,17 +52,26 @@ class DashboardAgricola extends Component
             $horas_totales_cosecha = 0;
             $asignaciones = UsuarioTareaLote::whereRaw('WEEKOFYEAR(created_at) = ?', $semana)->where('usuario_id', $usuario->id)->get();
             $asignacionesCosecha = UsuarioTareaCosecha::whereRaw('WEEKOFYEAR(created_at) = ?', $semana)->where('usuario_id', $usuario->id)->get();
+            $asignacionesCosechaHoy = UsuarioTareaCosecha::whereDate('created_at', Carbon::today())->where('usuario_id', $usuario->id)->get();
             $horas_totales_tareas = $asignaciones->sum(function ($asignacion) {
                 return round($asignacion->tarea_lote->horas / ($asignacion->tarea_lote->users->count()), 2);
             });
 
-
             if (!$asignacionesCosecha->isEmpty()) {
                 foreach ($asignacionesCosecha as $asignacionCosecha) {
-                    $rendimiento = $asignacionCosecha->tarealote->tarea->cultivo->rendimiento;
-                    $libras = $asignacionCosecha->libras_asignacion;
-                    $calculoHoras = ($libras * 8) / $rendimiento;
-                    $horas_totales_cosecha += $calculoHoras;
+                    $cierre = $asignacionCosecha->tarealote->cierreDiario($asignacionCosecha->created_at)->get()->first();
+                    if($cierre){
+                        $libras_planta = $cierre->libras_total_planta;
+                        $libras_finca = $cierre->libras_total_finca;
+                        if($libras_planta){
+                            $plantas_cosechadas = $asignacionCosecha->tarealote->cierreDiario($asignacionCosecha->created_at)->get()->first()->plantas_cosechadas;
+                            $peso_cabeza = $libras_planta/$plantas_cosechadas;
+                            $porcentaje = ($asignacionCosecha->libras_asignacion/$libras_finca);
+                            $cabezas_cosechadas = ($porcentaje*$libras_planta)/$peso_cabeza;
+                            $horas_totales_cosecha = $cabezas_cosechadas/120;
+                        }
+                    }
+
                 }
             }
 
@@ -73,11 +82,12 @@ class DashboardAgricola extends Component
                 }
             }
 
-            foreach ($asignacionesCosecha as $asignacion) {
+            foreach ($asignacionesCosechaHoy as $asignacion) {
                 if (!$asignacion->tarealote->cierreDiario) {
                     $usuario->activo = true;
                 };
             }
+
         });
 
         $this->usuarios = $this->usuarios->sortBy('horas_totales');
@@ -89,7 +99,7 @@ class DashboardAgricola extends Component
         });
         
         $this->tareasEnProceso = $this->tareas->filter(function ($tarea) {
-            if ($tarea->asignacion && !$tarea->cierre) {
+            if ($tarea->plansemanal->semana == $this->semana_actual && $tarea->asignacion && !$tarea->cierre) {
                 return $tarea;
             }
         });

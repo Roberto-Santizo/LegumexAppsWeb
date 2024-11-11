@@ -12,12 +12,12 @@ Historial de Lotes
 </a>
 
 @php
-    $clasesEncabezado = 'p-3 text-sm font-bold uppercase rtl:text-right text-gray-500 dark:text-gray-400';
+    $clasesEncabezado = 'p-3 text-sm font-bold uppercase rtl:text-right text-gray-500';
 @endphp
 
 <div class="overflow-x-auto mt-10">
-    <table class="min-w-full divide-y divide-gray-200 dark:divide-gray-700 text-xs md:text-sm">
-        <thead class="bg-gray-50 dark:bg-gray-800">
+    <table class="min-w-full divide-y divide-gray-200 text-xs md:text-sm">
+        <thead class="bg-gray-50">
             <tr class="text-xs md:text-sm">
                 <th scope="col"
                     class="{{ $clasesEncabezado }} text-left">
@@ -40,7 +40,7 @@ Historial de Lotes
                     Fecha de actualización</th>
             </tr>
         </thead>
-        <tbody class="bg-white divide-y divide-gray-200 dark:divide-gray-700 dark:bg-gray-900">
+        <tbody class="bg-white divide-y divide-gray-200">
             @foreach ($cambios as $cambio)
             <tr>
                 <td class="px-4 py-2 text-md font-medium whitespace-nowrap">{{ $cambio->lote->nombre }}</td>

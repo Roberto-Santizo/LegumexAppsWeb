@@ -20,6 +20,7 @@
                             <th scope="col" class="text-white">FECHA</th>
                             <th scope="col" class="text-white">TOTAL LIBRAS FINCA</th>
                             <th scope="col" class="text-white">TOTAL LIBRAS PLANTA</th>
+                            <th scope="col" class="text-white">TOTAL PLANTAS COSECHADAS</th>
                             <th scope="col" class="text-white">Hora de Inicio</th>
                             <th scope="col" class="text-white">Hora de Cierre</th>
                             <th scope="col" class="text-white">HORAS EMPLEADAS</th>
@@ -33,6 +34,7 @@
                             <td>{{ $asignacion->fechaCosecha }}</td>
                             <td class="text-center"> {{ $asignacion->totalCosechadoFinca }} lbs</p>
                             <td class="text-center p-5"> {{ $asignacion->totalCosechadoPlanta }} lbs</td>
+                            <td class="text-center p-5"> {{ $asignacion->cierre->plantas_cosechadas }}</td>
                             <td class="text-center"> {{ $asignacion->fechaInicio }} </p>
                             <td class="text-center"> {{ $asignacion->fechaFinal }} </p>
                             <td class="text-center"> {{ $asignacion->TotalHoras }} horas</p>
@@ -64,7 +66,7 @@
                         <th scope="col" class="text-white">Empleado</th>
                         <th scope="col" class="text-white">Fecha</th>
                         <th scope="col" class="text-white">Total de Libras Cosechadas (finca)</th>
-                        <th scope="col" class="text-white">Total de Libras Cosechadas Ajustdo (planta) </th>
+                        <th scope="col" class="text-white">Total de Libras Cosechadas Ajustado (planta) </th>
                         <th scope="col" class="text-white">Horas Empleadas</th>
                     </tr>
                 </thead>

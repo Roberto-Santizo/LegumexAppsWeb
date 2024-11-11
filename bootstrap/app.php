@@ -8,7 +8,7 @@ use Illuminate\Foundation\Configuration\Middleware;
 
 return Application::configure(basePath: dirname(__DIR__))
     ->withSchedule(function (Schedule $schedule) { 
-        $schedule->command('app:notificacion-orden-trabajo-pendiente')->dailyAt('9:30'); 
+        $schedule->command('app:notificacion-orden-trabajo-pendiente')->daily(); 
     })
     ->withRouting(
         web: __DIR__.'/../routes/web.php',

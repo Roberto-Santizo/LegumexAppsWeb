@@ -151,7 +151,7 @@ class DocumentoCPController extends Controller
 
             return redirect()->route('documentocp')->with(['success' => 'Documento creado exitosamente']);
         } catch (\Throwable $th) {
-            return back()->with('error', 'Hubo un problema al guardar el documento. Inténtelo de nuevo más tarde');
+            return back()->with('error', 'Hubo un problema al guardar el documento. Inténtelo de nuevo más tarde ' . $th->getMessage());
         }
 
     }

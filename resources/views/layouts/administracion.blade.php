@@ -46,6 +46,7 @@
             <div class="flex flex-row gap-5 justify-center items-center">
                 <p class="text-4xl font-bold">LegumexApps</p>
             </div>
+            <img src="{{ asset('img/noviembre_icon.gif'); }}" alt="Imagen Barrilete" class="hidden md:block w-14">
         </div>
 
         <div class="hidden md:flex justify-center items-center gap-2 bg-sky-600 p-3 rounded shadow-xl">
@@ -90,17 +91,11 @@
                     <p>Agroindustria Legumex S.A</p>
                 </div>
                 <div class="mt-10 flex flex-row gap-2">
-                    <form action="{{ route('logout.microsoft') }}" method="POST">
+                    <form action="{{ route('logout') }}" method="POST">
                         @csrf
                         <input type="submit" value="Cerrar Sesión"
                             class="mt-5 bg-orange-500 cursor-pointer hover:bg-orange-700 text-white font-bold py-2 px-4 rounded inline-block ">
-                    </form>
-
-                    <form action="{{ route('logout') }}" method="POST">
-                        @csrf
-                        <input type="submit" value="Utilizar otro Usuario"
-                            class="mt-5 bg-orange-500 cursor-pointer hover:bg-orange-700 text-white font-bold py-2 px-4 rounded inline-block ">
-                    </form>
+                    </form> 
 
                     <div class="btn" id="permiso_camara">
                         <i class="fa-solid fa-camera"></i>

@@ -8,7 +8,7 @@
 
         @can('create documentocp')
         <div class="mt-10">
-            <x-link route="documentocp.select" text="Crear Documento" class=" btn bg-orange-600 hover:bg-orange-800" />
+            <x-link route="documentocp.select" text="Crear Documento" class="btn bg-orange-600 hover:bg-orange-800" />
         </div>
         @endcan
 
@@ -17,12 +17,12 @@
         @enderror
     </div>
 
-    <div>
+     <div>
         <x-documentos-checklist-filter
             class="{{ ($isOpen) ? 'slide-in-active slide-in' : 'slide-out-active-right' }}" />
-    </div>
+    </div>  
 
-    <div class="overflow-x-auto mt-10  overflow-y-hidden">
+    <div class="overflow-x-auto mt-10 overflow-y-hidden">
         @if ($documentos->count() > 0)
         <table class="tabla">
             <thead class="tabla-head">
@@ -33,7 +33,6 @@
                     <th scope="col" class="encabezado">Ordenes de Trabajo relacionadas</th>
                     <th scope="col" class="encabezado">Empleado que lo Realizó</th>
                     <th scope="col" class="encabezado">Eliminar</th>
-                    
                 </tr>
             </thead>
             <tbody class="tabla-body">
@@ -58,12 +57,10 @@
                         <a href="{{ route('documentocp.showordeneschecklist', $documento) }}"
                             class="btn mb-2 bg-orange-500 hover:bg-orange-600 mt-2">Ver Ordenes de trabajo</a>
                     </td>
-
                     <td class="campo">
                         @if ($documento->user)
                             {{ $documento->user->name }}
                         @endif
-                        
                     </td>
 
                     @role('admin')
@@ -71,10 +68,6 @@
                         <i class="fa-solid fa-trash icon-link" wire:click="$dispatch('eliminar',{{ $documento }})"></i>
                     </td>
                     @endrole
-
-                    
-
-
                 </tr>
                 @endforeach
             </tbody>
@@ -82,37 +75,36 @@
         @else
         <p class="text-center uppercase font-bold text-3xl">No existen documentos </p>
         @endif
-
     </div>
 
     <div class="my-10 flex justify-end w-full">
         {{ $documentos->links() }}
     </div>
+
+    @push('scripts')
+    <script>
+        Livewire.on('eliminar', documento => {
+            Swal.fire({
+                    title: 'Advertencia',
+                    text: `Una vez eliminado el registro no se podrá recuperar`,
+                    icon: 'warning',
+                    showCancelButton: true,
+                    confirmButtonText: 'Sí, continuar',
+                    cancelButtonText: 'No'
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        Livewire.dispatch('eliminarDocumento',{documento});
+                    }
+                });
+        });
+
+        Livewire.on('documentoEliminado', () => {
+            Swal.fire(
+                'Listo!',
+                'Checklist Preoperacional Eliminado',
+                'success'
+            );
+        });
+    </script>
+    @endpush
 </div>
-
-@push('scripts')
-<script>
-    Livewire.on('eliminar', documento => {
-        Swal.fire({
-                title: 'Advertencia',
-                text: `Una vez eliminado el registro no se podrá recuperar`,
-                icon: 'warning',
-                showCancelButton: true,
-                confirmButtonText: 'Sí, continuar',
-                cancelButtonText: 'No'
-            }).then((result) => {
-                if (result.isConfirmed) {
-                    Livewire.dispatch('eliminarDocumento',{documento});
-                }
-            });
-    });
-
-    Livewire.on('documentoEliminado', () => {
-        Swal.fire(
-            'Listo!',
-            'Checklist Preoperacional Eliminado',
-            'success'
-        );
-    });
-</script>
-@endpush

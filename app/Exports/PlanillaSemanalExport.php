@@ -63,17 +63,23 @@ class PlanillaSemanalExport implements FromCollection, WithHeadings, WithStyles
             if($asignacionesCosecha->isNotEmpty()){
                 foreach ($asignacionesCosecha as $asignacion) {
                     $asignacionCosecha = AsignacionDiariaCosecha::whereDate('created_at',$asignacion->created_at)->get()->first();
-                    if($asignacionCosecha->cierre && $asignacionCosecha->cierre->libras_total_planta){
+                    $libras_total_planta = $asignacionCosecha->cierre->libras_total_planta;
+                    $cierre = $asignacionCosecha->cierre;
+                    if($cierre && $libras_total_planta){
                         $rendimiento = $asignacion->tarealote->tarea->cultivo->rendimiento;
-                        $horasxcosecha = ($asignacion->libras_asignacion*8)/$rendimiento;
                        
-                        $pesoLbCabeza = round(($asignacionCosecha->cierre->libras_total_planta / $asignacionCosecha->cierre->plantas_cosechadas),2);
-                        $porcentaje = ($asignacion->libras_asignacion/ $asignacionCosecha->cierre->libras_total_finca);
-                        $rendimientoTeoricoPorPersona =  round(($pesoLbCabeza * $asignacionCosecha->tareaLoteCosecha->tarea->cultivo->rendimiento),2);
+                        $pesoLbCabeza = $libras_total_planta / $cierre->plantas_cosechadas;
+                        $porcentaje = ($asignacion->libras_asignacion/ $cierre->libras_total_finca);
+                        $rendimientoTeoricoPorPersona =  round(($pesoLbCabeza * $rendimiento),2);
+                        $cabezas_cosechadas = ($porcentaje*$libras_total_planta)/$pesoLbCabeza;
                        
-                        $montoTotal = round(((($asignacionCosecha->cierre->libras_total_planta/ $rendimientoTeoricoPorPersona) * 8)*11.98),2);
-                        $empleado->horas_totales += $horasxcosecha;
+                        $montoTotal = round(((($libras_total_planta/ $rendimientoTeoricoPorPersona) * 8)*11.98),2);
+                        $libras_asignacion_planta = round((($porcentaje/100) * $libras_total_planta),4);
+                        $horas_cosecha = $cabezas_cosechadas/120;
+                        $empleado->horas_totales += $horas_cosecha;
                         $empleado->total_devengar += $montoTotal*$porcentaje;
+
+                  
                     }
                 }
                 

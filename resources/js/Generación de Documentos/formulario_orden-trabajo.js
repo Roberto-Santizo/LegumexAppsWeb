@@ -97,7 +97,7 @@ import Swal from "sweetalert2";
                         text: 'El archivo se ha subido correctamente',
                         confirmButtonText: 'OK'
                     }).then(()=>{
-                        window.location.href = "/mantenimiento/ordenes-trabajos"
+                        window.location.href = "/mantenimiento/administracion/ordenes-trabajos/3"
                     }); 
                 }
             } catch (error) {
@@ -107,7 +107,7 @@ import Swal from "sweetalert2";
                     text: 'Hubo un error al generar el archivo, intentelo de nuevo más tarde',
                     confirmButtonText: 'OK'
                 }).then(()=>{
-                    window.location.href = "/mantenimiento/ordenes-trabajos"
+                    window.location.href = "/mantenimiento/administracion/ordenes-trabajos/3"
                 });
             }
         }

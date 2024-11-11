@@ -11,7 +11,7 @@ class DashboardMantenimiento extends Component
 
     public function mount()
     {
-        $this->ordenesPendientes = OrdenTrabajo::where('estado_id',1)->where('mecanico_id','!=','null')->with('estado')->get();
+        $this->ordenesPendientes = OrdenTrabajo::where('estado_id',1)->where('mecanico_id',null)->with('estado')->get();
     }
     public function render()
     {
