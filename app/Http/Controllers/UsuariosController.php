@@ -41,7 +41,6 @@ class UsuariosController extends Controller
         $validated = $request->validate([
             'name' => 'required|max:30',
             'username' => 'required|unique:users|min:3|max:20',
-            'email' => 'required|email|max:60',
             'password' => 'required|min:6',
             'role_id' => 'required',
         ]);
@@ -51,7 +50,7 @@ class UsuariosController extends Controller
             $usuario = User::create([
                 'name' => $request->name,
                 'username' => Str::slug($request->username),
-                'email' => $request->email,
+                'email' => $request->email ?? null,
                 'password' => $request->password,
                 'status' => 1
             ])->assignRole($role->name);

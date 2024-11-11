@@ -3,53 +3,39 @@
 @section('titulo')
     Iniciar Sesión
 @endsection
-
+    
 @section('contenido')
-<div class="md:flex md:justify-center gap-10 md:items-center">
-    <div class="md:w-4/12  bg-white p-6 rounded-lg shadow-lg">
-        <form method="POST" action="{{ route('login') }}" novalidate>
+
+<div class="flex justify-center items-center">
+    <x-alertas />
+
+    <div class="flex flex-col justify-center items-center gap-5">
+        <form method="POST" action="{{ route('login') }}" class="md:w-96 w-64" novalidate>
             @csrf
-            
-           <x-alertas />
 
-            <div class="mb-5">
-                <label for="username" class="mb-2 block uppercase text-gray-500 font-bold">Nombre de Usuario</label>
-                <input 
-                    type="text"
-                    id="username"
-                    name="username"
-                    placeholder="Tu Usuario"
-                    class="border p-3 w-full rounded-lg @error('username') border-red-500 @enderror"    
-                    value="{{ old('username') }}"
-                    autocomplete="off"
-                >
-                                                
-                @error('username')
-                <p class="bg-red-500 text-white my-2 rounded-lg text-sm p-2 text-center">{{ $message }}</p>
-                @enderror
+            <div>
+                <x-input-label for="username" :value="__('Nombre de Usuario')" />
+                <x-text-input id="username" class="block mt-1 w-full p-2 border" type="username" name="username" :value="old('username')"
+                    required autofocus autocomplete="off" />
+                <x-input-error :messages="$errors->get('username')" class="mt-2" />
             </div>
 
-            <div class="mb-5">
-                <label for="password" class="mb-2 block uppercase text-gray-500 font-bold">Contraseña</label>
-                <input 
-                    type="password"
-                    id="password"
-                    name="password"
-                    placeholder="Contraseña"
-                    class="border p-3 w-full rounded-lg @error('passoword') border-red-500 @enderror"   
-                    autocomplete="off"
-                >
-                                                
-                @error('password')
-                    <p class="bg-red-500 text-white my-2 rounded-lg text-sm p-2 text-center">{{ $message }}</p>
-                @enderror
+            <div class="mt-4">
+                <x-input-label for="password" :value="__('Contraseña')" />
+
+                <x-text-input id="password" class="block mt-1 w-full" type="password" name="password" required
+                    autocomplete="current-password" />
+
+                <x-input-error :messages="$errors->get('password')" class="mt-2" />
             </div>
 
-            <input type="submit" value="Inciar Sesión" 
-            class="bg-sky-600 hover:bg-sky-700 p-3 transition-colors cursor-pointer uppercase font-bold w-full text-white rounded-lg"
-            >
+            <div class="flex items-center justify-end mt-4">
+                <x-primary-button class="ms-3">
+                    {{ __('Iniciar Sesión') }}
+                </x-primary-button>
+            </div>
         </form>
-     
     </div>
 </div>
+
 @endsection

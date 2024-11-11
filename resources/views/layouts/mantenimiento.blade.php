@@ -10,6 +10,7 @@
         integrity="sha512-1sCRPdkRXhBV2PBLUdRb4tMg1w2YPf37qatUFeS7zlBy7jJI8Lf4VHwWfZZfpXtYSLy85pkm9GaYVYMfw5BC1A=="
         crossorigin="anonymous" referrerpolicy="no-referrer" />
     <link rel="icon" type="image/x-icon" href="{{ asset('favicon.ico') }}" />
+    <script src="https://code.iconify.design/iconify-icon/2.1.0/iconify-icon.min.js"></script>
     <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
     <title>LegumexApps - @yield('titulo')</title>
     <style>
@@ -92,15 +93,9 @@
                     <p>Agroindustria Legumex S.A</p>
                 </div>
                 <div class="mt-10 flex flex-row gap-2">
-                    <form action="{{ route('logout.microsoft') }}" method="POST">
-                        @csrf
-                        <input type="submit" value="Cerrar Sesión"
-                            class="mt-5 bg-orange-500 cursor-pointer hover:bg-orange-700 text-white font-bold py-2 px-4 rounded inline-block ">
-                    </form>
-
                     <form action="{{ route('logout') }}" method="POST">
                         @csrf
-                        <input type="submit" value="Utilizar otro Usuario"
+                        <input type="submit" value="Cerrar Sesión"
                             class="mt-5 bg-orange-500 cursor-pointer hover:bg-orange-700 text-white font-bold py-2 px-4 rounded inline-block ">
                     </form>
 

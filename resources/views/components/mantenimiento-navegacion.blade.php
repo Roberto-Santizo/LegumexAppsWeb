@@ -28,19 +28,11 @@
 
                 </div>
                 <div class="flex gap-2 w-full md:hidden">
-                    <form action="{{ route('logout.microsoft') }}" method="POST" class="text-md">
+                    <form action="{{ route('logout') }}" method="POST" class="text-md">
                         @csrf
                         <input type="submit" value="Cerrar Sesión"
                             class="btn bg-orange-500 hover:bg-orange-600 mt-5">
                     </form>
-
-                    @role('auxmanto')
-                    <form action="{{ route('logout') }}" method="POST" class="text-md">
-                        @csrf
-                        <input type="submit" value="Utilizar otro Usuario"
-                            class="btn bg-orange-500 hover:bg-orange-600 mt-5">
-                    </form>
-                    @endrole
                 </div>
             </div>
         </div>

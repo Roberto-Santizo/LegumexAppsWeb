@@ -51,4 +51,3 @@ import './Alertas/formulario_checklist-preoperacional.js'
 import './Alertas/formulario_ot.js'
 import './Alertas/estadoRegistro.js'
 
-

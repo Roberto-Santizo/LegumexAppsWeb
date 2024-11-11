@@ -12,35 +12,35 @@ Historial de Tareas
 </a>
 
 <div class="overflow-x-auto mt-10">
-    <table class="min-w-full divide-y divide-gray-200 dark:divide-gray-700 text-xs md:text-sm">
-        <thead class="bg-gray-50 dark:bg-gray-800">
+    <table class="min-w-full divide-y divide-gray-200 text-xs md:text-sm">
+        <thead class="bg-gray-50">
             <tr class="text-xs md:text-sm">
                 <th scope="col"
-                    class="p-3 text-sm font-bold uppercase text-left rtl:text-right text-gray-500 dark:text-gray-400">
+                    class="p-3 text-sm font-bold uppercase text-left rtl:text-right text-gray-500">
                     Tarea</th>
                 <th scope="col"
-                    class="p-3 text-sm font-bold uppercase text-left rtl:text-right text-gray-500 dark:text-gray-400">
+                    class="p-3 text-sm font-bold uppercase text-left rtl:text-right text-gray-500">
                     Presupuesto Anterior</th>
                 <th scope="col"
-                    class="p-3 text-sm font-bold uppercase text-left rtl:text-right text-gray-500 dark:text-gray-400">
+                    class="p-3 text-sm font-bold uppercase text-left rtl:text-right text-gray-500">
                     Presupuesto Nuevo</th>
-                <th scope="col" class="p-3 text-sm font-bold uppercase text-center  text-gray-500 dark:text-gray-400">
+                <th scope="col" class="p-3 text-sm font-bold uppercase text-center  text-gray-500">
                     Tarifa Anterior</th>
-                <th scope="col" class="p-3 text-sm font-bold uppercase text-center  text-gray-500 dark:text-gray-400">
+                <th scope="col" class="p-3 text-sm font-bold uppercase text-center  text-gray-500">
                     Tarifa Nueva</th>
-                <th scope="col" class="p-3 text-sm font-bold uppercase text-center  text-gray-500 dark:text-gray-400">
+                <th scope="col" class="p-3 text-sm font-bold uppercase text-center  text-gray-500">
                     Horas Anterior</th>
-                <th scope="col" class="p-3 text-sm font-bold uppercase text-center  text-gray-500 dark:text-gray-400">
+                <th scope="col" class="p-3 text-sm font-bold uppercase text-center  text-gray-500">
                     Horas Nuevas</th>
-                <th scope="col" class="p-3 text-sm font-bold uppercase text-center  text-gray-500 dark:text-gray-400">
+                <th scope="col" class="p-3 text-sm font-bold uppercase text-center  text-gray-500">
                     Personas Anterior</th>
-                <th scope="col" class="p-3 text-sm font-bold uppercase text-center  text-gray-500 dark:text-gray-400">
+                <th scope="col" class="p-3 text-sm font-bold uppercase text-center  text-gray-500">
                     Personas Nuevo</th>
-                <th scope="col" class="p-3 text-sm font-bold uppercase text-center  text-gray-500 dark:text-gray-400">
+                <th scope="col" class="p-3 text-sm font-bold uppercase text-center  text-gray-500">
                     Semana de Actualización</th>
             </tr>
         </thead>
-        <tbody class="bg-white divide-y divide-gray-200 dark:divide-gray-700 dark:bg-gray-900">
+        <tbody class="bg-white divide-y divide-gray-200">
             @php
                 $clases = 'px-4 py-2 text-md font-medium whitespace-nowrap text-center';
             @endphp

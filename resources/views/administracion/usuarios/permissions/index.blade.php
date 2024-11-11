@@ -16,7 +16,7 @@ Permisos
 <div class="overflow-x-auto mt-10">
     <table class="tabla">
         <thead class="tabla-head">
-            <tr class="md:text-sm text-sm font-bold uppercase text-left rtl:text-right text-gray-500 dark:text-gray-400">
+            <tr class="md:text-sm text-sm font-bold uppercase text-left rtl:text-right text-gray-500">
                 <th scope="col" class="encabezado">No.</th>
                 <th scope="col" class="encabezado">Permiso</th>
                 <th scope="col" class="encabezado">Fecha de creación</th>

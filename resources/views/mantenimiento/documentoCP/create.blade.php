@@ -60,28 +60,28 @@ Documento Checklist Preoperacional - {{ $planta->name }}
             @foreach ($planta->areas as $area)
             <div id="step{{$area->id}}-content" class="content w-full" role="tabpanel"
                 aria-labelledby="step{{$area->area}}-content">
-                <table class="w-full divide-y divide-gray-200 shadow-xl dark:divide-gray-700  overflow-y-scroll">
+                <table class="w-full divide-y divide-gray-200 shadow-xl  overflow-y-scroll">
                     <thead class="bg-blue-300">
                         <tr class="text-white">
                             <th scope="col"
-                                class="p-5 text-sm font-bold uppercase text-left rtl:text-right dark:text-gray-400">
+                                class="p-5 text-sm font-bold uppercase text-left rtl:text-right">
                                 UBICACIÓN</th>
                             <th scope="col"
-                                class="p-5 text-sm font-bold uppercase text-left rtl:text-right dark:text-gray-400">OK
+                                class="p-5 text-sm font-bold uppercase text-left rtl:text-right">OK
                             </th>
                             <th scope="col"
-                                class="p-5 text-sm font-bold uppercase text-left rtl:text-right dark:text-gray-400">
+                                class="p-5 text-sm font-bold uppercase text-left rtl:text-right">
                                 PROBLEMA</th>
                             <th scope="col"
-                                class="p-5 text-sm font-bold uppercase text-left rtl:text-right dark:text-gray-400">
+                                class="p-5 text-sm font-bold uppercase text-left rtl:text-right">
                                 ACCIÓN TOMADA</th>
                             <th scope="col"
-                                class="p-5 text-sm font-bold uppercase text-left rtl:text-right dark:text-gray-400">
+                                class="p-5 text-sm font-bold uppercase text-left rtl:text-right">
                                 RESPONSABLE</th>
                         </tr>
                     </thead>
 
-                    <tbody class="divide-y divide-gray-200 dark:divide-gray-700 font-bold">
+                    <tbody class="divide-y divide-gray-200 font-bold">
                         @foreach ($area->elementos as $elemento)
                         <tr class="odd:bg-sky-200">
                             <td class=" p-2 table__td">
