@@ -6,7 +6,6 @@ import validator from "validator";
 
 (function(){
     const formulario = document.getElementById('formularioP1');
-    const totalPads = 13;
     const canvasPads = [];
     const signaturePads = [];
     const inputsText = document.querySelectorAll('.input-text');
@@ -18,7 +17,8 @@ import validator from "validator";
         const content = document.querySelectorAll('.content');
 
         $(document).ready(() => {
-            inicializarFirmas();
+            const total_firmas = document.getElementById('total_firmas').value;
+            inicializarFirmas(total_firmas);
             mostrarContenido(content, stepper._currentIndex);
                 
             inputsText.forEach(input => {
@@ -74,8 +74,8 @@ import validator from "validator";
         document.querySelectorAll('.step')[nextIndex].classList.toggle('bg-orange-500');
         document.querySelectorAll('.step')[nextIndex].classList.toggle('text-white');
     }
-    function inicializarFirmas() {
-        for (let i = 1; i <= totalPads; i++) {
+    function inicializarFirmas(total_firmas) {
+        for (let i = 1; i <= total_firmas; i++) {
             const canvas = document.getElementById(`signature-pad${i}`);
             if (canvas) {
                 const signaturePad = new SignaturePad(canvas);

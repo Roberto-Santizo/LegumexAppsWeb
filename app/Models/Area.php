@@ -9,6 +9,13 @@ class Area extends Model
 {
     use HasFactory;
 
+    protected $fillable = [
+        'area',
+        'planta_id',
+        'created_at',
+        'updated_at'
+    ];
+
     public function elementos()
     {
         return $this->hasMany(Elemento::class, 'area_id');

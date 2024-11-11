@@ -11,7 +11,9 @@ class Elemento extends Model
 
     protected $fillable = [
       'elemento',
-      'area_id'  
+      'area_id'  ,
+      'created_at',
+      'updated_at'
     ];
     
 }

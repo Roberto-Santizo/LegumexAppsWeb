@@ -22,7 +22,6 @@ class ModalElementoForm extends Component
     public function guardar()
     {
         $datos = $this->validate();
-        dd($datos);
         $this->dispatch('guardarUbicacion',$datos);
     }
 

@@ -12,7 +12,7 @@
                 <form wire:submit.prevent='guardar'>
                     <div class="space-y-2">
                         <label for="ubicacion" class="block text-sm font-medium">Nombre de la Ubicación:</label>
-                        <input wire:model="ubicacion" type="text" id="ubicacion" class="w-full border rounded px-3 py-2" placeholder="Nombre de la nueva ubicación"/>
+                        <input autocomplete="off" wire:model="ubicacion" type="text" id="ubicacion" class="w-full border rounded px-3 py-2" placeholder="Nombre de la nueva ubicación"/>
 
                         @error('ubicacion')
                             <x-alerta-error :message="$message" />
