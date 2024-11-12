@@ -75,7 +75,7 @@ import validator from "validator";
         document.querySelectorAll('.step')[nextIndex].classList.toggle('text-white');
     }
     function inicializarFirmas(total_firmas) {
-        for (let i = 1; i <= total_firmas; i++) {
+        for (let i = 0; i <= total_firmas; i++) {
             const canvas = document.getElementById(`signature-pad${i}`);
             if (canvas) {
                 const signaturePad = new SignaturePad(canvas);

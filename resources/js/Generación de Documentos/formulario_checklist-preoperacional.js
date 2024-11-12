@@ -9,8 +9,8 @@ import Swal from "sweetalert2";
     if(documentocp){
         var url = window.location.href;
         var urlObj = new URL(url);
-        var windowWidth = 4608; 
-        var windowHeight = 2212.80;
+        var windowWidth = 6144; 
+        var windowHeight = 2950.40;
         var options = {
             windowWidth: windowWidth,
             windowHeight: windowHeight,

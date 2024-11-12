@@ -17,8 +17,10 @@ class FirmaController extends Controller
                     $firmas[$key] = $nombreFirma;
                 }
             }
-        
+            // dd($firmas);
             return response()->json(['imagenes' => $firmas, 'status' => 200], 200);
+
+            
         } catch (\Throwable $th) {
             return response()->json(['message' => 'Ha habido un error al guardar las firmas, intentelo de nuevo más tarde', 'status' => 500], 500);
         }

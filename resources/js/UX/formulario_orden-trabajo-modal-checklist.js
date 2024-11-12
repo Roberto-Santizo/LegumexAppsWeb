@@ -8,9 +8,7 @@ import Choices from "choices.js";
 import { inicializarCamara } from "../UI/tomaFotos";
 
 (function () {
-    const formulario = document.getElementById("formularioP1");
-    const formulario2 = document.getElementById("formularioP2");
-    const formulario3 = document.getElementById("formularioP3");
+    const formulario = document.getElementById("formularioCP");
     const buttons = document.querySelectorAll(".create-ot");
     let btnTarget = "",
         planta_id = "",
@@ -18,7 +16,7 @@ import { inicializarCamara } from "../UI/tomaFotos";
         elemento_id = "",
         equipo_id = "";
 
-    if (formulario || formulario2 || formulario3) {
+    if (formulario ) {
         buttons.forEach((button) =>
             button.addEventListener("click", async function (e) {
                 if (

@@ -19,9 +19,7 @@
     @vite('resources/css/app.css')
     @vite('resources/js/app.js')
 </head>
-<body class="flex flex-col h-screen">
-
+<body>
     @yield('loadscreen')
-
     @yield('contenido')
 </body>

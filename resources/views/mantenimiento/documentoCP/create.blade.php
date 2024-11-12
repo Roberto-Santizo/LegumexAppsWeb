@@ -143,55 +143,55 @@ Documento Checklist Preoperacional - {{ $planta->name }}
                     <div class="formulario__firmas flex justify-center items-center gap-2">
                         <div class="formulario__firma flex justify-center items-center flex-col">
                             <canvas
-                                id="signature-pad{{ $count+1 }}"
+                                id="signature-pad{{ $count }}"
                                 class="formulario__firma-canva  bg-gray-50 mt-10 rounded-xl border border-black"
                                 width="325" height="175"></canvas>
                             <div class="clear_btn flex justify-center items-center flex-col">
                                 <h4 class="formulario__texto">Verificado Por</h4>
-                                <div id="clear-button{{ $count+1 }}"
+                                <div id="clear-button{{ $count }}"
                                     class=" btn formulario__firma--clear bg-orange-600 hover:bg-orange-800">
                                     <span>Limpiar</span>
                                 </div>
 
                             </div>
                             <input type="hidden"
-                                id="signature-pad{{ $count+1 }}-input"
+                                id="signature-pad{{ $count }}-input"
                                 name="verificado_firma">
                         </div>
 
                         <div class="formulario__firma flex justify-center items-center flex-col">
                             <canvas
-                                id="signature-pad{{ $count+2 }}"
+                                id="signature-pad{{ $count+1 }}"
                                 class="formulario__firma-canva  bg-gray-50 mt-10 rounded-xl border border-black"
                                 width="325" height="175"></canvas>
 
                             <div class="clear_btn flex justify-center items-center flex-col">
                                 <h4 class="formulario__texto">Jefe de Mantenimiento</h4>
-                                <div id="clear-button{{ $count+2 }}"
+                                <div id="clear-button{{ $count+1 }}"
                                     class=" btn formulario__firma--clear bg-orange-600 hover:bg-orange-800">
                                     <span>Limpiar</span>
                                 </div>
                             </div>
                             <input type="hidden"
-                                id="signature-pad{{ $count+2 }}-input"
+                                id="signature-pad{{ $count+1 }}-input"
                                 name="jefemanto_firma">
                         </div>
 
                         <div class="formulario__firma flex justify-center items-center flex-col">
                             <canvas
-                                id="signature-pad{{  $count+3 }}"
+                                id="signature-pad{{  $count+2 }}"
                                 width="325" height="175"
                                 class=" bg-gray-50 mt-10 rounded-xl border border-black"></canvas>
 
                             <div class="clear_btn flex justify-center items-center flex-col">
                                 <h4 class="formulario__texto">Supervisor de calidad</h4>
-                                <div id="clear-button{{ $count+3 }}"
+                                <div id="clear-button{{ $count+2 }}"
                                     class="btn formulario__firma--clear bg-orange-600 hover:bg-orange-800">
                                     <span>Limpiar</span>
                                 </div>
                             </div>
                             <input type="hidden"
-                                id="signature-pad{{ $count+3 }}-input"
+                                id="signature-pad{{ $count+2 }}-input"
                                 name="supervisor_firma">
                         </div>
                     </div>
