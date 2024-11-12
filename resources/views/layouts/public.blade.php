@@ -9,7 +9,7 @@
         crossorigin="anonymous" referrerpolicy="no-referrer" />
     <script src="https://code.iconify.design/iconify-icon/2.1.0/iconify-icon.min.js"></script>
     <link rel="icon" type="image/x-icon" href="{{ asset('favicon.ico') }}" />
-    <title>Legumex - @yield('titulo')</title>
+    <title>AgroIndustria Legumex</title>
     @vite('resources/css/app.css')
 </head>
 
@@ -45,7 +45,7 @@
         </div>
     </header>
 
-    <main class="container mx-auto mt-10">
+    <main >
         <h2 class="text-center text-4xl mb-10 font-bold p-5 md:p-0">
             @yield('titulo')
         </h2>
