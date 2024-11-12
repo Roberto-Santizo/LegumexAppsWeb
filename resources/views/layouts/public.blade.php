@@ -23,11 +23,11 @@
 
             <div class="flex flex-row gap-5 items-center justify-center">
                 @guest
-                <a href="{{ route('login') }}" title="Iniciar sesión con micrososft">
+                <a href="{{ route('login') }}">
                     <div
                         class="flex gap-1 justify-center items-center mt-5 p-2 rounded-lg">
                         <iconify-icon icon="material-symbols:login" class="text-4xl block md:hidden"></iconify-icon>
-                        <p class="hidden sm:block text-2xl hover:text-gray-400">Iniciar sesión</p>
+                        <p class="hidden sm:block text-xl hover:text-gray-400">Iniciar sesión</p>
                     </div>
                 </a>
                 @endguest

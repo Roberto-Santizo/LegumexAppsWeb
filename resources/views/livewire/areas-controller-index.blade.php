@@ -1,4 +1,19 @@
 <div>
+
+    <div class="flex justify-end flex-col gap-5">
+        @role('admin|adminmanto')
+        <div class="flex justify-end">
+            <i class="fa-solid fa-bars icon-link" wire:click='openModal()'></i>
+        </div>
+        @endrole
+        <x-link class="bg-orange-600 hover:bg-orange-800" route="areas.create" text="Crear Área" />
+    </div>
+
+
+    <div>
+        <x-areas-ubicaciones-filter class="{{ ($isOpen) ? 'slide-in-active slide-in' : 'slide-out-active-right' }}" />
+    </div>
+
     <div class="mt-10">
         <table class="tabla">
             <thead class="tabla-head">
@@ -6,8 +21,6 @@
                     <th scope="col" class="encabezado">Área</th>
                     <th scope="col" class="encabezado">Planta</th>
                     <th scope="col" class="encabezado">Ver</th>
-
-
                 </tr>
             </thead>
             <tbody class="tabla-body">

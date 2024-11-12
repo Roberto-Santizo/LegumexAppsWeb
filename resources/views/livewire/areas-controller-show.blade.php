@@ -17,7 +17,9 @@
             @foreach ($area->elementos as $elemento)
             <div class="flex flex-row justify-between p-5 bg-gray-100 rounded">
                 <p class="text-xl font-bold">{{ $elemento->elemento }}</p>
-                <iconify-icon icon="material-symbols:delete" class="text-4xl hover:text-red-600 cursor-pointer" wire:click="$dispatch('eliminar',{{ $elemento->id }})"></iconify-icon>
+                @role('admin')
+                    <iconify-icon icon="material-symbols:delete" class="text-4xl hover:text-red-600 cursor-pointer" wire:click="$dispatch('eliminar',{{ $elemento->id }})"></iconify-icon>
+                @endrole
             </div>
             @endforeach
         </div>
