@@ -23,9 +23,6 @@ class PlanSemanalFincasController extends Controller
 
     public function index()
     {
-        
-
-        
         return view('agricola.planSemanal.index');
     }
 

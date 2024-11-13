@@ -24,7 +24,7 @@ class RoleRedirectMiddleware
             'adminmanto' => '/dashboard/mantenimiento',
             'adminagricola' => '/dashboard/agricola',
             'auxmanto' => '/dashboard/mantenimiento',
-            'auxalameda' => '/dashboard/agricola',
+            'auxfinca' => '/dashboard/agricola',
         ];
 
         if($user && array_key_exists($userRole,$roleRedirects)){

@@ -37,7 +37,7 @@
         </div>
 
 
-        @hasanyrole('adminagricola|auxalameda')
+        @hasanyrole('adminagricola|auxfinca')
         <a href="{{ route('dashboard') }}"
             class=" {{  Route::is('dashboard*') ? 'bg-green-moss' : '' }} sidebar-link hover:bg-green-moss">
             <i class="fa-solid fa-house"></i>

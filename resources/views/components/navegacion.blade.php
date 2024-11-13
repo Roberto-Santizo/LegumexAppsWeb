@@ -9,7 +9,7 @@
         <x-mantenimiento-navegacion />
     @endhasanyrole
 
-    @hasanyrole('adminagricola|auxalameda')
+    @hasanyrole('adminagricola|auxfinca')
         <x-agricola-navegacion />
     @endhasanyrole
 </div>

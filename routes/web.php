@@ -19,5 +19,5 @@ Route::get('/dashboard')->middleware(['auth','RoleRedirect'])->name('dashboard')
 
 Route::get('/dashboard/administracion',[DashboardController::class,'index'])->middleware(['auth','role:admin'])->name('dashboard.administracion');
 Route::get('/dashboard/mantenimiento',[DashboardController::class,'mantenimiento'])->middleware(['auth','role:admin|adminmanto|auxmanto'])->name('dashboard.mantenimiento');
-Route::get('/dashboard/agricola',[DashboardController::class,'agricola'])->middleware(['auth','role:admin|adminagricola|auxalameda'])->name('dashboard.agricola');
+Route::get('/dashboard/agricola',[DashboardController::class,'agricola'])->middleware(['auth','role:admin|adminagricola|auxfinca'])->name('dashboard.agricola');
 

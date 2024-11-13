@@ -30,6 +30,10 @@ class PlanSemanalFincasIndex extends Component
     public function formatearDatos()
     {
         $query = PlanSemanalFinca::query();
+        $user = auth()->user();
+        $finca = $user->getAllPermissions()->first()->name;
+        $userRole = $user->getRoleNames()->first();
+
         if($this->finca != 10)
         {
             $query->where('finca_id', $this->finca);
@@ -39,6 +43,13 @@ class PlanSemanalFincasIndex extends Component
         {
             $query->where('semana', $this->semana);
         }
+        if($userRole == 'auxfinca')
+        {
+            $query->whereHas('finca',function($query) use($finca){
+                $query->where('finca','LIKE','%'.$finca);
+            });
+        }
+       
 
         $planes = $query->orderBy('semana', 'DESC')->paginate(10);
         
