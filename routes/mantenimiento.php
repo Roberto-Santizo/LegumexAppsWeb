@@ -80,7 +80,7 @@ Route::group(['middleware' => ['auth', 'role:admin|adminmanto'], 'prefix' => 'ma
     //Areas y ubicaciones
     Route::get('/areas/create',[AreaController::class,'create'])->name('areas.create');
     Route::get('/areas',[AreaController::class,'index'])->name('areas');
-    Route::get('/areas/{area:area}',[AreaController::class,'show'])->name('areas.show');
+    Route::get('/areas/{area}',[AreaController::class,'show'])->name('areas.show');
     
     
 

@@ -53,6 +53,9 @@ class NotificacionOrdenTrabajoPendienteService
         $recipient5 = new Recipient();
         $recipient5->setEmailAddress(new EmailAddress(['address' => 'manto.tejar@legumex.net']));
 
+        $recipient6 = new Recipient();
+        $recipient6->setEmailAddress(new EmailAddress(['address' => 'mramila.jr@legumex.net']));
+
 
         $message = new Message();
         $message->setSubject('Notificación de órdenes de trabajo pendientes');
@@ -60,7 +63,7 @@ class NotificacionOrdenTrabajoPendienteService
             'content' => $this->buildMessageBody($ordenesPendientes),
             'contentType' => 'HTML'
         ]);
-        $message->setToRecipients([$recipient1, $recipient2,$recipient3,$recipient4,$recipient5]);
+        $message->setToRecipients([$recipient1, $recipient2,$recipient3,$recipient4,$recipient5,$recipient6]);
 
         $graph->createRequest("POST", "/users/$userId/sendMail")
             ->attachBody([
@@ -110,13 +113,13 @@ class NotificacionOrdenTrabajoPendienteService
                                 <table role="presentation" style="width: 600px; max-width: 100%; border-collapse: collapse; background-color: #ffffff; box-shadow: 0 0 10px rgba(0,0,0,0.1);">
                                     <tr>
                                         <td style="background-color: #4a90e2; padding: 20px; text-align: center;">
-                                            <h1 style="color: #ffffff; margin: 0; font-size: 24px;">¡Se acerca la fecha de entrega!</h1>
+                                            <h1 style="color: #ffffff; margin: 0; font-size: 24px;">¡Asegurate de realizar las ordenes de trabajo!</h1>
                                         </td>
                                     </tr>
 
                                     <tr>
                                         <td style="padding: 20px;">
-                                            <h2 style="color: #333333; font-size: 20px;">Existen órdenes que su fecha de entrega se acerca y no cuentan con un mecánico.</h2>
+                                            <h2 style="color: #333333; font-size: 20px;">Existen órdenes que su fecha de entrega se acerca y no cuentan con un mecánico o ya pasó su fecha de entrega.</h2>
                                             <p style="margin-bottom: 20px;">Para revisar estas órdenes y asignar a un mecánico, haz clic en el siguiente enlace.</p>
 
                                             <!-- Action Link -->
@@ -135,7 +138,7 @@ class NotificacionOrdenTrabajoPendienteService
                                         <td style="background-color: #f0f0f0; padding: 20px; text-align: center; font-size: 14px; color: #666666;">
                                             <p style="margin: 0 0 10px 0;">© $anio Agroindustria Legumex. Todos los derechos reservados.</p>
                                             <p style="margin: 0;">
-                                                Este correo es enviado automáticamente y se utiliza con motivo de notificación.
+                                                Este correo ha sido enviado automáticamente y tiene como propósito notificarle.
                                             </p>
                                         </td>
                                     </tr>

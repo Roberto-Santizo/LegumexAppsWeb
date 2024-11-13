@@ -41,19 +41,10 @@
                 @endif
 
                 @if (!$asignacionSinCierre)
-                @if ($asignacionSinLibras)
-                @can('create plan semanal')
-                <a href="{{ route('planSemanal.tareasCosechaLoteRendimiento.real',[$lote,$plansemanalfinca,$tarea]) }}">
-                    <i title="Registrar datos que entraron a planta"
-                        class="fa-solid fa-table-list text-2xl cursor-pointer hover:text-gray-500"></i>
-                </a>
-                @endcan
-                @else
                 <a href="{{ route('planSemanal.tareaCosechaResumen',$tarea) }}">
                     <i title="Resúmen de la Semana"
                         class="fa-solid fa-receipt text-2xl cursor-pointer hover:text-gray-500"></i>
                 </a>
-                @endif
                 @endif
 
                 {{-- cierres semanales --}}
@@ -74,6 +65,15 @@
                 @endcan
                 @endif
 
+                @endif
+
+                @if ($asignacionSinLibras)
+                    @can('create plan semanal')
+                    <a href="{{ route('planSemanal.tareasCosechaLoteRendimiento.real',[$lote,$plansemanalfinca,$tarea]) }}">
+                        <i title="Registrar datos que entraron a planta"
+                            class="fa-solid fa-table-list text-2xl cursor-pointer hover:text-gray-500"></i>
+                    </a>
+                    @endcan
                 @endif
             </div>
         </div>

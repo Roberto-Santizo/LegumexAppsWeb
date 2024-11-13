@@ -205,8 +205,9 @@
                     <div class="flex flex-row gap-5">
                         <i class="fa-solid fa-clock text-orange-500 text-xl"
                             title="Aún no han sido terminadas todas las tareas"></i>
-                        <p>Tarea: {{ $tareaEnProceso->tarea->tarea}} - {{ $tareaEnProceso->plansemanal->finca->finca }}
+                        <p>Tarea: {{ $tareaEnProceso->tarea->tarea}} - {{ $tareaEnProceso->plansemanal->finca->finca }} - {{ $tareaEnProceso->lote->nombre }}
                             - S{{ $tareaEnProceso->plansemanal->semana }}</p>
+
                     </div>
 
                     <p>Usuarios Asignados: {{ $tareaEnProceso->users->count()}} / {{ $tareaEnProceso->personas }}</p>
@@ -254,7 +255,7 @@
                                 <div class="flex flex-row gap-5">
                                     <i class="fa-solid fa-clock text-orange-500 text-xl"
                                         title="Aún no han sido terminadas todas las tareas"></i>
-                                    <p>Tarea: {{ $tareacosecha->tarea->tarea }} - {{ $tareacosecha->lote->nombre }} - {{ $tareacosecha->plansemanal->finca->finca }} - S{{ $tareacosecha->plansemanal->semana }}</p>
+                                    <p>Tarea: {{ $tareacosecha->tarea->tarea }} - {{ $tareacosecha->lote->nombre }} - {{ $tareacosecha->plansemanal->finca->finca }} - S{{ $tareacosecha->plansemanal->semana }} - {{ $asignacion->created_at->format('d-m-Y') }}</p>
                                 </div>
                                 <p>Usuarios Asignados: {{ $tareacosecha->users()->whereDate('created_at',$asignacion->created_at)->count()}}</p>
                             </a>
