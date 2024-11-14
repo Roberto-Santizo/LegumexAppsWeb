@@ -9,7 +9,6 @@
         <div class="text-xl">
            
             <p><span class="font-bold">Cultivo: </span> {{$tarealotecosecha->tarea->cultivo->cultivo}}</p>
-            <p><span class="font-bold">Total de Libras Registradas en Finca: </span> {{$totalLibras}} lbs</p>
         </div>
         <div class="flex flex-col gap-5 uppercase">
             <h2 class="text-xl font-bold">Fechas que se Cosecharon: </h2>
@@ -66,7 +65,6 @@
                         <th scope="col" class="text-white">Empleado</th>
                         <th scope="col" class="text-white">Fecha</th>
                         <th scope="col" class="text-white">Total de Libras Cosechadas (finca)</th>
-                        <th scope="col" class="text-white">Total de Libras Cosechadas Ajustado (planta) </th>
                         <th scope="col" class="text-white">Horas Empleadas</th>
                     </tr>
                 </thead>
@@ -77,7 +75,6 @@
                         <td class="uppercase">{{ $asignacion->nombre }}</td>
                         <td class="text-center">{{ $asignacion->created_at->format('d-m-Y') }}</td>
                         <td class="text-center">{{ $asignacion->libras_asignacion }} lbs</td>
-                        <td class="text-center">{{ $asignacion->libras_asignacion_planta }} lbs</td>
                         <td class="text-center">{{ round($asignacion->total_horas,2) }} horas</td>
                     </tr>
 
