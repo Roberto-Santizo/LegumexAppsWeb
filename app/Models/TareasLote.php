@@ -58,4 +58,14 @@ class TareasLote extends Model
     {
         return $this->hasOne(RendimientoDiario::class, 'tarea_lote_id','id');
     }
+
+    public function cierreParcialActivo()
+    {
+        return $this->hasMany(CierreParcialTarea::class, 'tarealote_id','id')->where('fecha_final',null);
+    }
+
+    public function cierresParciales()
+    {
+        return $this->hasMany(CierreParcialTarea::class, 'tarealote_id','id');
+    }
 }

@@ -2,6 +2,7 @@
 
 namespace App\Livewire;
 
+use App\Models\CierreParcialTarea;
 use Carbon\Carbon;
 use Livewire\Component;
 use App\Models\TareasLote;
@@ -12,7 +13,7 @@ use App\Services\MicrosoftTokenService;
 
 class MostrarTareasLote extends Component
 {
-    protected $listeners = ['eliminarTarea','terminarTarea'];
+    protected $listeners = ['eliminarTarea','terminarTarea','pausar','reanudar'];
 
     public $tareas;
     public $plansemanalfinca;
@@ -80,6 +81,29 @@ class MostrarTareasLote extends Component
         $this->successTareaLoteId = $tarea->id;
         $this->successMessage = 'La tarea fue terminada en fecha: ' . $cierre->created_at->format('d-m-Y h:i:s A');
         
+    }
+
+    public function pausar(TareasLote $tarea)
+    {
+        try {
+            $cierreParcial = CierreParcialTarea::create([
+                'tarealote_id' => $tarea->id,
+                'fecha_inicio' => Carbon::now()
+            ]);
+        } catch (\Throwable $th) {
+           $this->addError('error','Hubo un error al pausar la tarea, intentelo de nuevo más tarde');
+        }
+    }
+
+    public function reanudar(TareasLote $tarea)
+    {
+        $cierreParcial = $tarea->cierreParcialActivo->first();
+        try {
+            $cierreParcial->fecha_final = Carbon::now();
+            $cierreParcial->save();
+        } catch (\Throwable $th) {
+            $this->addError('error','Hubo un error al pausar la tarea, intentelo de nuevo más tarde');
+        }
     }
 
     public function render()

@@ -200,11 +200,13 @@
 
             <div class="flex flex-col gap-5 p-5 text-xs md:text-xl">
                 @forelse ($tareasEnProceso as $tareaEnProceso)
+                @php
+                    $icon = !$tareaEnProceso->cierreParcialActivo->isEmpty() ? 'fa-solid fa-circle-play' : 'fa-solid fa-clock';
+                @endphp
                 <a href="{{ route('planSemanal.tareaLote.show',$tareaEnProceso) }}"
                     class="flex flex-row gap-5 font-bold text-white bg-green-meadow p-3 rounded-xl justify-between shadow-xl grow-animation-sm">
                     <div class="flex flex-row gap-5">
-                        <i class="fa-solid fa-clock text-orange-500 text-xl"
-                            title="Aún no han sido terminadas todas las tareas"></i>
+                        <i class="{{ $icon }} text-orange-500 text-2xl"></i>
                         <p>Tarea: {{ $tareaEnProceso->tarea->tarea}} - {{ $tareaEnProceso->plansemanal->finca->finca }} - {{ $tareaEnProceso->lote->nombre }}
                             - S{{ $tareaEnProceso->plansemanal->semana }}</p>
 
