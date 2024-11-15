@@ -30,7 +30,7 @@ class DashboardAgricola extends Component
     public function mount()
     {
         $this->planesSelect = PlanSemanalFinca::all();
-        $this->semana_actual = Carbon::now()->weekOfYear;
+        $this->semana_actual = 45;
         $this->mostrarDatos();
     }
 

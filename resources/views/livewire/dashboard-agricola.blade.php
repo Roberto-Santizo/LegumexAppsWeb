@@ -226,22 +226,40 @@
             </div>
 
             <div class="flex flex-col gap-5 p-5 text-xs md:text-xl">
-                @forelse ($tareasRealizadasEnSemana as $tareaTerminada)
-                <a href="{{ route('planSemanal.tareaLote.show',$tareaTerminada) }}"
-                    class="flex flex-row gap-5 font-bold text-white bg-green-meadow p-3 rounded-xl justify-between shadow-xl grow-animation-sm">
-                    <div class="flex flex-row gap-5">
-                        <i title="La tarea fue realizada" class="fa-solid fa-circle-check text-xl text-green-500"></i>
-                        <p>Tarea: {{ $tareaTerminada->tarea->tarea}} - {{ $tareaTerminada->plansemanal->finca->finca }}
-                            - S{{ $tareaTerminada->plansemanal->semana }}</p>
-                    </div>
-
-                    <p>Usuarios Asignados: {{ $tareaTerminada->users->count()}} / {{ $tareaTerminada->personas }}</p>
-                </a>
-                @empty
-                <p class="text-center font-bold text-white uppercase">No hay tareas terminadas de esta semana</p>
-                @endforelse
+                @if ($tareasRealizadasEnSemana->count() > 0)
+                    <table class="tabla">
+                        <thead class="tabla-head">
+                            <tr class="text-xs md:text-sm">
+                                <th scope="col" class="encabezado"></th>
+                                <th scope="col" class="encabezado">Tarea</th>
+                                <th scope="col" class="encabezado">Finca</th>
+                                <th scope="col" class="encabezado">Semana</th>
+                                <th scope="col" class="encabezado">Acción</th>
+                            </tr>
+                        </thead>
+                        <tbody class="tabla-body">
+                            @foreach ($tareasRealizadasEnSemana as $tareaTerminada)
+                                <tr>
+                                    <td class="text-center">
+                                        <i title="La tarea fue realizada" class="fa-solid fa-circle-check text-2xl text-green-500"></i>
+                                    </td>
+                                    <td class="campo">{{ $tareaTerminada->tarea->tarea}}</td>
+                                    <td class="campo">{{ $tareaTerminada->plansemanal->finca->finca }}</td>
+                                    <td class="campo">{{ $tareaTerminada->plansemanal->semana }}</td>
+                                    <td class="campo">
+                                        <a href="{{ route('planSemanal.tareaLote.show',$tareaTerminada) }}" target="_blank">
+                                            <i class="fa-solid fa-eye text-2xl hover:text-gray-500"></i>
+                                        </a>
+                                    </td>
+                                </tr>
+                            @endforeach
+                        </tbody>
+                    </table>
+                @else
+                    <p class="text-center font-bold text-white uppercase">No hay tareas terminadas de esta semana</p>
+                @endif
+                
             </div>
-
         </div>
 
         <div class=" col-start-1 col-span-8 bg-green-moss rounded-2xl shadow-xl">
@@ -269,26 +287,44 @@
 
         <div class=" col-start-1 col-span-8 bg-green-moss rounded-2xl shadow-xl">
             <div class="bg-green-meadow w-full p-5 flex flex-row gap-2 items-center text-white rounded-t-2xl">
-                <h1 class="text-2xl font-bold">Control de Cosecha</h1>
+                <h1 class="text-2xl font-bold">Control de Cosecha Terminadas</h1>
             </div>
 
             <div class="flex flex-col gap-5 p-5 text-xs md:text-xl">
-                @forelse ($tareasCosecha as $tareacosecha)
-                    @foreach ($tareacosecha->asignaciones as $asignacion)
-                        @if ($asignacion && $asignacion->cierre)
-                            <a class="flex flex-row gap-5 font-bold text-white bg-green-meadow p-3 rounded-xl justify-between shadow-xl grow-animation-sm">
-                                <div class="flex flex-row gap-5">
-                                    <i title="La tarea fue realizada" class="fa-solid fa-circle-check text-xl text-green-500"></i>
-                                    <p>Tarea: {{ $tareacosecha->tarea->tarea }} - {{ $tareacosecha->lote->nombre }} - {{ $tareacosecha->plansemanal->finca->finca }} - S{{ $tareacosecha->plansemanal->semana }}</p>
-                                    <p>{{ $asignacion->cierre->created_at->format('d-m-Y') }}</p>
-                                </div>
-                                    <p>Usuarios Asignados: {{ $tareacosecha->users()->whereDate('created_at',$asignacion->created_at)->count()}}</p>
-                            </a>
-                        @endif
-                    @endforeach
-                @empty
-                    <p class="text-center font-bold text-white uppercase">No hay cosechas en proceso</p>
-                @endforelse
+                <table class="tabla">
+                    <thead class="tabla-head">
+                        <tr class="text-xs md:text-sm">
+                            <th scope="col" class="encabezado"></th>
+                            <th scope="col" class="encabezado">Tarea</th>
+                            <th scope="col" class="encabezado">Finca</th>
+                            <th scope="col" class="encabezado">Semana</th>
+                            <th scope="col" class="encabezado">Acción</th>
+                        </tr>
+                    </thead>
+                    <tbody class="tabla-body">
+                        @forelse ($tareasCosecha as $tareacosecha)
+                            @foreach ($tareacosecha->asignaciones as $asignacion)
+                                @if ($asignacion && $asignacion->cierre)
+                                    <tr>
+                                        <td class="text-center">
+                                            <i title="La tarea fue realizada" class="fa-solid fa-circle-check text-2xl text-green-500"></i>
+                                        </td>
+                                        <td class="campo">{{ $tareacosecha->tarea->tarea }}</td>
+                                        <td class="campo">{{ $tareacosecha->plansemanal->finca->finca }}</td>
+                                        <td class="campo">{{ $tareacosecha->plansemanal->semana }}</td>
+                                        <td class="campo">
+                                            <a href="">
+                                                <i class="fa-solid fa-eye text-2xl hover:text-gray-500"></i>
+                                            </a>
+                                        </td>
+                                    </tr>
+                                @endif
+                            @endforeach
+                        @empty
+                            
+                        @endforelse
+                    </tbody>
+                </table>
             </div>
         </div>
 
