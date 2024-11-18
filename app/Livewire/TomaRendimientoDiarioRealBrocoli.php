@@ -52,7 +52,6 @@ class TomaRendimientoDiarioRealBrocoli extends Component
 
     public function calculoDatos()
     {
-
         $this->asignaciones = $this->tarealotecosecha->users()->whereDate('created_at',$this->asignacion->created_at)->orderBy('codigo')->get();
         
         $this->pesoLbCabeza = round(($this->totalLibrasFincaReportado / $this->asignacion->cierre->plantas_cosechadas),2);
@@ -79,7 +78,7 @@ class TomaRendimientoDiarioRealBrocoli extends Component
             return $fecha;
         });
 
-        $this->plantas_cosechadas = $this->tarealotecosecha->cierres()->orderBy('created_at','DESC')->first()->plantas_cosechadas;
+        $this->plantas_cosechadas = $this->tarealotecosecha->cierreDiario($this->asignacion->created_at)->first()->plantas_cosechadas;
     }
 
     public function RegistrarLibras()

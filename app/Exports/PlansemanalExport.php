@@ -35,9 +35,15 @@ class PlansemanalExport implements FromCollection, WithHeadings, WithMultipleShe
         Carbon::setLocale('es');
         foreach($this->plansemanal->tareasTotales as $tarea){
                 if($tarea->cierre != null){
+                    $horas_diferencia = 0;
+                    if(!$tarea->cierresParciales->isEmpty()){
+                        foreach ($tarea->cierresParciales as $cierreParcial) {
+                            $horas_diferencia += $cierreParcial->fecha_inicio->diffInHours($cierreParcial->fecha_final);
+                        }
+                    }
                     $tareaCreacion = $tarea->asignacion->created_at; 
                     $tareaCierre = $tarea->cierre->created_at;
-                    $rendimiento_real = $tareaCreacion->diffInHours($tareaCierre);
+                    $rendimiento_real = $tareaCreacion->diffInHours($tareaCierre) - $horas_diferencia;
                 }
                 
                 $rows->push([

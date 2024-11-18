@@ -1,21 +1,36 @@
 <div>
     <div class="flex flex-col gap-5">
-        @foreach ($asignaciones as $asignacion)
-        <div class="flex flex-row justify-between items-center gap-2 bg-green-moss text-white font-bold p-3 rounded-xl">
-            <div class="flex flex-row gap-3">
-                <p>{{ $asignacion->codigo }}</p>
-                <p>{{ $asignacion->nombre }}</p>
-            </div>
-            <div>
-                @can('create plan semanal')
-                <button>
-                    <i wire:click="$dispatch('eliminar',{{ $asignacion->id }})" title="Desasignar Empleado"
-                        class="fa-solid fa-circle-xmark text-3xl cursor-pointer hover:text-red-500"></i>
-                </button>
-                @endcan
-            </div>
+        
+        <div class="flex flex-row justify-between items-center gap-2 bg-green-moss font-bold p-3 rounded-xl">
+            <table class="tabla">
+                <thead class="tabla-head">
+                    <tr class="text-xs md:text-sm">
+                        <th scope="col" class="encabezado">Codigo</th>
+                        <th scope="col" class="encabezado">Nombre del Empleado</th>
+                        <th scope="col" class="encabezado">Fecha de Asignación</th>
+                        <th scope="col" class="encabezado">Acción</th>
+                    </tr>
+                </thead>
+                <tbody class="tabla-body">
+                    @foreach ($asignaciones as $asignacion)
+                    <tr>
+                        <td class="campo">{{ $asignacion->codigo }}</td>
+                        <td class="campo">{{ $asignacion->nombre }}</td>
+                        <td class="campo">{{ $asignacion->created_at->format('d-m-Y h:i:s A') }}</td>
+                        <td class="campo">
+                            @role('admin')
+                            <button>
+                                <i wire:click="$dispatch('eliminar',{{ $asignacion->id }})" title="Desasignar Empleado"
+                                    class="fa-solid fa-circle-xmark text-xl cursor-pointer hover:text-red-500"></i>
+                            </button>
+                            @endrole
+                        </td>
+                    </tr>
+                    @endforeach
+                </tbody>
+            </table>
         </div>
-        @endforeach
+       
     </div>
     @push('scripts')
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>

@@ -1,7 +1,7 @@
 @extends('layouts.agricola')
 
 @section('titulo')
-{{ $tarea->tarea->tarea }} - {{ $tarea->plansemanal->finca->finca }} SEMANA - {{ $tarea->plansemanal->semana }}
+{{ $tarea->tarea->tarea }} - {{ $tarea->plansemanal->finca->finca }} - SEMANA {{ $tarea->plansemanal->semana }}
 @endsection
 
 @section('contenido')
@@ -12,37 +12,86 @@
 
 <div class="mt-10">
     <h2 class="font-bold text-2xl">Información de la tarea: </h2>
+    @if (!$tarea->cierreParcialActivo->isEmpty())
+        <div class="flex flex-row gap-1 justify-end">
+            <i class="fa-solid fa-circle-play text-orange-500 text-2xl"></i>
+            <p class="font-bold text-2xl">La tarea se encuentra actualmente en pausa</p>
+        </div>
+    @endif
+    <div class="mt-5 flex gap-5 flex-col md:flex-row shadow-2xl p-5 rounded-xl justify-between">
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-5">
+            <div class="p-5 bg-gray-200 shadow-xl rounded-xl">
+                <p class="font-bold text-xl">Fecha de Inicio:</p>
+                <p>{{$tarea->asignacion->created_at->format('d-m-Y h:i:s A') }}</p>
+            </div>
 
-    <div class="mt-5 flex gap-5 flex-col shadow-2xl p-5 rounded-xl">
+            <div class="p-5 bg-gray-200 shadow-xl rounded-xl">
+                <p class="text-xl font-bold">Horas Teoricas:</p>
+                <p>{{ $tarea->horas }} @choice('hora|horas', $tarea->horas)</p>
+            </div>
 
-        <h2 class="font-bold text-xl">Información de la Asignación: </h2>
-        <div>
-            <p class="text-xl"><span class="font-bold">Fecha de asignación:</span> {{
-                $tarea->asignacion->created_at->format('d-m-Y h:i:s A') }}</p>
-            <p class="text-xl"><span class="font-bold">Horas Teoricas:</span>
-                {{ $tarea->horas }}
-                @choice('hora|horas', $tarea->horas)</td>
-            </p>
             @if ($tarea->cierre)
-            <p class="text-xl"><span class="font-bold">Horas Rendimiento:</span>
-                @php
-                $difhoras = round($tarea->asignacion->created_at->diffinhours($tarea->cierre->created_at),2);
-                @endphp
-                {{ $difhoras }}
-                @choice('hora|horas', $difhoras)
-            </p>
+                <div class="p-5 bg-gray-200 shadow-xl rounded-xl">
+                    @php
+                    $difhoras = round($tarea->asignacion->created_at->diffinhours($tarea->cierre->created_at),2) -
+                    $tarea->horas_diferencia;
+                    @endphp
+                    <p class="text-xl font-bold">Horas Rendimiento Real:</p>
+                    <p>{{ round($difhoras,2) }} @choice('hora|horas', $difhoras)</p>
+                </div>
             @endif
 
-            <p class="text-xl"><span class="font-bold">Cupos Totales:</span> {{ $tarea->personas }}</p>
-            <p class="text-xl"><span class="font-bold">Cupos Asignados:</span> {{ $tarea->users()->count() }}</p>
+            <div class="p-5 bg-gray-200 shadow-xl rounded-xl">
+                <p class="text-xl font-bold">Cupos Totales:</p>
+                <p>{{ $tarea->personas }} @choice('persona|personas', $tarea->personas )</p>
+            </div>
 
+            <div class="p-5 bg-gray-200 shadow-xl rounded-xl">
+                <p class="text-xl font-bold">Cupos Asignados:</p>
+                <p>{{ $tarea->users()->count() }} @choice('persona|personas', $tarea->users()->count() )</p>
+            </div>
+
+             
+            <div class="p-5 bg-gray-200 shadow-xl rounded-xl">
+                @php
+                    $horas_transcurridas = ($tarea->asignacion->created_at->diffInHours(now()) - $tarea->horas_diferencia) * $tarea->users->count();
+                @endphp
+                <p class="text-xl font-bold">Horas Transcurridas Reales:</p>
+                <p>{{ round($horas_transcurridas,2) }} @choice('hora|horas', $horas_transcurridas )</p>
+            </div>
         </div>
+
+        <div class="bg-green-100 p-5 flex-1 rounded shadow-xl">
+            <h2 class="text-2xl font-bold">Cierre Parciales</h2>
+            <div class="text-xl flex gap-2 flex-col mt-2">
+                @if ($tarea->cierresParciales->count() > 0)
+                    <table class="tabla">
+                        <thead class="tabla-head">
+                            <tr class="text-xs md:text-sm">
+                                <th scope="col" class="encabezado">Fecha de Cierre Parcial</th>
+                                <th scope="col" class="encabezado">Fecha de Reapertura</th>
+                            </tr>
+                        </thead>
+                        <tbody class="tabla-body">
+                            @foreach ($tarea->cierresParciales as $cierre)
+                                <tr>
+                                    <td class="campo">{{ $cierre->fecha_inicio->format('d-m-Y h:i:s A') }}</td>
+                                    <td class="campo">{{ ($cierre->fecha_final) ? $cierre->fecha_final->format('d-m-Y h:i:s A') : 'Aún no tiene cierre' }}</td>
+                                </tr>
+                            @endforeach
+                        </tbody>
+                    </table>
+                @else
+                    <p>Esta tarea no cuenta con cierres parciales</p>
+                @endif
+            </div>
+        </div>
+       
     </div>
 
     <div class="mt-5 flex gap-5 flex-col shadow-2xl p-5 rounded-xl">
         <h2 class="font-bold text-xl">Empleados Asignados: </h2>
         <livewire:mostrar-usuarios-asignados :asignaciones="$tarea->users" />
-
     </div>
 </div>
 @endsection

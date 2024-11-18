@@ -18,34 +18,27 @@
         <div class="flex flex-col items-center justify-between">
             <div class="flex flex-col gap-5">
                 @if (!$tarea->cierreSemanal)
-                @if (!$tarea->cierreDiario)
-                @if (!$tarea->asignacionDiaria)
-                <a
-                    href="{{ route('planSemanal.AsignarEmpleadosCosecha',[$lote,$plansemanalfinca,$tarea->tarea, $tarea]) }}">
-                    <i title="Asignar Empleados"
-                        class="fa-solid fa-square-plus text-2xl cursor-pointer hover:text-gray-500"></i>
-                </a>
-                @else
-                <a href="{{ route('planSemanal.tareasCosechaLoteRendimiento',[$lote,$plansemanalfinca,$tarea]) }}">
-                    <i title="Registrar Rendimiento"
-                        class="fa-solid fa-list-ol text-2xl cursor-pointer hover:text-gray-500"></i>
-                </a>
-                @endif
-                @else
-                <i title="La tarea fue realizada" class="fa-solid fa-circle-check text-2xl text-green-500 mt-5"></i>
+                    @if (!$tarea->cierreDiario)
+                        @if (!$tarea->asignacionDiaria)
+                        <a
+                            href="{{ route('planSemanal.AsignarEmpleadosCosecha',[$lote,$plansemanalfinca,$tarea->tarea, $tarea]) }}">
+                            <i title="Asignar Empleados"
+                                class="fa-solid fa-square-plus text-2xl cursor-pointer hover:text-gray-500"></i>
+                        </a>
+                        @else
+                        <a href="{{ route('planSemanal.tareasCosechaLoteRendimiento',[$lote,$plansemanalfinca,$tarea]) }}">
+                            <i title="Registrar Rendimiento"
+                                class="fa-solid fa-list-ol text-2xl cursor-pointer hover:text-gray-500"></i>
+                        </a>
+                        @endif
+                    @else
+                        <i title="La tarea fue realizada" class="fa-solid fa-circle-check text-2xl text-green-500 mt-5"></i>
 
-                @endif
+                    @endif
                 @else
-                <i class="fa-solid fa-calendar-check  text-2xl text-green-500"></i>
-
+                    <i class="fa-solid fa-calendar-check  text-2xl text-green-500"></i>
                 @endif
 
-                @if (!$asignacionSinCierre)
-                <a href="{{ route('planSemanal.tareaCosechaResumen',$tarea) }}">
-                    <i title="Resúmen de la Semana"
-                        class="fa-solid fa-receipt text-2xl cursor-pointer hover:text-gray-500"></i>
-                </a>
-                @endif
 
                 {{-- cierres semanales --}}
                 @if ($tarea->cierres->count() >= 1)
@@ -74,6 +67,11 @@
                             class="fa-solid fa-table-list text-2xl cursor-pointer hover:text-gray-500"></i>
                     </a>
                     @endcan
+                @else
+                    <a href="{{ route('planSemanal.tareaCosechaResumen',$tarea) }}">
+                        <i title="Resúmen de la Semana"
+                            class="fa-solid fa-receipt text-2xl cursor-pointer hover:text-gray-500"></i>
+                    </a>
                 @endif
             </div>
         </div>

@@ -76,55 +76,59 @@
                 </div>
                 @else
                 <div class="mt-5 flex flex-col gap-5">
-
-                    <button wire:click="$dispatch('terminar',{{ $tarea->id }})">
+                    @if($tarea->cierreParcialActivo()->get()->isEmpty())
+                        <button wire:click="$dispatch('terminar',{{ $tarea->id }})">
                         <i class="fa-solid fa-circle-check  text-2xl cursor-pointer hover:text-gray-500"></i>
-                    </button>
+                        </button>
 
-                    <a href="{{ route('planSemanal.tareaLote.show',$tarea) }}">
-                        <i title="Información de tarea"
-                            class="fa-solid fa-circle-info text-2xl hover:text-gray-600"></i>
-                    </a>
-
+                        <a href="{{ route('planSemanal.tareaLote.show',$tarea) }}">
+                            <i title="Información de tarea"
+                                class="fa-solid fa-circle-info text-2xl hover:text-gray-600"></i>
+                        </a>
+                        <iconify-icon icon="zondicons:pause-solid" class="text-2xl cursor-pointer hover:text-gray-500 text-orange-500"
+                            title="Pausar" wire:click="$dispatch('pausarTarea',{{ $tarea->id }})"></iconify-icon>
+                    @else
+                        <iconify-icon icon="gridicons:play" class="text-3xl cursor-pointer hover:text-gray-500 text-green-500" title="Reanudar" wire:click="$dispatch('reanudarTarea',{{ $tarea->id }})"></iconify-icon>
+                    @endif
 
                 </div>
 
                 @endif
                 @else
                 <div class="flex flex-col gap-5">
-
                     <i title="La tarea fue realizada" class="fa-solid fa-circle-check text-2xl text-green-500 mt-5"></i>
 
                     <a href="{{ route('planSemanal.tareaLote.show',$tarea) }}">
                         <i title="Información de tarea"
                             class="fa-solid fa-circle-info text-2xl hover:text-gray-600"></i>
                     </a>
+
                 </div>
                 @endif
 
 
                 @if (!$tarea->cierre)
-                    @hasanyrole('admin|adminagricola')
+                @hasanyrole('admin|adminagricola')
+                <div class="mt-5">
+                    <a href="{{ route('planSemanal.tareaLote.edit',$tarea) }}">
+                        <i title="Editar Tarea"
+                            class="fa-solid fa-arrow-right-arrow-left text-2xl cursor-pointer hover:text-gray-500"></i>
+                    </a>
+                </div>
+                @endhasanyrole
+
+                @else
+                    @role('admin')
                     <div class="mt-5">
                         <a href="{{ route('planSemanal.tareaLote.edit',$tarea) }}">
                             <i title="Editar Tarea"
                                 class="fa-solid fa-arrow-right-arrow-left text-2xl cursor-pointer hover:text-gray-500"></i>
                         </a>
                     </div>
-                    @endhasanyrole
-                    
-                @else
-                    @role('admin')
-                        <div class="mt-5">
-                            <a href="{{ route('planSemanal.tareaLote.edit',$tarea) }}">
-                                <i title="Editar Tarea"
-                                    class="fa-solid fa-arrow-right-arrow-left text-2xl cursor-pointer hover:text-gray-500"></i>
-                            </a>
-                        </div>
                     @endrole
                 @endif
-               
-                
+
+
             </div>
 
             @if ($tarea->extendido)
@@ -171,6 +175,14 @@
 
     Livewire.on('terminar', tareaId =>{
         Livewire.dispatch('terminarTarea', {tarea: tareaId});
+    })
+
+    Livewire.on('pausarTarea', tareaId =>{
+        Livewire.dispatch('pausar', {tarea: tareaId});
+    })
+
+    Livewire.on('reanudarTarea', tareaId =>{
+        Livewire.dispatch('reanudar', {tarea: tareaId});
     })
 </script>
 @endpush
