@@ -83,8 +83,9 @@ Route::group(['middleware' => ['auth', 'role:admin|adminagricola'], 'prefix' => 
     Route::get('/finca/ingresos', [UsuariosFincaController::class, 'index'])->name('usuariosFincas');
 });
 
-Route::group(['middleware' => ['auth', 'role:admin|adminagricola|auxfinca'], 'prefix' => 'agricola'], function() {
-    
+Route::group(['middleware' => ['auth', 'role:admin|adminagricola|auxalameda'], 'prefix' => 'agricola'], function() {
+    Route::get('/tarea-lote-cosecha/{tarealotecosecha}', [TareaCosechaLoteController::class, 'show'])->name('planSemanal.tareaLoteCosecha.show');
+
     Route::get('/finca/plan-semanal/lotes/{lote:nombre}/{plansemanalfinca}/{tarea}/{tarealotecosecha}/cosecha/asignacion', [PlanSemanalFincasController::class, 'AsignarEmpleadosCosecha'])->name('planSemanal.AsignarEmpleadosCosecha');
     Route::get('/tarea-lote/{tarealote}', [TareaLoteController::class, 'show'])->name('planSemanal.tareaLote.show');
     

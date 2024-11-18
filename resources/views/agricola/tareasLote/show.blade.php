@@ -33,8 +33,8 @@
             @if ($tarea->cierre)
                 <div class="p-5 bg-gray-200 shadow-xl rounded-xl">
                     @php
-                    $difhoras = round($tarea->asignacion->created_at->diffinhours($tarea->cierre->created_at),2) -
-                    $tarea->horas_diferencia;
+                    $difhoras = (round($tarea->asignacion->created_at->diffinhours($tarea->cierre->created_at),2) -
+                    ($tarea->horas_diferencia * $tarea->users->count()) );
                     @endphp
                     <p class="text-xl font-bold">Horas Rendimiento Real:</p>
                     <p>{{ round($difhoras,2) }} @choice('hora|horas', $difhoras)</p>
@@ -51,10 +51,10 @@
                 <p>{{ $tarea->users()->count() }} @choice('persona|personas', $tarea->users()->count() )</p>
             </div>
 
-             
+            
             <div class="p-5 bg-gray-200 shadow-xl rounded-xl">
                 @php
-                    $horas_transcurridas = ($tarea->asignacion->created_at->diffInHours(now()) - $tarea->horas_diferencia) * $tarea->users->count();
+                    $horas_transcurridas = ($tarea->asignacion->created_at->diffInHours(now()) - ($tarea->horas_diferencia * $tarea->users->count())) * $tarea->users->count();
                 @endphp
                 <p class="text-xl font-bold">Horas Transcurridas Reales:</p>
                 <p>{{ round($horas_transcurridas,2) }} @choice('hora|horas', $horas_transcurridas )</p>
