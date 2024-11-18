@@ -297,7 +297,9 @@
                             <th scope="col" class="encabezado"></th>
                             <th scope="col" class="encabezado">Tarea</th>
                             <th scope="col" class="encabezado">Finca</th>
+                            <th scope="col" class="encabezado">Lote</th>
                             <th scope="col" class="encabezado">Semana</th>
+                            <th scope="col" class="encabezado">Fecha</th>
                             <th scope="col" class="encabezado">Acción</th>
                         </tr>
                     </thead>
@@ -311,9 +313,11 @@
                                         </td>
                                         <td class="campo">{{ $tareacosecha->tarea->tarea }}</td>
                                         <td class="campo">{{ $tareacosecha->plansemanal->finca->finca }}</td>
+                                        <td class="campo">{{ $tareacosecha->lote->nombre }}</td>
                                         <td class="campo">{{ $tareacosecha->plansemanal->semana }}</td>
+                                        <td class="campo">{{ $asignacion->created_at->format('d-m-Y') }}</td>
                                         <td class="campo">
-                                            <a href="">
+                                            <a href="{{ route('planSemanal.tareaCosechaResumen',$tareacosecha) }}" target="_blank">
                                                 <i class="fa-solid fa-eye text-2xl hover:text-gray-500"></i>
                                             </a>
                                         </td>
