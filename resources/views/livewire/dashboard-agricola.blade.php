@@ -271,7 +271,7 @@
                 @foreach ($tareasCosecha as $tareacosecha)
                     @foreach ($tareacosecha->asignaciones as $asignacion)
                         @if ($asignacion && !$asignacion->cierre)
-                            <a class="flex flex-row gap-5 font-bold text-white bg-green-meadow p-3 rounded-xl justify-between shadow-xl grow-animation-sm">
+                            <a href="{{ route('planSemanal.tareaLoteCosecha.show',$tareacosecha) }}" target="_blank" class="flex flex-row gap-5 font-bold text-white bg-green-meadow p-3 rounded-xl justify-between shadow-xl grow-animation-sm">
                                 <div class="flex flex-row gap-5">
                                     <i class="fa-solid fa-clock text-orange-500 text-xl"
                                         title="Aún no han sido terminadas todas las tareas"></i>

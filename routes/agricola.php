@@ -12,7 +12,7 @@ use App\Http\Controllers\ControlPlantacionController;
 use App\Http\Controllers\PlanSemanalFincasController;
 use App\Http\Controllers\TareaCosechaLoteController;
 use App\Http\Controllers\TareaLoteController;
-
+use App\Http\Controllers\TareaLoteCosechaController;
 
 Route::group(['middleware' => ['auth', 'role:admin|adminagricola'], 'prefix' => 'agricola'], function() {
     Route::get('/finca/plan-semanal/create', [PlanSemanalFincasController::class, 'create'])->name('planSemanal.create'); 
@@ -84,9 +84,11 @@ Route::group(['middleware' => ['auth', 'role:admin|adminagricola'], 'prefix' => 
 });
 
 Route::group(['middleware' => ['auth', 'role:admin|adminagricola|auxalameda'], 'prefix' => 'agricola'], function() {
-    
+    Route::get('/tarea-lote/{tarealotecosecha}', [TareaCosechaLoteController::class, 'show'])->name('planSemanal.tareaLoteCosecha.show');
+
     Route::get('/finca/plan-semanal/lotes/{lote:nombre}/{plansemanalfinca}/{tarea}/{tarealotecosecha}/cosecha/asignacion', [PlanSemanalFincasController::class, 'AsignarEmpleadosCosecha'])->name('planSemanal.AsignarEmpleadosCosecha');
     Route::get('/tarea-lote/{tarealote}', [TareaLoteController::class, 'show'])->name('planSemanal.tareaLote.show');
+    
     //Plan semanal (tareas fincas)
     Route::get('/finca/plan-semanal', [PlanSemanalFincasController::class, 'index'])->name('planSemanal');
     Route::get('/finca/plan-semanal/plan-{plansemanalfinca}/lotes', [PlanSemanalFincasController::class, 'show'])->name('planSemanal.show');
