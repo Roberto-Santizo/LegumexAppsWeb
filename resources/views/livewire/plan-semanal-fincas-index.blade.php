@@ -1,28 +1,14 @@
 <div class="overflow-x-auto mt-10">
     <div class="flex justify-end my-5">
-        <form wire:submit.prevent='mostrarDatos' class="flex gap-5 justify-center items-center">
-            <div>
-                <label class="font-bold text-xl" for="finca">Finca:</label>
-                <select wire:model="finca" class="border p-3 border-black">
-                    <option name="finca" value="10" selected>TODAS</option>
-                    @foreach ($fincas as $finca)
-                    <option value="{{ $finca->id }}">{{ $finca->finca }}</option>
-                    @endforeach
-                </select>
-            </div>
+        @role('admin|adminagricola')
+        <div class="flex justify-end">
+            <i class="fa-solid fa-bars icon-link" wire:click='openModal()'></i>
+        </div>
+        @endrole
 
-            <div>
-                <label class="font-bold text-xl" for="finca">Semana:</label>
-                <select wire:model='semana' class="border p-3 border-black">
-                    <option value="0" selected>TODAS</option>
-                    @foreach ($semanas as $semana)
-                    <option value="{{ $semana }}">{{ $semana }}</option>
-                    @endforeach
-                </select>
-            </div>
-
-            <x-boton-buscador />
-        </form>
+        <div class="max-w-sm">
+            <x-plan-semanal-filtros class="{{ ($isOpen) ? 'slide-in-active slide-in' : 'slide-out-active-right' }}" />
+        </div>
     </div>
 
     <table class="tabla">
@@ -34,6 +20,8 @@
                     Finca</th>
                 <th scope="col" class="encabezado">
                     Semana</th>
+                <th scope="col" class="encabezado">
+                    Año</th>
                 <th scope="col" class="encabezado">
                     Fecha de Creación</th>
                 @can('create plan semanal')
@@ -49,8 +37,8 @@
                     Control Tareas Cosecha</th>
                 <th scope="col" class="encabezado text-center">
                     Tareas</th>
-                <th scope="col" class="encabezado text-center">
-                    Tareas Atrasadas</th>
+                {{-- <th scope="col" class="encabezado text-center">
+                    Tareas Atrasadas</th> --}}
 
                 @can('create plan semanal')
                 <th scope="col" class="encabezado text-center">
@@ -74,6 +62,7 @@
                 </td>
                 <td class="campo">{{ $plansemanalfinca->finca->finca }}</td>
                 <td class="campo">{{ $plansemanalfinca->semana }}</td>
+                <td class="campo">{{ $plansemanalfinca->year }}</td>
                 <td class="campo">{{ $plansemanalfinca->created_at->format('d-m-Y') }}</td>
                 @can('create plan semanal')
                 <td class="campo">Q {{ $plansemanalfinca->presupuesto_general_gastado }} / Q {{
@@ -95,14 +84,14 @@
                     </a>
                 </td>
 
-                <td class="campo">
+                {{-- <td class="campo">
                     @if ($plansemanalfinca->tareasRealizadas->count() == 0 && $plansemanalfinca->semana < now()->
                         weekOfYear)
                         <a class="btn-red" href="{{ route('planSemanal.atrasadas',$plansemanalfinca) }}">
                             Ver Tareas Atrasadas
                         </a>
                         @endif
-                </td>
+                </td> --}}
 
                 @can('create plan semanal')
                 <td class="campo text-center">
@@ -121,17 +110,17 @@
                 @endcan
             </tr>
             @empty
-                
+
             @endforelse
         </tbody>
     </table>
 
     @if ($planes->count() == 0)
-        <div class="w-full flex justify-center items-center mt-10">
-            <p class="text-3xl font-bold uppercase">No existen registros</p>
-        </div>
+    <div class="w-full flex justify-center items-center mt-10">
+        <p class="text-3xl font-bold uppercase">No existen registros</p>
+    </div>
     @endif
-    
+
     <div class="mt-4">
         {{ $planes->links() }}
     </div>

@@ -12,7 +12,7 @@ class PlanSemanalFinca extends Model
     protected $fillable = [
         'finca_id',
         'semana',
-        'code',
+        'year'
     ];
 
     public function finca()

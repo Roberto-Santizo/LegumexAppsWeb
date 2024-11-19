@@ -10,17 +10,26 @@ use App\Models\PlanSemanalFinca;
 class PlanSemanalFincasIndex extends Component
 {
 
-    public $finca = 10;
+    public $finca = 0;
     public $semana = 0;
     public $fincas;
     public $semanas;
+    public $isOpen = false;
 
     protected $rules = [
         'finca' => 'required',
-        'semana'=> 'required'
+        'semana' => 'required'
     ];
 
     use WithPagination;
+
+
+    public function updating($field)
+    {
+        if (in_array($field, ['finca', 'semana'])) {
+            $this->resetPage();
+        }
+    }
 
     public function mount()
     {
@@ -34,31 +43,31 @@ class PlanSemanalFincasIndex extends Component
         $finca = $user->getAllPermissions()->first()->name;
         $userRole = $user->getRoleNames()->first();
 
-        if($this->finca != 10)
-        {
+        if ($this->finca != 0) {
             $query->where('finca_id', $this->finca);
         }
-        
-        if($this->semana != 0)
-        {
+
+        if ($this->semana != 0) {
             $query->where('semana', $this->semana);
         }
-        if($userRole == 'auxfinca')
-        {
-            $query->whereHas('finca',function($query) use($finca){
-                $query->where('finca','LIKE','%'.$finca);
+        if ($userRole == 'auxfinca') {
+            $query->whereHas('finca', function ($query) use ($finca) {
+                $query->where('finca', 'LIKE', '%' . $finca);
             });
         }
-       
 
-        $planes = $query->orderBy('semana', 'DESC')->paginate(10);
-        
+
+        $planes = $query
+            ->orderByRaw('year DESC')  
+            ->orderBy('semana', 'DESC')
+            ->paginate(10);
+
         $planes->map(function ($plan) {
             $tareasCierre = collect();
             $tareasExtraordinarias = collect();
             $tareasPresupuestadas = collect();
             $tareasCosechasTerminadas = collect();
-            
+
             foreach ($plan->tareasTotales as $tarea) {
                 if ($tarea->cierre) {
                     $tareasCierre->push($tarea);
@@ -71,9 +80,9 @@ class PlanSemanalFincasIndex extends Component
                 }
             }
 
-            foreach($plan->tareasCosechaTotales as $tarea){
-                if($tarea->cierreSemanal){
-                    $tareasCosechasTerminadas->push($tarea); 
+            foreach ($plan->tareasCosechaTotales as $tarea) {
+                if ($tarea->cierreSemanal) {
+                    $tareasCosechasTerminadas->push($tarea);
                 }
             }
 
@@ -108,10 +117,26 @@ class PlanSemanalFincasIndex extends Component
         $this->semana = $datos['semana'];
         $this->finca = $datos['finca'];
         $this->formatearDatos();
+        $this->resetPage();
     }
+
+    public function borrarFiltros()
+    {
+        $this->finca = 0;
+        $this->semana = 0;
+        $this->resetPage();
+        $this->openModal();
+    }
+
+
+    public function openModal()
+    {
+        $this->isOpen = !$this->isOpen;
+    }
+
     public function render()
     {
         $planes = $this->formatearDatos();
-        return view('livewire.plan-semanal-fincas-index',compact('planes'));
+        return view('livewire.plan-semanal-fincas-index', compact('planes'));
     }
 }

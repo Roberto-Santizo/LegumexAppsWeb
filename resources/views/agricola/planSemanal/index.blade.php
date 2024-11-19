@@ -20,3 +20,4 @@ Tareas Finca Semanal
 
 <livewire:plan-semanal-fincas-index />
 @endsection
+

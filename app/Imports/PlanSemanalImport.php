@@ -33,8 +33,8 @@ class PlanSemanalImport implements ToModel, WithHeadingRow
             return null; 
         }
 
-        $semana = Carbon::now()->weekOfYear;
-
+        $fechaSemanaActual = Carbon::now();
+        $fechaSemanaImportada = Carbon::now()->setISODate($row['year'], $row['numero_de_semana']);
         try {
             $finca = $this->fincas[$row['finca']] ?? null;
             if (!$finca) {
@@ -43,9 +43,9 @@ class PlanSemanalImport implements ToModel, WithHeadingRow
 
             $lote = Lote::where('nombre', $row['lote'])->where('finca_id', $finca->id)->first();
             $tarea = $this->tareas[$row['tarea']] ?? TareaCosecha::where('code', $row['tarea'])->first();
-            $planSemanal = $this->getOrCreatePlanSemanal($finca->code, $row['numero_de_semana']);
+            $planSemanal = $this->getOrCreatePlanSemanal($finca->code, $row['numero_de_semana'], $row['year']);
 
-            if ($row['numero_de_semana'] < $semana) {
+            if ($fechaSemanaImportada->isBefore($fechaSemanaActual)) {
                 throw new ImportExeption("La semana indicada es anterior a la semana actual.");
             }
 
@@ -69,11 +69,11 @@ class PlanSemanalImport implements ToModel, WithHeadingRow
             ]);
 
         } catch (\Throwable $th) {
-            throw new ImportExeption('Existe un error al crear el plan semanal, verifique los datos del archivo e intentelo de nuevo');
+            throw new ImportExeption('Existe un error al crear el plan semanal, verifique los datos del archivo e intentelo de nuevo' . $th->getMessage());
         }
     }
 
-    private function getOrCreatePlanSemanal($finca, $numeroSemana)
+    private function getOrCreatePlanSemanal($finca, $numeroSemana,$anio)
     {
         if (isset($this->planesSemanal[$finca][$numeroSemana])) {
             return $this->planesSemanal[$finca][$numeroSemana];
@@ -88,6 +88,7 @@ class PlanSemanalImport implements ToModel, WithHeadingRow
             [
                 'finca_id' => $fincaModel->id,
                 'semana' => $numeroSemana,
+                'year' => $anio
             ]
         );
 
