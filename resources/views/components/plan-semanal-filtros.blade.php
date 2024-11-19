@@ -8,15 +8,17 @@
         <div class="space-y-6">
             <form wire:submit.prevent='mostrarDatos' class="flex flex-col gap-5">
 
-                <div class="space-y-2">
-                    <label for="finca" class="block text-sm font-medium">Finca</label>
-                    <select  wire:model="finca" class="w-full p-2 uppercase">
-                        <option value="0">--Seleccione una finca--</option>
-                        @foreach ($fincas as $finca)
-                            <option value="{{$finca->id}}">{{ $finca->finca }}</option>
-                        @endforeach
-                    </select>
-                </div>
+                @role('admin|adminagricola')
+                    <div class="space-y-2">
+                        <label for="finca" class="block text-sm font-medium">Finca</label>
+                        <select  wire:model="finca" class="w-full p-2 uppercase">
+                            <option value="0">--Seleccione una finca--</option>
+                            @foreach ($fincas as $finca)
+                                <option value="{{$finca->id}}">{{ $finca->finca }}</option>
+                            @endforeach
+                        </select>
+                    </div>
+                @endrole
 
                 
                 <div class="space-y-2">
