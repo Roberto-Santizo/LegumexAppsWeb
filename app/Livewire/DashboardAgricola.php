@@ -28,6 +28,7 @@ class DashboardAgricola extends Component
     public $semanaNueva;
     public $fincas;
     public $finca = 0;
+    public $isOpen = false;
 
     public function mount()
     {
@@ -149,8 +150,21 @@ class DashboardAgricola extends Component
         $this->mostrarDatos();
     }
 
+    public function openModal()
+    {
+        $this->isOpen = !$this->isOpen;
+    }
+
+    public function borrarFiltros()
+    {
+        $this->semanaNueva=null;
+        $this->finca = 0;
+        $this->mostrarDatos();
+        $this->openModal();
+    }
     public function render()
     {
+        $this->mostrarDatos();
         return view('livewire.dashboard-agricola');
     }
 }
