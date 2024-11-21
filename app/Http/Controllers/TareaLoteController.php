@@ -22,7 +22,7 @@ class TareaLoteController extends Controller
                 $tarealote->horas_diferencia += $cierreParcial->fecha_inicio->diffInHours($cierreParcial->fecha_final);
             }
         }
-        
+
         return view('agricola.tareasLote.show', ['tarea' => $tarealote, 'fecha_actual' => $fecha_actual]);
     }
 

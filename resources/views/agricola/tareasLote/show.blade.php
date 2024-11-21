@@ -33,8 +33,7 @@
             @if ($tarea->cierre)
             <div class="p-5 bg-gray-200 shadow-xl rounded-xl">
                 @php
-                $difhoras = (round($tarea->asignacion->created_at->diffinhours($tarea->cierre->created_at),2) -
-                ($tarea->horas_diferencia * $tarea->users->count()) );
+                $difhoras = (round($tarea->asignacion->created_at->diffinhours($tarea->cierre->created_at),2) - ($tarea->horas_diferencia ));
                 @endphp
                 <p class="text-xl font-bold">Horas Rendimiento Real:</p>
                 <p>{{ round($difhoras,2) }} @choice('hora|horas', $difhoras)</p>
@@ -96,5 +95,12 @@
         <h2 class="font-bold text-xl">Empleados Asignados: </h2>
         <livewire:mostrar-usuarios-asignados :asignaciones="$tarea->users" />
     </div>
+
+    @if ($tarea->cierre && !$tarea->cierresParciales->isEmpty())
+        <div class="mt-5 flex gap-5 flex-col shadow-2xl p-5 rounded-xl">
+            <h2 class="font-bold text-xl">Distribución de datos: </h2>
+            <livewire:distribucion-asignaciones :tarea="$tarea"/>
+        </div>
+    @endif
 </div>
 @endsection

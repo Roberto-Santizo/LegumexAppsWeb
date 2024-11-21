@@ -7,7 +7,6 @@
                     <tr class="text-xs md:text-sm">
                         <th scope="col" class="encabezado">Codigo</th>
                         <th scope="col" class="encabezado">Nombre del Empleado</th>
-                        <th scope="col" class="encabezado">Fecha de Asignación</th>
                         <th scope="col" class="encabezado">Acción</th>
                     </tr>
                 </thead>
@@ -16,7 +15,6 @@
                     <tr>
                         <td class="campo">{{ $asignacion->codigo }}</td>
                         <td class="campo">{{ $asignacion->nombre }}</td>
-                        <td class="campo">{{ $asignacion->created_at->format('d-m-Y h:i:s A') }}</td>
                         <td class="campo">
                             @role('admin')
                             <button>

@@ -133,7 +133,7 @@
 
             @if ($tarea->extendido)
             <div class="bg-green-500 text-white font-bold p-2 rounded-xl">
-                <p>{{ $tarea->ingresados }} / {{ ($tarea->personas - $tarea->cupos) }}</p>
+                <p>{{ $tarea->ingresados }} / {{ ( $tarea->users->count()) }}</p>
             </div>
             @endif
 
