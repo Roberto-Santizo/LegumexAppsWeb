@@ -22,6 +22,7 @@ return Application::configure(basePath: dirname(__DIR__))
             'RoleRedirect' => RoleRedirectMiddleware::class,
             'permission' => \Spatie\Permission\Middleware\PermissionMiddleware::class,
             'role_or_permission' => \Spatie\Permission\Middleware\RoleOrPermissionMiddleware::class,
+            'checkupdate'=> \App\Http\Middleware\CheckAppUpdate::class,
         ]);
     })
     ->withExceptions(function (Exceptions $exceptions) {

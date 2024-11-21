@@ -5,6 +5,8 @@ Dashboard Admin
 @endsection
 
 @section('contenido')
+<x-alertas />
+
 <div class="flex flex-col gap-5 xl:grid xl:grid-cols-8 mt-10" data-aos="zoom-in">
 
     <div
