@@ -3,6 +3,7 @@
 namespace App\Http\Middleware;
 
 use Closure;
+use Illuminate\Support\Str;
 use Illuminate\Http\Request;
 use Symfony\Component\HttpFoundation\Response;
 
@@ -17,12 +18,13 @@ class CheckAppUpdate
     {
         $user = $request->user();
         $currentVersion = config('app.current_version');
-        if($user && $user->getRoleNames()->first() === 'admin')
+        if($user && ($user->getRoleNames()->first() === 'admin' || $user->getRoleNames()->first() === 'adminagricola'))
         {
             if ($user && $user->last_seen_version !== $currentVersion) {
-                session()->flash('update', "¡Nueva actualización disponible! Agrega el cálculo de la distribución del presupuesto y horas por usuario");
+                $token = Str::random(40);
                 $user->last_seen_version = $currentVersion;
                 $user->save();
+                return redirect()->route('novedades')->with('token',$token);
             }
         }
 

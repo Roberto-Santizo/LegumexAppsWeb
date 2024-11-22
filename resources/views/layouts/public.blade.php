@@ -9,7 +9,7 @@
         crossorigin="anonymous" referrerpolicy="no-referrer" />
     <script src="https://code.iconify.design/iconify-icon/2.1.0/iconify-icon.min.js"></script>
     <link rel="icon" type="image/x-icon" href="{{ asset('favicon.ico') }}" />
-    <title>AgroIndustria Legumex</title>
+    <title>Agroindustria Legumex</title>
     @vite('resources/css/app.css')
 </head>
 
