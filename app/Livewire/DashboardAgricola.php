@@ -26,10 +26,15 @@ class DashboardAgricola extends Component
     public $tareas;
     public $tareasCosecha;
     public $semanaNueva;
+    public $isOpen = false;
+    public $finca = 0;
 
     public function mount()
     {
         $this->planesSelect = PlanSemanalFinca::all();
+        $this->planes = PlanSemanalFinca::where('semana', $this->semana_actual)->get();
+        $this->usuarios = EmpleadoFinca::WhereNotIn('position_id', [15, 9])->get();
+        $this->tareas = TareasLote::all();
         $this->semana_actual = Carbon::now()->weekOfYear;
         $this->mostrarDatos();
     }
@@ -37,7 +42,7 @@ class DashboardAgricola extends Component
     public function mostrarDatos()
     {
         $semana = $this->semana_actual;
-        $this->planes = PlanSemanalFinca::where('semana', $semana)->get();
+        
         $this->planes->map(function ($plan) {
             $plan->tareasRealizadas = $plan->tareasTotales->filter(function ($tarea) {
                 if ($tarea->cierre) {
@@ -46,7 +51,7 @@ class DashboardAgricola extends Component
             });
         });
 
-        $this->usuarios = EmpleadoFinca::where('department_id', 8)->WhereNotIn('position_id', [15, 9])->get();
+        
 
         $this->usuarios->map(function ($usuario) use ($semana) {
             $horas_totales_cosecha = 0;
@@ -93,7 +98,7 @@ class DashboardAgricola extends Component
 
         $this->usuarios = $this->usuarios->sortBy('horas_totales');
 
-        $this->tareas = TareasLote::all();
+        
         $this->tareasCosecha = TareaLoteCosecha::with('asignaciones')->get();
         $this->tareasCosecha = $this->tareasCosecha->filter(function($tarea) use ($semana) {
             return $tarea->plansemanal->semana == $semana;
@@ -116,13 +121,38 @@ class DashboardAgricola extends Component
         });
     }
 
+    public function openModal()
+    {
+        $this->isOpen = !$this->isOpen;
+    }
+    public function borrarFiltros()
+    {
+        $this->semanaNueva=null;
+        $this->finca = 0;
+        $this->mostrarDatos();
+        $this->openModal();
+    }
+
+
     public function buscarDatos()
     {
-
         if ($this->semanaNueva == null) {
             $this->semana_actual = Carbon::today()->weekOfYear;
         } else {
             $this->semana_actual = $this->semanaNueva;
+        }
+
+        if($this->finca != 0){
+            $this->planes = PlanSemanalFinca::where('semana', $this->semana_actual)->where('finca_id',$this->finca)->get();
+            $this->usuarios = EmpleadoFinca::where('department_id', $this->finca)->WhereNotIn('position_id', [15, 9])->get();
+            $this->tareas = TareasLote::whereHas('plansemanal', function ($query) {
+                $query->where('finca_id', $this->finca);
+            })->get();
+            
+        }else{
+            $this->planes = PlanSemanalFinca::where('semana', $this->semana_actual)->get();
+            $this->usuarios = EmpleadoFinca::WhereNotIn('position_id', [15, 9])->get();
+            $this->tareas = TareasLote::all();
         }
 
         $this->mostrarDatos();
@@ -130,6 +160,7 @@ class DashboardAgricola extends Component
 
     public function render()
     {
+        $this->mostrarDatos();
         return view('livewire.dashboard-agricola');
     }
 }
