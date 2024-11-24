@@ -196,7 +196,7 @@ class DocumentoLDController extends Controller
             return response()->json($result, 200);
         } catch (\Throwable $th) {
             $reponse = [
-                'mensaje' => 'mensaje',
+                'mensaje' => $th->getMessage(),
                 'status' => 500
             ];
             return response()->json($reponse, 500);
