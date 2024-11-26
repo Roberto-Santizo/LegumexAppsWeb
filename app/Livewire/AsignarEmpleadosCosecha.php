@@ -61,7 +61,6 @@ class AsignarEmpleadosCosecha extends Component
     {
         $hoy = Carbon::today();
         $this->ingresos = EmpleadoIngresado::whereDate('punch_time', $hoy)
-        ->where('terminal_id', 7)
         ->get()
         ->map(function ($ingreso) use ($hoy) {
             $asignaciones = UsuarioTareaLote::where('usuario_id', $ingreso->emp_id)

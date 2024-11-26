@@ -1,6 +1,6 @@
 <div class="w-full h-full">
     <div>
-        @role('admin|adminmanto')
+        @role('admin|adminagricola')
             <div class="flex justify-end">
                 <i class="fa-solid fa-bars icon-link" wire:click='openModal()'></i>
             </div>
