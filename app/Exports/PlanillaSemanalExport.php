@@ -2,12 +2,9 @@
 
 namespace App\Exports;
 
-use App\Models\AsignacionDiariaCosecha;
-use App\Models\EmpleadoFinca;
 use Illuminate\Support\Carbon;
 use App\Models\PlanSemanalFinca;
-use App\Models\UsuarioTareaCosecha;
-use App\Models\UsuarioTareaLote;
+use App\Models\EmpleadoIngresado;
 use Maatwebsite\Excel\Concerns\WithStyles;
 use Maatwebsite\Excel\Concerns\WithHeadings;
 use Maatwebsite\Excel\Concerns\FromCollection;
@@ -16,11 +13,32 @@ use PhpOffice\PhpSpreadsheet\Worksheet\Worksheet;
 class PlanillaSemanalExport implements FromCollection, WithHeadings, WithStyles
 {
     protected $plansemanal;
+    protected $tareasSemanales;
+    protected $tareasSemanalesCosecha;
+    protected $empleados = [];
+    protected $empleadosAux;
 
-    // Constructor para recibir el ID
     public function __construct(PlanSemanalFinca $planSemanalFinca)
     {
         $this->plansemanal = $planSemanalFinca;
+        $this->tareasSemanales = $this->plansemanal->tareasTotales;
+        $this->tareasSemanalesCosecha = $this->plansemanal->tareasCosechaTotales;
+        $todasTareas = $this->tareasSemanales->merge($this->tareasSemanalesCosecha);
+
+        foreach ($todasTareas as $tarea) {
+            foreach ($tarea->users as $asignacion) {
+                $this->empleados[$asignacion->codigo] = [
+                    'nombre' => $asignacion->nombre,
+                    'codigo' => $asignacion->codigo,
+                    'usuario_id' => $asignacion->usuario_id,
+                    'horas_totales' => 0,
+                    'monto_total' => 0,
+                    'bono' => 0
+                ];
+            }
+        }
+        $this->empleados = collect($this->empleados);
+        $this->empleadosAux = $this->empleados;
     }
 
     /**
@@ -31,102 +49,160 @@ class PlanillaSemanalExport implements FromCollection, WithHeadings, WithStyles
     {
         $rows = collect();
         Carbon::setLocale('es');
-        
 
-        $personalFinca = EmpleadoFinca::where('department_id', $this->plansemanal->finca->id)->WhereNotIn('position_id', [15, 9])->get();
-        $personalCodigos = $personalFinca->pluck('last_name')->toArray();
-
-        $asignaciones = UsuarioTareaLote::whereIn('codigo', $personalCodigos)->get();
-        
-        $asignacionesPorEmpleado = UsuarioTareaLote::whereRaw('WEEKOFYEAR(created_at) = ?', [$this->plansemanal->semana])->get()->groupBy('codigo');
-        $asignacionesPorEmpleadoCosecha = UsuarioTareaCosecha::whereRaw('WEEKOFYEAR(created_at) = ?', [$this->plansemanal->semana])->get()->groupBy('codigo');
-
-        foreach ($personalFinca as $empleado) {
-            
-            $asignaciones = $asignacionesPorEmpleado->get($empleado->last_name, collect());
-            $asignacionesCosecha = $asignacionesPorEmpleadoCosecha->get($empleado->last_name,collect());
-            $empleado->horas_totales = 0;
-            $empleado->bono = 0;
-            $empleado->septimo = 0;
-            $empleado->total_devengar = 0;
-
-            if($asignaciones->isNotEmpty()){
-                foreach ($asignaciones as $asignacion) {
-                    if($asignacion->tarea_lote->cierre){
-                        $empleado->horas_totales += (($asignacion->tarea_lote->horas) / $asignacion->tarea_lote->users->count());
-                        $empleado->total_devengar += (($asignacion->tarea_lote->presupuesto) / $asignacion->tarea_lote->users->count());
-                    }
-                }
-                
+        foreach ($this->tareasSemanales as $tarea) {
+            if ($tarea->cierresParciales->isEmpty() && $tarea->cierre) {
+                $this->formatTareaSinCierres($tarea);
+            } elseif ($tarea->cierre) {
+                $this->formatTareaConCierres($tarea);
             }
-            
-            if($asignacionesCosecha->isNotEmpty()){
-                foreach ($asignacionesCosecha as $asignacion) {
-                    $asignacionCosecha = AsignacionDiariaCosecha::whereDate('created_at',$asignacion->created_at)->get()->first();
-                    if($asignacionCosecha->cierre)
-                    {
-                        $libras_total_planta = $asignacionCosecha->cierre->libras_total_planta;
-                        $cierre = $asignacionCosecha->cierre;
-                        if($libras_total_planta){
-                            $rendimiento = $asignacion->tarealote->tarea->cultivo->rendimiento;
-                           
-                            $pesoLbCabeza = $libras_total_planta / $cierre->plantas_cosechadas;
-                            $porcentaje = ($asignacion->libras_asignacion/ $cierre->libras_total_finca);
-                            $rendimientoTeoricoPorPersona =  round(($pesoLbCabeza * $rendimiento),2);
-                            $cabezas_cosechadas = ($porcentaje*$libras_total_planta)/$pesoLbCabeza;
-                           
-                            $montoTotal = round(((($libras_total_planta/ $rendimientoTeoricoPorPersona) * 8)*11.98),2);
-                            $libras_asignacion_planta = round((($porcentaje/100) * $libras_total_planta),4);
-                            $horas_cosecha = $cabezas_cosechadas/120;
-                            $empleado->horas_totales += $horas_cosecha;
-                            $empleado->total_devengar += $montoTotal*$porcentaje;
-    
-                      
-                        }
-                    }
-                    
-                }
-                
-            }
+        }
 
-            if($empleado->horas_totales >= 44){
-                $empleado->bono = 250/4.33;
-                $empleado->septimo = ($empleado->total_devengar/ 30); 
-                $empleado->total_devengar += $empleado->septimo;
-                
-            }
+        foreach ($this->tareasSemanalesCosecha as $tarea) {
+            $this->formatTareaCosecha($tarea);
+        }
 
+        foreach($this->empleados as $empleado){
+            if($empleado['horas_totales'] > 44){
+                $empleado['bono'] = 12*11.98;
+            }
             $rows->push([
-                'CODIGO' => $empleado->last_name,
-                'NOMBRE' => $empleado->first_name,
-                'HORAS SEMANALES' => $empleado->horas_totales,
-                'BONO' => $empleado->bono,
-                'SEPTIMO' => $empleado->septimo,
-                'TOTAL A DEVENGAR' => ($empleado->total_devengar + $empleado->bono),
+                'CODIGO' => $empleado['codigo'],
+                'NOMBRE' => $empleado['nombre'],
+                'HORAS SEMANALES' => $empleado['horas_totales'],
+                'MONTO TAREAS' => $empleado['monto_total'],
+                'BONO' => $empleado['bono'],
+                'SEPTIMO' => 0,
+                'TOTAL A DEVENGAR' => $empleado['monto_total'] + $empleado['bono']
             ]);
         }
 
         return $rows;
     }
 
+    public function formatTareaSinCierres($tarea)
+    {
+        $this->empleados = $this->empleados->map(function ($empleado) use ($tarea) {
+            if ($tarea->users->contains('usuario_id', $empleado['usuario_id'])) {
+                $empleado['horas_totales'] += $tarea->horas / $tarea->users->count();
+                $empleado['monto_total'] += $tarea->presupuesto / $tarea->users->count();
+            }
+            return $empleado;
+        });
+    }
+
+    public function formatTareaConCierres($tarea)
+    {
+        $fechas = [];
+
+        $primerFecha = $tarea->asignacion->created_at;
+        $ultimaFecha = $tarea->cierre->created_at;
+        $fechas[] = $primerFecha;
+        $fechas[] = $ultimaFecha;
+
+        $fechasInicio = $tarea->cierresParciales()->pluck('fecha_inicio')->toArray();
+        $fechasFinal = $tarea->cierresParciales()->pluck('fecha_final')->toArray();
+
+        $fechasEntrada = collect(array_merge($fechasInicio, $fechasFinal))
+            ->map(fn($fecha) => date('Y-m-d', strtotime($fecha)))
+            ->unique()
+            ->sort()
+            ->values()
+            ->toArray();
+
+        $fechas = collect(array_merge($fechasInicio, $fechasFinal, $fechas))
+            ->sort()
+            ->values();
+
+        $fechasAgrupadas = $fechas->groupBy(function ($fecha) {
+            return $fecha->toDateString();
+        });
+
+        $fechasAgrupadas->map(function ($fechas) {
+            $horas_totales = $fechas[0]->diffInHours($fechas[1]);
+            $fechas->horas_totales = $horas_totales;
+        });
+
+        $this->empleadosAux = $this->empleadosAux->map(function ($empleado) use ($fechasEntrada, $tarea, $fechasAgrupadas) {
+            foreach ($fechasEntrada as $fecha) {
+                if ($tarea->users->contains('usuario_id', $empleado['usuario_id'])) {
+                    $entrada = EmpleadoIngresado::whereDate('punch_time', $fecha)->where('emp_id', $empleado['usuario_id'])->exists();
+                    if ($entrada) {
+                        $empleado['horas_totales'] += $fechasAgrupadas[$fecha]->horas_totales;
+                    }
+                }
+            }
+            return $empleado;
+        });
+
+        $this->empleados = $this->empleados->map(function ($empleado) use ($tarea) {
+            if ($tarea->users->contains('usuario_id', $empleado['usuario_id'])) {
+                $porcentaje = $this->empleadosAux[$empleado['codigo']]['horas_totales'] / $this->empleadosAux->sum('horas_totales');
+                $empleado['horas_totales'] += $porcentaje * $tarea->horas;
+                $empleado['monto_total'] += $porcentaje * $tarea->presupuesto;
+            }
+            return $empleado;
+        });
+    }
+
+    public function formatTareaCosecha($tarea)
+    {
+        $asignaciones = $tarea->asignaciones->filter(function ($asignacion) {
+            if ($asignacion->cierre) {
+                if ($asignacion->cierre->libras_total_planta) {
+                    $asignacion->totalPersonas = $asignacion->tareaLoteCosecha->users()->whereDate('created_at', $asignacion->created_at)->count();
+
+                    $pesoLbCabeza = round(($asignacion->cierre->plantas_cosechadas / $asignacion->cierre->plantas_cosechadas), 2);
+                    $rendimientoTeoricoPorPersona =  round(($pesoLbCabeza * $asignacion->tareaLoteCosecha->tarea->cultivo->rendimiento), 2);
+
+                    $asignacion->montoTotal = round(((($asignacion->cierre->plantas_cosechadas / $rendimientoTeoricoPorPersona) * 8) * 11.98), 2);
+                    $asignacion->peso_cabeza = $pesoLbCabeza;
+                    return $asignacion;
+                }
+            }
+        });
+
+        $this->empleados = $this->empleados->map(function ($empleado) use ($asignaciones) {
+            foreach ($asignaciones as $asignacion) {
+                $asignacionesUsuarios = $asignacion->tareaLoteCosecha->users()->whereDate('created_at', $asignacion->created_at)->get();
+                $asignacionUsuario = $asignacionesUsuarios->filter(function ($asignacionCosecha) use ($empleado) {
+                    if ($asignacionCosecha->codigo === $empleado['codigo']) {
+                        return $asignacionCosecha;
+                    }
+                });
+
+                if (!$asignacionUsuario->isEmpty()) {
+                    $porcentaje = $asignacionUsuario->first()->libras_asignacion / $asignacion->cierre->libras_total_planta;
+                    $cabezas_cosechadas = ($porcentaje *  $asignacion->cierre->plantas_cosechadas) / $asignacion->peso_cabeza;
+                    $horasTotales = $cabezas_cosechadas / 120;
+                    $montoTotal = $porcentaje * $asignacion->montoTotal;
+                    $empleado['horas_totales'] += round($horasTotales,2);
+                    $empleado['monto_total'] += $montoTotal;
+
+                }
+            }
+
+            return $empleado;
+        });
+
+    }
+
     public function styles(Worksheet $sheet)
     {
-        // Aplica estilos al rango A1:H1 (encabezados)
-        $sheet->getStyle('A1:F1')->applyFromArray([
+        $sheet->getStyle('A1:G1')->applyFromArray([
             'font' => [
                 'bold' => true,
-                'color' => ['argb' => 'FFFFFF'], 
+                'color' => ['argb' => 'FFFFFF'],
             ],
             'fill' => [
                 'fillType' => \PhpOffice\PhpSpreadsheet\Style\Fill::FILL_SOLID,
-                'startColor' => ['argb' => '5564eb'], 
+                'startColor' => ['argb' => '5564eb'],
             ],
         ]);
-
     }
 
     public function headings(): array
     {
-        return ['CODIGO', 'NOMBRE', 'HORAS SEMANALES', 'BONO', 'SEPTIMO', 'TOTAL A DEVENGAR'];
+        return ['CODIGO', 'NOMBRE', 'HORAS SEMANALES','MONTO TAREAS', 'BONO', 'SEPTIMO', 'TOTAL A DEVENGAR'];
     }
 }

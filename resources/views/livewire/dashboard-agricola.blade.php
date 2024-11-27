@@ -1,10 +1,10 @@
 <div class="w-full h-full">
     <div>
-        @role('admin|adminagricola')
+        @hasanyrole('admin|adminagricola')
             <div class="flex justify-end">
                 <i class="fa-solid fa-bars icon-link" wire:click='openModal()'></i>
             </div>
-        @endrole
+        @endhasanyrole
         <x-dashboard-agricola-filters class="{{ ($isOpen) ? 'slide-in-active slide-in' : 'slide-out-active-right' }}" />
     </div>
 
