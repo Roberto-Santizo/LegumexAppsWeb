@@ -20,7 +20,7 @@ class AsignarEmpleadosTarea extends Component
     public $ingresos;
     public $cuposMinimos;
     public $asignados;
-    
+
     protected $listeners = ['AsignarEmpleado','DesasignarEmpleado','cerrarAsignacion','cerrarAsignacionForzada'];
     
     public function mount()
@@ -59,6 +59,7 @@ class AsignarEmpleadosTarea extends Component
     {
         $hoy = Carbon::today();
         $this->ingresos = EmpleadoIngresado::whereDate('punch_time', $hoy)
+        ->where('terminal_id',$this->plansemanalfinca->finca->terminal_id)
         ->get()
         ->map(function ($ingreso) use ($hoy) {
             $asignaciones = UsuarioTareaLote::where('usuario_id', $ingreso->emp_id)
