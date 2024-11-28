@@ -71,9 +71,12 @@ class PlansemanalExport implements FromCollection, WithHeadings, WithMultipleShe
             foreach ($tareaCosecha->asignaciones as $asignacion) {
                     if($asignacion->cierre){
                         $EmpleadosAsignados = $tareaCosecha->users()->whereDate('created_at',$asignacion->created_at)->count();
-                        $rendimiento = $tareaCosecha->tarea->cultivo->rendimiento;
-                        $rendimiento_teorico = ($EmpleadosAsignados)*8;
-                        $rendimiento_real = (($asignacion->cierre->libras_total_planta) * 8)/$rendimiento;
+                        
+                        $horas_reportadas = $asignacion->created_at->diffInHours($asignacion->cierre->created_at);
+                        
+                        $rendimiento_teorico = ($horas_reportadas*$EmpleadosAsignados);
+                        
+                        $rendimiento_real = $asignacion->cierre->plantas_cosechadas/120;
 
                         $rows->push([
                             'FINCA' => $this->plansemanal->finca->finca,
