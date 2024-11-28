@@ -27,6 +27,7 @@ class DashboardAgricola extends Component
     public $semanaNueva;
     public $isOpen = false;
     public $finca = 0;
+    public $horasDron = 0;
 
     public function mount()
     {

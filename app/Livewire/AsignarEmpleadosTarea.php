@@ -8,6 +8,7 @@ use Illuminate\Support\Carbon;
 use App\Models\AsignacionDiaria;
 use App\Models\UsuarioTareaLote;
 use App\Models\EmpleadoIngresado;
+use App\Models\AsignacionTareaLoteDron;
 
 class AsignarEmpleadosTarea extends Component
 {
@@ -20,8 +21,9 @@ class AsignarEmpleadosTarea extends Component
     public $ingresos;
     public $cuposMinimos;
     public $asignados;
+    public $use_dron = false;
 
-    protected $listeners = ['AsignarEmpleado','DesasignarEmpleado','cerrarAsignacion','cerrarAsignacionForzada'];
+    protected $listeners = ['AsignarEmpleado','DesasignarEmpleado','cerrarAsignacion','cerrarAsignacionForzada','AsignarDron'];
     
     public function mount()
     {
@@ -109,6 +111,27 @@ class AsignarEmpleadosTarea extends Component
 
     return redirect()->route('planSemanal.tareasLote', [$this->lote, $this->plansemanalfinca])
                      ->with('success', 'Asignación Creada Correctamente a pesar de los cupos mínimos.');
+    }
+
+    public function AsignarDron()
+    {
+        try {
+            AsignacionTareaLoteDron::create([
+                'tarea_lote_id' => $this->tarealote->id
+            ]);
+            
+            AsignacionDiaria::create([
+                'tarea_lote_id' => $this->tarealote->id,
+                'use_dron' => 1
+            ]);
+        } catch (\Throwable $th) {
+            return redirect()->route('planSemanal.tareasLote', [$this->lote, $this->plansemanalfinca])
+                     ->with('error', 'Existe un error al crear la asignación, intentelo de nuevo más tarde');
+        }
+        
+
+        return redirect()->route('planSemanal.tareasLote', [$this->lote, $this->plansemanalfinca])
+                     ->with('success', 'Asignación Creada Correctamente');
     }
     
     public function render()

@@ -14,7 +14,7 @@
                     class="text-sm">(calendario)</span></h2>
         </div>
 
-        <div class="flex flex-col gap-5 xl:grid xl:grid-cols-8 mt-10">
+        <div class="flex flex-col gap-5 xl:grid xl:grid-cols-12 mt-10 ">
             <div class="flex flex-col justify-center items-center col-start-1 col-span-2 bg-green-moss rounded-lg p-4 shadow-2xl text-gray-600 text-md">
                 <div>
                     <svg width="400" height="200" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -34,8 +34,18 @@
                 <p class="font-bold">{{ auth()->user()->email }}</p>
             </div>
 
+            <div class="col-start-3 col-span-3 bg-green-moss rounded-2xl shadow-xl">
+                <div class="bg-green-meadow w-full p-5 flex flex-row gap-2 items-center text-white rounded-t-2xl">
+                    <h1 class="text-2xl font-bold">Horas Dron Semanal</h1>
+                </div>
+                <div class="flex flex-col justify-center items-center p-5">
+                    <svg viewBox="0 0 24 24" id="Layer_1" data-name="Layer 1" xmlns="http://www.w3.org/2000/svg" fill="#9e9e9e" stroke="#9e9e9e"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"><defs><style>.cls-1{fill:none;stroke:#598234;stroke-miterlimit:10;stroke-width:1.92px;}</style></defs><path class="cls-1" d="M13.92,14.88l2.87-1V11a1.92,1.92,0,0,0-1.91-1.92H9.12A1.92,1.92,0,0,0,7.21,11v2.88l2.87,1"></path><circle class="cls-1" cx="12" cy="14.88" r="1.92"></circle><line class="cls-1" x1="7.21" y1="11.04" x2="0.5" y2="11.04"></line><line class="cls-1" x1="23.5" y1="11.04" x2="16.79" y2="11.04"></line><line class="cls-1" x1="0.5" y1="6.25" x2="6.25" y2="6.25"></line><line class="cls-1" x1="17.75" y1="6.25" x2="23.5" y2="6.25"></line><line class="cls-1" x1="3.38" y1="6.25" x2="3.38" y2="11.04"></line><line class="cls-1" x1="20.63" y1="6.25" x2="20.63" y2="11.04"></line><polyline class="cls-1" points="3.38 17.75 5.29 17.75 5.29 14.88 7.21 13.92"></polyline><polyline class="cls-1" points="20.63 17.75 18.71 17.75 18.71 14.88 16.79 13.92"></polyline></g></svg>
+                    <p class="text-4xl text-white font-black">{{ $horasDron }} Horas</p>
+                </div>
+            </div>
+
             @can('create plan semanal')
-            <div class=" col-start-3 col-span-3 bg-green-moss rounded-2xl shadow-xl">
+            <div class=" col-start-6 col-span-4 bg-green-moss rounded-2xl shadow-xl">
                 <div class="bg-green-meadow w-full p-5 flex flex-row gap-2 items-center text-white rounded-t-2xl">
                     <h1 class="text-2xl font-bold">Descarga de Reporteria</h1>
                 </div>
@@ -89,8 +99,9 @@
                 </div>
             </div>
             @endcan
+
             @can('create plan semanal')
-            <div class=" col-start-6 col-span-3 bg-green-moss rounded-2xl shadow-xl">
+            <div class=" col-start-10 col-span-3 bg-green-moss rounded-2xl shadow-xl">
                 <div class="bg-green-meadow w-full p-5 flex flex-row gap-2 items-center text-white rounded-t-2xl">
                     <h1 class="text-2xl font-bold">Planes Semanales Acciones</h1>
                 </div>
@@ -159,7 +170,42 @@
             </div>
             @endcan
 
-            <div class=" col-start-5 col-span-5 bg-green-moss rounded-2xl shadow-xl">
+            <div class=" col-start-1 col-span-5 row-start-2 bg-green-moss rounded-2xl shadow-xl">
+                <div class="bg-green-meadow w-full p-5 flex flex-row gap-2 items-center text-white rounded-t-2xl">
+                    <h1 class="text-2xl font-bold">Resumen de Horas Por Empleado Semana {{ $semana_actual }}</h1>
+                </div>
+                <div class="p-2 h-96 overflow-y-auto">
+                    <table class="tabla">
+                        <thead class="bg-green-meadow">
+                            <tr class="text-xs md:text-sm rounded">
+                                <th scope="col" class="text-white">Codigo</th>
+                                <th scope="col" class="text-white">Empleado</th>
+                                <th scope="col" class="text-white">Total de Horas</th>
+                                <th scope="col" class="text-white">Activo</th>
+                            </tr>
+                        </thead>
+                        <tbody class="tabla-body">
+                            @foreach ($usuarios as $usuario)
+                            <tr>
+                                <td class="campo">{{ $usuario->last_name }}</td>
+                                <td class="campo">{{ $usuario->first_name }}</td>
+                                <td class="campo">{{ $usuario->horas_totales }}
+                                    @choice('hora|horas',$usuario->horas_totales)</td>
+                                <td class="campo">
+                                    @if ($usuario->activo)
+                                    <i class="fa-solid fa-circle-check text-md text-green-300"></i>
+                                    @else
+                                    <i class="fa-solid fa-circle-xmark text-md"></i>
+                                    @endif
+                                </td>
+                            </tr>
+                            @endforeach
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <div class=" col-start-6 col-span-7 bg-green-moss rounded-2xl shadow-xl">
                 <div class="bg-green-meadow w-full p-5 flex flex-row gap-2 items-center text-white rounded-t-2xl">
                     <h1 class="text-2xl font-bold">Control de tareas</h1>
                 </div>
@@ -188,7 +234,7 @@
             </div>
 
 
-            <div class=" col-start-1 col-span-8 bg-green-moss rounded-2xl shadow-xl">
+            <div class=" col-start-1 col-span-12 bg-green-moss rounded-2xl shadow-xl">
                 <div class="bg-green-meadow w-full p-5 flex flex-row gap-2 items-center text-white rounded-t-2xl">
                     <h1 class="text-2xl font-bold">Control de Tareas en Proceso y Asignaciones</h1>
                 </div>
@@ -219,7 +265,7 @@
                 </div>
             </div>
 
-            <div class=" col-start-1 col-span-8 bg-green-moss rounded-2xl shadow-xl">
+            <div class=" col-start-1 col-span-12 bg-green-moss rounded-2xl shadow-xl">
                 <div class="bg-green-meadow w-full p-5 flex flex-row gap-2 items-center text-white rounded-t-2xl">
                     <h1 class="text-2xl font-bold">Control de Tareas Terminadas</h1>
                 </div>
@@ -262,7 +308,7 @@
                 </div>
             </div>
 
-            <div class=" col-start-1 col-span-8 bg-green-moss rounded-2xl shadow-xl">
+            <div class=" col-start-1 col-span-12 bg-green-moss rounded-2xl shadow-xl">
                 <div class="bg-green-meadow w-full p-5 flex flex-row gap-2 items-center text-white rounded-t-2xl">
                     <h1 class="text-2xl font-bold">Control de Cosecha</h1>
                 </div>
@@ -290,7 +336,7 @@
                 </div>
             </div>
 
-            <div class=" col-start-1 col-span-8 bg-green-moss rounded-2xl shadow-xl">
+            <div class=" col-start-1 col-span-12 bg-green-moss rounded-2xl shadow-xl">
                 <div class="bg-green-meadow w-full p-5 flex flex-row gap-2 items-center text-white rounded-t-2xl">
                     <h1 class="text-2xl font-bold">Control de Cosecha Terminadas</h1>
                 </div>
@@ -310,66 +356,30 @@
                         </thead>
                         <tbody class="tabla-body">
                             @forelse ($tareasCosecha as $tareacosecha)
-                            @foreach ($tareacosecha->asignaciones as $asignacion)
-                            @if ($asignacion && $asignacion->cierre)
-                            <tr>
-                                <td class="text-center">
-                                    <i title="La tarea fue realizada"
-                                        class="fa-solid fa-circle-check text-2xl text-green-500"></i>
-                                </td>
-                                <td class="campo">{{ $tareacosecha->tarea->tarea }}</td>
-                                <td class="campo">{{ $tareacosecha->plansemanal->finca->finca }}</td>
-                                <td class="campo">{{ $tareacosecha->lote->nombre }}</td>
-                                <td class="campo">{{ $tareacosecha->plansemanal->semana }}</td>
-                                <td class="campo">{{ $asignacion->created_at->format('d-m-Y') }}</td>
-                                <td class="campo">
-                                    <a href="{{ route('planSemanal.tareaCosechaResumen',$tareacosecha) }}"
-                                        target="_blank">
-                                        <i class="fa-solid fa-eye text-2xl hover:text-gray-500"></i>
-                                    </a>
-                                </td>
-                            </tr>
-                            @endif
-                            @endforeach
+                                @foreach ($tareacosecha->asignaciones as $asignacion)
+                                @if ($asignacion && $asignacion->cierre)
+                                <tr>
+                                    <td class="text-center">
+                                        <i title="La tarea fue realizada"
+                                            class="fa-solid fa-circle-check text-2xl text-green-500"></i>
+                                    </td>
+                                    <td class="campo">{{ $tareacosecha->tarea->tarea }}</td>
+                                    <td class="campo">{{ $tareacosecha->plansemanal->finca->finca }}</td>
+                                    <td class="campo">{{ $tareacosecha->lote->nombre }}</td>
+                                    <td class="campo">{{ $tareacosecha->plansemanal->semana }}</td>
+                                    <td class="campo">{{ $asignacion->created_at->format('d-m-Y') }}</td>
+                                    <td class="campo">
+                                        <a href="{{ route('planSemanal.tareaCosechaResumen',$tareacosecha) }}"
+                                            target="_blank">
+                                            <i class="fa-solid fa-eye text-2xl hover:text-gray-500"></i>
+                                        </a>
+                                    </td>
+                                </tr>
+                                @endif
+                                @endforeach
                             @empty
-
+                                <p>Sin registros</p>
                             @endforelse
-                        </tbody>
-                    </table>
-                </div>
-            </div>
-
-
-            <div class=" col-start-1 col-span-4 row-start-2 bg-green-moss rounded-2xl shadow-xl">
-                <div class="bg-green-meadow w-full p-5 flex flex-row gap-2 items-center text-white rounded-t-2xl">
-                    <h1 class="text-2xl font-bold">Resumen de Horas Por Empleado Semana {{ $semana_actual }}</h1>
-                </div>
-                <div class="p-2 h-96 overflow-y-auto">
-                    <table class="tabla">
-                        <thead class="bg-green-meadow">
-                            <tr class="text-xs md:text-sm rounded">
-                                <th scope="col" class="text-white">Codigo</th>
-                                <th scope="col" class="text-white">Empleado</th>
-                                <th scope="col" class="text-white">Total de Horas</th>
-                                <th scope="col" class="text-white">Activo</th>
-                            </tr>
-                        </thead>
-                        <tbody class="tabla-body">
-                            @foreach ($usuarios as $usuario)
-                            <tr>
-                                <td class="campo">{{ $usuario->last_name }}</td>
-                                <td class="campo">{{ $usuario->first_name }}</td>
-                                <td class="campo">{{ $usuario->horas_totales }}
-                                    @choice('hora|horas',$usuario->horas_totales)</td>
-                                <td class="campo">
-                                    @if ($usuario->activo)
-                                    <i class="fa-solid fa-circle-check text-md text-green-300"></i>
-                                    @else
-                                    <i class="fa-solid fa-circle-xmark text-md"></i>
-                                    @endif
-                                </td>
-                            </tr>
-                            @endforeach
                         </tbody>
                     </table>
                 </div>

@@ -10,7 +10,8 @@ class AsignacionDiaria extends Model
     use HasFactory;
 
     protected $fillable = [
-        'tarea_lote_id'
+        'tarea_lote_id',
+        'use_dron'
     ];
 
     public function rendimiento()

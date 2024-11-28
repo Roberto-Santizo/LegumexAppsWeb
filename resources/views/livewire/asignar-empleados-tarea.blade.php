@@ -1,12 +1,13 @@
 <div class="md:grid md:grid-cols-3 mt-10 flex flex-col">
     <div class="col-span-2">
         @if($errors->has('error'))
-        <div class="border border-red-500 bg-red-100 text-red-700 font-bold uppercase p-2 mt-2 text-sm flex flex-row gap-2 items-center mr-10 mb-5">
+        <div
+            class="border border-red-500 bg-red-100 text-red-700 font-bold uppercase p-2 mt-2 text-sm flex flex-row gap-2 items-center mr-10 mb-5">
             {{ $errors->first('error') }}
         </div>
         @endif
         <h1 class="text-2xl font-bold">Información de la tarea: </h1>
-           
+
         <div class="flex gap-2">
             <p class="text-xl font-bold">Descripcion: </p>
             <p>{{ $tarea->descripcion }}</p>
@@ -32,20 +33,26 @@
 
             <div id="usuariosAsignadosContainer" class="flex flex-col gap-2 mt-5 overflow-y-auto h-96 mb-5">
                 @foreach ($asignados as $asignado)
-                    <div wire:click="$dispatch('desAsignar',{{ $asignado->id }})" class="bg-green-moss hover:bg-green-meadow btn">
-                        <div class="flex flex-row items-center gap-3">
-                            <i class="fa-solid fa-user text-2xl"></i>
-                            <div>
-                                <p class="font-bold">{{ $asignado->nombre }}</p>
-                                {{-- <p class="font-bold">Horas del día de hoy: {{ round($ingreso->horas_totales,2) }}</p> --}}
-                            </div>
+                <div wire:click="$dispatch('desAsignar',{{ $asignado->id }})"
+                    class="bg-green-moss hover:bg-green-meadow btn">
+                    <div class="flex flex-row items-center gap-3">
+                        <i class="fa-solid fa-user text-2xl"></i>
+                        <div>
+                            <p class="font-bold">{{ $asignado->nombre }}</p>
                         </div>
                     </div>
+                </div>
                 @endforeach
             </div>
         </div>
     </div>
     <div>
+        <button
+            class="flex w-full justify-center items-center gap-2 p-2 mb-5 bg-orange-500 text-white text-center rounded shadow hover:bg-orange-800 transition-all duration-300"
+            wire:click="$dispatch('useDron')">
+            <iconify-icon icon="hugeicons:drone" class="text-3xl"></iconify-icon>
+            <p class="uppercase text-xl font-bold ">Tarea con Dron</p>
+        </button>
         <h1 class="text-2xl font-bold">Empleados Disponibles: </h1>
         <input type="text" id="buscarUsuario" placeholder="Buscar usuario..."
             class="border p-2 rounded mt-4 mb-4 w-full">
@@ -53,7 +60,8 @@
         <div class="mt-2 flex flex-col gap-2 overflow-y-auto h-96" id="disponiblesContainer">
 
             @foreach ($ingresos as $ingreso)
-            <div wire:click="$dispatch('asignar',{{$ingreso->emp_id }})" class="bg-green-moss hover:bg-green-meadow btn empleadosBuscar">
+            <div wire:click="$dispatch('asignar',{{$ingreso->emp_id }})"
+                class="bg-green-moss hover:bg-green-meadow btn empleadosBuscar">
                 <div class="flex flex-row items-center gap-3">
                     <i class="fa-solid fa-user text-2xl"></i>
                     <div>
@@ -71,7 +79,20 @@
     </button>
 
     @push('scripts')
-        <script>
+    <script>
+        Livewire.on('useDron', () => {
+                Swal.fire({
+                title: 'Advertencia',
+                text: `Esta tarea será realizada utilizando dron, ¿desea continuar?`,
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonText: 'Sí, continuar',
+                cancelButtonText: 'No'
+                }).then((result) => {
+                    Livewire.dispatch('AsignarDron');
+                });
+            });
+
             Livewire.on('asignar', emp_id => {
                 Livewire.dispatch('AsignarEmpleado', {empleado: emp_id});
             });
@@ -98,6 +119,6 @@
                 }
             });
         });
-        </script>
+    </script>
     @endpush
 </div>

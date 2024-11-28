@@ -7,8 +7,7 @@
 @section('contenido')
 
 <x-alertas />
-<x-link-volver ruta="planSemanal.tareasLote" class="bg-green-moss hover:bg-green-meadow"
-    :parametros="[$tarea->lote, $tarea->plansemanal]" />
+<x-link-volver ruta="planSemanal.tareasLote" class="bg-green-moss hover:bg-green-meadow" :parametros="[$tarea->lote, $tarea->plansemanal]" />
 
 <div class="mt-10">
     <h2 class="font-bold text-2xl">Información de la tarea: </h2>
@@ -18,6 +17,7 @@
             <p class="font-bold text-2xl">La tarea se encuentra actualmente en pausa</p>
         </div>
     @endif
+
     <div class="mt-5 flex gap-5 flex-col md:flex-row shadow-2xl p-5 rounded-xl justify-between">
         <div class="grid grid-cols-1 md:grid-cols-3 gap-5">
             <div class="p-5 bg-gray-200 shadow-xl rounded-xl">
@@ -54,10 +54,10 @@
             @if (!$tarea->cierre)
             <div class="p-5 bg-gray-200 shadow-xl rounded-xl">
                 @php
-                    $horas_transcurridas = ($tarea->asignacion->created_at->diffInHours(now()) - $tarea->horas_diferencia) * $tarea->users->count();
+                    $horas_transcurridas = ($tarea->asignacion->created_at->diffInHours(now()) - $tarea->horas_diferencia);
                 @endphp
                 <p class="text-xl font-bold">Horas Transcurridas Reales:</p>
-                <p>{{ round($horas_transcurridas,2) }} @choice('hora|horas', $horas_transcurridas )</p>
+                <p>{{ $tarea->asignacion->use_dron ? round($horas_transcurridas,2) : round($horas_transcurridas*$tarea->users->count(),2)}} @choice('hora|horas', $horas_transcurridas )</p>
             </div>
             @endif
         </div>
@@ -89,17 +89,26 @@
         </div>
        
     </div>
-
-    <div class="mt-5 flex gap-5 flex-col shadow-2xl p-5 rounded-xl">
-        <h2 class="font-bold text-xl">Empleados Asignados: </h2>
-        <livewire:mostrar-usuarios-asignados :asignaciones="$tarea->users" />
-    </div>
-    
-    @if ($tarea->cierre && !$tarea->cierresParciales->isEmpty())
-        <div class="mt-5 flex gap-5 flex-col shadow-2xl p-5 rounded-xl">
-            <h2 class="font-bold text-xl">Distribución de datos: </h2>
-            <livewire:distribucion-asignaciones :tarea="$tarea"/>
+    @if ($tarea->asignacion->use_dron)
+        <div class="bg-orange-500 w-full text-white mt-2 font-bold py-2 px-1 flex justify-center items-center rounded gap-2">
+            <iconify-icon icon="hugeicons:drone" class="text-3xl"></iconify-icon>
+            <p class="uppercase">Tarea Asignada para Realizar con Dron</p>
         </div>
+    @else
+        <div class="mt-5 flex gap-5 flex-col shadow-2xl p-5 rounded-xl">
+            <h2 class="font-bold text-xl">Empleados Asignados: </h2>
+            <livewire:mostrar-usuarios-asignados :asignaciones="$tarea->users" />
+        </div>
+        
+        @if ($tarea->cierre && !$tarea->cierresParciales->isEmpty())
+            <div class="mt-5 flex gap-5 flex-col shadow-2xl p-5 rounded-xl">
+                <h2 class="font-bold text-xl">Distribución de datos: </h2>
+                <livewire:distribucion-asignaciones :tarea="$tarea"/>
+            </div>
+        @endif
     @endif
+
+    
+    
 </div>
 @endsection
