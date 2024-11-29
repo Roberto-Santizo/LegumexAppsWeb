@@ -90,9 +90,13 @@
        
     </div>
     @if ($tarea->asignacion->use_dron)
-        <div class="bg-orange-500 w-full text-white mt-2 font-bold py-2 px-1 flex justify-center items-center rounded gap-2">
+        <div class=" {{ ($tarea->cierre) ? 'bg-green-500': 'bg-orange-500' }} w-full text-white mt-2 font-bold py-2 px-1 flex justify-center items-center rounded gap-2">
             <iconify-icon icon="hugeicons:drone" class="text-3xl"></iconify-icon>
-            <p class="uppercase">Tarea Asignada para Realizar con Dron</p>
+            @if ($tarea->cierre)
+                <p class="uppercase">Tarea Realizada con Dron</p>
+            @else
+                <p class="uppercase">Tarea Asignada para Realizar con Dron</p>
+            @endif
         </div>
     @else
         <div class="mt-5 flex gap-5 flex-col shadow-2xl p-5 rounded-xl">

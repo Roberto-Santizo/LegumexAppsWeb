@@ -34,40 +34,59 @@ class PlansemanalExport implements FromCollection, WithHeadings, WithMultipleShe
         $rows = collect();
         Carbon::setLocale('es');
         foreach($this->plansemanal->tareasTotales as $tarea){
-                if($tarea->cierre != null){
-                    $horas_diferencia = 0;
-                    if(!$tarea->cierresParciales->isEmpty()){
-                        foreach ($tarea->cierresParciales as $cierreParcial) {
-                            $horas_diferencia += $cierreParcial->fecha_inicio->diffInHours($cierreParcial->fecha_final);
+                if($tarea->asignacion && !$tarea->asignacion->use_dron){
+                    if($tarea->cierre){
+                        $horas_diferencia = 0;
+                        if(!$tarea->cierresParciales->isEmpty()){
+                            foreach ($tarea->cierresParciales as $cierreParcial) {
+                                $horas_diferencia += $cierreParcial->fecha_inicio->diffInHours($cierreParcial->fecha_final);
+                            }
                         }
+                        $tareaCreacion = $tarea->asignacion->created_at; 
+                        $tareaCierre = $tarea->cierre->created_at;
+                        $rendimiento_real = $tareaCreacion->diffInHours($tareaCierre) - $horas_diferencia;
                     }
-                    $tareaCreacion = $tarea->asignacion->created_at; 
-                    $tareaCierre = $tarea->cierre->created_at;
-                    $rendimiento_real = $tareaCreacion->diffInHours($tareaCierre) - $horas_diferencia;
+                    
+                    $rows->push([
+                        'FINCA' => $this->plansemanal->finca->finca,
+                        'SEMANA CALENDARIO' => $this->plansemanal->semana,
+                        'LOTE' => $tarea->lote->nombre,
+                        'CODIGO TAREA' => $tarea->tarea->code,
+                        'TAREA' => $tarea->tarea->tarea,
+                        'EXTRAORDINARIA' => ($tarea->extraordinaria) ?  'EXTRAORDINARIA' : 'PLANIFICADA',
+                        'ESTADO' => ($tarea->cierre) ? 'CERRADA' : 'ABIERTA',
+                        'FECHA DE INICIO' => ($tarea->asignacion) ? $tarea->asignacion->created_at->format('d-m-Y h:i:s') : 'SIN ASIGNACION',
+                        'FECHA DE CIERRE' => ($tarea->cierre) ? $tarea->cierre->created_at->format('d-m-Y h:i:s') : 'SIN CIERRE',
+                        'HORA RENDIMIENTO TEORICO' => $tarea->horas,
+                        'HORA RENDIMIENTO REAL' => ($tarea->cierre) ?  round($rendimiento_real * $tarea->users->count(),4) : '0',
+                        'RENDIMIENTO' => ($tarea->cierre) ? ($tarea->horas/round($rendimiento_real*$tarea->users->count(),4)) : '0',
+                        'ATRASADA' => ($tarea->movimientos->count() > 0) ? 'ATRASADA' : 'PLANIFICADA',
+                        'SEMANA ORIGEN' => ($tarea->movimientos->count() > 0) ? $tarea->movimientos()->orderBy('id','DESC')->first()->plan_origen->semana : 'PLANIFICADA',
+                    ]);
+                }else{
+                    $rows->push([
+                        'FINCA' => $this->plansemanal->finca->finca,
+                        'SEMANA CALENDARIO' => $this->plansemanal->semana,
+                        'LOTE' => $tarea->lote->nombre,
+                        'CODIGO TAREA' => $tarea->tarea->code,
+                        'TAREA' => $tarea->tarea->tarea,
+                        'EXTRAORDINARIA' => ($tarea->extraordinaria) ?  'EXTRAORDINARIA' : 'PLANIFICADA',
+                        'ESTADO' => ($tarea->cierre) ? 'CERRADA' : 'ABIERTA',
+                        'FECHA DE INICIO' => ($tarea->asignacion) ? $tarea->asignacion->created_at->format('d-m-Y h:i:s') : 'SIN ASIGNACION',
+                        'FECHA DE CIERRE' => ($tarea->cierre) ? $tarea->cierre->created_at->format('d-m-Y h:i:s') : 'SIN CIERRE',
+                        'HORA RENDIMIENTO TEORICO' => $tarea->horas,
+                        'HORA RENDIMIENTO REAL' => ($tarea->cierre) ? $tarea->asignacion->created_at->diffInHours($tarea->cierre->created_at) : '',
+                        'RENDIMIENTO' => ($tarea->cierre) ? ($tarea->horas/$tarea->asignacion->created_at->diffInHours($tarea->cierre->created_at)) : '',
+                        'ATRASADA' => ($tarea->movimientos->count() > 0) ? 'ATRASADA' : 'PLANIFICADA',
+                        'SEMANA ORIGEN' => ($tarea->movimientos->count() > 0) ? $tarea->movimientos()->orderBy('id','DESC')->first()->plan_origen->semana : 'PLANIFICADA',
+                    ]);
                 }
                 
-                $rows->push([
-                    'FINCA' => $this->plansemanal->finca->finca,
-                    'SEMANA CALENDARIO' => $this->plansemanal->semana,
-                    'LOTE' => $tarea->lote->nombre,
-                    'CODIGO TAREA' => $tarea->tarea->code,
-                    'TAREA' => $tarea->tarea->tarea,
-                    'EXTRAORDINARIA' => ($tarea->extraordinaria) ?  'EXTRAORDINARIA' : 'PLANIFICADA',
-                    'ESTADO' => ($tarea->cierre != null) ? 'CERRADA' : 'ABIERTA',
-                    'FECHA DE INICIO' => ($tarea->asignacion) ? $tarea->asignacion->created_at->format('d-m-Y h:i:s') : 'SIN ASIGNACION',
-                    'FECHA DE CIERRE' => ($tarea->cierre != null) ? $tarea->cierre->created_at->format('d-m-Y h:i:s') : 'SIN CIERRE',
-                    'HORA RENDIMIENTO TEORICO' => $tarea->horas,
-                    'HORA RENDIMIENTO REAL' => ($tarea->cierre != null) ?  round($rendimiento_real * $tarea->users->count(),4) : '0',
-                    'RENDIMIENTO' => ($tarea->cierre != null) ? ($tarea->horas/round($rendimiento_real*$tarea->users->count(),4)) : '0',
-                    'ATRASADA' => ($tarea->movimientos->count() > 0) ? 'ATRASADA' : 'PLANIFICADA',
-                    'SEMANA ORIGEN' => ($tarea->movimientos->count() > 0) ? $tarea->movimientos()->orderBy('id','DESC')->first()->plan_origen->semana : 'PLANIFICADA',
-                ]);
            
         }
 
         foreach($this->plansemanal->tareasCosechaTotales as $tareaCosecha)
         {
-              
             foreach ($tareaCosecha->asignaciones as $asignacion) {
                     if($asignacion->cierre){
                         $EmpleadosAsignados = $tareaCosecha->users()->whereDate('created_at',$asignacion->created_at)->count();
@@ -85,12 +104,12 @@ class PlansemanalExport implements FromCollection, WithHeadings, WithMultipleShe
                             'CODIGO TAREA' => $tareaCosecha->tarea->code,
                             'TAREA' => $tareaCosecha->tarea->tarea,
                             'EXTRAORDINARIA' => ($tarea->extraordinaria) ?  'EXTRAORDINARIA' : 'PLANIFICADA',
-                            'ESTADO' => ($asignacion->cierre != null) ? 'CERRADA' : 'ABIERTA',
+                            'ESTADO' => ($asignacion->cierre) ? 'CERRADA' : 'ABIERTA',
                             'FECHA DE INICIO' => ($asignacion->created_at) ? $asignacion->created_at->format('d-m-Y h:i:s') : 'SIN ASIGNACION',
-                            'FECHA DE CIERRE' => ($asignacion->cierre != null) ? $asignacion->cierre->created_at->format('d-m-Y h:i:s') : 'SIN CIERRE',
+                            'FECHA DE CIERRE' => ($asignacion->cierre) ? $asignacion->cierre->created_at->format('d-m-Y h:i:s') : 'SIN CIERRE',
                             'HORA RENDIMIENTO TEORICO' => $rendimiento_teorico,
                             'HORA RENDIMIENTO REAL' => $rendimiento_real,
-                            'RENDIMIENTO' => ($asignacion->cierre != null) ? ($rendimiento_real/($rendimiento_teorico)) : '0',
+                            'RENDIMIENTO' => ($asignacion->cierre) ? ($rendimiento_real/($rendimiento_teorico)) : '0',
                             'ATRASADA' => '',
                             'SEMANA ORIGEN' => '',
                         ]);

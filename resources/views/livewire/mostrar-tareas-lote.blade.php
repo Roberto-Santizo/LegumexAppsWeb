@@ -1,13 +1,13 @@
 <div>
     @forelse ($tareas as $tarea)
-    <div class="flex flex-col md:grid md:grid-cols-3 md:grid-rows-3 mt-5 justify-between p-5 rounded-xl shadow-xl border-l-8 border-green-500 ">
+    <div class="flex flex-col md:grid md:grid-cols-3 md:grid-rows-4 mt-5 justify-between p-5 rounded-xl shadow-xl border-l-8 border-green-500 ">
             @if($successMessage && $successTareaLoteId === $tarea->id)
-                <div class="border border-green-500 bg-green-100 text-green-700 font-bold uppercase p-2 mt-5 mb-5  text-sm flex flex-row gap-2 items-center">
+                <div class="col-start-1 col-span-4 row-start-1 border border-green-500 bg-green-100 text-green-700 font-bold uppercase p-2 mt-5 mb-5  text-sm flex flex-row gap-2 items-center">
                     {{ $successMessage }}
                 </div>
             @endif
 
-            <div class="col-span-2 row-span-3 md:text-base text-xs">
+            <div class="{{ $successMessage ? 'row-start-2' : 'row-start-1' }} col-span-2 row-span-3 md:text-base text-xs">
                 <p><span class="uppercase font-bold">Nombre del Lote:</span> {{ $tarea->lote->nombre }}</p>
                 <p><span class="uppercase font-bold">Semana:</span> {{ $plansemanalfinca->semana }}</p>
                 <p><span class="uppercase font-bold">Tarea:</span> {{ $tarea->tarea->tarea }}</p>
@@ -33,8 +33,8 @@
                 @endif
             </div>
 
-            <div class=" cols-start-1 row-start-4 col-span-2 flex gap-2 md:text-base text-xs">
-                @if($tarea->asignacion->use_dron)
+            <div class="cols-start-1 {{ $successMessage ? 'row-start-5' : 'row-start-4' }} col-span-2 flex gap-2 md:text-base text-xs">
+                @if($tarea->asignacion && $tarea->asignacion->use_dron)
                     <div class="bg-orange-500 w-24 text-white mt-2 font-bold py-2 px-1 flex justify-center items-center rounded">
                         <iconify-icon icon="hugeicons:drone" class="text-3xl"></iconify-icon>
                     </div>
@@ -49,7 +49,7 @@
                 @endif
             </div>
 
-            <div class="col-start-3 row-start-1 row-span-4 flex md:justify-end p-5">
+            <div class="col-start-3 {{ $successMessage ? 'row-start-2' : 'row-start-1' }} row-span-4 flex md:justify-end p-5">
                 @if(!$tarea->cierre)
                     @if(!$tarea->asignacion)
                     <div class="flex md:flex-col gap-10 md:gap-2 flex-row mt-5 md:mt-0 ">

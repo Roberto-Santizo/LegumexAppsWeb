@@ -18,7 +18,7 @@ class CheckAppUpdate
     {
         $user = $request->user();
         $currentVersion = config('app.current_version');
-        if($user && ($user->getRoleNames()->first() === 'admin' || $user->getRoleNames()->first() === 'adminagricola'))
+        if($user && ($user->getRoleNames()->first() === 'admin' || $user->getRoleNames()->first() === 'adminagricola') || $user->getRoleNames()->first() === 'auxfinca')
         {
             if ($user && $user->last_seen_version !== $currentVersion) {
                 $token = Str::random(40);

@@ -58,6 +58,12 @@ class DashboardAgricola extends Component
     {
         $semana = $this->semana_actual;
 
+        $this->tareas->map(function($tarea){
+            if($tarea->asignacion && $tarea->asignacion->use_dron && $tarea->cierre){
+                $this->horasDron += round($tarea->asignacion->created_at->diffInHours($tarea->cierre->created_at),2);
+            }
+        });
+        
         $this->planes->map(function ($plan) {
             $plan->tareasRealizadas = $plan->tareasTotales->filter(function ($tarea) {
                 return $tarea->cierre;
@@ -134,6 +140,10 @@ class DashboardAgricola extends Component
         $this->tareasRealizadasEnSemana = $this->tareasRealizadas->filter(function ($tarea) use ($semana) {
             return $tarea->cierre && $tarea->cierre->created_at->weekOfYear == $semana;
         });
+
+        
+
+
     }
 
     public function openModal()
