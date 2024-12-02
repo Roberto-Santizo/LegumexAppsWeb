@@ -383,7 +383,7 @@
                                 @endif
                                 @endforeach
                             @empty
-                                <p>Sin registros</p>
+                            
                             @endforelse
                         </tbody>
                     </table>

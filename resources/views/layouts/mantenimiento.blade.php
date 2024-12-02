@@ -43,12 +43,12 @@
 <body class="flex flex-col h-screen hide-scrollbar scrollable">
     <header
         class="header flex flex-row h-24 justify-between bg-blue-500 p-5 text-white w-full fixed top-0 left-0 z-10 items-center">
-        <div class="w-28 flex flex-row">
-            <img src="{{ asset('img/LOGO_LX.png'); }}" alt="Imagen Login de Usuarios" class="hidden md:block">
+        <div class="w-32 flex flex-row">
+            <img src="{{ asset('img/LOGO_LX-diciembre.png'); }}" alt="Imagen Login de Usuarios" class="hidden md:block">
             <div class="flex flex-row gap-5 justify-center items-center">
                 <p class="text-4xl font-bold">LegumexApps</p>
             </div>
-            <img src="{{ asset('img/noviembre_icon.gif'); }}" alt="Imagen Barrilete" class="hidden md:block w-14">
+            <img src="{{ asset('img/diciembre_icon.gif'); }}" alt="Christmas Gif" class="hidden md:block w-32">
         </div>
 
         <div class="hidden md:flex justify-center items-center gap-2 bg-orange-600 p-3 rounded shadow-xl">

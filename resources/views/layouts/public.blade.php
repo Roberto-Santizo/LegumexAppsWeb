@@ -17,7 +17,7 @@
     <header class="p-5 border-b bg-white shadow">
         <div class="container mx-auto flex justify-between">
             <a href="{{ route('home') }}" class="w-28 flex flex-row items-center">
-                <img src="{{ asset('img/LOGO_LX.png'); }}" alt="Imagen Login de Usuarios">
+                <img src="{{ asset('img/LOGO_LX-diciembre.png'); }}" alt="Imagen Login de Usuarios">
                 <p class="text-3xl items-center text-gray-500 font-bold hidden md:block">LegumexApps</p>
             </a>
 

@@ -17,7 +17,7 @@ export default {
                 sans: ['Figtree', ...defaultTheme.fontFamily.sans],
             },
             backgroundImage: {
-                'mesarem': "url('/public/img/mesa-reempaque.jpg')"
+                'mesarem': "url('/public/img/mesa-reempaque.jpg')",
               },
               fontSize:{
                 'xxs': '8.5px', 

@@ -41,13 +41,13 @@
 
 <body class="flex flex-col h-screen hide-scrollbar scrollable">
     <header
-        class="header flex flex-row h-24 justify-between bg-green-meadow p-5 text-white w-full fixed top-0 left-0 z-10 items-center">
-        <div class="w-28 flex flex-row">
-            <img src="{{ asset('img/LOGO_LX.png'); }}" alt="Imagen Login de Usuarios" class="hidden md:block">
+        class="header flex flex-row h-24 justify-between  bg-green-meadow p-5 text-white w-full fixed top-0 left-0 z-10 items-center">
+        <div class="w-32 flex flex-row">
+            <img src="{{ asset('img/LOGO_LX-diciembre.png'); }}" alt="Imagen Login de Usuarios" class="hidden md:block">
             <div class="flex flex-row gap-5 justify-center items-center">
                 <p class="text-4xl font-bold">LegumexApps</p>
             </div>
-            <img src="{{ asset('img/noviembre_icon.gif'); }}" alt="Imagen Barrilete" class="hidden md:block w-14">
+            <img src="{{ asset('img/diciembre_icon.gif'); }}" alt="Christmas Gif" class="hidden md:block w-32">
         </div>
 
         <div class="hidden md:flex justify-center items-center gap-2 bg-green-moss p-3 rounded shadow-xl">
@@ -71,7 +71,7 @@
 
     <div class="md:flex md:flex-row flex-1 pt-24">
         <aside
-            class="pb-32 hidden h-full w-32 bg-green-meadow text-white md:flex flex-col items-center fixed top-24 scroll-container z-20"
+            class="pb-32 hidden h-full w-32  bg-green-meadow text-white md:flex flex-col items-center fixed top-24 scroll-container z-20"
             id="menu-nav">
 
             <x-navegacion />
