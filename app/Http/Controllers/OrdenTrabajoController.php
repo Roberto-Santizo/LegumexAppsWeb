@@ -9,6 +9,7 @@ use App\Models\Supervisor;
 use Microsoft\Graph\Graph;
 use App\Models\OrdenTrabajo;
 use Illuminate\Http\Request;
+use App\Services\EmailService;
 use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Gate;
@@ -18,10 +19,12 @@ class OrdenTrabajoController extends Controller
 {
 
     protected $tokenService;
+    protected $EmailService;
     
-    public function __construct(MicrosoftTokenService $tokenService)
+    public function __construct(MicrosoftTokenService $tokenService, EmailService $EmailService)
     {
         $this->tokenService = $tokenService;
+        $this->EmailService = $EmailService;
     }
 
     public function index()
@@ -83,7 +86,6 @@ class OrdenTrabajoController extends Controller
     
             return redirect()->route('documentoOT')->with(['success' => 'La información fue guardada correctamente.']);
         } catch (\Throwable $th) {
-            return back()->with('mensaje', 'Hubo un problema al guardar la información. Inténtelo de nuevo más tarde');
         }
     }
 
@@ -97,25 +99,20 @@ class OrdenTrabajoController extends Controller
             'liberacion_trabajo'
         ];
     
-        // Preparar los datos a actualizar
         $updateData = [];
     
-        // Procesar los campos booleanos
         foreach ($booleanFields as $field) {
-            // Solo actualizar si el campo está presente en los datos
             if (array_key_exists($field, $data)) {
                 $updateData[$field] = (bool)$data[$field];
             }
         }
     
-        // Procesar otros campos
         foreach ($data as $key => $value) {
             if (!is_null($value) && !in_array($key, $booleanFields)) {
                 $updateData[$key] = $value;
             }
         }
     
-        // Realizar la actualización
         $ordentrabajo->update($updateData);
     }
 
@@ -201,7 +198,6 @@ class OrdenTrabajoController extends Controller
             $query->where('urgencia', $request->input('urgencia'));
         }
 
-        // Obtener resultados paginados
         $query->orderBy('created_at', 'desc');
         $ordenesTrabajo = $query->paginate(10)->appends($request->all());
         $plantas = Planta::all();
@@ -237,9 +233,8 @@ class OrdenTrabajoController extends Controller
             $planta = Planta::findOrFail($request->planta_id);
             $ultimoCorrelativo = OrdenTrabajo::where('planta_id', $planta->id)->orderBy('created_at','DESC')->first();
             if ($ultimoCorrelativo) {
-                // Encuentra el número después del último guion
                 $parts = explode('-', $ultimoCorrelativo);
-                $numero = intval(end($parts)); // Obtiene la última parte numérica
+                $numero = intval(end($parts));
                 $nuevoNumero = $numero + 1;
             } else {
                 $nuevoNumero = 1;
@@ -271,7 +266,8 @@ class OrdenTrabajoController extends Controller
                 'mensaje' => "Orden de trabajo creada correctamente",
                 'status' => 200
             ];
-            // Verificar si la solicitud es AJAX
+
+            $this->EmailService->sendNotificationNewOT($orden_trabajo);
             if ($request->header('X-Requested-With') === 'XMLHttpRequest') {
                 return response()->json($response, 200);
             } else {
@@ -280,15 +276,14 @@ class OrdenTrabajoController extends Controller
 
         } catch (\Throwable $th) { 
             $response = [
-                'mensaje' => "Hubo un error al crear la orden de trabajo, vuelva a intentarlo",
                 'ok' => false,
                 'status' => 500
             ];
 
             if ($request->ajax()) {
                 return response()->json($response, 500);
-            } else {
-                return back()->with('error', 'Hubo un error al guardar la orden de trabajo');
+            }else{
+                return redirect()->route('documentoOT')->with('error',$th->getMessage());
             }
         }
 
@@ -358,7 +353,6 @@ class OrdenTrabajoController extends Controller
             return response()->json($reponse,200);
         } catch(\Throwable $th){
             $reponse = [
-                'mensaje' => 'Error al rechazar la orden de trabajo, intentelo de nuevo más tarde',
                 'status' => 500
             ];
             return response()->json($reponse,500);

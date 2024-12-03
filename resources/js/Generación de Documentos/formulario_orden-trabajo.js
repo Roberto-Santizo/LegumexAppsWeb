@@ -99,6 +99,15 @@ import Swal from "sweetalert2";
                     }).then(()=>{
                         window.location.href = "/mantenimiento/administracion/ordenes-trabajos/3"
                     }); 
+                }else{
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Error! :(',
+                        text: 'Hubo un error al guardar el archivo, intentelo de nuevo más tarde',
+                        confirmButtonText: 'OK'
+                    }).then(()=>{
+                        window.location.href = "/mantenimiento/administracion/ordenes-trabajos"
+                    });
                 }
             } catch (error) {
                 Swal.fire({
