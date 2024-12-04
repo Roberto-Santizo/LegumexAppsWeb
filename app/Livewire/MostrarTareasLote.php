@@ -6,14 +6,12 @@ use App\Models\CierreParcialTarea;
 use Carbon\Carbon;
 use Livewire\Component;
 use App\Models\TareasLote;
-use App\Services\EmailService; 
 use App\Models\EmpleadoIngresado;
 use App\Models\RendimientoDiario;
-use App\Services\MicrosoftTokenService;
 
 class MostrarTareasLote extends Component
 {
-    protected $listeners = ['eliminarTarea','terminarTarea','pausar','reanudar'];
+    protected $listeners = ['eliminarTarea','terminarTarea','pausar','reanudar','limpiarTarea'];
 
     public $tareas;
     public $plansemanalfinca;
@@ -86,7 +84,7 @@ class MostrarTareasLote extends Component
     public function pausar(TareasLote $tarea)
     {
         try {
-            $cierreParcial = CierreParcialTarea::create([
+            CierreParcialTarea::create([
                 'tarealote_id' => $tarea->id,
                 'fecha_inicio' => Carbon::now()
             ]);
@@ -101,6 +99,22 @@ class MostrarTareasLote extends Component
         try {
             $cierreParcial->fecha_final = Carbon::now();
             $cierreParcial->save();
+        } catch (\Throwable $th) {
+            $this->addError('error','Hubo un error al pausar la tarea, intentelo de nuevo más tarde');
+        }
+    }
+
+    public function limpiarTarea(TareasLote $tarea)
+    {
+        try {
+            $tarea->asignacion->delete();
+            $tarea->users()->delete();
+            $tarea->cupos = $tarea->personas;
+            $tarea->save();
+
+            $this->successTareaLoteId = $tarea->id;
+            $this->successMessage = 'La asignación de la tarea fue limpiada correctamente';
+
         } catch (\Throwable $th) {
             $this->addError('error','Hubo un error al pausar la tarea, intentelo de nuevo más tarde');
         }
