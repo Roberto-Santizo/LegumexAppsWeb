@@ -65,13 +65,18 @@
         </a>
         @endhasanyrole
 
-        @hasrole('admin')
+        <a href="{{ route('insumos') }}"
+            class="{{  Route::is('insumos*') ? 'bg-green-moss' : '' }} sidebar-link hover:bg-green-moss">
+            <i class="fa-solid fa-warehouse"></i>
+            <span class="sidebar-text">Insumos</span>
+        </a>
+
+        @role('admin')
         <a href="{{ route('usuariosFincas') }}"
             class="{{  Route::is('usuariosFincas*') ? 'bg-green-moss' : '' }} sidebar-link hover:bg-green-moss">
             <i class="fa-solid fa-users"></i>
             <span class="sidebar-text">Ingresos Personal</span>
         </a>
-        @endhasrole
-
+        @endrole
     </nav>
 </div>

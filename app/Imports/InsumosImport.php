@@ -1,12 +1,12 @@
 <?php
 namespace App\Imports;
 
-use App\Models\Tarea;
+use App\Models\Insumo;
 use Illuminate\Support\Collection;
 use Maatwebsite\Excel\Concerns\ToCollection;
 use Maatwebsite\Excel\Concerns\WithHeadingRow;
 
-class TareasAgricolasImport implements ToCollection, WithHeadingRow
+class InsumosImport implements ToCollection, WithHeadingRow
 {
     /**
     * @param Collection $collection
@@ -14,15 +14,13 @@ class TareasAgricolasImport implements ToCollection, WithHeadingRow
     public function collection(Collection $collection)
     {
         foreach ($collection as $row) {
-            if (empty($row['code']) || empty($row['tarea'])) {
+            if (empty($row['code']) || empty($row['insumo'])) {
                 continue; 
             }
 
-            // Crea y guarda cada nueva tarea
-            Tarea::create([
+            Insumo::create([
                 'code' => $row['code'],
-                'tarea' => $row['tarea'],
-                'descripcion' => $row['descripcion'] ?? 'SIN DESCRIPCIÓN'
+                'insumo' => $row['insumo'],
             ]);
         }
     }

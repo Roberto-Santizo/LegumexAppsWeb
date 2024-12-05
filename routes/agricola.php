@@ -9,6 +9,7 @@ use App\Http\Controllers\ReporteController;
 use App\Http\Controllers\UsuariosFincaController;
 use App\Http\Controllers\AsignacionDiariaController;
 use App\Http\Controllers\ControlPlantacionController;
+use App\Http\Controllers\InsumosController;
 use App\Http\Controllers\PlanSemanalFincasController;
 use App\Http\Controllers\TareaCosechaLoteController;
 use App\Http\Controllers\TareaLoteController;
@@ -72,6 +73,15 @@ Route::group(['middleware' => ['auth', 'role:admin|adminagricola'], 'prefix' => 
 
     //Tareas de cosecha
     Route::get('/tarea-lote/cosecha/create', [TareaCosechaLoteController::class, 'create'])->name('planSemanal.tareaCosechaLote.create');
+
+    //Insumos
+    Route::get('/insumos', [InsumosController::class, 'index'])->name('insumos');
+    Route::get('/insumos/create', [InsumosController::class, 'create'])->name('insumos.create');
+    Route::get('/insumos/edit/{insumo}', [InsumosController::class, 'edit'])->name('insumos.edit');
+    Route::get('/insumos/caga', [InsumosController::class, 'carga'])->name('insumos.carga');
+    Route::post('/insumos/import', [InsumosController::class, 'import'])->name('insumos.import');
+
+
 
     // Reporteria
     Route::get('/exportar-plansemanal/{planSemanalFinca}', [ReporteController::class, 'PlanSemanal'])->name('reporte.PlanSemanal');

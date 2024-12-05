@@ -2,15 +2,10 @@
 
 namespace App\Http\Controllers;
 
-use Carbon\Carbon;
-use App\Models\Etapa;
 use App\Models\Finca;
 use App\Models\Tarea;
-use App\Models\TareaEtapa;
 use Illuminate\Http\Request;
-use App\Models\BitacoraTareas;
 use App\Exceptions\ImportExeption;
-use Illuminate\Support\Facades\DB;
 use Maatwebsite\Excel\Facades\Excel;
 use App\Imports\TareasAgricolasImport;
 
