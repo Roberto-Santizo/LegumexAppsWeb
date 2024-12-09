@@ -30,4 +30,9 @@ class TareaLoteController extends Controller
     {
         return view('agricola.tareasLote.edit',['tarea' => $tareaslote]);
     }
+
+    public function insumos(TareasLote $tareaslote)
+    {
+        return view('agricola.tareaslote.insumos',['tarea' => $tareaslote]);
+    }
 }

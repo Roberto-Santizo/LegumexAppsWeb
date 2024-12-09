@@ -1,15 +1,17 @@
 <div>
     @error('error')
-        <x-alerta-error :message="$message" />   
+    <x-alerta-error :message="$message" />
     @enderror
 
     @forelse ($tareas as $tarea)
-    <div class="flex flex-col md:grid md:grid-cols-3 md:grid-rows-4 mt-5 justify-between p-5 rounded-xl shadow-xl border-l-8 border-green-500 ">
+    <div
+        class="flex flex-col md:grid md:grid-cols-3 md:grid-rows-4 mt-5 justify-between p-5 rounded-xl shadow-xl border-l-8 border-green-500 ">
         @if($successMessage && $successTareaLoteId === $tarea->id)
-            <div class="border border-green-500 bg-green-100 text-green-700 font-bold uppercase p-2 mt-5 mb-5  text-sm flex flex-row gap-2 items-center">
-                <i class="fa-solid fa-circle-check"></i>
-                {{ $successMessage }}
-            </div>
+        <div
+            class="border border-green-500 bg-green-100 text-green-700 font-bold uppercase p-2 mt-5 mb-5  text-sm flex flex-row gap-2 items-center">
+            <i class="fa-solid fa-circle-check"></i>
+            {{ $successMessage }}
+        </div>
         @endif
 
         <div class="{{ $successMessage ? 'row-start-2' : 'row-start-1' }} col-span-2 row-span-3 md:text-base text-xs">
@@ -60,7 +62,8 @@
             @endif
         </div>
 
-        <div class="col-start-3 {{ $successMessage ? 'row-start-2' : 'row-start-1' }} row-span-4 flex md:justify-end p-5 justify-center">
+        <div
+            class="col-start-3 {{ $successMessage ? 'row-start-2' : 'row-start-1' }} row-span-4 flex md:justify-end p-5 justify-center">
             @if(!$tarea->cierre)
             <div class="flex flex-col justify-center items-center gap-5">
                 @if(!$tarea->asignacion)
@@ -72,7 +75,6 @@
                     </a>
                     @endif
 
-
                     @can('create plan semanal')
                     <button wire:click="$dispatch('eliminar',{{ $tarea->id }})">
                         <i title="Eliminar Tarea"
@@ -83,7 +85,7 @@
                 @else
                 <div class="mt-5 flex md:flex-col flex-row justify-center items-center gap-5">
                     @if($tarea->cierreParcialActivo()->get()->isEmpty())
-                    <button wire:click="$dispatch('terminar',{{ $tarea->id }})">
+                    <button wire:click="$dispatch('InsumosValidar',{{ $tarea->id }})">
                         <i class="fa-solid fa-circle-check  text-2xl cursor-pointer hover:text-gray-500"></i>
                     </button>
 
@@ -99,24 +101,24 @@
                         class="text-3xl cursor-pointer hover:text-gray-500 text-green-500" title="Reanudar"
                         wire:click="$dispatch('reanudarTarea',{{ $tarea->id }})"></iconify-icon>
                     @endif
-                    
+
                     @role('admin')
-                        <button wire:click="$dispatch('cleanTask',{{ $tarea }})">
-                            <i class="fa-solid fa-broom text-2xl cursor-pointer hover:text-gray-500"
+                    <button wire:click="$dispatch('cleanTask',{{ $tarea }})">
+                        <i class="fa-solid fa-broom text-2xl cursor-pointer hover:text-gray-500"
                             title="Limpiar Asignación"></i>
-                        </button>
+                    </button>
                     @endrole
                 </div>
                 @endif
 
-                <div class="space-y-2">
+                <div class="space-y-3">
                     @hasanyrole('admin|adminagricola')
-                        <div>
-                            <a href="{{ route('planSemanal.tareaLote.edit',$tarea) }}">
-                                <i title="Editar Tarea"
-                                    class="fa-solid fa-arrow-right-arrow-left text-2xl cursor-pointer hover:text-gray-500"></i>
-                            </a>
-                        </div>
+                    <div>
+                        <a href="{{ route('planSemanal.tareaLote.edit',$tarea) }}">
+                            <i title="Editar Tarea"
+                                class="fa-solid fa-arrow-right-arrow-left text-2xl cursor-pointer hover:text-gray-500"></i>
+                        </a>
+                    </div>
                     @endhasanyrole
                 </div>
             </div>
@@ -144,6 +146,15 @@
                         </a>
                     </div>
                     @endrole
+
+                    @if ($tarea->insumos->count() > 0)
+                    <div>
+                        <a href="{{ route('planSemanal.tareaLote.insumos',$tarea) }}">
+                            <i title="Insumos"
+                                class="fa-solid fa-warehouse text-xl cursor-pointer hover:text-gray-500"></i>
+                        </a>
+                    </div>
+                    @endif
                 </div>
 
             </div>
@@ -154,6 +165,10 @@
     @empty
     <p class="font-bold uppercase text-3xl text-center">No existen tareas en este lote</p>
     @endforelse
+
+    @if ($open)
+        <livewire:modal-insumos :tarea="$tareaSeleccionada" />
+    @endif
 </div>
 
 @push('scripts')
@@ -207,8 +222,8 @@
             });
         });
 
-        Livewire.on('terminar', tareaId =>{
-            Livewire.dispatch('terminarTarea', {tarea: tareaId});
+        Livewire.on('InsumosValidar', tareaId =>{
+            Livewire.dispatch('validarInsumos', {tarea: tareaId});
         })
 
         Livewire.on('pausarTarea', tareaId =>{

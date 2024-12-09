@@ -9,10 +9,12 @@ class InsumosControllerCreate extends Component
 {
     public $insumo;
     public $code;
+    public $medida;
 
     public $rules = [
         'insumo' => 'required',
         'code' => 'required',
+        'medida' => 'required',
     ];
 
     public function save()
@@ -20,7 +22,8 @@ class InsumosControllerCreate extends Component
         $datos = $this->validate();
         Insumo::create([
             'insumo' => $datos['insumo'],
-            'code' => $datos['code']
+            'code' => $datos['code'],
+            'medida' => $datos['medida'],
         ]);
 
         return redirect()->route('insumos')->with('success','Insumo creado correctamente');

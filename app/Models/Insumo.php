@@ -11,6 +11,7 @@ class Insumo extends Model
 
     protected $fillable = [
         'insumo',
-        'code'
+        'code',
+        'medida'
     ];
 }

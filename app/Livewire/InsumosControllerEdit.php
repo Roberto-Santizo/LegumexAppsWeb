@@ -8,17 +8,20 @@ class InsumosControllerEdit extends Component
 {
     public $insumo;
     public $code;
+    public $medida;
     public $insumoProp;
 
     protected $rules = [
         'insumo' => 'required',
-        'code' => 'required'
+        'code' => 'required',
+        'medida'=> 'required'
     ];
 
     public function mount()
     {
         $this->insumo = $this->insumoProp->insumo;
         $this->code = $this->insumoProp->code;
+        $this->medida = $this->insumoProp->medida;
 
     }
     public function update()
@@ -26,6 +29,7 @@ class InsumosControllerEdit extends Component
         $datos = $this->validate();
         $this->insumoProp->insumo = $datos['insumo'];
         $this->insumoProp->code = $datos['code'];
+        $this->insumoProp->medida = $datos['medida'];
 
         $this->insumoProp->save();
 

@@ -11,11 +11,12 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('insumos', function (Blueprint $table) {
+        Schema::create('insumo_tareas', function (Blueprint $table) {
             $table->id();
-            $table->string('insumo');
-            $table->string('code');
-            $table->string('medida');
+            $table->foreignId('insumo_id')->constrained();
+            $table->foreignId('tarea_lote_id')->references('id')->on('tareas_lotes');
+            $table->float('cantidad_asignada')->nullable();
+            $table->float('cantidad_usada')->nullable();
             $table->timestamps();
         });
     }
@@ -25,6 +26,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('insumos');
+        Schema::dropIfExists('insumo_tareas');
     }
 };

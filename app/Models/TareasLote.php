@@ -53,6 +53,11 @@ class TareasLote extends Model
         return $this->hasMany(BitacoraTareaLote::class, 'tarea_lote_id','id');
     }
 
+    public function insumos()
+    {
+        return $this->hasMany(InsumoTarea::class, 'tarea_lote_id','id');
+    }
+
     public function cierre()
     {
         return $this->hasOne(RendimientoDiario::class, 'tarea_lote_id','id');

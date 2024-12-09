@@ -6,8 +6,6 @@ Carga Masiva de Insumos
 
 @section('contenido')
 
-<x-alertas />
-
 <x-link-volver ruta="insumos" class="bg-green-moss hover:bg-green-meadow" />
 <div class="bg-white p-6 rounded-lg shadow-lg mt-5 container xl:w-2/3  mx-auto">
     <form action="{{ route('insumos.import') }}" method="POST" enctype="multipart/form-data" novalidate>

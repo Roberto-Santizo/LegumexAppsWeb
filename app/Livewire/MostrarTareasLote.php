@@ -11,7 +11,7 @@ use App\Models\RendimientoDiario;
 
 class MostrarTareasLote extends Component
 {
-    protected $listeners = ['eliminarTarea','terminarTarea','pausar','reanudar','limpiarTarea'];
+    protected $listeners = ['eliminarTarea', 'terminarTarea', 'pausar', 'reanudar', 'limpiarTarea', 'closeModal','validarInsumos'];
 
     public $tareas;
     public $plansemanalfinca;
@@ -20,6 +20,8 @@ class MostrarTareasLote extends Component
     public $semanaActual;
     public $successTareaLoteId;
     public $successMessage;
+    public $open = false;
+    public $tareaSeleccionada;
 
     public function mount()
     {
@@ -48,9 +50,9 @@ class MostrarTareasLote extends Component
             $tarea->extendido = false;
             $tarea->ingresados = 0;
 
-            if($tarea->movimientos->count() > 0){
-                $tarea->semana_origen = $tarea->movimientos()->orderBy('id','DESC')->first()->plan_origen->semana;
-                $tarea->finca = $tarea->movimientos()->orderBy('id','DESC')->first()->plan_origen->finca->finca;
+            if ($tarea->movimientos->count() > 0) {
+                $tarea->semana_origen = $tarea->movimientos()->orderBy('id', 'DESC')->first()->plan_origen->semana;
+                $tarea->finca = $tarea->movimientos()->orderBy('id', 'DESC')->first()->plan_origen->finca->finca;
             }
             if ($tarea->asignacion_diaria) {
                 if (!$tarea->asignacion_diaria->created_at->isToday() && !$tarea->cierre) {
@@ -69,6 +71,15 @@ class MostrarTareasLote extends Component
         }
     }
 
+    public function validarInsumos(TareasLote $tarea)
+    {
+        if ($tarea->insumos->count() > 0) {
+            $this->open = true;
+            $this->tareaSeleccionada = $tarea;
+        } else {
+            $this->terminarTarea($tarea);
+        }
+    }
     public function terminarTarea(TareasLote $tarea)
     {
         $cierre = RendimientoDiario::create([
@@ -78,7 +89,6 @@ class MostrarTareasLote extends Component
 
         $this->successTareaLoteId = $tarea->id;
         $this->successMessage = 'La tarea fue terminada en fecha: ' . $cierre->created_at->format('d-m-Y h:i:s A');
-        
     }
 
     public function pausar(TareasLote $tarea)
@@ -89,7 +99,7 @@ class MostrarTareasLote extends Component
                 'fecha_inicio' => Carbon::now()
             ]);
         } catch (\Throwable $th) {
-           $this->addError('error','Hubo un error al pausar la tarea, intentelo de nuevo más tarde');
+            $this->addError('error', 'Hubo un error al pausar la tarea, intentelo de nuevo más tarde');
         }
     }
 
@@ -100,7 +110,7 @@ class MostrarTareasLote extends Component
             $cierreParcial->fecha_final = Carbon::now();
             $cierreParcial->save();
         } catch (\Throwable $th) {
-            $this->addError('error','Hubo un error al pausar la tarea, intentelo de nuevo más tarde');
+            $this->addError('error', 'Hubo un error al pausar la tarea, intentelo de nuevo más tarde');
         }
     }
 
@@ -114,17 +124,19 @@ class MostrarTareasLote extends Component
 
             $this->successTareaLoteId = $tarea->id;
             $this->successMessage = 'La asignación de la tarea fue limpiada correctamente';
-
         } catch (\Throwable $th) {
-            $this->addError('error','Hubo un error al pausar la tarea, intentelo de nuevo más tarde');
+            $this->addError('error', 'Hubo un error al pausar la tarea, intentelo de nuevo más tarde');
         }
     }
 
+    public function closeModal()
+    {
+        $this->open = false;
+    }
+
     public function render()
-    {   
+    {
         $this->semanaActual = Carbon::now()->weekOfYear();
         return view('livewire.mostrar-tareas-lote');
     }
-
-   
 }

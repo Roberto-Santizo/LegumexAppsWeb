@@ -6,6 +6,8 @@
                     Nombre del Insumo</th>
                 <th scope="col" class="encabezado text-left">
                     Codigo</th>
+                <th scope="col" class="encabezado text-left">
+                    Unidad de Medida</th>
                 <th scope="col" class="encabezado text-center">
                     Acciones</th>
             </tr>
@@ -16,6 +18,7 @@
                 <tr>
                     <td class="campo">{{ $insumo->insumo }}</td>
                     <td class="campo">{{ $insumo->code }}</td>
+                    <td class="campo">{{ $insumo->medida }}</td>
 
                     <td class="campo flex flex-row gap-5">
                         <a href="{{ route('insumos.edit',$insumo) }}">
