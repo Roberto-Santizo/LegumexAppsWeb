@@ -1,7 +1,7 @@
 <div>
     <div class="flex flex-col gap-5">
         
-        <div class="flex flex-row justify-between items-center gap-2 bg-green-moss font-bold p-3 rounded-xl">
+        <div class="flex flex-row justify-between items-center gap-2 bg-gray-50 font-bold p-3 rounded-xl">
             <table class="tabla">
                 <thead class="tabla-head">
                     <tr class="text-xs md:text-sm">

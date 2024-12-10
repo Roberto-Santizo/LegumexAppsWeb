@@ -20,7 +20,7 @@ class ModalInsumos extends Component
     {
         if(!isset($this->registro[$insumoId]))
         {
-            $this->addError('error', 'Debe colocar el dato correspondiente a la cantidad del insumo utilizada');
+            $this->addError('error', 'Debe colocar el dato correspondiente de la cantidad del insumo utilizada');
             return;
         }
         $dato = $this->registro[$insumoId] ?? ''; 

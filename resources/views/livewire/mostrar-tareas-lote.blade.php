@@ -146,15 +146,6 @@
                         </a>
                     </div>
                     @endrole
-
-                    @if ($tarea->insumos->count() > 0)
-                    <div>
-                        <a href="{{ route('planSemanal.tareaLote.insumos',$tarea) }}">
-                            <i title="Insumos"
-                                class="fa-solid fa-warehouse text-xl cursor-pointer hover:text-gray-500"></i>
-                        </a>
-                    </div>
-                    @endif
                 </div>
 
             </div>

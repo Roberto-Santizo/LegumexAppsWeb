@@ -67,7 +67,6 @@ Route::group(['middleware' => ['auth', 'role:admin|adminagricola'], 'prefix' => 
     Route::get('/tareas', [TareasController::class, 'index'])->name('tareas');
     Route::get('/tareas/{tarea:tarea}/rendimiento', [TareasController::class, 'rendimiento'])->name('tareas.rendimiento');
     Route::get('/tarea-lote/{tareaslote}/edit', [TareaLoteController::class, 'edit'])->name('planSemanal.tareaLote.edit');
-    Route::get('/tarea-lote/{tareaslote}/insumos', [TareaLoteController::class, 'insumos'])->name('planSemanal.tareaLote.insumos');
     Route::post('/tarea-lote/store/{lote}/{plansemanalfinca}', [TareaLoteController::class, 'store'])->name('planSemanal.tareaLote.store');
 
     //Tareas de cosecha
