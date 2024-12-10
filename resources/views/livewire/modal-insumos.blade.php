@@ -30,7 +30,7 @@
                         @else
                             <div class="flex flex-col justify-center items-center">
                                 <p class="font-bold">Cantidad usada:</p>
-                                <p class="font-bold text-xl text-green-500">{{ $insumo->cantidad_usada }}  {{ $insumo->insumo->medida }}</p>
+                                <p class="font-bold text-xl">{{ $insumo->cantidad_usada }}  {{ $insumo->insumo->medida }}</p>
                             </div>
                         @endif
                     </div>

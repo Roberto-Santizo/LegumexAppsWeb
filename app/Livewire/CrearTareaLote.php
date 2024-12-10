@@ -2,6 +2,7 @@
 
 namespace App\Livewire;
 
+use App\Models\Insumo;
 use App\Models\Lote;
 use App\Models\Tarea;
 use Livewire\Component;
@@ -23,6 +24,10 @@ class CrearTareaLote extends Component
     public $plan_semanal_finca_id;
     public $lote_id;
 
+    public $insumos = [];
+    public $open = false;
+
+    protected $listeners = ['closeModal','agregarInsumo'];
     protected $rules = [
         'personas' => 'required|numeric|min:1',
         'presupuesto' => 'required|numeric|gt:0',
@@ -74,6 +79,22 @@ class CrearTareaLote extends Component
 
         return redirect()->route('planSemanal')->with('success','Tarea creada Correctamente');
     }
+
+    public function openModal()
+    {
+        $this->open = true;
+    }
+
+    public function closeModal()
+    {
+        $this->open = false;
+    }
+
+    public function agregarInsumo(Insumo $insumo)
+    {
+        $this->insumos[] = $insumo;
+    }
+
     public function render()
     {
         return view('livewire.crear-tarea-lote');

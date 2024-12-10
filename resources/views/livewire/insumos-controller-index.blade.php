@@ -29,4 +29,6 @@
             @endforeach
         </tbody>
     </table>
+
+    {{ $insumos->links() }}
 </div>
