@@ -2,7 +2,7 @@
 
 namespace App\Livewire;
 
-use App\Models\Insumo;
+use App\Models\InsumoTarea;
 use App\Models\Lote;
 use App\Models\Tarea;
 use Livewire\Component;
@@ -23,11 +23,14 @@ class CrearTareaLote extends Component
     public $tarea_id;
     public $plan_semanal_finca_id;
     public $lote_id;
-
+    public $searchTerm;
     public $insumos = [];
     public $open = false;
+    public $openEditing = false;
+    public $editingInsumo;
 
-    protected $listeners = ['closeModal','agregarInsumo'];
+    public $tareasFiltradas;
+    protected $listeners = ['closeModal','agregarInsumo','editInsumos','closeModalCantidad'];
     protected $rules = [
         'personas' => 'required|numeric|min:1',
         'presupuesto' => 'required|numeric|gt:0',
@@ -43,27 +46,35 @@ class CrearTareaLote extends Component
         $this->tareas = Tarea::all();
         $this->planes = PlanSemanalFinca::where('semana','>=',$this->semana)->get();
         $this->lotes = Lote::all();
+        $this->tareasFiltradas = $this->tareas;
     }
 
+
+    public function buscarTarea()
+    {
+        $this->tareasFiltradas = $this->tareas->filter(function ($tarea) {
+            return stripos($tarea->tarea, $this->searchTerm) !== false || 
+                   stripos($tarea->code, $this->searchTerm) !== false;
+        });
+    }
 
     public function crearTareaLoteExt()
     {
        $datos = $this->validate();
 
        try {
-        $plan_semanal_finca = PlanSemanalFinca::find($datos['plan_semanal_finca_id']['value']);
-        $lote = Lote::where('id', $datos['lote_id']['value'])->where('finca_id', $plan_semanal_finca->finca->id)->first();
-        if(!$lote)
-        {
-            $this->addError('error','El lote seleccionado no coincide con la finca del plan seleccionado');
-            return;
-        }
+            $plan_semanal_finca = PlanSemanalFinca::find($datos['plan_semanal_finca_id']);
+            $lote = Lote::where('id', $datos['lote_id'])->where('finca_id', $plan_semanal_finca->finca->id)->first();
+            if(!$lote)
+            {
+                $this->addError('error','El lote seleccionado no coincide con la finca del plan seleccionado');
+                return;
+            }
 
-        TareasLote::create([
-                'plan_semanal_finca_id' => $datos['plan_semanal_finca_id']['value'],
-                'lote_id' => $datos['lote_id']['value'],
-                'plan' => $datos['tarea_id']['value'],
-                'tarea_id' => $datos['tarea_id']['value'],
+            $tarealote = TareasLote::create([
+                'plan_semanal_finca_id' => $datos['plan_semanal_finca_id'],
+                'lote_id' => $datos['lote_id'],
+                'tarea_id' => $datos['tarea_id'],
                 'personas' => $datos['personas'],   
                 'presupuesto' => $datos['presupuesto'],
                 'horas' => $datos['horas'],
@@ -72,8 +83,22 @@ class CrearTareaLote extends Component
                 'extraordinaria' => 1
 
             ]);
+
+            if(count($this->insumos) > 0)
+            {
+                foreach ($this->insumos as $insumo) {
+                    InsumoTarea::create([
+                        'insumo_id' => $insumo['id'],
+                        'tarea_lote_id' => $tarealote->id,
+                        'cantidad_asignada' => $insumo['cantidad'],
+                    ]);
+                }
+                
+            }
+
        } catch (\Throwable $th) {
-            $this->addError('error','Existe un error al crear la tarea extraordinaria, intentelo de nuevo o comuniquese con el administrador');
+            $this->addError('error','Existe un error al crear la tarea extraordinaria, intentelo de nuevo o comuniquese con el administrador' . $th->getMessage());
+            return;
        }
        
 
@@ -90,9 +115,40 @@ class CrearTareaLote extends Component
         $this->open = false;
     }
 
-    public function agregarInsumo(Insumo $insumo)
+    public function agregarInsumo($insumo)
     {
-        $this->insumos[] = $insumo;
+        try {
+            $this->insumos[] = $insumo;
+        } catch (\Throwable $th) {
+            dd($th->getMessage());
+        }
+    }
+
+    public function eliminarInsumo($id_insumo)
+    {
+        $updatedInsumos = collect($this->insumos)->filter(function($insumo) use($id_insumo){
+           return $insumo['id_insumo'] !== $id_insumo;
+        });
+        $this->insumos = $updatedInsumos;
+    }  
+    
+    public function editInsumo($id_insumo)
+    {
+        $this->openEditing = true;
+        $this->editingInsumo = collect($this->insumos)->filter(function($insumo) use($id_insumo){
+            return $insumo['id_insumo'] === $id_insumo;
+        })->first();
+        
+    }
+    
+    public function editInsumos($insumos)
+    {
+        $this->insumos = $insumos;
+    }
+
+    public function closeModalCantidad()
+    {
+        $this->openEditing = false;
     }
 
     public function render()

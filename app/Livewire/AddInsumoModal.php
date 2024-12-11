@@ -9,7 +9,10 @@ class AddInsumoModal extends Component
 {   
     public $insumos;
     public $nombre_insumo;
+    public $open = false;
+    public $selectedInsumo;
 
+    protected $listeners = ['closeModalCantidad'];
     public function mount()
     {
         $this->insumos = Insumo::all();
@@ -31,11 +34,18 @@ class AddInsumoModal extends Component
         $this->dispatch('closeModal');
     }
 
-    public function agregarInsumo(Insumo $insumo)
+    public function openModalCantidad(Insumo $insumo)
+    {  
+        $this->selectedInsumo = $insumo->toArray();
+        $this->open = true;
+    }
+    
+    public function closeModalCantidad()
     {
-        $this->dispatch('agregarInsumo',$insumo);
+        $this->open = false;
         $this->closeModal();
-    }   
+    }
+
     public function render()
     {
         return view('livewire.add-insumo-modal');
