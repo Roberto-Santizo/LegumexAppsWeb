@@ -114,12 +114,6 @@
                 @endif
             </div>
         @else
-            @if ($tarea->insumos->count() > 0)
-                <div class="space-y-5">
-                    <h2 class="text-xl uppercase font-bold mt-5">Insumos:</h2>
-                    <x-insumos-table :insumos="$tarea->insumos" />
-                </div>
-            @endif
             <div class="mt-5 flex gap-5 flex-col shadow-2xl p-5 rounded-xl">
                 <h2 class="font-bold text-xl">Empleados Asignados: </h2>
                 <livewire:mostrar-usuarios-asignados :asignaciones="$tarea->users" />
@@ -131,6 +125,13 @@
                     <livewire:distribucion-asignaciones :tarea="$tarea" />
                 </div>
             @endif
+        @endif
+
+        @if ($tarea->insumos->count() > 0)
+            <div class="space-y-5">
+                <h2 class="text-xl uppercase font-bold mt-5">Insumos:</h2>
+                <x-insumos-table :insumos="$tarea->insumos" />
+            </div>
         @endif
     </div>
 @endsection

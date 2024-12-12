@@ -50,6 +50,8 @@ class MostrarTareasLote extends Component
             $tarea->extendido = false;
             $tarea->ingresados = 0;
 
+            $tarea->greater_date = $this->compararSemanas(Carbon::now()->year,Carbon::now()->weekOfYear(),$this->plansemanalfinca->year,$this->plansemanalfinca->semana);
+
             if ($tarea->movimientos->count() > 0) {
                 $tarea->semana_origen = $tarea->movimientos()->orderBy('id', 'DESC')->first()->plan_origen->semana;
                 $tarea->finca = $tarea->movimientos()->orderBy('id', 'DESC')->first()->plan_origen->finca->finca;
@@ -132,6 +134,18 @@ class MostrarTareasLote extends Component
     public function closeModal()
     {
         $this->open = false;
+    }
+
+    public function compararSemanas($year1,$week1,$year2,$week2)
+    {
+        $date1 = Carbon::now()->setISODate($year1,$week1);
+        $date2 = Carbon::now()->setISODate($year2,$week2);
+
+        if($date1->greaterThan($date2)){
+            return true;
+        }else{
+            return false;
+        }
     }
 
     public function render()
