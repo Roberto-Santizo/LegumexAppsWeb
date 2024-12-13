@@ -32,4 +32,9 @@ class DashboardController extends Controller
 
         return view('dashboards.agricola');
     }
+
+    public function rrhh()
+    {
+        return view('dashboards.rrhh');
+    }
 }

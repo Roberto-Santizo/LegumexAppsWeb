@@ -12,9 +12,8 @@ use App\Http\Controllers\ControlPlantacionController;
 use App\Http\Controllers\PlanSemanalFincasController;
 use App\Http\Controllers\TareaCosechaLoteController;
 use App\Http\Controllers\TareaLoteController;
-use App\Http\Controllers\TareaLoteCosechaController;
 
-Route::group(['middleware' => ['auth', 'role:admin|adminagricola'], 'prefix' => 'agricola'], function() {
+Route::group(['middleware' => ['auth', 'role:admin|adminagricola|auxrrhh'], 'prefix' => 'agricola'], function() {
     Route::get('/finca/plan-semanal/create', [PlanSemanalFincasController::class, 'create'])->name('planSemanal.create'); 
     Route::get('/tarea-lote/create', [TareaLoteController::class, 'create'])->name('planSemanal.tareaLote.create');
     Route::get('/finca/plan-semanal/lotes/{lote}/{plansemanalfinca}/cosecha/{tarealotecosecha}/rendimiento/real', [PlanSemanalFincasController::class, 'tareasCosechaLoteRendimientoReal'])->name('planSemanal.tareasCosechaLoteRendimiento.real');

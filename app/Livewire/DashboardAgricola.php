@@ -141,9 +141,6 @@ class DashboardAgricola extends Component
             return $tarea->cierre && $tarea->cierre->created_at->weekOfYear == $semana;
         });
 
-        
-
-
     }
 
     public function openModal()

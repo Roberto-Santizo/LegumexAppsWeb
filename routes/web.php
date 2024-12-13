@@ -23,4 +23,5 @@ Route::get('/novedades',[NotificacionController::class,'index'])->middleware(['a
 Route::get('/dashboard/administracion',[DashboardController::class,'index'])->middleware(['auth','role:admin','checkupdate'])->name('dashboard.administracion');
 Route::get('/dashboard/mantenimiento',[DashboardController::class,'mantenimiento'])->middleware(['auth','role:admin|adminmanto|auxmanto','checkupdate'])->name('dashboard.mantenimiento');
 Route::get('/dashboard/agricola',[DashboardController::class,'agricola'])->middleware(['auth','role:admin|adminagricola|auxfinca','checkupdate'])->name('dashboard.agricola');
+Route::get('/dashboard/recursos-humanos',[DashboardController::class,'rrhh'])->middleware(['auth','role:admin|auxrrhh','checkupdate'])->name('dashboard.rrhh');
 
