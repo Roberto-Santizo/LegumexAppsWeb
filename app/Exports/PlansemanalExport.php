@@ -14,7 +14,7 @@ use Maatwebsite\Excel\Concerns\WithColumnFormatting;
 
 class PlansemanalExport implements FromCollection, WithHeadings, WithMultipleSheets, WithTitle, WithStyles, WithColumnFormatting
 {
-   
+
 
     protected $plansemanal;
 
@@ -25,28 +25,31 @@ class PlansemanalExport implements FromCollection, WithHeadings, WithMultipleShe
     }
 
     /**
-        * @return \Illuminate\Support\Collection
-    */
+     * @return \Illuminate\Support\Collection
+     */
 
     public function collection()
     {
-        
+
         $rows = collect();
         Carbon::setLocale('es');
-        foreach($this->plansemanal->tareasTotales as $tarea){
-                if($tarea->asignacion && !$tarea->asignacion->use_dron){
-                    if($tarea->cierre){
+        $userRole = auth()->user()->getRoleNames()->first();
+
+        if ($userRole != 'auxrrhh') {
+            foreach ($this->plansemanal->tareasTotales as $tarea) {
+                if ($tarea->asignacion && !$tarea->asignacion->use_dron) {
+                    if ($tarea->cierre) {
                         $horas_diferencia = 0;
-                        if(!$tarea->cierresParciales->isEmpty()){
+                        if (!$tarea->cierresParciales->isEmpty()) {
                             foreach ($tarea->cierresParciales as $cierreParcial) {
                                 $horas_diferencia += $cierreParcial->fecha_inicio->diffInHours($cierreParcial->fecha_final);
                             }
                         }
-                        $tareaCreacion = $tarea->asignacion->created_at; 
+                        $tareaCreacion = $tarea->asignacion->created_at;
                         $tareaCierre = $tarea->cierre->created_at;
                         $rendimiento_real = $tareaCreacion->diffInHours($tareaCierre) - $horas_diferencia;
                     }
-                    
+
                     $rows->push([
                         'FINCA' => $this->plansemanal->finca->finca,
                         'SEMANA CALENDARIO' => $this->plansemanal->semana,
@@ -58,12 +61,12 @@ class PlansemanalExport implements FromCollection, WithHeadings, WithMultipleShe
                         'FECHA DE INICIO' => ($tarea->asignacion) ? $tarea->asignacion->created_at->format('d-m-Y h:i:s') : 'SIN ASIGNACION',
                         'FECHA DE CIERRE' => ($tarea->cierre) ? $tarea->cierre->created_at->format('d-m-Y h:i:s') : 'SIN CIERRE',
                         'HORA RENDIMIENTO TEORICO' => $tarea->horas,
-                        'HORA RENDIMIENTO REAL' => ($tarea->cierre) ?  round($rendimiento_real * $tarea->users->count(),4) : '0',
-                        'RENDIMIENTO' => ($tarea->cierre) ? ($tarea->horas/round($rendimiento_real*$tarea->users->count(),4)) : '0',
+                        'HORA RENDIMIENTO REAL' => ($tarea->cierre) ?  round($rendimiento_real * $tarea->users->count(), 4) : '0',
+                        'RENDIMIENTO' => ($tarea->cierre) ? ($tarea->horas / round($rendimiento_real * $tarea->users->count(), 4)) : '0',
                         'ATRASADA' => ($tarea->movimientos->count() > 0) ? 'ATRASADA' : 'PLANIFICADA',
-                        'SEMANA ORIGEN' => ($tarea->movimientos->count() > 0) ? $tarea->movimientos()->orderBy('id','DESC')->first()->plan_origen->semana : 'PLANIFICADA',
+                        'SEMANA ORIGEN' => ($tarea->movimientos->count() > 0) ? $tarea->movimientos()->orderBy('id', 'DESC')->first()->plan_origen->semana : 'PLANIFICADA',
                     ]);
-                }else{
+                } else {
                     $rows->push([
                         'FINCA' => $this->plansemanal->finca->finca,
                         'SEMANA CALENDARIO' => $this->plansemanal->semana,
@@ -76,26 +79,23 @@ class PlansemanalExport implements FromCollection, WithHeadings, WithMultipleShe
                         'FECHA DE CIERRE' => ($tarea->cierre) ? $tarea->cierre->created_at->format('d-m-Y h:i:s') : 'SIN CIERRE',
                         'HORA RENDIMIENTO TEORICO' => $tarea->horas,
                         'HORA RENDIMIENTO REAL' => ($tarea->cierre) ? $tarea->asignacion->created_at->diffInHours($tarea->cierre->created_at) : '',
-                        'RENDIMIENTO' => ($tarea->cierre) ? ($tarea->horas/$tarea->asignacion->created_at->diffInHours($tarea->cierre->created_at)) : '',
+                        'RENDIMIENTO' => ($tarea->cierre) ? ($tarea->horas / $tarea->asignacion->created_at->diffInHours($tarea->cierre->created_at)) : '',
                         'ATRASADA' => ($tarea->movimientos->count() > 0) ? 'ATRASADA' : 'PLANIFICADA',
-                        'SEMANA ORIGEN' => ($tarea->movimientos->count() > 0) ? $tarea->movimientos()->orderBy('id','DESC')->first()->plan_origen->semana : 'PLANIFICADA',
+                        'SEMANA ORIGEN' => ($tarea->movimientos->count() > 0) ? $tarea->movimientos()->orderBy('id', 'DESC')->first()->plan_origen->semana : 'PLANIFICADA',
                     ]);
                 }
-                
-           
-        }
+            }
 
-        foreach($this->plansemanal->tareasCosechaTotales as $tareaCosecha)
-        {
-            foreach ($tareaCosecha->asignaciones as $asignacion) {
-                    if($asignacion->cierre){
-                        $EmpleadosAsignados = $tareaCosecha->users()->whereDate('created_at',$asignacion->created_at)->count();
-                        
+            foreach ($this->plansemanal->tareasCosechaTotales as $tareaCosecha) {
+                foreach ($tareaCosecha->asignaciones as $asignacion) {
+                    if ($asignacion->cierre) {
+                        $EmpleadosAsignados = $tareaCosecha->users()->whereDate('created_at', $asignacion->created_at)->count();
+
                         $horas_reportadas = $asignacion->created_at->diffInHours($asignacion->cierre->created_at);
-                        
-                        $rendimiento_teorico = ($horas_reportadas*$EmpleadosAsignados);
-                        
-                        $rendimiento_real = $asignacion->cierre->plantas_cosechadas/120;
+
+                        $rendimiento_teorico = ($horas_reportadas * $EmpleadosAsignados);
+
+                        $rendimiento_real = $asignacion->cierre->plantas_cosechadas / 120;
 
                         $rows->push([
                             'FINCA' => $this->plansemanal->finca->finca,
@@ -109,11 +109,12 @@ class PlansemanalExport implements FromCollection, WithHeadings, WithMultipleShe
                             'FECHA DE CIERRE' => ($asignacion->cierre) ? $asignacion->cierre->created_at->format('d-m-Y h:i:s') : 'SIN CIERRE',
                             'HORA RENDIMIENTO TEORICO' => $rendimiento_teorico,
                             'HORA RENDIMIENTO REAL' => $rendimiento_real,
-                            'RENDIMIENTO' => ($asignacion->cierre) ? ($rendimiento_real/($rendimiento_teorico)) : '0',
+                            'RENDIMIENTO' => ($asignacion->cierre) ? ($rendimiento_real / ($rendimiento_teorico)) : '0',
                             'ATRASADA' => '',
                             'SEMANA ORIGEN' => '',
                         ]);
                     }
+                }
             }
         }
 
@@ -122,7 +123,7 @@ class PlansemanalExport implements FromCollection, WithHeadings, WithMultipleShe
 
     public function headings(): array
     {
-        return ['FINCA','SEMANA CALENDARIO','LOTE','CODIGO TAREA', 'TAREA','PLAN', 'ESTADO','FECHA DE INICIO','FECHA DE CIERRE','HORAS RENDIMIENTO TEORICO','HORAS RENDIMIENTO REAL', 'RENDIMIENTO','ATRASADA','SEMANA ORIGEN'];
+        return ['FINCA', 'SEMANA CALENDARIO', 'LOTE', 'CODIGO TAREA', 'TAREA', 'PLAN', 'ESTADO', 'FECHA DE INICIO', 'FECHA DE CIERRE', 'HORAS RENDIMIENTO TEORICO', 'HORAS RENDIMIENTO REAL', 'RENDIMIENTO', 'ATRASADA', 'SEMANA ORIGEN'];
     }
 
     public function styles(Worksheet $sheet)
@@ -131,34 +132,31 @@ class PlansemanalExport implements FromCollection, WithHeadings, WithMultipleShe
         $sheet->getStyle('A1:N1')->applyFromArray([
             'font' => [
                 'bold' => true,
-                'color' => ['argb' => 'FFFFFF'], 
+                'color' => ['argb' => 'FFFFFF'],
             ],
             'fill' => [
                 'fillType' => \PhpOffice\PhpSpreadsheet\Style\Fill::FILL_SOLID,
-                'startColor' => ['argb' => '5564eb'], 
+                'startColor' => ['argb' => '5564eb'],
             ],
         ]);
-
     }
-    
+
     public function sheets(): array
     {
         return [
-            new PlansemanalExport($this->plansemanal), 
-            new UsuarioTareaDetalleExport($this->plansemanal) 
+            new PlansemanalExport($this->plansemanal),
+            new UsuarioTareaDetalleExport($this->plansemanal)
         ];
     }
     public function title(): string
     {
-        return 'General Tareas Finca'; 
+        return 'General Tareas Finca';
     }
 
-      public function columnFormats(): array
+    public function columnFormats(): array
     {
         return [
             'L' => '0.00%',
         ];
     }
-
-
 }
