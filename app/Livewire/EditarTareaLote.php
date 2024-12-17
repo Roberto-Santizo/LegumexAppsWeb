@@ -7,6 +7,7 @@ use App\Models\Lote;
 use Livewire\Component;
 use App\Models\TareasLote;
 use App\Models\PlanSemanalFinca;
+use Carbon\Carbon;
 
 class EditarTareaLote extends Component
 {
@@ -18,13 +19,17 @@ class EditarTareaLote extends Component
     public $lote_id;
     public $finca_id;
     public $tarea;
+    public $fechaAsignacion;
+    public $horaAsignacion;
+    public $fechaCierre;
+    public $horaCierre;
 
     protected $rules = [
         'personas' => 'required',
         'presupuesto' => 'required',
         'horas' => 'required',
         'plan_semanal_finca_id' => 'required',
-        'lote_id' => 'required'
+        'lote_id' => 'required',
     ];
 
 
@@ -37,38 +42,59 @@ class EditarTareaLote extends Component
         $this->plan_semanal_finca_id = $tareaslote->plan_semanal_finca_id;
         $this->lote_id = $tareaslote->lote_id;
         $this->finca_id = $tareaslote->plansemanal->finca->id;
-    }
-    public function render()
-    {
-        $planes = PlanSemanalFinca::where('finca_id',$this->finca_id)->get();
-        return view('livewire.editar-tarea-lote',['planes' => $planes,'plan_semanal_finca_id' => $this->plan_semanal_finca_id]);
+        $this->fechaAsignacion = $tareaslote->asignacion ? $tareaslote->asignacion->created_at->format('Y-m-d') : null;
+        $this->horaAsignacion = $tareaslote->asignacion ? $tareaslote->asignacion->created_at->format('h:m') : null;
+        $this->fechaCierre = $tareaslote->cierre ? $tareaslote->cierre->created_at->format('Y-m-d') : null;
+        $this->horaCierre = $tareaslote->cierre ? $tareaslote->cierre->created_at->format('h:m') : null;
     }
 
     public function editarTarea(){
         $datos = $this->validate();
-        $tarealote = TareasLote::find($this->id);
 
-        if($datos['plan_semanal_finca_id'] != $tarealote->plan_semanal_finca_id)
+        if($this->tarea->asignacion)
+        {
+            $fechaAsignacion = $this->fechaAsignacion . ' ' . $this->horaAsignacion;
+            $fechaAsignacionCarbon = Carbon::parse($fechaAsignacion);
+            $this->tarea->asignacion->created_at = $fechaAsignacionCarbon;
+            $this->tarea->asignacion->save();
+        }
+
+        if($this->tarea->cierre)
+        {
+            $fechaCierre = $this->fechaCierre . ' ' . $this->horaCierre;
+            $fechaCierreCarbon = Carbon::parse($fechaCierre);
+            $this->tarea->cierre->created_at = $fechaCierreCarbon;
+            $this->tarea->cierre->save();
+        }
+
+        if($datos['plan_semanal_finca_id'] != $this->tarea->plan_semanal_finca_id)
         {
             BitacoraTareaLote::create([
                 'plan_semanal_id_dest' => $datos['plan_semanal_finca_id'],
-                'plan_semanal_id_org' => $tarealote->plan_semanal_finca_id,
-                'tarea_lote_id' => $tarealote->id
+                'plan_semanal_id_org' => $this->tarea->plan_semanal_finca_id,
+                'tarea_lote_id' => $this->tarea->id
             ]);
         }
         
-        $plansemanal = $tarealote->plansemanal;
-        $lote = $tarealote->lote;
+        $plansemanal = $this->tarea->plansemanal;
+        $lote = $this->tarea->lote;
 
-        $tarealote->personas = $datos['personas'];
-        $tarealote->cupos = $datos['personas'];
-        $tarealote->presupuesto = $datos['presupuesto'];
-        $tarealote->horas = $datos['horas'];
-        $tarealote->plan_semanal_finca_id = $datos['plan_semanal_finca_id'];
-        $tarealote->lote_id = $datos['lote_id'];
+        $this->tarea->personas = $datos['personas'];
+        $this->tarea->cupos = $datos['personas'];
+        $this->tarea->presupuesto = $datos['presupuesto'];
+        $this->tarea->horas = $datos['horas'];
+        $this->tarea->plan_semanal_finca_id = $datos['plan_semanal_finca_id'];
+        $this->tarea->lote_id = $datos['lote_id'];
         
-        $tarealote->save();
+        
+        $this->tarea->save();
 
         return redirect()->route('planSemanal.tareasLote',[$lote,$plansemanal])->with('success','Tarea Editada correctamente');
+    }
+
+    public function render()
+    {
+        $planes = PlanSemanalFinca::where('finca_id',$this->finca_id)->get();
+        return view('livewire.editar-tarea-lote',['planes' => $planes,'plan_semanal_finca_id' => $this->plan_semanal_finca_id]);
     }
 }
