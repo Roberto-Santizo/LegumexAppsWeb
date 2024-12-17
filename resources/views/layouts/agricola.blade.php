@@ -47,15 +47,10 @@
             <div class="flex flex-row gap-5 justify-center items-center">
                 <p class="text-4xl font-bold">LegumexApps</p>
             </div>
-            <img src="{{ asset('img/diciembre_icon.gif'); }}" alt="Christmas Gif" class="hidden md:block w-32">
         </div>
 
-        <div class="hidden md:flex justify-center items-center gap-2 bg-green-moss p-3 rounded shadow-xl">
-            <p class="text-2xl font-bold">Agricola</p>
-            <i class="fa-solid fa-seedling text-2xl"></i>
-        </div>
-
-        <div class="flex-row gap-2 hidden md:flex">
+        <div class="flex-row gap-2 hidden md:flex justify-center items-center">
+            <p class="font-bold text-xl">Hola: {{ auth()->user()->name }}</p>
             <div id="btnProfile">
                 <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
                     stroke="currentColor"
