@@ -29,7 +29,9 @@ class UsuarioTareaDetalleExport implements FromCollection, WithHeadings, WithTit
         $this->plansemanal->tareasTotales->each(function ($tarea) use ($rows) {
             if ($tarea->asignacion && !$tarea->asignacion->use_dron) {
                 if ($tarea->cierresParciales->count() > 0) {
-                    $this->distribucionPorEmpleado($tarea, $rows);
+                    if($tarea->cierre){
+                        $this->distribucionPorEmpleado($tarea, $rows);
+                    }
                 } else {
                     $this->procesarTarea($tarea, $rows);
                 }

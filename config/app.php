@@ -127,5 +127,5 @@ return [
         'permission' => \App\Http\Middleware\CheckPermission::class,
     ],
    
-    'current_version' => '3.0.1',
+    'current_version' => '3.1.1',
 ];
