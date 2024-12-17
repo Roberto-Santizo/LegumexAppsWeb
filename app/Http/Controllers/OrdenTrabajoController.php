@@ -171,43 +171,13 @@ class OrdenTrabajoController extends Controller
         return view('mantenimiento.documentoOT.showUsuarioOrdenes',['usuario' => $user, 'ordenes' => $ordenesUsuario]);
     }
 
-    public function showOrdenes(Request $request, Estado $estado) {
+    public function showOrdenes(Estado $estado) {
     
-        if($estado->id != 4){
-            $query = OrdenTrabajo::where('estado_id', $estado->id)->latest();
-        }else{
-            $query = OrdenTrabajo::where('estado_id', 1) 
-                        ->where('fecha_propuesta', '<', Carbon::now()->format('Y-m-d')) 
-                        ->latest();
-        }
-    
-        if ($request->filled('nombre_solicitante')) {
-            $query->where('nombre_solicitante', 'like', '%' . $request->input('nombre_solicitante') . '%');
-        }
-
-    
-        if ($request->filled('fecha_propuesta')) {
-            $query->where('fecha_propuesta', $request->input('fecha_propuesta'));
-        }
-
-        if ($request->filled('planta_id')) {
-            $query->where('planta_id', $request->input('planta_id'));
-        }
-
-        if ($request->filled('urgencia')) {
-            $query->where('urgencia', $request->input('urgencia'));
-        }
-
-        $query->orderBy('created_at', 'desc');
-        $ordenesTrabajo = $query->paginate(10)->appends($request->all());
-        $plantas = Planta::all();
-        
+        $ordenes = OrdenTrabajo::where('estado_id',$estado->id)->get();
         return view('mantenimiento.documentoOT.ordenes', [
-            'ordenes' => $ordenesTrabajo,
-            'filtro' => $request->search,
+            'ordenes' => $ordenes,
             'titulo' => $estado->estado,
             'estado' => $estado,
-            'plantas' => $plantas,
         ]);
     }
 

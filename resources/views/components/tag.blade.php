@@ -1,0 +1,1 @@
+<p {{ $attributes->merge(['class' => 'inline-block p-2 font-bold text-white rounded uppercase']) }}>{{ $label }}</p>

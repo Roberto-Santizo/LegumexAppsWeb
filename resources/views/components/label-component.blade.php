@@ -1,0 +1,1 @@
+<p><span class="uppercase font-bold">{{ $label }}: </span> {{ $value }}</p>

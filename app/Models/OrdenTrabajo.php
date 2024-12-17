@@ -8,6 +8,11 @@ use Illuminate\Database\Eloquent\Model;
 class OrdenTrabajo extends Model
 {
     use HasFactory;
+
+    protected $casts = [
+        'fecha_propuesta' => 'datetime',
+        'fecha_asignacion' => 'datetime'
+    ];
     
     protected $fillable = [
         'planta_id',

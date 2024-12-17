@@ -6,12 +6,16 @@ use Closure;
 use Illuminate\Contracts\View\View;
 use Illuminate\View\Component;
 
-class OrdenesdeTrabajo extends Component
+class Tag extends Component
 {
-    public $ots;
-    public function __construct($ots)
+    /**
+     * Create a new component instance.
+     */
+    public $label;
+
+    public function __construct($label)
     {
-        $this->ots = $ots;
+        $this->label = $label;
     }
 
     /**
@@ -19,6 +23,6 @@ class OrdenesdeTrabajo extends Component
      */
     public function render(): View|Closure|string
     {
-        return view('components.ordenesde-trabajo');
+        return view('components.tag');
     }
 }
