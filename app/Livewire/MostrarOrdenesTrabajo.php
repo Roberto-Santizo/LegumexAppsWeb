@@ -4,10 +4,13 @@ namespace App\Livewire;
 
 use App\Models\OrdenTrabajo;
 use Livewire\Component;
+use Livewire\WithoutUrlPagination;
+use Livewire\WithPagination;
 
 class MostrarOrdenesTrabajo extends Component
 {
-    public $ordenes;
+    use WithPagination;
+
     public $estado;
     public $labelEstado;
     public $open = false;
@@ -17,7 +20,10 @@ class MostrarOrdenesTrabajo extends Component
     public $planta;
     public $area;
 
-    protected $listeners = ['closeModal','eliminarOT','takeTrabajo'];
+    protected $listeners = ['closeModal', 'eliminarOT', 'takeTrabajo'];
+
+    // Resetear la página al buscar o filtrar datos
+    use WithPagination, WithoutUrlPagination;
 
     public function mount()
     {
@@ -26,15 +32,8 @@ class MostrarOrdenesTrabajo extends Component
             2 => 'bg-orange-500',
             3 => 'bg-green-500',
             4 => 'bg-red-500'
-
         ];
         $this->labelEstado = $labelsEstados[$this->estado->id];
-        $this->mostrarDatos();
-    }
-
-    public function mostrarDatos()
-    {
-        $this->ordenes = OrdenTrabajo::where('estado_id',$this->estado->id)->get();
     }
 
     public function asignarMecanicoModal(OrdenTrabajo $ot)
@@ -54,13 +53,13 @@ class MostrarOrdenesTrabajo extends Component
         $ot->fecha_asignacion = null;
 
         $ot->save();
-        $this->mostrarDatos();
+        $this->resetPage();
     }
 
     public function eliminarOT(OrdenTrabajo $ot)
     {
         $ot->delete();
-        $this->mostrarDatos();
+        $this->resetPage();
     }
 
     public function takeTrabajo(OrdenTrabajo $ot)
@@ -69,9 +68,9 @@ class MostrarOrdenesTrabajo extends Component
         $ot->fecha_asignacion = now();
         $ot->save();
 
-        $this->mostrarDatos();
+        $this->resetPage();
     }
-    
+
     public function openModalFilters()
     {
         $this->openFilters = !$this->openFilters;
@@ -79,25 +78,7 @@ class MostrarOrdenesTrabajo extends Component
 
     public function buscarDatos()
     {
-        $query = OrdenTrabajo::query();
-        if($this->nombre_solicitante != '')
-        {
-            $query->where('nombre_solicitante', 'like', '%' . $this->nombre_solicitante . '%');
-        }
-        
-        if($this->planta != '')
-        {
-            $query->where('planta_id', 'LIKE', '%' . $this->planta . '%');
-        }
-
-        if($this->area != '')
-        {
-            $query->whereHas('area', function ($q) {
-                $q->where('area', 'LIKE', '%' . $this->area . '%');
-            });
-        }
-        $query->where('estado_id',$this->estado->id);
-        $this->ordenes = $query->get();
+        $this->resetPage(); // Reinicia la paginación
     }
 
     public function borrarFiltros()
@@ -105,12 +86,35 @@ class MostrarOrdenesTrabajo extends Component
         $this->nombre_solicitante = '';
         $this->planta = '';
         $this->area = '';
-
-        $this->mostrarDatos();
+        $this->resetPage();
         $this->openModalFilters();
     }
+
     public function render()
     {
-        return view('livewire.mostrar-ordenes-trabajo');
+        $query = OrdenTrabajo::query();
+
+        if ($this->nombre_solicitante != '') {
+            $query->where('nombre_solicitante', 'like', '%' . $this->nombre_solicitante . '%');
+        }
+
+        if ($this->planta != '') {
+            $query->where('planta_id', 'LIKE', '%' . $this->planta . '%');
+        }
+
+        if ($this->area != '') {
+            $query->whereHas('area', function ($q) {
+                $q->where('area', 'LIKE', '%' . $this->area . '%');
+            });
+        }
+
+        $query->where('estado_id', $this->estado->id);
+
+        // Usa paginación en lugar de obtener todos los resultados
+        $ordenes = $query->paginate(10);
+
+        return view('livewire.mostrar-ordenes-trabajo', [
+            'ordenes' => $ordenes
+        ]);
     }
 }

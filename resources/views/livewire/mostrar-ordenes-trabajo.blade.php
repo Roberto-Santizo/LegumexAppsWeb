@@ -61,8 +61,10 @@
                             <i wire:click="asignarMecanicoModal({{ $ot }})" title="Asignar Mecánico"
                                 class="fa-solid fa-person-circle-plus icon-link"></i>
                         @elseif ($ot->estado_id == 1 && $ot->mecanico_id)
-                            <i wire:click='desasignarMecanico({{ $ot }})' title="Desasignar Mécanico"
+                            @hasanyrole('admin|adminmanto')
+                                <i wire:click='desasignarMecanico({{ $ot }})' title="Desasignar Mécanico"
                                 class="fa-solid fa-person-circle-xmark icon-link"></i>
+                            @endhasanyrole
                         @endif
 
                         @hasanyrole('admin|adminmanto')
@@ -95,6 +97,10 @@
     @endif
 
     <x-ordenes-trabajo-filters class="{{ ($openFilters) ? 'slide-in-active slide-in' : 'slide-out-active-right' }}" />
+
+    <div class="mt-10">
+        {{ $ordenes->links() }}
+    </div>
 </div>
 
 @push('scripts')
