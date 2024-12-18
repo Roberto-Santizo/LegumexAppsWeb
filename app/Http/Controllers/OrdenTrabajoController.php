@@ -173,9 +173,7 @@ class OrdenTrabajoController extends Controller
 
     public function showOrdenes(Estado $estado) {
     
-        $ordenes = OrdenTrabajo::where('estado_id',$estado->id)->get();
         return view('mantenimiento.documentoOT.ordenes', [
-            'ordenes' => $ordenes,
             'titulo' => $estado->estado,
             'estado' => $estado,
         ]);

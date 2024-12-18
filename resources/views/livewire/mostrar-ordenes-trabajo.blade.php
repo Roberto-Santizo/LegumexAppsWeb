@@ -1,9 +1,9 @@
 <div>
     @foreach ($ordenes as $ot)
         <div class="mt-5 flex flex-col md:flex-row justify-between p-5 rounded-xl shadow-xl border-l-8 ">
-            <div class="text-xs md:text-xl flex w-full justify-between">
+            <div class="text-xs md:text-xl flex flex-col md:flex-row w-full justify-between">
                 <div>
-                    <x-label-component :label="'DOC NO'" :value="$ot->correlativo" />
+                    <x-label-component :label="'DOC NO'" :value="$ot->correlativo"/>
                     <x-label-component :label="'NOMBRE DEL SOLICITANTE'" :value="$ot->nombre_solicitante" />
                     <x-label-component :label="'PLANTA'" :value="$ot->planta->name" />
                     <x-label-component :label="'ÁREA'" :value="$ot->area->area" />
@@ -38,7 +38,7 @@
                         @if ($ot->rechazada)
                             <x-tag :label="'Fue Rechazada'" class="bg-red-500" />
                         @endif
-                        
+
                         @if ($ot->fecha_propuesta < now()->format('Y-m-d') && $ot->estado_id != 3)
                             <x-tag :label="'ATRASADA'" class="bg-red-500" />
                         @elseif ($ot->fecha_propuesta == now()->format('Y-m-d') && $ot->estado_id != 3)
@@ -48,9 +48,75 @@
                 </div>
 
                 @if ($ot->estado_id != 5)
-                    <x-options-ordenes-trabajo :ot="$ot" />
+                    <div class="flex md:flex-col flex-row justify-center md:justify-normal items-center bg-gray-200 shadow rounded md:p-5 p-1 gap-5">
+                        <x-options-ordenes-trabajo :ot="$ot" />
+                        @if ($ot->estado_id == 1 && !$ot->mecanico_id)
+                            <i wire:click="asignarMecanicoModal({{ $ot }})" title="Asignar Mecánico"
+                                class="fa-solid fa-person-circle-plus icon-link"></i>
+                        @elseif ($ot->estado_id == 1 && $ot->mecanico_id)
+                            <i wire:click='desasignarMecanico({{ $ot }})' title="Desasignar Mécanico"
+                                class="fa-solid fa-person-circle-xmark icon-link"></i>
+                        @endif
+
+                        @hasanyrole('admin|adminmanto')
+                            @if ($ot->estado_id != 5)
+                                @if (!$ot->weburl)
+                                    <button type="button" class="icon-button" title="Eliminar Orden de Trabajo"
+                                        wire:click="$dispatch('eliminar',{{ $ot->id }})">
+                                        <i class="fa-solid fa-trash icon-link"></i>
+                                    </button>
+                                @endif
+                            @endif
+
+
+                            @if ($ot->estado_id == 2)
+                                <a href="{{ route('documentoOT.show', $ot) }}">
+                                    <i class="fa-solid fa-pen-to-square icon-link"></i>
+                                </a>
+                            @endif
+                        @endhasanyrole
+                    </div>
                 @endif
             </div>
         </div>
     @endforeach
+
+    @if ($open)
+        <livewire:mecanico-selector :ot="$otSelected" />
+    @endif
 </div>
+
+@push('scripts')
+    <script>
+        Livewire.on('eliminar', ot_id => {
+            Swal.fire({
+                title: 'Advertencia',
+                text: `La orden de trabajo será eliminada permanentemente ¿Desea eliminar la orden de trabajo?`,
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonText: 'Sí, continuar',
+                cancelButtonText: 'No'
+            }).then((result) => {
+                Livewire.dispatch('eliminarOT', {
+                    ot: ot_id
+                });
+            });
+        });
+
+        Livewire.on('tomarTrabajo', ot_id => {
+            Swal.fire({
+                title: 'Advertencia',
+                text: `¿Esta seguro que desea tomar la orden? No podrá ser revertido solamente por el administrador`,
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonText: 'Sí, continuar',
+                cancelButtonText: 'No'
+            }).then((result) => {
+                Livewire.dispatch('takeTrabajo', {
+                    ot: ot_id
+                });
+            });
+        });
+    </script>
+    </script>
+@endpush

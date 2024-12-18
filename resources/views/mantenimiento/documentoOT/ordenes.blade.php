@@ -10,6 +10,6 @@ Ordenes de Trabajo {{ $titulo }}
 
 <x-alertas />
 
-<livewire:mostrar-ordenes-trabajo :ordenes="$ordenes" :estado="$estado"/>
+<livewire:mostrar-ordenes-trabajo :estado="$estado"/>
 
 @endsection

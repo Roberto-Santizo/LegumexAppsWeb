@@ -13,10 +13,13 @@ class LabelComponent extends Component
      */
     public $label;
     public $value;
-    public function __construct($label,$value)
+    public $spanColor;
+
+    public function __construct($label,$value,$spanColor = null)
     {
         $this->label = $label;
         $this->value = $value;
+        $this->spanColor = $spanColor ?? 'text-black';
     }
 
     /**

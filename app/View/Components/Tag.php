@@ -12,10 +12,12 @@ class Tag extends Component
      * Create a new component instance.
      */
     public $label;
+    public $spanColor;
 
-    public function __construct($label)
+    public function __construct($label,$spanColor = null)
     {
         $this->label = $label;
+        $this->spanColor = $spanColor ?? 'text-white';
     }
 
     /**
