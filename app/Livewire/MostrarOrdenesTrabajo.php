@@ -11,7 +11,11 @@ class MostrarOrdenesTrabajo extends Component
     public $estado;
     public $labelEstado;
     public $open = false;
+    public $openFilters = false;
     public $otSelected;
+    public $nombre_solicitante;
+    public $planta;
+    public $area;
 
     protected $listeners = ['closeModal','eliminarOT','takeTrabajo'];
 
@@ -66,7 +70,44 @@ class MostrarOrdenesTrabajo extends Component
         $ot->save();
 
         $this->mostrarDatos();
+    }
+    
+    public function openModalFilters()
+    {
+        $this->openFilters = !$this->openFilters;
+    }
 
+    public function buscarDatos()
+    {
+        $query = OrdenTrabajo::query();
+        if($this->nombre_solicitante != '')
+        {
+            $query->where('nombre_solicitante', 'like', '%' . $this->nombre_solicitante . '%');
+        }
+        
+        if($this->planta != '')
+        {
+            $query->where('planta_id', 'LIKE', '%' . $this->planta . '%');
+        }
+
+        if($this->area != '')
+        {
+            $query->whereHas('area', function ($q) {
+                $q->where('area', 'LIKE', '%' . $this->area . '%');
+            });
+        }
+        $query->where('estado_id',$this->estado->id);
+        $this->ordenes = $query->get();
+    }
+
+    public function borrarFiltros()
+    {
+        $this->nombre_solicitante = '';
+        $this->planta = '';
+        $this->area = '';
+
+        $this->mostrarDatos();
+        $this->openModalFilters();
     }
     public function render()
     {

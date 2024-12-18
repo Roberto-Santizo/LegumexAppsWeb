@@ -1,9 +1,15 @@
 <div>
-    @foreach ($ordenes as $ot)
+    @role('admin|adminagricola')
+        <div class="flex justify-between flex-row items-center gap-10">
+            <x-link-volver ruta="documentoOT" class="bg-orange-500 hover:bg-orange-600" />
+            <i class="fa-solid fa-bars icon-link" wire:click='openModalFilters()'></i>
+        </div>
+    @endrole
+    @forelse ($ordenes as $ot)
         <div class="mt-5 flex flex-col md:flex-row justify-between p-5 rounded-xl shadow-xl border-l-8 ">
             <div class="text-xs md:text-xl flex flex-col md:flex-row w-full justify-between">
                 <div>
-                    <x-label-component :label="'DOC NO'" :value="$ot->correlativo"/>
+                    <x-label-component :label="'DOC NO'" :value="$ot->correlativo" />
                     <x-label-component :label="'NOMBRE DEL SOLICITANTE'" :value="$ot->nombre_solicitante" />
                     <x-label-component :label="'PLANTA'" :value="$ot->planta->name" />
                     <x-label-component :label="'ÁREA'" :value="$ot->area->area" />
@@ -48,7 +54,8 @@
                 </div>
 
                 @if ($ot->estado_id != 5)
-                    <div class="flex md:flex-col flex-row justify-center md:justify-normal items-center bg-gray-200 shadow rounded md:p-5 p-1 gap-5">
+                    <div
+                        class="flex md:flex-col flex-row justify-center md:justify-normal items-center bg-gray-200 shadow rounded md:p-5 p-1 gap-5">
                         <x-options-ordenes-trabajo :ot="$ot" />
                         @if ($ot->estado_id == 1 && !$ot->mecanico_id)
                             <i wire:click="asignarMecanicoModal({{ $ot }})" title="Asignar Mecánico"
@@ -79,11 +86,15 @@
                 @endif
             </div>
         </div>
-    @endforeach
+    @empty
+        <p class="text-center uppercase font-bold text-2xl">No existen ordenes de trabajo</p>
+    @endforelse
 
     @if ($open)
         <livewire:mecanico-selector :ot="$otSelected" />
     @endif
+
+    <x-ordenes-trabajo-filters class="{{ ($openFilters) ? 'slide-in-active slide-in' : 'slide-out-active-right' }}" />
 </div>
 
 @push('scripts')
