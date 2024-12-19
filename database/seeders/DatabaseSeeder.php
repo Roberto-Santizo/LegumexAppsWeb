@@ -2,9 +2,6 @@
 
 namespace Database\Seeders;
 
-use App\Http\Controllers\HerramientasController;
-use App\Models\User;
-// use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 
 class DatabaseSeeder extends Seeder
@@ -24,5 +21,11 @@ class DatabaseSeeder extends Seeder
         $this->call(ElementosSeeder::class);
         $this->call(HerramientasSeeder::class);
         $this->call(SupervisoresSeeder::class);
+
+        $this->call(CultivosSeeder::class);
+        $this->call(FincaSeeder::class);
+        $this->call(LoteSeeder::class);
+        $this->call(CultivosSeeder::class);
+        $this->call(TareasCosechaSeeder::class);
     }
 }
