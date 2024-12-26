@@ -9,12 +9,14 @@ use Illuminate\View\Component;
 class InsumosTable extends Component
 {
     public $insumos;
+    public $asignacion;
     /**
      * Create a new component instance.
      */
-    public function __construct($insumos)
+    public function __construct($insumos,$asignacion = false)
     {
         $this->insumos = $insumos;
+        $this->asignacion = $asignacion;
     }
 
     /**
