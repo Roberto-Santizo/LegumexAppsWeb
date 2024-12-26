@@ -40,6 +40,10 @@
 
         <div class="mt-5 md:w-1/2 w-full shadow-xl rounded-lg p-5 mb-5">
             <div id="usuariosAsignadosContainer" class="flex flex-col gap-2 mt-5 overflow-y-auto h-96 mb-5">
+                @if ($asignados->count() > 0)
+                    <h1 class="text-2xl font-bold">Empleados Asignados: </h1>
+                @endif
+
                 @forelse ($asignados as $asignado)
                     <div wire:click="$dispatch('desAsignar',{{ $asignado->id }})"
                         class="bg-green-moss hover:bg-green-meadow btn">
