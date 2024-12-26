@@ -108,7 +108,7 @@ class MostrarOrdenesTrabajo extends Component
             });
         }
 
-        $query->where('estado_id', $this->estado->id);
+        $query->where('estado_id', $this->estado->id)->orderBy('id','DESC');
 
         // Usa paginación en lugar de obtener todos los resultados
         $ordenes = $query->paginate(10);

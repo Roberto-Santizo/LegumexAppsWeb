@@ -16,6 +16,9 @@
 
             <div
                 class="{{ $successMessage ? 'row-start-2' : 'row-start-1' }} col-span-2 row-span-3 md:text-base text-xs">
+                @role('admin')
+                    <p><span class="uppercase font-bold">ID:</span> {{ $tarea->id }}</p>
+                @endrole
                 <p><span class="uppercase font-bold">Nombre del Lote:</span> {{ $tarea->lote->nombre }}</p>
                 <p><span class="uppercase font-bold">Semana:</span> {{ $plansemanalfinca->semana }}</p>
                 <p><span class="uppercase font-bold">Tarea:</span> {{ $tarea->tarea->tarea }}</p>
@@ -71,7 +74,7 @@
                     <div class="flex flex-col justify-center items-center gap-5">
                         @if (!$tarea->asignacion)
                             <div class="flex md:flex-col gap-10 md:gap-2 flex-row mt-5 md:mt-0 ">
-                                @if ($lote && !$tarea->greater_date)
+                                @if ($lote)
                                     <a
                                         href="{{ route('planSemanal.Asignar', [$lote, $plansemanalfinca, $tarea->tarea, $tarea]) }}">
                                         <i title="Asignar Empleados"
