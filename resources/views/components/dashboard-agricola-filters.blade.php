@@ -2,7 +2,7 @@
     <div class="w-80 md:w-full max-w-md h-full bg-white p-10 shadow-xl overflow-y-auto ">
         <div class="flex flex-row justify-between items-center mb-6">
             <h2 class="text-2xl font-bold">Filtros</h2>
-            <i class="fa-solid fa-xmark icon-link" wire:click='openModal()'></i>
+            <i class="fa-solid fa-xmark icon-link" wire:click='closeModal()'></i>
         </div>
 
         <div class="space-y-6">

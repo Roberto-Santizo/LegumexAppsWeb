@@ -86,7 +86,7 @@ class DashboardAgricola extends Component
     public function mostrarDatos()
     {
         $semana = $this->semana_actual;
-
+        $this->horasDron = 0;
         $this->tareas->map(function ($tarea) {
             if ($tarea->asignacion && $tarea->asignacion->use_dron && $tarea->cierre) {
                 $this->horasDron += round($tarea->asignacion->created_at->diffInHours($tarea->cierre->created_at), 2);
