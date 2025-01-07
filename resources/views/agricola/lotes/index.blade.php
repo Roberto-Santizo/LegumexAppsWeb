@@ -9,7 +9,10 @@ Lotes por Finca
 <x-alertas />
 
 
-<x-link route="lotes.create" text="Crear Lote" class="btn bg-green-moss hover:bg-green-meadow"/>
+<div class="flex justify-between mt-10">
+    <x-link route="lotes.consulta" text="Consultar Lote" class="btn bg-green-moss hover:bg-green-meadow"/>
+    <x-link route="lotes.create" text="Crear Lote" class="btn bg-green-moss hover:bg-green-meadow"/>
+</div>
 
 <div class="overflow-x-auto mt-10">
     <table class="tabla">

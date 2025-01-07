@@ -4,8 +4,7 @@
     @enderror
 
     @forelse ($tareas as $tarea)
-        <div
-            class="flex flex-col md:grid md:grid-cols-3 md:grid-rows-4 mt-5 justify-between p-5 rounded-xl shadow-xl border-l-8 border-green-500 ">
+        <div class="flex flex-col md:grid md:grid-cols-3 md:grid-rows-4 mt-5 justify-between p-5 rounded-xl shadow-xl border-l-8 border-green-500 ">
             @if ($successMessage && $successTareaLoteId === $tarea->id)
                 <div
                     class="border border-green-500 bg-green-100 text-green-700 font-bold uppercase p-2 mt-5 mb-5  text-sm flex flex-row gap-2 items-center">

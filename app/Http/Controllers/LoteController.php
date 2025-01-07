@@ -51,6 +51,11 @@ class LoteController extends Controller
         return redirect()->route('lotes')->with('success', 'Lote creado correctamente');
     }
 
+    public function consultaLotes()
+    {
+        return view('agricola.lotes.consulta');
+    }
+
     // public function edit(Lote $lote)
     // {
     //     $cdps = ControlPlantacion::all();

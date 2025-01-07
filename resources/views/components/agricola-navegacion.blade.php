@@ -38,45 +38,45 @@
 
 
         @hasanyrole('adminagricola|auxfinca')
-        <a href="{{ route('dashboard') }}"
-            class=" {{  Route::is('dashboard*') ? 'bg-green-moss' : '' }} sidebar-link hover:bg-green-moss">
-            <i class="fa-solid fa-house"></i>
-            <span class="text-md md:text-xs uppercase font-bold">Dashboard</span>
-        </a>
+            <a href="{{ route('dashboard') }}"
+                class=" {{ Route::is('dashboard*') ? 'bg-green-moss' : '' }} sidebar-link hover:bg-green-moss">
+                <i class="fa-solid fa-house"></i>
+                <span class="text-md md:text-xs uppercase font-bold">Dashboard</span>
+            </a>
         @endhasanyrole
 
         <a href="{{ route('planSemanal') }}"
-            class="{{  Route::is('planSemanal*') ? 'bg-green-moss' : '' }} sidebar-link hover:bg-green-moss">
+            class="{{ Route::is('planSemanal*') ? 'bg-green-moss' : '' }} sidebar-link hover:bg-green-moss">
             <i class="fa-solid fa-calendar-check"></i>
             <span class="sidebar-text">Tareas Finca</span>
         </a>
 
         @hasanyrole('admin|adminagricola')
-        <a href="{{ route('tareas') }}"
-            class="{{  Route::is('tareas*') ? 'bg-green-moss' : '' }} sidebar-link hover:bg-green-moss">
-            <i class="fa-solid fa-list-check"></i>
-            <span class="sidebar-text">Tareas</span>
-        </a>
+            <a href="{{ route('tareas') }}"
+                class="{{ Route::is('tareas*') ? 'bg-green-moss' : '' }} sidebar-link hover:bg-green-moss">
+                <i class="fa-solid fa-list-check"></i>
+                <span class="sidebar-text">Tareas</span>
+            </a>
 
-        <a href="{{ route('lotes') }}"
-            class="{{  Route::is('lotes*') ? 'bg-green-moss' : '' }} sidebar-link hover:bg-green-moss">
-            <i class="fa-solid fa-map"></i>
-            <span class="sidebar-text">Lotes</span>
-        </a>
+            <a href="{{ route('lotes') }}"
+                class="{{ Route::is('lotes*') ? 'bg-green-moss' : '' }} sidebar-link hover:bg-green-moss">
+                <i class="fa-solid fa-map"></i>
+                <span class="sidebar-text">Lotes</span>
+            </a>
         @endhasanyrole
 
         <a href="{{ route('insumos') }}"
-            class="{{  Route::is('insumos*') ? 'bg-green-moss' : '' }} sidebar-link hover:bg-green-moss">
+            class="{{ Route::is('insumos*') ? 'bg-green-moss' : '' }} sidebar-link hover:bg-green-moss">
             <i class="fa-solid fa-warehouse"></i>
             <span class="sidebar-text">Insumos</span>
         </a>
 
         @role('admin')
-        <a href="{{ route('usuariosFincas') }}"
-            class="{{  Route::is('usuariosFincas*') ? 'bg-green-moss' : '' }} sidebar-link hover:bg-green-moss">
-            <i class="fa-solid fa-users"></i>
-            <span class="sidebar-text">Ingresos Personal</span>
-        </a>
+            <a href="{{ route('usuariosFincas') }}"
+                class="{{ Route::is('usuariosFincas*') ? 'bg-green-moss' : '' }} sidebar-link hover:bg-green-moss">
+                <i class="fa-solid fa-users"></i>
+                <span class="sidebar-text">Ingresos Personal</span>
+            </a>
         @endrole
     </nav>
 </div>

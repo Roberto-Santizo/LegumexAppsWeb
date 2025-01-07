@@ -53,7 +53,10 @@ Route::group(['middleware' => ['auth', 'role:admin|adminagricola|auxrrhh'], 'pre
     Route::post('/lotes/create', [LoteController::class, 'store'])->name('lotes.store');
     Route::patch('/lotes/update/{lote}', [LoteController::class, 'update'])->name('lotes.update');
     Route::delete('/{lote}', [LoteController::class, 'destroy'])->name('lotes.destroy');
-    
+
+    //Historico de lotes
+    Route::get('/lotes/consulta',[LoteController::class,'consultaLotes'])->name('lotes.consulta');
+
     //Cultivos
     Route::get('/cultivos', [CultivoController::class, 'index'])->name('cultivos');
     Route::get('/cultivos/create', [CultivoController::class, 'create'])->name('cultivos.create');
@@ -88,6 +91,8 @@ Route::group(['middleware' => ['auth', 'role:admin|adminagricola|auxrrhh'], 'pre
     
     //Usuarios Fincas
     Route::get('/finca/ingresos', [UsuariosFincaController::class, 'index'])->name('usuariosFincas');
+
+    
 });
 
 Route::group(['middleware' => ['auth', 'role:admin|adminagricola|auxfinca'], 'prefix' => 'agricola'], function() {
