@@ -28,6 +28,7 @@ class CrearTareaLote extends Component
     public $open = false;
     public $openEditing = false;
     public $editingInsumo;
+    public $year;
 
     public $tareasFiltradas;
     protected $listeners = ['closeModal','agregarInsumo','editInsumos','closeModalCantidad'];
@@ -43,8 +44,9 @@ class CrearTareaLote extends Component
     public function mount()
     {
         $this->semana = Carbon::now()->weekOfYear;
+        $this->year = Carbon::now()->year;
         $this->tareas = Tarea::all();
-        $this->planes = PlanSemanalFinca::where('semana','>=',$this->semana)->get();
+        $this->planes = PlanSemanalFinca::where('semana','>=',$this->semana)->where('year','>=',$this->year)->get();
         $this->lotes = Lote::all();
         $this->tareasFiltradas = $this->tareas;
     }
