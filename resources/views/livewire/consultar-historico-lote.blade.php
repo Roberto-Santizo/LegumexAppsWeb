@@ -31,7 +31,8 @@
     <div wire:loading.remove>
         @if ($lote_id)
             <div class="w-full">
-                <h2 class="bg-green-moss mb-5 p-1 text-center font-bold text-white uppercase text-2xl">Información de Lote {{ $selected_lote->nombre }}</h2>
+                <h2 class="bg-green-moss mb-5 p-1 text-center font-bold text-white uppercase text-2xl">Información de
+                    Lote {{ $selected_lote->nombre }}</h2>
             </div>
         @endif
 
@@ -64,7 +65,7 @@
                                     {{ $tarea->cierre
                                         ? round($tarea->asignacion->created_at->diffInHours($tarea->cierre->created_at), 3)
                                         : 'SIN
-                                                                RENDIMIENTO' }}
+                                                                                                    RENDIMIENTO' }}
                                 </td>
                                 <td class="campo">
                                     {{ $tarea->cierre
