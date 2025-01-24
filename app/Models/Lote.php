@@ -30,4 +30,9 @@ class Lote extends Model
     {
         return $this->hasMany(TareasLote::class,'lote_id','id');
     }
+
+    public function tareasCosecha()
+    {
+        return $this->hasMany(TareaLoteCosecha::class,'lote_id','id');
+    }
 }

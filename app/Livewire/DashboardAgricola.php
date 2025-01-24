@@ -47,6 +47,7 @@ class DashboardAgricola extends Component
         $PermisoFinca = [
             'tehuya' => 4,
             'alameda' => 8,
+            'linda' => 5
         ];
         $user = auth()->user();
         $finca = $user->getAllPermissions()->first()->name;
@@ -78,7 +79,9 @@ class DashboardAgricola extends Component
             $this->tareasCosecha = TareaLoteCosecha::with('asignaciones')->get();
             $this->planes = PlanSemanalFinca::where('semana', $this->semana_actual)->get();
             $this->usuarios = EmpleadoFinca::whereNotIn('position_id', [15, 9])->get();
-            $this->tareas = TareasLote::all();
+            $this->tareas = TareasLote::whereHas('plansemanal',function ($query){
+                $query->where('semana',$this->semana_actual);
+            })->get();
         }
 
         $this->mostrarDatos();

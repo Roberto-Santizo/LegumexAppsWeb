@@ -52,13 +52,13 @@ class PlanSemanalFincasIndex extends Component
         }
         if ($userRole == 'auxfinca') {
             $query->whereHas('finca', function ($query) use ($finca) {
-                $query->where('finca', 'LIKE', '%' . $finca);
+                $query->where('finca', 'LIKE', '%' . $finca . '%');
             });
         }
 
 
         $planes = $query
-            ->orderByRaw('year DESC')  
+            ->orderByRaw('year DESC')
             ->orderBy('semana', 'DESC')
             ->paginate(10);
 

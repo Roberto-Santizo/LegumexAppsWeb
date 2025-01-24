@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Exports\LoteHistoricoTareasExport;
 use Carbon\Carbon;
 use App\Models\PlanSemanalFinca;
 use App\Exports\PlansemanalExport;
@@ -9,6 +10,7 @@ use Maatwebsite\Excel\Facades\Excel;
 use App\Exports\PlanillaSemanalExport;
 use App\Exports\PlanControlPresupuestoExport;
 use App\Exports\UsuariosCosechaExport;
+use App\Models\Lote;
 use App\Models\TareaLoteCosecha;
 
 class ReporteController extends Controller 
@@ -35,5 +37,11 @@ class ReporteController extends Controller
     {
         $fileName = 'Control de cosechas.xlsx';
         return Excel::download(new UsuariosCosechaExport($tarealotecosecha),$fileName);
+    }
+
+    public function historicoLote(Lote $lote)
+    {
+       $fileName = 'Control de tareas historico ' . $lote->nombre . '.xlsx';
+       return Excel::download(new LoteHistoricoTareasExport($lote),$fileName);
     }
 }

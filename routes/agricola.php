@@ -56,6 +56,7 @@ Route::group(['middleware' => ['auth', 'role:admin|adminagricola|auxrrhh'], 'pre
 
     //Historico de lotes
     Route::get('/lotes/consulta',[LoteController::class,'consultaLotes'])->name('lotes.consulta');
+    Route::get('/lotes/historico/{lote}',[ReporteController::class,'historicoLote'])->name('reporte.LotesHistorico');
 
     //Cultivos
     Route::get('/cultivos', [CultivoController::class, 'index'])->name('cultivos');

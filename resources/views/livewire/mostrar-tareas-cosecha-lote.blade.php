@@ -9,6 +9,7 @@
             </div>
             @endif
             <div class="text-xs md:text-xl">
+                <p><span class="uppercase font-bold">ID: </span> {{ $tarea->id }}</p>
                 <p><span class="uppercase font-bold">Nombre del Lote:</span> {{ $tarea->lote->nombre }}</p>
                 <p><span class="uppercase font-bold">Semana:</span> {{ $plansemanalfinca->semana }}</p>
                 <p><span class="uppercase font-bold">Tarea:</span> {{ $tarea->tarea->tarea }}</p>

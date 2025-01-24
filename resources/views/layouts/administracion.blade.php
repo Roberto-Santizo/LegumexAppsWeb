@@ -43,7 +43,7 @@
     <header
         class="header flex flex-row h-24 justify-between bg-gray-400  p-5 text-white w-full fixed top-0 left-0 z-10 items-center">
         <div class="w-32 flex flex-row">
-            <img src="{{ asset('img/LOGO_LX-diciembre.png'); }}" alt="Imagen Login de Usuarios" class="hidden md:block">
+            <img src="{{ asset('img/LOGO_LX.png') }}" alt="Imagen Login de Usuarios" class="hidden md:block">
             <div class="flex flex-row gap-5 justify-center items-center">
                 <p class="text-4xl font-bold">LegumexApps</p>
             </div>
@@ -112,5 +112,4 @@
     </script>
 
 </body>
-
 </html>

@@ -60,23 +60,50 @@ class AsignarEmpleadosTarea extends Component
     private function actualizarIngresos()
     {
         $hoy = Carbon::today();
-        $this->ingresos = EmpleadoIngresado::whereDate('punch_time', $hoy)
-        ->where('terminal_id',$this->plansemanalfinca->finca->terminal_id)
-        ->get()
-        ->map(function ($ingreso) use ($hoy) {
-            $asignaciones = UsuarioTareaLote::where('usuario_id', $ingreso->emp_id)
-                ->whereDate('created_at', $hoy)
-                ->get();
-
-            $horas_totales = $asignaciones->sum(function ($asignacion) {
-                return $asignacion->tarea_lote->horas / ($asignacion->tarea_lote->users->count());
+        if($this->plansemanalfinca->finca->id !=5)
+        {
+            $this->ingresos = EmpleadoIngresado::whereDate('punch_time', $hoy)
+            ->where('terminal_id',$this->plansemanalfinca->finca->terminal_id)
+            ->get()
+            ->map(function ($ingreso) use ($hoy) {
+                $asignaciones = UsuarioTareaLote::where('usuario_id', $ingreso->emp_id)
+                    ->whereDate('created_at', $hoy)
+                    ->get();
+    
+                $horas_totales = $asignaciones->sum(function ($asignacion) {
+                    return $asignacion->tarea_lote->horas / ($asignacion->tarea_lote->users->count());
+                });
+    
+                $ingreso->asignaciones = $asignaciones;
+                $ingreso->horas_totales = $horas_totales;
+    
+                return $ingreso;
             });
+        }else{ 
+            $this->ingresos = EmpleadoIngresado::whereDate('punch_time', $hoy)
+                ->where(function ($query) {
+                    $query->where('terminal_id', '1008')
+                        ->orWhere('terminal_id', '1009');
+                })
+                ->get()
+                ->map(function ($ingreso) use ($hoy) {
+                    $asignaciones = UsuarioTareaLote::where('usuario_id', $ingreso->emp_id)
+                        ->whereDate('created_at', $hoy)
+                        ->get();
 
-            $ingreso->asignaciones = $asignaciones;
-            $ingreso->horas_totales = $horas_totales;
+                    $horas_totales = $asignaciones->sum(function ($asignacion) {
+                        return optional($asignacion->tarea_lote)->horas / 
+                            (optional($asignacion->tarea_lote->users)->count() ?: 1);
+                    });
 
-            return $ingreso;
-        });
+                    $ingreso->asignaciones = $asignaciones;
+                    $ingreso->horas_totales = $horas_totales;
+
+                    return $ingreso;
+                });
+
+        }
+        
 
         $this->asignados = $this->tarealote->users; 
         $asignadosIds = $this->asignados->pluck('usuario_id')->toArray();
