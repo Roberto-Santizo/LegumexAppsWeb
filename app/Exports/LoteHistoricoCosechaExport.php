@@ -48,17 +48,16 @@ class LoteHistoricoCosechaExport implements FromCollection, WithHeadings, WithTi
                         return $asignacion;
                     }
                 });
+
+                foreach ($asignaciones as $asignacion) {
+                    $rows->push([
+                        'LOTE' => $this->lote->nombre,
+                        'TAREA' => 'COSECHA',
+                        'FECHA COSECHA' =>  $asignacion->fechaCosecha,
+                        'TOTAL COSECHADO (LBS)' => $asignacion->totalCosechadoPlanta,
+                    ]);
+                }
             }
-        }
-
-        foreach ($asignaciones as $asignacion) {
-
-            $rows->push([
-                'LOTE' => $this->lote->nombre,
-                'TAREA' => 'COSECHA',
-                'FECHA COSECHA' =>  $asignacion->fechaCosecha,
-                'TOTAL COSECHADO' => $asignacion->totalCosechadoPlanta,
-            ]);
         }
 
         return $rows;
@@ -66,13 +65,13 @@ class LoteHistoricoCosechaExport implements FromCollection, WithHeadings, WithTi
 
     public function headings(): array
     {
-        return ['LOTE', 'TAREA', 'FECHA DE COSECHA', 'TOTAL COSECHADO'];
+        return ['LOTE', 'TAREA', 'FECHA DE COSECHA', 'TOTAL COSECHADO LBS)'];
     }
 
     public function styles(Worksheet $sheet)
     {
         // Aplica estilos al rango A1:H1 (encabezados)
-        $sheet->getStyle('A1:E1')->applyFromArray([
+        $sheet->getStyle('A1:D1')->applyFromArray([
             'font' => [
                 'bold' => true,
                 'color' => ['argb' => 'FFFFFF'],

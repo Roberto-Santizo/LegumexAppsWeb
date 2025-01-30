@@ -16,7 +16,8 @@ class CrearTareaLote extends Component
     public $planes;
     public $lotes;
     public $semana;
-    
+    public $extraordinaria;
+
     public $personas;
     public $presupuesto;
     public $horas;
@@ -34,10 +35,10 @@ class CrearTareaLote extends Component
     protected $rules = [
         'personas' => 'required|numeric|min:1',
         'presupuesto' => 'required|numeric|gt:0',
-        'horas' => 'required|numeric|gt:0',
         'tarea_id' => 'required',
         'plan_semanal_finca_id' => 'required',
         'lote_id' => 'required',
+        'extraordinaria' => 'required'
     ];
 
     public function mount()
@@ -50,6 +51,10 @@ class CrearTareaLote extends Component
         $this->tareasFiltradas = $this->tareas;
     }
 
+    public function calcPresupuesto()
+    {
+        $this->presupuesto = (float)$this->horas * 12.728;
+    }
 
     public function buscarTarea()
     {
@@ -76,12 +81,12 @@ class CrearTareaLote extends Component
                 'plan_semanal_finca_id' => $datos['plan_semanal_finca_id'],
                 'lote_id' => $datos['lote_id'],
                 'tarea_id' => $datos['tarea_id'],
+                'horas' => $this->horas,
                 'personas' => $datos['personas'],   
                 'presupuesto' => $datos['presupuesto'],
-                'horas' => $datos['horas'],
                 'cupos' => $datos['personas'],
                 'horas_persona' => $datos['personas'],
-                'extraordinaria' => 1
+                'extraordinaria' => $datos['extraordinaria']
 
             ]);
 

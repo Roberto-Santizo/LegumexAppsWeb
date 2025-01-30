@@ -235,7 +235,7 @@ class OrdenTrabajoController extends Controller
                 'status' => 200
             ];
 
-            $this->EmailService->sendNotificationNewOT($orden_trabajo);
+            // $this->EmailService->sendNotificationNewOT($orden_trabajo);
             if ($request->header('X-Requested-With') === 'XMLHttpRequest') {
                 return response()->json($response, 200);
             } else {

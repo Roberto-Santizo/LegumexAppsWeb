@@ -29,7 +29,7 @@ class UsuarioTareaDetalleExport implements FromCollection, WithHeadings, WithTit
         $this->plansemanal->tareasTotales->each(function ($tarea) use ($rows) {
             if ($tarea->asignacion && !$tarea->asignacion->use_dron) {
                 if ($tarea->cierresParciales->count() > 0) {
-                    if($tarea->cierre){
+                    if ($tarea->cierre) {
                         $this->distribucionPorEmpleado($tarea, $rows);
                     }
                 } else {
@@ -184,111 +184,112 @@ class UsuarioTareaDetalleExport implements FromCollection, WithHeadings, WithTit
     protected function distribucionPorEmpleado($tarea, $rows)
     {
         try {
-                $fechas = [];
+            $fechas = [];
 
-                $primerFecha = $tarea->asignacion->created_at;
-                $ultimaFecha = $tarea->cierre->created_at;
-                $fechas[] = $primerFecha;
-                $fechas[] = $ultimaFecha;
+            $primerFecha = $tarea->asignacion->created_at;
+            $ultimaFecha = $tarea->cierre->created_at;
+            $fechas[] = $primerFecha;
+            $fechas[] = $ultimaFecha;
 
-                $fechasInicio = $tarea->cierresParciales()->pluck('fecha_inicio')->toArray();
-                $fechasFinal = $tarea->cierresParciales()->pluck('fecha_final')->toArray();
+            $fechasInicio = $tarea->cierresParciales()->pluck('fecha_inicio')->toArray();
+            $fechasFinal = $tarea->cierresParciales()->pluck('fecha_final')->toArray();
 
-                $fechasEntrada = collect(array_merge($fechasInicio, $fechasFinal))
-                    ->map(fn($fecha) => date('Y-m-d', strtotime($fecha)))
-                    ->unique()
-                    ->sort()
-                    ->values()
-                    ->toArray();
+            $fechasEntrada = collect(array_merge($fechasInicio, $fechasFinal))
+                ->map(fn($fecha) => date('Y-m-d', strtotime($fecha)))
+                ->unique()
+                ->sort()
+                ->values()
+                ->toArray();
 
-                $fechas = collect(array_merge($fechasInicio, $fechasFinal, $fechas))
-                    ->sort()
-                    ->values();
+            $fechas = collect(array_merge($fechasInicio, $fechasFinal, $fechas))
+                ->sort()
+                ->values();
 
-                $fechasAgrupadas = $fechas->groupBy(function ($fecha) {
-                    return $fecha->toDateString();
-                });
+            $fechasAgrupadas = $fechas->groupBy(function ($fecha) {
+                return $fecha->toDateString();
+            });
 
-                $fechasAgrupadas->map(function ($fechas) {
-                    $horas_totales = $fechas[0]->diffInHours($fechas[1]);
-                    $fechas->horas_totales = $horas_totales;
-                });
+            $fechasAgrupadas->map(function ($fechas) {
+                $horas_totales = $fechas[0]->diffInHours($fechas[1]);
+                $fechas->horas_totales = $horas_totales;
+            });
 
-                $entradas_usuarios = [];
+            $entradas_usuarios = [];
 
-                $tarea->users->map(function ($user) use (&$entradas_usuarios, &$fechasEntrada) {
-                    foreach ($fechasEntrada as $fecha) {
-                        $entrada = EmpleadoIngresado::whereDate('punch_time', $fecha)
-                            ->where('emp_id', $user->usuario_id)
-                            ->exists();
+            $tarea->users->map(function ($user) use (&$entradas_usuarios, &$fechasEntrada) {
+                foreach ($fechasEntrada as $fecha) {
+                    $entrada = EmpleadoIngresado::whereDate('punch_time', $fecha)
+                        ->where('emp_id', $user->usuario_id)
+                        ->exists();
 
-                        if ($entrada) {
-                            if (!isset($entradas_usuarios[$fecha])) {
-                                $entradas_usuarios[$fecha] = 0;
-                            }
-                            $entradas_usuarios[$fecha]++;
+                    if ($entrada) {
+                        if (!isset($entradas_usuarios[$fecha])) {
+                            $entradas_usuarios[$fecha] = 0;
                         }
-                    }
-                });
-
-                $tarea->users->map(function ($user) use (&$fechasEntrada, &$fechasAgrupadas) {
-                    $entradas = [];
-                    $horasTotales = 0;
-                    foreach ($fechasEntrada as $fecha) {
-                        $entrada = EmpleadoIngresado::whereDate('punch_time', $fecha)->where('emp_id', $user->usuario_id)->get();
-                        if (!$entrada->isEmpty()) {
-                            $horas = $fechasAgrupadas[$fecha]->horas_totales;
-                            $horasTotales += $fechasAgrupadas[$fecha]->horas_totales;
-                            $entradas[$fecha] = ['estado' => true, 'horas' => $horas];
-                        } else {
-                            $entradas[$fecha] = ['estado' => false, 'horas' => 0];
-                        }
-                    }
-
-                    $user->horasTotales = $horasTotales;
-                    $user->entradas = $entradas;
-                    return $user;
-                });
-
-                $tarea->users->map(function ($user) use ($tarea) {
-                    $entradas = [];
-                    foreach ($user->entradas as $key => $entrada) {
-                        $porcentaje_diario = $entrada['horas'] / $tarea->users->sum('horasTotales');
-                        $entradas[$key]['estado'] = $entrada['estado'];
-                        $entradas[$key]['horas'] = $entrada['horas'];
-                        $entradas[$key]['horas_diarias'] =  $porcentaje_diario * $tarea->horas;;
-                        $entradas[$key]['monto_diario'] = $porcentaje_diario * $tarea->presupuesto;
-                    }
-
-                    $user->entradas = $entradas;
-                    return $user;
-                });
-
-
-                foreach ($tarea->users as $asignacion) {
-                    foreach ($asignacion->entradas as $key => $entrada) {
-                        $fechaCarbon = Carbon::parse($key);
-                        $entradaBiometrico = $this->obtenerPunchByKey('asc', $asignacion, $key);
-                        $salidaBiometrico = $this->obtenerPunchByKey('desc', $asignacion, $key);
-
-                        if ($entrada['estado']) {
-                            $rows->push([
-                                'CODIGO' => $asignacion->codigo,
-                                'EMPLEADO' => $asignacion->nombre,
-                                'LOTE' => $tarea->lote->nombre,
-                                'TAREA REALIZADA' => $tarea->tarea->tarea,
-                                'PLAN' => 'PLANIFICADA',
-                                'MONTO' => $entrada['monto_diario'],
-                                'HORAS TOTALES' => $entrada['horas_diarias'],
-                                'ENTRADA BIOMETRICO' => $entradaBiometrico,
-                                'SALIDA BIOMETRICO' => $salidaBiometrico,
-                                'DIA' => $fechaCarbon->isoFormat('dddd')
-                            ]);
-                        }
+                        $entradas_usuarios[$fecha]++;
                     }
                 }
+            });
+
+            $tarea->users->map(function ($user) use (&$fechasEntrada, &$fechasAgrupadas) {
+                $entradas = [];
+                $horasTotales = 0;
+                foreach ($fechasEntrada as $fecha) {
+                    $entrada = EmpleadoIngresado::whereDate('punch_time', $fecha)->where('emp_id', $user->usuario_id)->get();
+                    if (!$entrada->isEmpty()) {
+                        $horas = $fechasAgrupadas[$fecha]->horas_totales;
+                        $horasTotales += $fechasAgrupadas[$fecha]->horas_totales;
+                        $entradas[$fecha] = ['estado' => true, 'horas' => $horas];
+                    } else {
+                        $entradas[$fecha] = ['estado' => false, 'horas' => 0];
+                    }
+                }
+
+                $user->horasTotales = $horasTotales;
+                $user->entradas = $entradas;
+                return $user;
+            });
+
+            $tarea->users->map(function ($user) use ($tarea) {
+                $entradas = [];
+                foreach ($user->entradas as $key => $entrada) {
+                    $porcentaje_diario = $entrada['horas'] / $tarea->users->sum('horasTotales');
+                    $entradas[$key]['estado'] = $entrada['estado'];
+                    $entradas[$key]['horas'] = $entrada['horas'];
+                    $entradas[$key]['horas_diarias'] =  $porcentaje_diario * $tarea->horas;;
+                    $entradas[$key]['monto_diario'] = $porcentaje_diario * $tarea->presupuesto;
+                }
+
+                $user->entradas = $entradas;
+                return $user;
+            });
+
+
+            foreach ($tarea->users as $asignacion) {
+                foreach ($asignacion->entradas as $key => $entrada) {
+                    $fechaCarbon = Carbon::parse($key);
+                    $entradaBiometrico = $this->obtenerPunchByKey('asc', $asignacion, $key);
+                    $salidaBiometrico = $this->obtenerPunchByKey('desc', $asignacion, $key);
+
+                    if ($entrada['estado']) {
+                        $rows->push([
+                            'CODIGO' => $asignacion->codigo,
+                            'EMPLEADO' => $asignacion->nombre,
+                            'LOTE' => $tarea->lote->nombre,
+                            'TAREA REALIZADA' => $tarea->tarea->tarea,
+                            'PLAN' => 'PLANIFICADA',
+                            'MONTO' => $entrada['monto_diario'],
+                            'HORAS TOTALES' => $entrada['horas_diarias'],
+                            'ENTRADA BIOMETRICO' => $entradaBiometrico,
+                            'SALIDA BIOMETRICO' => $salidaBiometrico,
+                            'DIA' => $fechaCarbon->isoFormat('dddd')
+                        ]);
+                    }
+                }
+            }
         } catch (\Throwable $th) {
-            throw new Error($th->getMessage());
+            // throw new Error($th->getMessage());
+            return redirect()->route('planSemanal')->with('error','Existe un error al descargar el reporte');
         }
     }
 

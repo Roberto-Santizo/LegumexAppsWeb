@@ -17,11 +17,16 @@ class TareaLoteController extends Controller
     {
         $fecha_actual = Carbon::now();
         $tarealote->horas_diferencia = 0;
-        if(!$tarealote->cierresParciales->isEmpty()){
-            foreach ($tarealote->cierresParciales as $cierreParcial) {
-                $tarealote->horas_diferencia += $cierreParcial->fecha_inicio->diffInHours($cierreParcial->fecha_final);
+        try {
+            if(!$tarealote->cierresParciales->isEmpty()){
+                foreach ($tarealote->cierresParciales as $cierreParcial) {
+                    $tarealote->horas_diferencia += $cierreParcial->fecha_inicio->diffInHours($cierreParcial->fecha_final);
+                }
             }
+        } catch (\Throwable $th) {
+            return redirect()->route('planSemanal')->with('error','Existe un error al cargar la tarea');
         }
+        
 
         return view('agricola.tareasLote.show', ['tarea' => $tarealote, 'fecha_actual' => $fecha_actual]);
     }

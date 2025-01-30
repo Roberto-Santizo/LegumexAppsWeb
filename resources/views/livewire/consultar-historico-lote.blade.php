@@ -38,7 +38,7 @@
 
         @forelse ($tareas as $semana => $tareas)
             <div class="shadow-lg p-10 space-y-5">
-                <h2 class="text-center font-bold text-3xl uppercase">SEMANA DE APLICACIÓN: {{ $semana }}</h2>
+                <h2 class="text-center font-bold text-3xl uppercase">SEMANA CALENDARIO: {{ $semana }}</h2>
                 <table class="tabla">
                     <thead class="tabla-head">
                         <tr class="text-xs md:text-sm">
@@ -65,7 +65,7 @@
                                     {{ $tarea->cierre
                                         ? round($tarea->asignacion->created_at->diffInHours($tarea->cierre->created_at), 3)
                                         : 'SIN
-                                                                                                    RENDIMIENTO' }}
+                                                                                                                                        RENDIMIENTO' }}
                                 </td>
                                 <td class="campo">
                                     {{ $tarea->cierre
