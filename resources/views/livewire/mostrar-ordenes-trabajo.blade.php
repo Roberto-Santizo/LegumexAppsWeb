@@ -1,5 +1,5 @@
 <div>
-    @role('admin|adminagricola')
+    @role('admin|adminmanto')
         <div class="flex justify-between flex-row items-center gap-10">
             <x-link-volver ruta="documentoOT" class="bg-orange-500 hover:bg-orange-600" />
             <i class="fa-solid fa-bars icon-link" wire:click='openModalFilters()'></i>

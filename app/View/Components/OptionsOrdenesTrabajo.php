@@ -20,6 +20,7 @@ class OptionsOrdenesTrabajo extends Component
             1 => 'text-red-500',
             2 => 'text-yellow-500',
             3 => 'text-green-500',
+            "" => 'text-black'
         ];
         $this->ot = $ot;
         $this->priority = $priorities[$ot->urgencia];
