@@ -63,6 +63,12 @@
                 <i class="fa-solid fa-map"></i>
                 <span class="sidebar-text">Lotes</span>
             </a>
+
+            <a href="{{ route('fincas') }}"
+                class="{{ Route::is('fincas*') ? 'bg-green-moss' : '' }} sidebar-link hover:bg-green-moss">
+                <i class="fa-solid fa-location-dot"></i>
+                <span class="sidebar-text">Fincas</span>
+            </a>
         @endhasanyrole
 
         <a href="{{ route('insumos') }}"

@@ -9,6 +9,7 @@ use App\Http\Controllers\ReporteController;
 use App\Http\Controllers\UsuariosFincaController;
 use App\Http\Controllers\AsignacionDiariaController;
 use App\Http\Controllers\ControlPlantacionController;
+use App\Http\Controllers\FincasController;
 use App\Http\Controllers\InsumosController;
 use App\Http\Controllers\PlanSemanalFincasController;
 use App\Http\Controllers\TareaCosechaLoteController;
@@ -89,9 +90,13 @@ Route::group(['middleware' => ['auth', 'role:admin|adminagricola|auxrrhh'], 'pre
     Route::get('/exportar-planillasemanal/{planSemanalFinca}', [ReporteController::class, 'PlanillaSemanal'])->name('reporte.PlanillaSemanal');
     Route::get('/exportar-control-presupuesto/{semana}', [ReporteController::class, 'ControlPresupuesto'])->name('reporte.ControlPresupuesto');
     Route::get('/exportar-cosecha/{tarealotecosecha}', [ReporteController::class, 'ControlCosecha'])->name('reporte.ControlCosecha');
+    Route::get('/finca/lotes/{finca}', [ReporteController::class, 'HistoricoLotesFinca'])->name('reporte.HistoricoLotes');
     
     //Usuarios Fincas
     Route::get('/finca/ingresos', [UsuariosFincaController::class, 'index'])->name('usuariosFincas');
+
+    //FINCAS
+    Route::get('/fincas',[FincasController::class,'index'])->name('fincas');
 
     
 });

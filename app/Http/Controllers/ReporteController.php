@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Exports\LoteHistoricoTareasExport;
+use App\Exports\LotesHistoricoTareasExport;
 use Carbon\Carbon;
 use App\Models\PlanSemanalFinca;
 use App\Exports\PlansemanalExport;
@@ -10,6 +11,7 @@ use Maatwebsite\Excel\Facades\Excel;
 use App\Exports\PlanillaSemanalExport;
 use App\Exports\PlanControlPresupuestoExport;
 use App\Exports\UsuariosCosechaExport;
+use App\Models\Finca;
 use App\Models\Lote;
 use App\Models\TareaLoteCosecha;
 
@@ -64,6 +66,17 @@ class ReporteController extends Controller
            return Excel::download(new LoteHistoricoTareasExport($lote),$fileName);
        } catch (\Throwable $th) {
         return redirect()->route('planSemanal')->with('error','Existe un error al descargar el reporte');
+       }
+    }
+
+    public function HistoricoLotesFinca(Finca $finca)
+    {
+        $fileName = 'Control de tareas historico ' . $finca->finca . '.xlsx';
+        $lotes = $finca->lotes;
+       try {
+           return Excel::download(new LotesHistoricoTareasExport($lotes),$fileName);
+       } catch (\Throwable $th) {
+        return redirect()->route('fincas')->with('error','Existe un error al descargar el reporte');
        }
     }
 }
