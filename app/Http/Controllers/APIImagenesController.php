@@ -4,10 +4,8 @@ namespace App\Http\Controllers;
 
 use Carbon\Carbon;
 use Microsoft\Graph\Graph;
-use Illuminate\Support\Str;
 use Illuminate\Http\Request;
 use App\Services\MicrosoftTokenService;
-use Illuminate\Support\Facades\Storage;
 use Microsoft\Graph\Exception\GraphException;
 
 class APIImagenesController extends Controller

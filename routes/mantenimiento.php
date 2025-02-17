@@ -1,9 +1,11 @@
 <?php
 
+use App\Http\Controllers\AccesoriosController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AreaController;
 use App\Http\Controllers\DocumentoCPController;
 use App\Http\Controllers\DocumentoLDController;
+use App\Http\Controllers\EquiposController;
 use App\Http\Controllers\HerramientasController;
 use App\Http\Controllers\OrdenTrabajoController;
 
@@ -82,6 +84,13 @@ Route::group(['middleware' => ['auth', 'role:admin|adminmanto'], 'prefix' => 'ma
     Route::get('/areas',[AreaController::class,'index'])->name('areas');
     Route::get('/areas/{area}',[AreaController::class,'show'])->name('areas.show');
     
+    
+    //EQUIPOS Y FICHAS TECNICAS
+    Route::get('/equipos',[EquiposController::class,'index'])->name('equipos');
+    Route::get('/equipos/create',[EquiposController::class,'create'])->name('equipos.create');
+    Route::get('/equipos/ficha/{equipo}',[EquiposController::class,'show'])->name('equipos.show');
+    Route::get('/equipos/ficha/{equipo}/edit',[EquiposController::class,'edit'])->name('equipos.edit');
+    Route::get('/equipos/accesorios',[AccesoriosController::class,'create'])->name('accesorios.create');
     
 
 });

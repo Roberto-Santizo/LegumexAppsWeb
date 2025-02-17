@@ -37,7 +37,6 @@
                 @endforeach
             </tbody>
         </table>
-
     </div>
 
     <div class="my-10">

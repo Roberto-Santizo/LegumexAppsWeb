@@ -84,6 +84,13 @@
             <span class="text-md md:text-xs uppercase font-bold">Áreas y Ubicaciones</span>
         </a>
 
+        <a href="{{ route('equipos') }}"
+            class="{{  Route::is('equipos*') ? 'bg-orange-500' : '' }} sidebar-link hover:bg-orange-500">
+            <i class="fa-solid fa-screwdriver-wrench sidebar-link"></i>
+            <span class="text-md md:text-xs uppercase font-bold">Equipos</span>
+        </a>
+
+
         @endhasanyrole
 
 
