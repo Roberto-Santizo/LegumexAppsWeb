@@ -38,12 +38,12 @@
 
 
         <a href="{{ route('dashboard') }}"
-            class=" {{  Route::is('dashboard*') ? 'bg-gray-500' : '' }} sidebar-link hover:bg-gray-500">
+            class=" {{  Route::is('dashboard*') ? 'bg-indigo-500' : '' }} sidebar-link hover:bg-indigo-500">
             <i class="fa-solid fa-house"></i>
             <span class="text-md md:text-xs uppercase font-bold">Dashboard</span>
         </a>
 
-        <a href="{{ route('usuarios') }}" class="{{  Route::is('usuarios*') ? 'bg-gray-500' : '' }} sidebar-link hover:bg-gray-500">
+        <a href="{{ route('usuarios') }}" class="{{  Route::is('usuarios*') ? 'bg-indigo-500' : '' }} sidebar-link hover:bg-indigo-500">
             <i class="fa-solid fa-user"></i>
             <span class="sidebar-text">Gestionar Usuarios</span>
         </a>

@@ -1,14 +1,13 @@
 function firmaVacia(firma) {
     var context = firma.getContext('2d');
     var imageData = context.getImageData(0, 0, firma.width, firma.height).data;
-    
+
     for (var i = 0; i < imageData.length; i += 4) {
         if (imageData[i + 3] !== 0) {
-            return false; // La firma no está vacío
+            return false;
         }
     }
-    
-    return true; // La firma está vacío
+    return true;
 }
 
 function mostrarAlertas(alertas, contenedor, parametros = []) {
@@ -25,7 +24,7 @@ function mostrarAlertas(alertas, contenedor, parametros = []) {
     alertas.forEach(alerta => {
         const alertadiv = document.createElement('DIV');
         alertadiv.classList.add('alerta', 'text-white', 'bg-red-500', 'font-bold', 'p-3', 'mb-5', 'rounded', 'uppercase');
-        
+
         if (parametros.length > 0) {
             parametros.forEach(parametro => {
                 alertadiv.classList.add(parametro);
@@ -48,9 +47,9 @@ function mostrarAlertas(alertas, contenedor, parametros = []) {
 
 function sonIguales(arr1, arr2) {
     return arr1.toString() === arr2.toString();
-  }
+}
 
-  function blobToBase64(blob) {
+function blobToBase64(blob) {
     return new Promise((resolve, reject) => {
         const reader = new FileReader();
         reader.readAsDataURL(blob);
@@ -66,7 +65,7 @@ function sonIguales(arr1, arr2) {
 
 function quitarAlertas(contenedor) {
     const alertas = contenedor.querySelectorAll('.alerta');
-    
+
     alertas.forEach(alertadiv => {
         if (contenedor.contains(alertadiv)) {
             contenedor.removeChild(alertadiv);
@@ -76,7 +75,7 @@ function quitarAlertas(contenedor) {
 
 
 
-function scrollTop(){
+function scrollTop() {
     document.getElementById('contenido').scrollTo({
         top: 0,
         behavior: 'smooth'
@@ -84,20 +83,19 @@ function scrollTop(){
 }
 
 function reloadSign() {
-    const form = document.querySelector('form'); // Selecciona el formulario
+    const form = document.querySelector('form');
 
     window.addEventListener('beforeunload', function (e) {
         const confirmationMessage = 'Los datos que se hayan ingresado se perderán';
         (e || window.event).returnValue = confirmationMessage;
-        return confirmationMessage; 
+        return confirmationMessage;
     });
 
     if (form) {
         form.addEventListener('submit', function () {
             window.removeEventListener('beforeunload', beforeUnloadHandler);
-            
-            // Vuelve a agregar el evento after a short delay
-            setTimeout(function() {
+
+            setTimeout(function () {
                 window.addEventListener('beforeunload', beforeUnloadHandler);
             }, 1000);
         });
@@ -105,4 +103,4 @@ function reloadSign() {
 }
 
 
-export {firmaVacia, mostrarAlertas, sonIguales, blobToBase64, scrollTop, reloadSign, quitarAlertas};
+export { firmaVacia, mostrarAlertas, sonIguales, blobToBase64, scrollTop, reloadSign, quitarAlertas };

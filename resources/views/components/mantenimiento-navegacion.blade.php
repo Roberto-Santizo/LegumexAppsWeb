@@ -30,7 +30,7 @@
                 <div class="flex gap-2 w-full md:hidden">
                     <form action="{{ route('logout') }}" method="POST" class="text-md">
                         @csrf
-                        <input type="submit" value="Cerrar Sesión" class="btn bg-orange-500 hover:bg-orange-600 mt-5">
+                        <input type="submit" value="Cerrar Sesión" class="btn bg-indigo-500 hover:bg-orange-600 mt-5">
                     </form>
                 </div>
             </div>
@@ -38,31 +38,31 @@
 
         @hasanyrole('adminmanto|auxmanto')
         <a href="{{ route('dashboard') }}"
-            class=" {{  Route::is('dashboard*') ? 'bg-orange-500' : '' }} sidebar-link hover:bg-orange-500">
+            class=" {{  Route::is('dashboard*') ? 'bg-indigo-500' : '' }} sidebar-link hover:bg-indigo-500">
             <i class="fa-solid fa-house"></i>
             <span class="text-md md:text-xs uppercase font-bold">Dashboard</span>
         </a>
         @endhasanyrole
 
         <a href="{{ route('documentold') }}"
-            class="{{  Route::is('documentold*') ? 'bg-orange-500' : '' }}  sidebar-link hover:bg-orange-500">
+            class="{{  Route::is('documentold*') ? 'bg-indigo-500' : '' }}  sidebar-link hover:bg-indigo-500">
             <i class="fa-solid fa-hands-bubbles"></i>
             <span class="text-md md:text-xs uppercase font-bold">Lavado y desinfección</span>
         </a>
         <a href="{{ route('documentocp') }}"
-            class="{{  Route::is('documentocp*') ? 'bg-orange-500' : '' }} sidebar-link hover:bg-orange-500">
+            class="{{  Route::is('documentocp*') ? 'bg-indigo-500' : '' }} sidebar-link hover:bg-indigo-500">
             <i class="fa-solid fa-list-ul"></i>
             <span class="text-md md:text-xs uppercase font-bold">Checklist Preoperacional</span>
         </a>
 
         <a href="{{ route('documentoOT') }}"
-            class=" {{  Route::is('documentoOT*') ? 'bg-orange-500' : '' }} sidebar-link hover:bg-orange-500">
+            class=" {{  Route::is('documentoOT*') ? 'bg-indigo-500' : '' }} sidebar-link hover:bg-indigo-500">
             <i class="fa-solid fa-briefcase"></i>
             <span class="text-md md:text-xs uppercase font-bold">Ordenes de trabajo</span>
         </a>
 
         <a href="{{ route('misOrdenes') }}"
-            class="{{  Route::is('misOrdenes*') ? 'bg-orange-500' : '' }} relative sidebar-link hover:bg-orange-500">
+            class="{{  Route::is('misOrdenes*') ? 'bg-indigo-500' : '' }} relative sidebar-link hover:bg-indigo-500">
             <i class="fa-solid fa-user-tie"></i>
             <span class="text-md md:text-xs uppercase font-bold">Mis Ordenes</span>
             <span
@@ -73,19 +73,19 @@
 
         @hasanyrole('adminmanto|admin')
         <a href="{{ route('administrar') }}"
-            class="{{  Route::is('administrar*') ? 'bg-orange-500' : '' }} sidebar-link hover:bg-orange-500">
+            class="{{  Route::is('administrar*') ? 'bg-indigo-500' : '' }} sidebar-link hover:bg-indigo-500">
             <i class="fa-solid fa-universal-access"></i>
             <span class="text-md md:text-xs uppercase font-bold">Administrar ordenes de trabajo</span>
         </a>
 
         <a href="{{ route('areas') }}"
-            class="{{  Route::is('areas*') ? 'bg-orange-500' : '' }} sidebar-link hover:bg-orange-500">
+            class="{{  Route::is('areas*') ? 'bg-indigo-500' : '' }} sidebar-link hover:bg-indigo-500">
             <iconify-icon icon="majesticons:map-simple" class="icon-link"></iconify-icon>
             <span class="text-md md:text-xs uppercase font-bold">Áreas y Ubicaciones</span>
         </a>
 
         <a href="{{ route('equipos') }}"
-            class="{{  Route::is('equipos*') ? 'bg-orange-500' : '' }} sidebar-link hover:bg-orange-500">
+            class="{{  Route::is('equipos*') ? 'bg-indigo-500' : '' }} sidebar-link hover:bg-indigo-500">
             <i class="fa-solid fa-screwdriver-wrench sidebar-link"></i>
             <span class="text-md md:text-xs uppercase font-bold">Equipos</span>
         </a>
@@ -95,7 +95,7 @@
 
 
         <a href="{{ route('herramientas') }}"
-            class="{{  Route::is('herramientas*') ? 'bg-orange-500' : '' }} sidebar-link hover:bg-orange-500">
+            class="{{  Route::is('herramientas*') ? 'bg-indigo-500' : '' }} sidebar-link hover:bg-indigo-500">
             <i class="fa-solid fa-screwdriver-wrench"></i>
             <span class="text-md md:text-xs uppercase font-bold">Herramientas</span>
         </a>

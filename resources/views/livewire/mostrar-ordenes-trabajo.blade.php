@@ -63,7 +63,7 @@
                         @elseif ($ot->estado_id == 1 && $ot->mecanico_id)
                             @hasanyrole('admin|adminmanto')
                                 <i wire:click='desasignarMecanico({{ $ot }})' title="Desasignar Mécanico"
-                                class="fa-solid fa-person-circle-xmark icon-link"></i>
+                                    class="fa-solid fa-person-circle-xmark icon-link"></i>
                             @endhasanyrole
                         @endif
 
@@ -96,7 +96,7 @@
         <livewire:mecanico-selector :ot="$otSelected" />
     @endif
 
-    <x-ordenes-trabajo-filters class="{{ ($openFilters) ? 'slide-in-active slide-in' : 'slide-out-active-right' }}" />
+    <x-ordenes-trabajo-filters class="{{ $openFilters ? 'slide-in-active slide-in' : 'slide-out-active-right' }}" />
 
     <div class="mt-10">
         {{ $ordenes->links() }}

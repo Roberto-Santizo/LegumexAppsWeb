@@ -19,10 +19,11 @@ class MostrarOrdenesTrabajo extends Component
     public $nombre_solicitante;
     public $planta;
     public $area;
+    public $codigo;
+    public $mecanico;
 
     protected $listeners = ['closeModal', 'eliminarOT', 'takeTrabajo'];
 
-    // Resetear la página al buscar o filtrar datos
     use WithPagination, WithoutUrlPagination;
 
     public function mount()
@@ -78,7 +79,7 @@ class MostrarOrdenesTrabajo extends Component
 
     public function buscarDatos()
     {
-        $this->resetPage(); // Reinicia la paginación
+        $this->resetPage();
     }
 
     public function borrarFiltros()
@@ -101,6 +102,15 @@ class MostrarOrdenesTrabajo extends Component
         if ($this->planta != '') {
             $query->where('planta_id', 'LIKE', '%' . $this->planta . '%');
         }
+        if ($this->codigo != '') {
+            $query->where('correlativo', $this->codigo);
+        }
+
+        if ($this->mecanico != '') {
+            $query->whereHas('mecanico', function ($q) {
+                $q->where('name', 'LIKE', '%' . $this->mecanico . '%');
+            });
+        }
 
         if ($this->area != '') {
             $query->whereHas('area', function ($q) {
@@ -108,9 +118,8 @@ class MostrarOrdenesTrabajo extends Component
             });
         }
 
-        $query->where('estado_id', $this->estado->id)->orderBy('id','DESC');
+        $query->where('estado_id', $this->estado->id)->orderBy('id', 'DESC');
 
-        // Usa paginación en lugar de obtener todos los resultados
         $ordenes = $query->paginate(10);
 
         return view('livewire.mostrar-ordenes-trabajo', [

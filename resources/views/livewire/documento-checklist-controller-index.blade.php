@@ -73,7 +73,7 @@
             </tbody>
         </table>
         @else
-        <p class="text-center uppercase font-bold text-3xl">No existen documentos </p>
+        <p class="text-center text-xl">No existen documentos </p>
         @endif
     </div>
 

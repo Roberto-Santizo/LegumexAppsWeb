@@ -9,9 +9,10 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.2/css/all.min.css"
         integrity="sha512-1sCRPdkRXhBV2PBLUdRb4tMg1w2YPf37qatUFeS7zlBy7jJI8Lf4VHwWfZZfpXtYSLy85pkm9GaYVYMfw5BC1A=="
         crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <link rel="icon" type="image/x-icon" href="{{ asset('favicon.ico') }}" />
     <script src="https://code.iconify.design/iconify-icon/2.1.0/iconify-icon.min.js"></script>
     <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
-    <link rel="icon" type="image/x-icon" href="{{ asset('favicon.ico') }}" />
+    <script src="https://code.iconify.design/iconify-icon/2.1.0/iconify-icon.min.js"></script>
     <title>LegumexApps - @yield('titulo')</title>
     <style>
         .scroll-container {
@@ -41,7 +42,7 @@
 
 <body class="flex flex-col h-screen hide-scrollbar scrollable">
     <header
-        class="header flex flex-row h-24 justify-between bg-gray-400  p-5 text-white w-full fixed top-0 left-0 z-10 items-center">
+        class="header flex flex-row h-24 justify-between bg-blue-500 p-5 text-white w-full fixed top-0 left-0 z-10 items-center">
         <div class="w-32 flex flex-row">
             <img src="{{ asset('img/LOGO_LX.png') }}" alt="Imagen Login de Usuarios" class="hidden md:block">
             <div class="flex flex-row gap-5 justify-center items-center">
@@ -66,10 +67,11 @@
 
     <div class="md:flex md:flex-row flex-1 pt-24">
         <aside
-            class="pb-32 hidden h-full w-32 bg-gray-400  text-white md:flex flex-col items-center fixed top-24 scroll-container z-20"
+            class="pb-32 hidden h-full w-32 bg-blue-500 text-white md:flex flex-col items-center fixed top-24 scroll-container z-20"
             id="menu-nav">
 
             <x-navegacion />
+
         </aside>
 
         <div id="contenido" class="flex-1 md:ml-32 p-10  w-full  md:w-full hide-scrollbar scrollable">
@@ -99,7 +101,7 @@
                 </div>
             </div>
 
-            <h1 id="titulo" class="text-2xl font-bold md:text-4xl">@yield('titulo')</h1>
+            <h1 id="titulo" class="text-2xl md:text-4xl font-medium">@yield('titulo')</h1>
             @yield('contenido')
         </div>
     </div>
@@ -110,6 +112,6 @@
     <script>
         AOS.init();
     </script>
-
 </body>
+
 </html>

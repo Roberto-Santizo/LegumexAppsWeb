@@ -19,6 +19,17 @@
                 </div>
 
                 <div class="space-y-2">
+                    <label for="codigo" class="block text-sm font-medium">Codigo de la orden:</label>
+                    <input autocomplete="off" wire:input='buscarDatos' wire:model="codigo" type="text" id="codigo" placeholder="Código de correlativo de la orden" class="w-full border rounded px-3 py-2" />
+                </div>
+
+                 <div class="space-y-2">
+                    <label for="mecanico" class="block text-sm font-medium">Mecanico asignado:</label>
+                    <input autocomplete="off" wire:input='buscarDatos' wire:model="mecanico" type="text" id="mecanico" placeholder="Nombre del a persona que realizó la orden de trabajo" class="w-full border rounded px-3 py-2" />
+                </div>
+
+
+                <div class="space-y-2">
                     <label for="planta" class="block text-sm font-medium">Planta</label>
                     <select wire:change='buscarDatos' wire:model="planta" class="w-full p-2 uppercase">
                         <option value="">--Seleccione una planta--</option>

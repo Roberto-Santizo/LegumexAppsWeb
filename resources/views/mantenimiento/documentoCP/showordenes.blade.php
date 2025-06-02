@@ -1,4 +1,4 @@
-@extends('layouts.mantenimiento')
+@extends('layouts.auth')
 
 @section('titulo')
     Ordenes de trabajo del checklist: {{$documento->planta->planta}}  - {{ $documento->fecha }}

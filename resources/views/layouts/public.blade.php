@@ -17,19 +17,18 @@
     <header class="p-5 border-b bg-white shadow">
         <div class="container mx-auto flex justify-between">
             <a href="{{ route('home') }}" class="w-28 flex flex-row items-center">
-                <img src="{{ asset('img/LOGO_LX-diciembre.png'); }}" alt="Imagen Login de Usuarios">
                 <p class="text-3xl items-center text-gray-500 font-bold hidden md:block">LegumexApps</p>
             </a>
 
             <div class="flex flex-row gap-5 items-center justify-center">
                 @guest
-                <a href="{{ route('login') }}">
-                    <div
-                        class="flex gap-1 justify-center items-center mt-5 p-2 rounded-lg">
-                        <iconify-icon icon="material-symbols:login" class="text-4xl block md:hidden"></iconify-icon>
-                        <p class="hidden sm:block text-xl hover:text-gray-400">Iniciar sesión</p>
-                    </div>
-                </a>
+                    <a href="{{ route('login') }}">
+                        <div
+                            class="{{ Route::is('login*') ? 'text-gray-400' : '' }} flex gap-1 justify-center items-center mt-5 p-2 rounded-lg">
+                            <iconify-icon icon="material-symbols:login" class="text-4xl block md:hidden"></iconify-icon>
+                            <p class="hidden sm:block text-xl hover:text-gray-400">Iniciar sesión</p>
+                        </div>
+                    </a>
                 @endguest
 
                 @auth

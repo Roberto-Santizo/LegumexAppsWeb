@@ -10,7 +10,7 @@
     <x-alertas />
 
     <div class="flex flex-col justify-center items-center gap-5">
-        <form method="POST" action="{{ route('login') }}" class="md:w-96 w-64" novalidate>
+        <form method="POST" action="{{ route('login') }}" class="md:w-96 w-64 shadow-xl border p-10" novalidate>
             @csrf
 
             <div>

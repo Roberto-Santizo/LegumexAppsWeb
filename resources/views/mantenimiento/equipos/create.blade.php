@@ -1,4 +1,4 @@
-@extends('layouts.mantenimiento')
+@extends('layouts.auth')
 
 @section('titulo')
     Crear Ficha de Equipo

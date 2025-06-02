@@ -1,12 +1,11 @@
-@extends('layouts.mantenimiento')
+@extends('layouts.auth')
 
 @section('titulo')
 Documentos Checklists Preoperacionales
 @endsection
 
 @section('contenido')
+    <x-alertas />
 
-<x-alertas />
-
-<livewire:documento-checklist-controller-index />
+    <livewire:documento-checklist-controller-index />
 @endsection
