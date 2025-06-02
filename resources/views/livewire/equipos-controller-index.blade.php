@@ -32,7 +32,7 @@
                         {{ $equipo->area->planta->name }}
                     </td>
                     <td class="campo">
-                        <button wire:click='changeStatus({{ $equipo->id }})' class="btn {{ $equipo->status ? 'bg-green-500' : 'bg-red-500' }}">{{ $equipo->status ? 'ACTIVO' : 'INACTIVO' }}</button>
+                        <button class="btn {{ $equipo->status ? 'bg-green-500' : 'bg-red-500' }}">{{ $equipo->status ? 'ACTIVO' : 'INACTIVO' }}</button>
                     </td>
                     <td class="flex gap-5">
                         <a href="{{ route('equipos.show',$equipo) }}">

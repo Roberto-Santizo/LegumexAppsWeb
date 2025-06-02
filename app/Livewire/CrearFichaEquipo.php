@@ -37,7 +37,7 @@ class CrearFichaEquipo extends Component
         'name' => 'required',
         'code' => 'required',
         'area_id' => 'required',
-        'imagenes.*' => 'image|mimes:jpeg,png|max:2048'
+        'imagenes.*' => 'image|mimes:jpeg,png,jpg'
     ];
 
     public function mount()
