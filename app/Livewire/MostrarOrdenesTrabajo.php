@@ -87,6 +87,8 @@ class MostrarOrdenesTrabajo extends Component
         $this->nombre_solicitante = '';
         $this->planta = '';
         $this->area = '';
+        $this->codigo = '';
+        $this->mecanico = '';
         $this->resetPage();
         $this->openModalFilters();
     }
@@ -103,7 +105,7 @@ class MostrarOrdenesTrabajo extends Component
             $query->where('planta_id', 'LIKE', '%' . $this->planta . '%');
         }
         if ($this->codigo != '') {
-            $query->where('correlativo', $this->codigo);
+            $query->where('correlativo', 'LIKE', '%'.$this->codigo.'%');
         }
 
         if ($this->mecanico != '') {
