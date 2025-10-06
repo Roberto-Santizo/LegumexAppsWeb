@@ -21,7 +21,13 @@ Documento
             <p class="no-margin text-4xl">CHECK LIST PREOPERACIONAL FUNCIONAMIENTO DEL EQUIPO</p>
         </div>
         <div class="text-start border-x">
-            <p class="px-2 border-b border-black text-4xl py-3">CÓDIGO: FOR-MN-{{ $documentocp->planta->prefix_docs }}-07</p>
+            <p class="px-2 border-b border-black text-4xl py-3">CÓDIGO:
+                @if ($documentocp->planta_id != 2)
+                    FOR-MN-07
+                @else
+                    FOR-MN-{{ $documentocp->planta->prefix_docs }}-07
+                @endif
+            </p>
             <p class="px-2 text-4xl py-3">VERSIÓN: 03</p>
             <p class="px-2 border-t text-4xl py-3 border-black">Página <span class="font-bold">1</span> de <span
                     class="font-bold">1</span></p>
@@ -220,7 +226,13 @@ Documento
             </div>
 
             <div class="flex justify-between items-center mt-5 pie-pagina text-4xl">
-                <p>FOR-MN-{{ $documentocp->planta->prefix_docs }}-07</p>
+                <p>
+                    @if ($documentocp->planta_id != 2)
+                        FOR-MN-07
+                    @else
+                        FOR-MN-{{ $documentocp->planta->prefix_docs }}-07
+                    @endif
+                </p>
                 <div class="flex flex-col justify-center items-center">
                     <p>APROBADO GCC</p>
                     <p class="mb-10 ">Agroindustria Legumex, Chimaltenango, Guatemala</p>
