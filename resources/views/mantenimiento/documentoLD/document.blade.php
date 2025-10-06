@@ -21,7 +21,7 @@ Documento
             <p class="no-margin p-1.5">DESINFECCIÓN DE HERRAMIENTAS</p>
         </div>
         <div class="text-start border-l border-black">
-            <p class="p-1.5 border-black">CÓDIGO: FOR-MN-08</p>
+            <p class="p-1.5 border-black">CÓDIGO: FOR-MN-{{ $documentold->planta->prefix_docs }}-10</p>
             <p class="p-1.5 border-y border-black">VERSIÓN: 03</p>
             <p class="p-1.5 border-black">Página <span class="font-bold">1</span> de <span class="font-bold">1</span>
             </p>
@@ -253,7 +253,7 @@ Documento
 </div>
 
 <div class="flex justify-between items-center mt-10 pie-pagina">
-    <p>FOR-MN-08</p>
+    <p>FOR-MN-{{ $documentold->planta->prefix_docs }}-10</p>
     <div class="flex flex-col justify-center items-center">
         <p>APROBADO GCC</p>
         <p class="mb-5">Agroindustria Legumex, Chimaltenango, Guatemala</p>
