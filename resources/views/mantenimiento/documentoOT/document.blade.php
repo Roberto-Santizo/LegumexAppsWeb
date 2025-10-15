@@ -21,7 +21,7 @@
             </div>
             <div class="text-start border-l border-black">
                 <p class="p-1.5 border-b border-black">CÓDIGO: 
-                    @if ($documentold->planta_id != 2)
+                    @if ($ot->planta_id != 2)
                         FOR-MN-04
                     @else
                         FOR-MN-{{$ot->planta->prefix_docs}}-08
