@@ -22,11 +22,7 @@ Documento
         </div>
         <div class="text-start border-x">
             <p class="px-2 border-b border-black text-4xl py-3">CÓDIGO:
-                @if ($documentocp->planta_id != 2)
-                    FOR-MN-07
-                @else
-                    FOR-MN-{{ $documentocp->planta->prefix_docs }}-07
-                @endif
+                FOR-MN-{{ $documentocp->planta->prefix_docs }}-07
             </p>
             <p class="px-2 text-4xl py-3">VERSIÓN: 03</p>
             <p class="px-2 border-t text-4xl py-3 border-black">Página <span class="font-bold">1</span> de <span
@@ -227,11 +223,7 @@ Documento
 
             <div class="flex justify-between items-center mt-5 pie-pagina text-4xl">
                 <p>
-                    @if ($documentocp->planta_id != 2)
-                        FOR-MN-07
-                    @else
-                        FOR-MN-{{ $documentocp->planta->prefix_docs }}-07
-                    @endif
+                    FOR-MN-{{ $documentocp->planta->prefix_docs }}-07
                 </p>
                 <div class="flex flex-col justify-center items-center">
                     <p>APROBADO GCC</p>

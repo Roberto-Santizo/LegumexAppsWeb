@@ -21,11 +21,7 @@
             </div>
             <div class="text-start border-l border-black">
                 <p class="p-1.5 border-b border-black">CÓDIGO: 
-                    @if ($ot->planta_id != 2)
-                        FOR-MN-04
-                    @else
-                        FOR-MN-{{$ot->planta->prefix_docs}}-08
-                    @endif
+                    FOR-MN-{{$ot->planta->prefix_docs}}-08
                 </p>
                 <p class="p-1.5  border-black">VERSIÓN: 05</p>
                 <p class="p-1.5 border-t border-black">Página <span class="font-bold">1</span> de <span class="font-bold">1</span></p>
@@ -241,11 +237,7 @@
 
         <div class="flex justify-between items-center mt-10 pie-pagina">
             <p>
-                @if ($ot->planta_id != 2)
-                    FOR-MN-04
-                @else
-                    FOR-MN-{{$ot->planta->prefix_docs}}-08
-                @endif
+                FOR-MN-{{$ot->planta->prefix_docs}}-08
             </p>
             <div class="flex flex-col justify-center items-center">
                 <p>APROBADO GCC</p>
