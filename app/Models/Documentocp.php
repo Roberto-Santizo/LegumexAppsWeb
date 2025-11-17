@@ -22,25 +22,23 @@ class Documentocp extends Model
         'user_id'
     ];
 
-    
     public function planta()
     {
         return $this->belongsTo(Planta::class);
     }
 
-    public function ordenes(){
+    public function ordenes()
+    {
         return $this->hasMany(OrdenChecklist::class, 'documentocps_id', 'id');
     }
 
     public function areas()
     {
-        return $this->hasMany(AreasChecklistP::class,'documentocps_id','id');
+        return $this->hasMany(AreasChecklistP::class, 'documentocps_id', 'id');
     }
 
     public function user()
     {
         return $this->belongsTo(User::class);
     }
-
-    
 }

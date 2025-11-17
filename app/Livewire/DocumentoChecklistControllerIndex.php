@@ -44,12 +44,12 @@ class DocumentoChecklistControllerIndex extends Component
             $query->where('fecha', $this->fecha->format('d-m-Y'));
         }
 
-        if ($this->month && !$this->fecha) {
-            $query->whereMonth('fecha', $this->month);
+        if ($this->month) {
+            $query->whereMonth('created_at', $this->month);
         }
 
-        if ($this->year && !$this->fecha) {
-            $query->whereYear('fecha', $this->year);
+        if ($this->year) {
+            $query->whereYear('created_at', $this->year);
         }
 
         return $query->orderBy('id', 'DESC')->paginate(10);
