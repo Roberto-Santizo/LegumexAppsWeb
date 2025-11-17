@@ -13,6 +13,8 @@ class DocumentoChecklistControllerIndex extends Component
 
     public $isOpen = false;
     public $planta = 0;
+    public $month = 0;
+    public $year = 0;
     public $fecha = null;
 
     protected $listeners = ['eliminarDocumento'];
@@ -24,7 +26,7 @@ class DocumentoChecklistControllerIndex extends Component
 
     public function updating($field)
     {
-        if (in_array($field, ['planta', 'fecha'])) {
+        if (in_array($field, ['planta', 'fecha', 'month', 'year'])) {
             $this->resetPage();
         }
     }
@@ -41,7 +43,15 @@ class DocumentoChecklistControllerIndex extends Component
             $this->fecha = Carbon::parse($this->fecha);
             $query->where('fecha', $this->fecha->format('d-m-Y'));
         }
-    
+
+        if ($this->month && !$this->fecha) {
+            $query->whereMonth('fecha', $this->month);
+        }
+
+        if ($this->year && !$this->fecha) {
+            $query->whereYear('fecha', $this->year);
+        }
+
         return $query->orderBy('id', 'DESC')->paginate(10);
     }
 
@@ -55,6 +65,8 @@ class DocumentoChecklistControllerIndex extends Component
     {
         $this->fecha = null;
         $this->planta = 0;
+        $this->month = 0;
+        $this->year = 0;
         $this->resetPage();
         $this->openModal();
     }
@@ -66,16 +78,15 @@ class DocumentoChecklistControllerIndex extends Component
                 $area->elementos()->delete();
             }
             $documento->areas()->delete();
-    
+
             $documento->ordenes()->delete();
             $documento->delete();
 
             $this->dispatch('documentoEliminado');
             $this->mostrarDatos();
         } catch (\Throwable $th) {
-            $this->addError('error','Hubo un error al intentar eliminar el documento, intentelo de nuevo más tarde');
+            $this->addError('error', 'Hubo un error al intentar eliminar el documento, intentelo de nuevo más tarde');
         }
-        
     }
 
     public function openModal()
@@ -85,6 +96,6 @@ class DocumentoChecklistControllerIndex extends Component
     public function render()
     {
         $documentos = $this->formatearDatos();
-        return view('livewire.documento-checklist-controller-index',compact(['documentos']));
+        return view('livewire.documento-checklist-controller-index', compact(['documentos']));
     }
 }
