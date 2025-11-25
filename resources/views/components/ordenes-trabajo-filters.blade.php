@@ -38,6 +38,40 @@
                         @endforeach
                     </select>
                 </div>
+
+                
+                 @php
+                    $months = [
+                        "Enero" => 1,
+                        "Febrero" => 2,
+                        "Marzo" => 3,
+                        "Abril" => 4,
+                        "Mayo" => 5,
+                        "Junio" => 6,
+                        "Julio" => 7,
+                        "Agosto" => 8,
+                        "Septiembre" => 9,
+                        "Octubre" => 10,
+                        "Noviembre" => 11,
+                        "Diciembre" => 12,
+                    ];
+                @endphp
+
+                <div class="space-y-2">
+                    <label for="month" class="block text-sm font-medium">Mes</label>
+                    <select  wire:model="month" class="w-full p-2 uppercase">
+                        <option value="0">--Seleccione un mes--</option>
+                            @foreach ($months as $key => $value)
+                                <option value="{{$value}}">{{ $key }}</option>
+                            @endforeach
+                    </select>
+
+                     <div class="space-y-2">
+                        <label for="year" class="block text-sm font-medium">Año:</label>
+                        <input wire:model="year" type="number" id="year" class="w-full border rounded px-3 py-2" />
+                    </div>
+                </div>
+                
             </form>
 
             <div class="flex justify-center items-center">

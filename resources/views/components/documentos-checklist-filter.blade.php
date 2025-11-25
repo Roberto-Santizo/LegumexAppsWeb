@@ -47,7 +47,7 @@
                             @foreach ($months as $key => $value)
                                 <option value="{{$value}}">{{ $key }}</option>
                             @endforeach
-                    </select>
+                        </select>
 
                     <div class="space-y-2">
                         <label for="year" class="block text-sm font-medium">Año:</label>

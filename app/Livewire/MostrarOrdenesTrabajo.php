@@ -21,6 +21,8 @@ class MostrarOrdenesTrabajo extends Component
     public $area;
     public $codigo;
     public $mecanico;
+    public $year = 0;
+    public $month = null;
 
     protected $listeners = ['closeModal', 'eliminarOT', 'takeTrabajo'];
 
@@ -89,6 +91,8 @@ class MostrarOrdenesTrabajo extends Component
         $this->area = '';
         $this->codigo = '';
         $this->mecanico = '';
+        $this->year = 0;
+        $this->month = null;
         $this->resetPage();
         $this->openModalFilters();
     }
@@ -118,6 +122,14 @@ class MostrarOrdenesTrabajo extends Component
             $query->whereHas('area', function ($q) {
                 $q->where('area', 'LIKE', '%' . $this->area . '%');
             });
+        }
+
+        if($this->year != 0){
+            $query->whereYear('created_at', $this->year);
+        }
+
+        if($this->month != null){
+            $query->whereMonth('created_at', $this->month);
         }
 
         $query->where('estado_id', $this->estado->id)->orderBy('id', 'DESC');

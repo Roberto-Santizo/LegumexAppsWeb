@@ -16,7 +16,9 @@ class DocumentoLavadoControllerIndex extends Component
     public $area = '';
     public $planta = 0;
     public $fecha = null;
-    
+    public $year = 0;
+    public $month = null;
+
     protected $listeners = ['eliminarDocumento'];
 
     protected $rules = [
@@ -33,7 +35,7 @@ class DocumentoLavadoControllerIndex extends Component
             $this->resetPage();
         }
     }
-    
+
     public function formatearDatos()
     {
         $query = Documentold::query();
@@ -57,10 +59,18 @@ class DocumentoLavadoControllerIndex extends Component
             $query->where('fecha', $this->fecha->format('d-m-Y'));
         }
 
-    
+        if ($this->month) {
+            $query->whereMonth('created_at', $this->month);
+        }
+
+        if ($this->year != 0) {
+            $query->whereYear('created_at', $this->year);;
+        }
+
+
         return $query->orderBy('id', 'DESC')->paginate(10);
     }
-    
+
     public function mostrarDatos()
     {
         $this->validate();
@@ -73,10 +83,12 @@ class DocumentoLavadoControllerIndex extends Component
         $this->area = '';
         $this->fecha = null;
         $this->planta = 0;
+        $this->year = 0;
+        $this->month = null;
         $this->resetPage();
         $this->openModal();
     }
-    
+
     public function openModal()
     {
         $this->isOpen = !$this->isOpen;
@@ -87,7 +99,6 @@ class DocumentoLavadoControllerIndex extends Component
         $documento->herramientas()->delete();
         $documento->delete();
         $this->mostrarDatos();
-        
     }
 
     public function render()
@@ -100,9 +111,8 @@ class DocumentoLavadoControllerIndex extends Component
                 ->paginate(10);
         } else {
             $documentos = $this->formatearDatos();
-            
         }
-        
+
         return view('livewire.documento-lavado-controller-index', compact('documentos'));
     }
 }
