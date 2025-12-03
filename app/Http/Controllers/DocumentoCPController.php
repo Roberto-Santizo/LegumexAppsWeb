@@ -84,6 +84,7 @@ class DocumentoCPController extends Controller
                 $ordenes[] = $orden->orden;
             }
         }
+
         return view('mantenimiento.documentoCP.showordenes', ['documento' => $documentocd, 'ordenes' => $ordenes]);
     }
 
@@ -158,21 +159,25 @@ class DocumentoCPController extends Controller
 
                 //  Crear registros en la base de datos usando los datos preparados
                 foreach ($request->areas as $area => $cols) {
+
                     $documentocp_area = AreasChecklistP::create([
                         'area_id' => $area,
                         'documentocps_id' => $documentocp->id,
                         'firma' => $cols['firma']
                     ]);
+
                     if (isset($preparedData[$area])) {
                         foreach ($preparedData[$area] as $elemento => $data) {
-                            AreasCPElementos::create([
-                                'documentocp_area' => $documentocp_area->id,
-                                'elemento_id' => $elemento,
-                                'ok' => $data['ok'],
-                                'problema' => $data['problema'],
-                                'accion' => $data['accion'],
-                                'orden_trabajos_id' => $data['orden_trabajos_id'], // Agregar este campo aquí
-                            ]);
+                            if (!empty($data['orden_trabajos_id'])) {
+                                AreasCPElementos::create([
+                                    'documentocp_area' => $documentocp_area->id,
+                                    'elemento_id' => $elemento,
+                                    'ok' => $data['ok'],
+                                    'problema' => $data['problema'],
+                                    'accion' => $data['accion'],
+                                    'orden_trabajos_id' => $data['orden_trabajos_id'],
+                                ]);
+                            }
                         }
                     }
                 }

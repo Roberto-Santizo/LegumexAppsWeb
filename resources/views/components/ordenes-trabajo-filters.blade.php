@@ -59,7 +59,7 @@
 
                 <div class="space-y-2">
                     <label for="month" class="block text-sm font-medium">Mes</label>
-                    <select  wire:model="month" class="w-full p-2 uppercase">
+                    <select wire:change='buscarDatos'  wire:model="month" class="w-full p-2 uppercase">
                         <option value="0">--Seleccione un mes--</option>
                             @foreach ($months as $key => $value)
                                 <option value="{{$value}}">{{ $key }}</option>
@@ -68,7 +68,7 @@
 
                      <div class="space-y-2">
                         <label for="year" class="block text-sm font-medium">Año:</label>
-                        <input wire:model="year" type="number" id="year" class="w-full border rounded px-3 py-2" />
+                        <input wire:change='buscarDatos' wire:model="year" type="number" id="year" class="w-full border rounded px-3 py-2" />
                     </div>
                 </div>
                 
