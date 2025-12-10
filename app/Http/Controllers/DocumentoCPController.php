@@ -195,7 +195,7 @@ class DocumentoCPController extends Controller
             $accessToken = $this->tokenService->getValidAccessToken();
             $graph = new Graph();
             $graph->setAccessToken($accessToken);
-            $response = $graph->createRequest('PUT', 'https://graph.microsoft.com/v1.0/drives/b!CU_CMtvtaEmUlX3R-A80sL7OC60rTsBHt6CzRiilfLTCa6VHDHQGR6wIGs3pVZVG/items/' . '01O5NWAPBASS3QYJUYAJAZTQ2V2JC3ZIMH' . ':/' . 'FOR-MN-07_' . $documentocp->correlativo . '.pdf:/content')
+            $response = $graph->createRequest('PUT', 'https://graph.microsoft.com/v1.0/drives/b!CU_CMtvtaEmUlX3R-A80sL7OC60rTsBHt6CzRiilfLTCa6VHDHQGR6wIGs3pVZVG/items/' . $folder_id . ':/' . 'FOR-MN-07_' . $documentocp->correlativo . '.pdf:/content')
                 ->addHeaders(['Content-Type' => 'application/pdf'])
                 ->attachBody($archivo)
                 ->execute();
