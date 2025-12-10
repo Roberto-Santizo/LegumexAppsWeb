@@ -28,6 +28,6 @@ class AreasChecklistP extends Model
 
     public function elementos()
     {
-        return $this->hasMany(AreasCPElementos::class,'documentocp_area','id')->orderBy('elemento_id', 'ASC');
+        return $this->hasMany(AreasCPElementos::class,'documentocp_area','id');
     }
 }

@@ -235,6 +235,8 @@ Documento
 
     </div>
 
+    <input type="hidden" value="{{ $documentocp->planta->id }}" id="planta_id"/>
+
 </div>
 
 @endsection

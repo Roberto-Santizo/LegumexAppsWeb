@@ -126,14 +126,14 @@ class DocumentoCPController extends Controller
                 $preparedData = [];
                 foreach ($request->areas as $area => $cols) {
                     foreach ($cols as $col => $elementos) {
-                        if ($col !== 'firma') { // Evitar que se incluya 'firma' en $preparedData
+                        if ($col !== 'firma') {
                             foreach ($elementos as $elemento => $valor) {
                                 if (!isset($preparedData[$area][$elemento])) {
                                     $preparedData[$area][$elemento] = [
                                         'ok' => null,
                                         'problema' => '',
                                         'accion' => '',
-                                        'orden_trabajos_id' => null // Agregar el campo orden_trabajos_id aquí
+                                        'orden_trabajos_id' => null
                                     ];
                                 }
                                 if ($col == 'ok') {
@@ -157,9 +157,7 @@ class DocumentoCPController extends Controller
                     }
                 }
 
-                //  Crear registros en la base de datos usando los datos preparados
                 foreach ($request->areas as $area => $cols) {
-
                     $documentocp_area = AreasChecklistP::create([
                         'area_id' => $area,
                         'documentocps_id' => $documentocp->id,
@@ -168,16 +166,14 @@ class DocumentoCPController extends Controller
 
                     if (isset($preparedData[$area])) {
                         foreach ($preparedData[$area] as $elemento => $data) {
-                            if (!empty($data['orden_trabajos_id'])) {
-                                AreasCPElementos::create([
-                                    'documentocp_area' => $documentocp_area->id,
-                                    'elemento_id' => $elemento,
-                                    'ok' => $data['ok'],
-                                    'problema' => $data['problema'],
-                                    'accion' => $data['accion'],
-                                    'orden_trabajos_id' => $data['orden_trabajos_id'],
-                                ]);
-                            }
+                            AreasCPElementos::create([
+                                'documentocp_area' => $documentocp_area->id,
+                                'elemento_id' => $elemento,
+                                'ok' => $data['ok'],
+                                'problema' => $data['problema'],
+                                'accion' => $data['accion'],
+                                'orden_trabajos_id' => !empty($data['orden_trabajos_id']) ? $data['orden_trabajos_id'] : null,
+                            ]);
                         }
                     }
                 }
@@ -194,13 +190,12 @@ class DocumentoCPController extends Controller
 
         try {
             $archivo = file_get_contents($request->file('file')->path());
-            // Verifica si el documento existe
             $documentocp = Documentocp::findOrFail($request->documentocp_id);
             $folder_id = $documentocp->planta->checklist_folder_id;
             $accessToken = $this->tokenService->getValidAccessToken();
             $graph = new Graph();
             $graph->setAccessToken($accessToken);
-            $response = $graph->createRequest('PUT', 'https://graph.microsoft.com/v1.0/drives/b!CU_CMtvtaEmUlX3R-A80sL7OC60rTsBHt6CzRiilfLTCa6VHDHQGR6wIGs3pVZVG/items/' . $folder_id . ':/' . 'FOR-MN-07_' . $documentocp->correlativo . '.pdf:/content')
+            $response = $graph->createRequest('PUT', 'https://graph.microsoft.com/v1.0/drives/b!CU_CMtvtaEmUlX3R-A80sL7OC60rTsBHt6CzRiilfLTCa6VHDHQGR6wIGs3pVZVG/items/' . '01O5NWAPBASS3QYJUYAJAZTQ2V2JC3ZIMH' . ':/' . 'FOR-MN-07_' . $documentocp->correlativo . '.pdf:/content')
                 ->addHeaders(['Content-Type' => 'application/pdf'])
                 ->attachBody($archivo)
                 ->execute();
