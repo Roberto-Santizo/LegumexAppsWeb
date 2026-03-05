@@ -229,7 +229,7 @@ Documento
                     <p>APROBADO GCC</p>
                     <p class="mb-10 ">Agroindustria Legumex, Chimaltenango, Guatemala</p>
                 </div>
-                <p>Enero 2024</p>
+                <p>Octubre 2025</p>
             </div>
         </div>
 
