@@ -75,7 +75,7 @@ function validarDatosOT(){
         alertas.push('Asegurese de haber tomado y guardado las fotos');
     }
 
-    if(planta_id == '1' || planta_id == '2' || planta_id == '5'){
+    if(planta_id == '1' || planta_id == '2' || planta_id == '5' || planta_id == '6'){
         const ubicacion_id = document.getElementById('elemento_id').value;
      
         if(ubicacion_id == '' || ubicacion_id == 0){
